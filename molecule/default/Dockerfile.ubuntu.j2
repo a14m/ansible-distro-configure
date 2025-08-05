@@ -1,0 +1,29 @@
+# Based on the amazing work of geerlingguy <3
+# FROM docker.io/geerlingguy/docker-ubuntu2404-ansible
+FROM docker.io/library/ubuntu:noble
+
+ARG DEBIAN_FRONTEND=noninteractive
+
+ENV container docker
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends locales systemd avahi-daemon python3 \
+    && apt-get clean \
+    && rm -Rf /var/lib/apt/lists/* \
+    && rm -Rf /usr/share/doc \
+    && rm -Rf /usr/share/man
+
+# Fix potential UTF-8 errors with ansible-test.
+RUN locale-gen en_US.UTF-8
+
+# Remove unnecessary getty and udev targets that result in high CPU usage when using
+# multiple containers with Molecule (https://github.com/ansible/molecule/issues/1104)
+RUN rm -f /lib/systemd/system/systemd*udev* \
+  && rm -f /lib/systemd/system/getty.target
+
+# Mimic Ubuntu OS default boot (for testing)
+RUN systemctl enable avahi-daemon
+
+VOLUME ["/sys/fs/cgroup", "/tmp", "/run", "/opt"]
+
+CMD ["/lib/systemd/systemd"]
