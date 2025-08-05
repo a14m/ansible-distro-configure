@@ -1,0 +1,102 @@
+---
+- name: "Include OS-specific variables"
+  ansible.builtin.include_vars: "{{ ansible_os_family | lower }}.yml"
+  tags: [required_for_boot]
+
+- name: "Install OS-specific packages"
+  ansible.builtin.include_tasks: "install-{{ ansible_os_family | lower }}.yml"
+  tags: [required_for_boot]
+
+- name: "Ensure ssh_service is enabled"
+  become: true
+  ansible.builtin.service:
+    name: "{{ ssh_service_name }}"
+    state: "started"
+    enabled: true
+  when: not ansible_is_chroot
+  tags: [required_for_boot]
+
+- name: "(chroot): Ensure ssh_service enabled"
+  # noqa: command-instead-of-module intentional isnide chroot
+  ansible.builtin.command:
+    cmd: "systemctl enable {{ ssh_service_name }}"
+  when: ansible_is_chroot
+  changed_when: true
+  tags: [required_for_boot]
+
+- name: "Generate /etc/ssh/ RSA host key"
+  become: true
+  ansible.builtin.command:
+    cmd: "ssh-keygen -q -t rsa -b 4096 -f /etc/ssh/ssh_host_rsa_key -C '' -N ''"
+    creates: "/etc/ssh/ssh_host_rsa_key"
+  tags: [required_for_boot]
+
+- name: "Generate /etc/ssh/ ECDSA host key"
+  become: true
+  ansible.builtin.command:
+    cmd: "ssh-keygen -q -t ecdsa -b 521 -f /etc/ssh/ssh_host_ecdsa_key -C '' -N ''"
+    creates: "/etc/ssh/ssh_host_ecdsa_key"
+  tags: [required_for_boot]
+
+- name: "Generate /etc/ssh/ Ed25519 host key"
+  become: true
+  ansible.builtin.command:
+    cmd: "ssh-keygen -q -t ed25519 -f /etc/ssh/ssh_host_ed25519_key -C '' -N ''"
+    creates: "/etc/ssh/ssh_host_ed25519_key"
+  tags: [required_for_boot]
+
+- name: "Configure sshd_config"
+  become: true
+  ansible.builtin.copy:
+    dest: "/etc/ssh/sshd_config"
+    mode: "0640"
+    validate: 'sshd -T -f %s'
+    content: |
+      KbdInteractiveAuthentication no   # default installation is no
+      UsePAM no                         # default installation is yes
+      PrintMotd yes                     # default installation is no
+
+      # Host key configurations
+      HostKey /etc/ssh/ssh_host_rsa_key
+      HostKey /etc/ssh/ssh_host_ecdsa_key
+      HostKey /etc/ssh/ssh_host_ed25519_key
+
+      # Default sshd_config
+      AuthorizedKeysFile    .ssh/authorized_keys
+      Subsystem     sftp    /usr/lib/ssh/sftp-server
+      Include /etc/ssh/sshd_config.d/*.conf
+  notify:
+    - "Reload systemd"
+    - "Restart ssh"
+  tags: [required_for_boot]
+
+- name: "Configure ssh authentication policy"
+  become: true
+  ansible.builtin.copy:
+    dest: "/etc/ssh/sshd_config.d/99-auth-policy.conf"
+    mode: "0640"
+    validate: 'sshd -T -f %s'
+    content: |
+      Port {{ ssh_port }}
+      PasswordAuthentication no
+      AuthenticationMethods publickey
+      PermitRootLogin no
+      PermitEmptyPasswords no
+      ChallengeResponseAuthentication no
+      GSSAPIAuthentication no
+      X11Forwarding no
+  notify:
+    - "Restart ssh"
+  tags: [required_for_boot]
+
+- name: "Add arg.username to allowed users"
+  become: true
+  ansible.builtin.copy:
+    dest: "/etc/ssh/sshd_config.d/99-allowed-users.conf"
+    mode: "0640"
+    validate: 'sshd -T -f %s'
+    content: |
+      AllowUsers {{ username }}
+  notify:
+    - "Restart ssh"
+  tags: [required_for_boot]

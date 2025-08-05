@@ -5,3 +5,4 @@ user_public_keys:
   - "ssh-rsa AAAA...4I3"
 network_wifi_ssid: "TEST_WIFI_SSID"
 network_wifi_pass: "TEST_WIFI_PASS"
+ssh_port: 39901
