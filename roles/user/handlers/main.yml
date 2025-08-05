@@ -1,0 +1,7 @@
+---
+- name: "Require password change"
+  become: true
+  ansible.builtin.command:
+    cmd: chage -d 0 "{{ username }}"
+  changed_when: true
+  when: user.changed

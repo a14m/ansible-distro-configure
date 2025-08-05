@@ -1,0 +1,18 @@
+---
+argument_specs:
+  main:
+    options:
+      username:
+        type: "str"
+        required: true
+        description: "The username of the created account."
+      user_public_keys:
+        type: "list"
+        required: true
+        description: "The list SSH public key to be added to user authorized_keys."
+        elements: "str"
+      user_groups:
+        type: "list"
+        description: "The list of groups the user should be added to."
+        elements: "str"
+        default: []
