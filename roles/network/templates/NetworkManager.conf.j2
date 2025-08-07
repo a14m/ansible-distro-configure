@@ -3,6 +3,7 @@ uri=https://ping.archlinux.org
 
 [main]
 dhcp=dhcpcd
+plugins=ifupdown,keyfile
 
 [device-mac-randomization]
 wifi.scan-rand-mac-address=yes
@@ -20,3 +21,6 @@ wifi.powersave=2
 
 [logging]
 level=INFO
+
+[ifupdown]
+managed=true

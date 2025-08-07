@@ -40,21 +40,11 @@
   # noqa: command-instead-of-module module doesn't work inside chroot
   tags: [required_for_boot]
 
-- name: "Ensure network_services are enabled"
-  become: true
-  ansible.builtin.systemd_service:
-    name: "{{ item }}"
-    enabled: true
-    state: "started"
-  with_items: "{{ network_services }}"
-  when: not ansible_is_chroot
-  # Not required for boot
-
 - name: "Configure NetworkManager"
   become: true
   tags: [required_for_boot]
   notify:
-    - "Restart NetworkManager"
+    - "Restart network services"
     - "Reload systemd"
   block:
     - name: "Configure NetworkManager"
