@@ -1,0 +1,35 @@
+---
+# Locales
+settings_locales:
+  - "de_DE.UTF-8 UTF-8"
+settings_locales_lang: "de_DE.UTF-8"
+settings_locales_language: "de_DE:de:C"
+settings_locales_lc_ctype: "de_DE.UTF-8"
+settings_locales_lc_numeric: "de_DE.UTF-8"
+settings_locales_lc_time: "de_DE.UTF-8"
+settings_locales_lc_collate: "de_DE.UTF-8"
+settings_locales_lc_monetary: "de_DE.UTF-8"
+settings_locales_lc_messages: "de_DE.UTF-8"
+settings_locales_lc_paper: "de_DE.UTF-8"
+settings_locales_lc_name: "de_DE.UTF-8"
+settings_locales_lc_address: "de_DE.UTF-8"
+settings_locales_lc_telephone: "de_DE.UTF-8"
+settings_locales_lc_measurement: "de_DE.UTF-8"
+settings_locales_lc_identification: "de_DE.UTF-8"
+
+# Timezone
+settings_timezone: "CET"
+
+# Password policy
+# https://linux.die.net/man/8/pam_pwquality
+settings_pw_policy_enabled: true
+settings_pw_policy_difok: 0
+settings_pw_policy_minlen: 8
+settings_pw_policy_dcredit: 0
+settings_pw_policy_ucredit: 0
+settings_pw_policy_ocredit: 0
+settings_pw_policy_lcredit: 0
+settings_pw_policy_minclass: 0
+settings_pw_policy_maxrepeat: 0
+settings_pw_policy_maxclassrepeat: 0
+settings_pw_policy_gecoscheck: 0
