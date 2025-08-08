@@ -1,6 +1,0 @@
----
-- name: "Ensure sshd installed"
-  become: true
-  community.general.pacman:
-    name: "{{ ssh_package_name }}"
-    state: present

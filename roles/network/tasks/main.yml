@@ -1,4 +1,10 @@
 ---
+- name: "Include OS-specific variables"
+  ansible.builtin.include_vars: "{{ ansible_os_family | lower }}.yml"
+
+- name: "Include OS-specific tasks"
+  ansible.builtin.include_tasks: "install-{{ ansible_os_family | lower }}.yml"
+
 - name: "Configure /etc/hostname"
   become: true
   ansible.builtin.copy:
@@ -21,12 +27,6 @@
       ff02::2     ip6-allrouters
   when: hostname is defined
   # Not required for boot
-
-- name: "Include OS-specific variables"
-  ansible.builtin.include_vars: "{{ ansible_os_family | lower }}.yml"
-
-- name: "Install OS-specific packages"
-  ansible.builtin.include_tasks: "install-{{ ansible_os_family | lower }}.yml"
 
 - name: "(chroot): Ensure network_services are enabled"
   ansible.builtin.command:
