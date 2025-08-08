@@ -9,6 +9,7 @@
     state: "present"
   with_items:
     - "{{ settings_pw_quality }}"
+    - "{{ settings_locale_pkg }}"
     - "tzdata"
 
 - name: "Link localtime"

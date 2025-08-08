@@ -1,2 +1,3 @@
 ---
 settings_pw_quality: "libpam-pwquality"
+settings_locale_pkg: "locales"
