@@ -11,3 +11,10 @@
       tags: ["required_for_boot"]
     - role: "ssh"
       tags: ["required_for_boot"]
+
+  pre_tasks:
+    - name: "Update package cache"
+      become: true
+      ansible.builtin.package:
+        update_cache: true
+      tags: ["required_for_boot"]
