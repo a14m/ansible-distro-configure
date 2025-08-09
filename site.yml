@@ -11,9 +11,13 @@
       tags: ["required_for_boot"]
     - role: "ssh"
       tags: ["required_for_boot"]
+    - role: "password_policy"
+      # Password policy is technically not required for boot,
+      # But it's quite nice to configure it for boot and therefore
+      # enforce the required policies/configurations wanted for the first passwrod change
+      tags: ["required_for_boot"]
     - role: "locales"
     - role: "timezone"
-    - role: "settings"
 
   pre_tasks:
     - name: "Update package cache"

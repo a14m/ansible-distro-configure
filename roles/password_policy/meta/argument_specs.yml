@@ -2,51 +2,47 @@
 argument_specs:
   main:
     options:
-      settings_timezone:
-        type: "str"
-        description: "timezone configuration to use"
-        default: "UTC"
-      settings_pw_policy_enabled:
+      password_policy_enabled:
         type: "bool"
         description: "Enable password policy"
         default: true
-      settings_pw_policy_difok:
+      password_policy_difok:
         type: "int"
         description: "The number of differences between new and old password"
         default: 0
-      settings_pw_policy_minlen:
+      password_policy_minlen:
         type: "int"
         description: "Min password length"
         default: 8
-      settings_pw_policy_dcredit:
+      password_policy_dcredit:
         type: "int"
         description: "Num of digits required in password"
         default: 0
-      settings_pw_policy_ucredit:
+      password_policy_ucredit:
         type: "int"
         description: "Num of uppercase chars required in password"
         default: 0
-      settings_pw_policy_ocredit:
+      password_policy_ocredit:
         type: "int"
         description: "Num of special chars required in password"
         default: 0
-      settings_pw_policy_lcredit:
+      password_policy_lcredit:
         type: "int"
         description: "Num of lowercase chars required in password"
         default: 0
-      settings_pw_policy_minclass:
+      password_policy_minclass:
         type: "int"
         description: "Num of required classes (upper/lower/digit/special) chars required in password"
         default: 0
-      settings_pw_policy_maxrepeat:
+      password_policy_maxrepeat:
         type: "int"
         description: "Num of allowed repeats in password"
         default: 0
-      settings_pw_policy_maxclassrepeat:
+      password_policy_maxclassrepeat:
         type: "int"
         description: "Maximum number of consecutive class repeats in password"
         default: 0
-      settings_pw_policy_gecoscheck:
+      password_policy_gecoscheck:
         type: "int"
         description: |
           If nonzero, check whether the individual words longer than 3 characters from the
