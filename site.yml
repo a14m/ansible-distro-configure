@@ -1,0 +1,6 @@
+---
+- name: Distro bootstrap configure
+  gather_facts: true
+  hosts:
+    - homelab
+    - chroot
