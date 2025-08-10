@@ -4,4 +4,3 @@
   community.general.pacman:
     name: "{{ ssh_package_name }}"
     state: present
-    update_cache: true
