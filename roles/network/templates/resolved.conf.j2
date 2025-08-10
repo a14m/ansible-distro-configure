@@ -1,0 +1,24 @@
+[Resolve]
+DNS=1.1.1.1 2606:4700:4700::1111#cloudflare-dns.com 8.8.8.8 2001:4860:4860::8888#dns.google
+FallbackDNS=1.0.0.1 2606:4700:4700::1001#cloudflare-dns.com 8.8.4.4 2001:4860:4860::8844#dns.google 9.9.9.9 2620:fe::fe#quad9.net
+
+DNSSEC=yes
+DNSOverTLS=yes
+
+# Enable multicast DNS for .local domain resolution (replaces avahi functionality)
+MulticastDNS=yes
+
+# Enable LLMNR for Windows network compatibility
+LLMNR=yes
+
+Cache=yes
+CacheFromLocalhost=no
+
+# Enable DNS stub listener on 127.0.0.53:53
+DNSStubListener=yes
+
+# Read /etc/hosts file
+ReadEtcHosts=yes
+
+# Don't resolve single-label names via unicast DNS
+ResolveUnicastSingleLabel=no
