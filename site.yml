@@ -11,6 +11,7 @@
       tags: ["required_for_boot"]
     - role: "ssh"
       tags: ["required_for_boot"]
+    - role: "locales"
     - role: "settings"
 
   pre_tasks:

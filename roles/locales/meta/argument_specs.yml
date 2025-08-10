@@ -1,0 +1,65 @@
+---
+argument_specs:
+  main:
+    options:
+      locales:
+        type: "list"
+        default: ["de_DE.UTF-8 UTF-8"]
+        elements: "str"
+        description: "The default locales to generate"
+      locales_lang:
+        type: "str"
+        description: "configuration of LANG="
+        default: "de_DE.UTF-8"
+      locales_language:
+        type: "str"
+        description: "configuration of LANGUAGE="
+        default: "de_DE.UTF-8:de:C"
+      locales_lc_ctype:
+        type: "str"
+        description: "configuration of LC_CTYPE="
+        default: "de_DE.UTF-8"
+      locales_lc_numeric:
+        type: "str"
+        description: "configuration of LC_NUMERIC="
+        default: "de_DE.UTF-8"
+      locales_lc_time:
+        type: "str"
+        description: "configuration of LC_TIME="
+        default: "de_DE.UTF-8"
+      locales_lc_collate:
+        type: "str"
+        description: "configuration of LC_COLLATE="
+        default: "de_DE.UTF-8"
+      locales_lc_monetary:
+        type: "str"
+        description: "configuration of LC_MONETARY="
+        default: "de_DE.UTF-8"
+      locales_lc_messages:
+        type: "str"
+        description: "configuration of LC_MESSAGES="
+        default: "de_DE.UTF-8"
+      locales_lc_paper:
+        type: "str"
+        description: "configuration of LC_PAPER="
+        default: "de_DE.UTF-8"
+      locales_lc_name:
+        type: "str"
+        description: "configuration of LC_NAME="
+        default: "de_DE.UTF-8"
+      locales_lc_address:
+        type: "str"
+        description: "configuration of LC_ADDRESS="
+        default: "de_DE.UTF-8"
+      locales_lc_telephone:
+        type: "str"
+        description: "configuration of LC_TELEPHONE="
+        default: "de_DE.UTF-8"
+      locales_lc_measurement:
+        type: "str"
+        description: "configuration of LC_MEASUREMENT="
+        default: "de_DE.UTF-8"
+      locales_lc_identification:
+        type: "str"
+        description: "configuration of LC_IDENTIFICATION="
+        default: "de_DE.UTF-8"
