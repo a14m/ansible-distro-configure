@@ -5,5 +5,8 @@
     ansible_become_method: su
     network_wifi_ssid: "TEST_WIFI_SSID"
     network_wifi_pass: "TEST_WIFI_PASS"
+    username: test_user
+    user_groups: ["wheel", "test_group"]
   roles:
     - role: network
+    - role: user
