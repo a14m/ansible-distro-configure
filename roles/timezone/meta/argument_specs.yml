@@ -1,0 +1,8 @@
+---
+argument_specs:
+  main:
+    options:
+      timezone:
+        type: "str"
+        description: "timezone configuration to use"
+        default: "CET"

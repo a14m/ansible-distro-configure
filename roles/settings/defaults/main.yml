@@ -1,7 +1,4 @@
 ---
-# Timezone
-settings_timezone: "CET"
-
 # Password policy
 # https://linux.die.net/man/8/pam_pwquality
 settings_pw_policy_enabled: true
