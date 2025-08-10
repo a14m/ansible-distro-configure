@@ -9,19 +9,6 @@
     state: "present"
   with_items:
     - "{{ settings_pw_quality }}"
-    - "tzdata"
-
-- name: "Link localtime"
-  become: true
-  ansible.builtin.file:
-    src: "/usr/share/zoneinfo/{{ settings_timezone }}"
-    dest: "/etc/localtime"
-    state: "link"
-
-- name: "Update timezone"
-  become: true
-  community.general.timezone:
-    name: "{{ settings_timezone }}"
 
 - name: "Configure archlinux password policy"
   become: true
