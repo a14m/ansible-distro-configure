@@ -1,0 +1,13 @@
+---
+argument_specs:
+  main:
+    options:
+      username:
+        type: "str"
+        required: true
+        description: "The username of the account to add to ssh."
+      ssh_port:
+        type: "int"
+        required: false
+        default: 2222
+        description: "The default ssh port configuration (to avoid port 22 pwn/testing)"
