@@ -12,6 +12,7 @@
     - role: "ssh"
       tags: ["required_for_boot"]
     - role: "locales"
+    - role: "timezone"
     - role: "settings"
 
   pre_tasks:

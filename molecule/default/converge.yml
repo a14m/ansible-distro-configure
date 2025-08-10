@@ -10,10 +10,11 @@
     ssh_port: 1337
     locales:
       - "en_US.UTF-8 UTF-8"
-    settings_timezone: "GMT"
+    timezone: "GMT"
   roles:
     - role: network
     - role: user
     - role: ssh
     - role: locales
+    - role: timezone
     - role: settings
