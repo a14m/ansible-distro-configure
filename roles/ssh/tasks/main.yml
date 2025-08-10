@@ -50,7 +50,7 @@
   ansible.builtin.copy:
     dest: "/etc/ssh/sshd_config"
     mode: "0640"
-    validate: 'sshd -T -f %s'
+    validate: "{{ 'sshd -T -f %s' if (not ansible_is_chroot) else omit }}"
     content: |
       KbdInteractiveAuthentication no   # default installation is no
       UsePAM no                         # default installation is yes
@@ -75,7 +75,7 @@
   ansible.builtin.copy:
     dest: "/etc/ssh/sshd_config.d/99-auth-policy.conf"
     mode: "0640"
-    validate: 'sshd -T -f %s'
+    validate: "{{ 'sshd -T -f %s' if (not ansible_is_chroot) else omit }}"
     content: |
       Port {{ ssh_port }}
       PasswordAuthentication no
@@ -94,7 +94,7 @@
   ansible.builtin.copy:
     dest: "/etc/ssh/sshd_config.d/99-allowed-users.conf"
     mode: "0640"
-    validate: 'sshd -T -f %s'
+    validate: "{{ 'sshd -T -f %s' if (not ansible_is_chroot) else omit }}"
     content: |
       AllowUsers {{ username }}
   notify:

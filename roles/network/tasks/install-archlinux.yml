@@ -4,6 +4,7 @@
   community.general.pacman:
     name: "{{ network_packages }}"
     state: "present"
+    update_cache: true
   tags: [required_for_boot]
 
 - name: "Ensrue network_packages_removed are removed"
