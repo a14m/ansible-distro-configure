@@ -5,6 +5,7 @@
 
 - name: "Set sudo group fact"
   ansible.builtin.set_fact:
+    # noqa var-naming[no-role-prefix] the sudo group is global and better named this way than user_sudo_group
     sudo_group: "sudo"
   tags: [required_for_boot]
 
@@ -31,6 +32,7 @@
   with_items: "{{ user_groups }}"
   tags: [required_for_boot]
 
+# noqa var-naming[no-role-prefix] username is more understandable than user_name
 - name: "Create user: {{ username }}"
   become: true
   ansible.builtin.user:

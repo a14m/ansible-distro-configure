@@ -1,14 +1,12 @@
-# Ansible RC Playbooks
+# Ansible Distro Configure Playbooks
 
-Ansible roles and playbooks to install different distros and configure `.rc`.
+Ansible roles and playbooks to configure different *nix distros.
 
 ## Prerequisite
 
 - [Ansible][ansible]
-- [`sshpass`][sshpass] **required** for `--ask-pass`
 - [`git-crypt`][git-crypt] **optional** for keeping encrypted configurations.
 
-[sshpass]: https://man.freebsd.org/cgi/man.cgi?query=sshpass
 [ansible]: https://docs.ansible.com/ansible/latest/index.html
 [git-crypt]: https://github.com/AGWA/git-crypt
 
@@ -19,16 +17,13 @@ If you are not using `git-crypt`, delete the `.gitattributes` file and override 
 with your own version.
 Ex. `rm .gitattributes && cp host_vars/ubuntuiso.local.yml.example host_vars/ubuntuiso.local.yml`
 
-## Boot distro live image
-
-- [Arch Linux](./archlinux.md)
-- [Debian Ubuntu](./ubuntu.md)
-
 ## Playbook: distro-install
 
-- Optional: Clone the [`distro-configure`](https://git.sr.ht/~a14m/ansible-distro-configure) playbook
-- Optional: Configure the desired `host_vars` in the `distro-configure` playbook
-- Follow the pre-install guides for desired distro in "Boot distro live image"
+Check [`distro-install`](https://git.sr.ht/~a14m/ansible-distro-install) playbook
+
+## Playbook: distro-configure
+
+- Configure the ssh login (user/key/port/etc) in your `~/.ssh/config` for the `username` you want to run.
 - Install ansible required dependencies
 - Configure the desired `host_vars` in this playbook
 - Run the playbook
@@ -36,16 +31,21 @@ Ex. `rm .gitattributes && cp host_vars/ubuntuiso.local.yml.example host_vars/ubu
 **Example**:
 
 ```bash
+tee ~/.ssh/config << EOF
+Host *.local
+  User u53rnam3
+  Port 1337
+  ForwardAgent yes
+  StreamLocalBindUnlink yes
+EOF
+
 git clone https://git.sr.ht/~a14m/ansible-distro-configure /opt/distro-configure
 cp /opt/distro-configure/host_vars/${DISTRO}.local.yml.example /opt/distro-configure/host_vars/${DISTRO}.local.yml
 
-git clone https://git.sr.ht/~a14m/ansible-distro-install /opt/distro-install
-cp /opt/distro-install/host_vars/${DISTRO}iso.local.yml.example /opt/distro-install/host_vars/${DISTRO}iso.local.yml
-
-ansible-galaxy install -r requirements.yml
 cd /opt/distro-install
+ansible-galaxy install -r requirements.yml
 
-ansible-playbook site.yml --ask-pass --extra-vars '{"configure_playbook_dir":"/opt/distro-configure"}'
+ansible-playbook site.yml --ask-become-pass
 ```
 
 ## Special Thanks to
