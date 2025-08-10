@@ -24,3 +24,9 @@ argument_specs:
         type: "list"
         description: "The network services to enable"
         elements: "str"
+      network_ipv4_address:
+        type: "str"
+        description: "The network IP(4) address to configure when provided"
+      network_ipv4_gateway:
+        type: "str"
+        description: "The network IP(4) gateway to configure when provided"
