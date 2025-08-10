@@ -1,27 +1,32 @@
 ---
-- name: Distro bootstrap configure
+- name: "Distro bootstrap configure"
   gather_facts: true
+  # Password policy is technically not required for boot,
+  # But it's quite nice to configure it for boot and therefore
+  # enforce the required policies/configurations wanted for the first passwrod change
+  tags: ["required_for_boot"]
   hosts:
-    - homelab
-    - chroot
+    - archlinux.local
+    - ubuntu.local
+    - rpi5.local
   roles:
+    - role: "hostname"
     - role: "network"
-      tags: ["required_for_boot"]
     - role: "user"
-      tags: ["required_for_boot"]
     - role: "ssh"
-      tags: ["required_for_boot"]
     - role: "password_policy"
-      # Password policy is technically not required for boot,
-      # But it's quite nice to configure it for boot and therefore
-      # enforce the required policies/configurations wanted for the first passwrod change
-      tags: ["required_for_boot"]
-    - role: "locales"
-    - role: "timezone"
-
   pre_tasks:
     - name: "Update package cache"
       become: true
       ansible.builtin.package:
         update_cache: true
-      tags: ["required_for_boot"]
+
+- name: "Distro configure common roles"
+  gather_facts: true
+  hosts:
+    - archlinux.local
+    - ubuntu.local
+    - rpi5.local
+  roles:
+    - role: "locales"
+    - role: "timezone"
