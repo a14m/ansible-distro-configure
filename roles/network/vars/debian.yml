@@ -1,8 +1,10 @@
 ---
 network_packages:
-  - "avahi-daemon"
+  - "dhcpcd"
+  - "systemd-resolved"
   - "network-manager"
 
 network_services:
-  - "avahi-daemon"
+  - "systemd-resolved"
+  - "systemd-networkd"
   - "NetworkManager"
