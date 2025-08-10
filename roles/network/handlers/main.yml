@@ -5,9 +5,11 @@
     daemon_reload: true
   when: not ansible_is_chroot
 
-- name: "Restart NetworkManager"
+- name: "Restart network services"
   become: true
   ansible.builtin.systemd_service:
-    name: "NetworkManager"
-    state: "restarted"
+    name: "{{ item }}"
+    enabled: true
+    state: "started"
+  with_items: "{{ network_services }}"
   when: not ansible_is_chroot
