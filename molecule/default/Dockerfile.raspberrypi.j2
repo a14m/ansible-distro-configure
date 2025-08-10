@@ -1,0 +1,24 @@
+# Based on the amazing work of geerlingguy <3
+# FROM docker.io/geerlingguy/docker-debian12-ansible
+FROM docker.io/library/debian:bookworm
+
+ARG DEBIAN_FRONTEND=noninteractive
+
+ENV container docker
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        systemd python3 avahi-daemon \
+    && rm -Rf /var/lib/apt/lists/* \
+    && rm -Rf /usr/share/doc \
+    && rm -Rf /usr/share/man \
+    && apt-get clean
+
+RUN rm -f /lib/systemd/system/multi-user.target.wants/getty.target
+
+# Mimic Raspberry OS default boot (for testing)
+RUN systemctl enable avahi-daemon
+
+VOLUME ["/sys/fs/cgroup", "/tmp", "/run", "/opt"]
+
+CMD ["/lib/systemd/systemd"]

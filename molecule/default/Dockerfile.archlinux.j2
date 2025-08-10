@@ -1,0 +1,24 @@
+FROM docker.io/library/archlinux
+
+ENV container docker
+
+RUN pacman -Syu --noconfirm --needed python3 \
+    && pacman -Scc --noconfirm
+
+RUN (cd /lib/systemd/system/sysinit.target.wants/; \
+     for i in *; do [ $i == systemd-tmpfiles-setup.service ] || rm -f $i; done); \
+     rm -f /lib/systemd/system/multi-user.target.wants/*;\
+     rm -f /etc/systemd/system/*.wants/*;\
+     rm -f /lib/systemd/system/local-fs.target.wants/*; \
+     rm -f /lib/systemd/system/sockets.target.wants/*udev*; \
+     rm -f /lib/systemd/system/sockets.target.wants/*initctl*; \
+     rm -f /lib/systemd/system/basic.target.wants/*;\
+     rm -f /lib/systemd/system/anaconda.target.wants/*;
+
+# Workaround archlinux not including any non-indo-european locales
+# https://gitlab.archlinux.org/archlinux/archlinux-docker/-/issues/59
+RUN cp -r /usr/share/i18n/locales/en_US /usr/share/i18n/locales/de_DE;
+
+VOLUME ["/sys/fs/cgroup"]
+
+CMD ["/lib/systemd/systemd"]
