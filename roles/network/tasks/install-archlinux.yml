@@ -4,4 +4,3 @@
   community.general.pacman:
     name: "{{ network_packages }}"
     state: "present"
-    update_cache: true
