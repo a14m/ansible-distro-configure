@@ -2,9 +2,6 @@
 argument_specs:
   main:
     options:
-      hostname:
-        type: "str"
-        description: "The distro linux network hostname to be used"
       network_wifi_ssid:
         type: "str"
         description: "The WIFI SSID to be configure when provided"
