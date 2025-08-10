@@ -3,9 +3,7 @@ network_packages:
   - "dhcpcd"
   - "networkmanager"
 
-network_packages_removed: []
-
 network_services:
-  - "dhcpcd"
   - "systemd-resolved"
+  - "systemd-networkd"
   - "NetworkManager"
