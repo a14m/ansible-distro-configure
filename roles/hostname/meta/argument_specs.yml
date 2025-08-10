@@ -1,0 +1,7 @@
+---
+argument_specs:
+  main:
+    options:
+      hostname:
+        type: "str"
+        description: "The distro linux network hostname to be used"
