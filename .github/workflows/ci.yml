@@ -1,0 +1,61 @@
+---
+name: "CI"
+'on': ["push", "pull_request"]
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - name: Install dependencies
+        run: pip3 install yamllint ansible-lint
+      - name: Copy example files
+        run: |
+          # Use example files for testing instead of encrypted files
+          for f in group_vars/*.example; do mv "$f" "$(echo "$f" | sed s/\.example//)"; done
+          for f in host_vars/*.example; do mv "$f" "$(echo "$f" | sed s/\.example//)"; done
+      - name: Run
+        run: |
+          yamllint .
+          ansible-lint
+
+  playbook:
+    strategy:
+      fail-fast: false
+      matrix:
+        molecule_distro:
+          - distro: archlinux
+            platform: "linux/amd64"
+            runs_on: "ubuntu-latest"
+          - distro: ubuntu
+            platform: "linux/amd64"
+            runs_on: "ubuntu-latest"
+          - distro: raspberrypi
+            platform: "linux/arm64/v8"
+            runs_on: "ubuntu-24.04-arm"
+    runs-on: ${{ matrix.molecule_distro.runs_on }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - name: Install dependencies
+        run: pip3 install ansible molecule molecule-plugins[docker]
+      - name: Copy example files
+        run: |
+          # Copy host_vars (from the .example files)
+          for f in group_vars/*.example; do cp "$f" "$(echo "$f" | sed s/\.example//)"; done
+          for f in host_vars/*.example; do cp "$f" "$(echo "$f" | sed s/\.example//)"; done
+      - name: Run
+        env:
+          PY_COLORS: 1
+          ANSIBLE_FORCE_COLOR: 1
+        run: >-
+          molecule --version &&
+          ansible --version &&
+          MOLECULE_COMMAND=${{ matrix.molecule_distro.command }}
+          MOLECULE_PLATFORM=${{ matrix.molecule_distro.platform }}
+          MOLECULE_DISTRO=${{ matrix.molecule_distro.distro }}
+          molecule test
