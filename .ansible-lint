@@ -2,6 +2,3 @@
 skip_list:
   - 'yaml'
   - 'role-name'
-
-warn_list:
-  - 'var-naming[no-role-prefix]'
