@@ -22,21 +22,21 @@
 # pam-auth-update(8) for details.
 
 # here are the per-package modules (the "Primary" block)
-{% if settings_pw_policy_enabled %}
+{% if password_policy_enabled %}
 password        requisite                       pam_pwquality.so retry=3 \
-                                                                 difok={{ settings_pw_policy_difok }} \
-                                                                 minlen={{ settings_pw_policy_minlen }} \
-                                                                 dcredit={{ settings_pw_policy_dcredit }} \
-                                                                 ucredit={{ settings_pw_policy_ucredit }} \
-                                                                 ocredit={{ settings_pw_policy_ocredit }} \
-                                                                 lcredit={{ settings_pw_policy_lcredit }} \
-                                                                 minclass={{ settings_pw_policy_minclass }} \
-                                                                 maxrepeat={{ settings_pw_policy_maxrepeat }} \
-                                                                 maxclassrepeat={{ settings_pw_policy_maxclassrepeat }} \
-                                                                 gecoscheck={{ settings_pw_policy_gecoscheck }}
+                                                                 difok={{ password_policy_difok }} \
+                                                                 minlen={{ password_policy_minlen }} \
+                                                                 dcredit={{ password_policy_dcredit }} \
+                                                                 ucredit={{ password_policy_ucredit }} \
+                                                                 ocredit={{ password_policy_ocredit }} \
+                                                                 lcredit={{ password_policy_lcredit }} \
+                                                                 minclass={{ password_policy_minclass }} \
+                                                                 maxrepeat={{ password_policy_maxrepeat }} \
+                                                                 maxclassrepeat={{ password_policy_maxclassrepeat }} \
+                                                                 gecoscheck={{ password_policy_gecoscheck }}
 password        [success=1 default=ignore]      pam_unix.so obscure use_authtok try_first_pass yescrypt
 {% else %}
-password        [success=1 default=ignore]      pam_unix.so obsecure sha512 minlen={{ settings_pw_policy_minlen }}
+password        [success=1 default=ignore]      pam_unix.so obsecure sha512 minlen={{ password_policy_minlen }}
 {% endif %}
 # here's the fallback if no module succeeds
 password        requisite                       pam_deny.so

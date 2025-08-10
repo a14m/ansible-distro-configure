@@ -15,6 +15,6 @@
     - role: network
     - role: user
     - role: ssh
+    - role: password_policy
     - role: locales
     - role: timezone
-    - role: settings

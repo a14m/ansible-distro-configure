@@ -1,0 +1,14 @@
+---
+# Password policy
+# https://linux.die.net/man/8/pam_pwquality
+password_policy_enabled: true
+password_policy_difok: 0
+password_policy_minlen: 8
+password_policy_dcredit: 0
+password_policy_ucredit: 0
+password_policy_ocredit: 0
+password_policy_lcredit: 0
+password_policy_minclass: 0
+password_policy_maxrepeat: 0
+password_policy_maxclassrepeat: 0
+password_policy_gecoscheck: 0
