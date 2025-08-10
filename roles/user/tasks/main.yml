@@ -12,6 +12,7 @@
 - name: "Set user groups fact"
   ansible.builtin.set_fact:
     user_groups: "{{ ([username, sudo_group] + user_groups) | unique }}"
+  tags: [required_for_boot]
 
 - name: "Configure permissions for group: {{ sudo_group }}"
   become: true
