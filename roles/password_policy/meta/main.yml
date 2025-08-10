@@ -1,9 +1,9 @@
 ---
 dependencies: []
 galaxy_info:
-  role_name: settings
+  role_name: password_policy
   author: a14m
-  description: "Configure the linux distro settings"
+  description: "Configure the linux distro password policy"
   company: "kartoffeln.work GmbH."
   license: "license MIT"
   min_ansible_version: "2.18"
