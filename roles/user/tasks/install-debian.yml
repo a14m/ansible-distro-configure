@@ -1,6 +1,0 @@
----
-- name: "Ensure sudo installed"
-  become: true
-  ansible.builtin.apt:
-    name: "sudo"
-    state: "present"
