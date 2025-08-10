@@ -8,11 +8,12 @@
     username: test_user
     user_groups: ["wheel", "test_group"]
     ssh_port: 1337
-    settings_locales:
+    locales:
       - "en_US.UTF-8 UTF-8"
     settings_timezone: "GMT"
   roles:
     - role: network
     - role: user
     - role: ssh
+    - role: locales
     - role: settings
