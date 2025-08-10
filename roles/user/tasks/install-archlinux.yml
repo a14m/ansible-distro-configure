@@ -4,4 +4,3 @@
   community.general.pacman:
     name: "sudo"
     state: "present"
-    update_cache: true

@@ -4,7 +4,6 @@
   ansible.builtin.apt:
     pkg: "{{ network_packages }}"
     state: "present"
-    update_cache: true
 
 - name: "Set network_default_services facts"
   ansible.builtin.set_fact:
