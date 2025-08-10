@@ -7,7 +7,6 @@
     content: |
       {{ hostname }}
   when: hostname is defined
-  tags: [required_for_boot]
 
 - name: "Configure /etc/hosts"
   become: true
@@ -22,15 +21,12 @@
       ff02::2     ip6-allrouters
   when: hostname is defined
   # Not required for boot
-  tags: []
 
 - name: "Include OS-specific variables"
   ansible.builtin.include_vars: "{{ ansible_os_family | lower }}.yml"
-  tags: [required_for_boot]
 
 - name: "Install OS-specific packages"
   ansible.builtin.include_tasks: "install-{{ ansible_os_family | lower }}.yml"
-  tags: [required_for_boot]
 
 - name: "(chroot): Ensure network_services are enabled"
   ansible.builtin.command:
@@ -39,11 +35,9 @@
   with_items: "{{ network_services }}"
   when: ansible_is_chroot
   # noqa: command-instead-of-module module doesn't work inside chroot
-  tags: [required_for_boot]
 
 - name: "Configure NetworkManager"
   become: true
-  tags: [required_for_boot]
   notify:
     - "Reload systemd"
     - "Restart NetworkManager"

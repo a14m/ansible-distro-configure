@@ -5,7 +5,6 @@
     pkg: "{{ network_packages }}"
     state: "present"
     update_cache: true
-  tags: [required_for_boot]
 
 - name: "Set network_default_services facts"
   ansible.builtin.set_fact:
@@ -14,7 +13,6 @@
       - "avahi-daemon"
       - "networking"
       - "wpa_supplicant"
-  tags: [required_for_boot]
 
 - name: "Stop/Disable conflicting services"
   become: true
@@ -34,7 +32,6 @@
   changed_when: true
   when: ansible_is_chroot
   # noqa: command-instead-of-module module doesn't work inside chroot
-  tags: [required_for_boot]
 
 - name: "Ensure avahi packages are removed"
   become: true
@@ -45,4 +42,3 @@
     state: "absent"
     autoremove: true
     purge: true
-  tags: [required_for_boot]

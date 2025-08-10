@@ -5,4 +5,3 @@
     name: "{{ ssh_package_name }}"
     state: present
     update_cache: true
-  tags: [required_for_boot]
