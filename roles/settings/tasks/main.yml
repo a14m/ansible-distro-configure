@@ -1,0 +1,79 @@
+---
+- name: "Include OS-specific variables"
+  ansible.builtin.include_vars: "{{ ansible_os_family | lower }}.yml"
+
+- name: "Ensure settings packages are installed"
+  become: true
+  ansible.builtin.package:
+    name: "{{ item }}"
+    state: "present"
+  with_items:
+    - "{{ settings_pw_quality }}"
+    - "tzdata"
+
+- name: "Link localtime"
+  become: true
+  ansible.builtin.file:
+    src: "/usr/share/zoneinfo/{{ settings_timezone }}"
+    dest: "/etc/localtime"
+    state: "link"
+
+- name: "Update timezone"
+  become: true
+  community.general.timezone:
+    name: "{{ settings_timezone }}"
+
+- name: "Update locale.gen"
+  become: true
+  ansible.builtin.lineinfile:
+    dest: "/etc/locale.gen"
+    mode: "0644"
+    regexp: "^#{{ item }}"
+    line: "{{ item }}"
+  with_items: "{{ settings_locales }}"
+  notify: "Run locale-gen"
+
+- name: "Update locale.conf"
+  become: true
+  ansible.builtin.copy:
+    dest: "/etc/locale.conf"
+    mode: "0644"
+    content: |
+      LANG={{ settings_locales_lang }}
+      LANGUAGE={{ settings_locales_language }}
+      LC_CTYPE={{ settings_locales_lc_ctype }}
+      LC_NUMERIC={{ settings_locales_lc_numeric }}
+      LC_TIME={{ settings_locales_lc_time }}
+      LC_COLLATE={{ settings_locales_lc_collate }}
+      LC_MONETARY={{ settings_locales_lc_monetary }}
+      LC_MESSAGES={{ settings_locales_lc_messages }}
+      LC_PAPER={{ settings_locales_lc_paper }}
+      LC_NAME={{ settings_locales_lc_name }}
+      LC_ADDRESS={{ settings_locales_lc_address }}
+      LC_TELEPHONE={{ settings_locales_lc_telephone }}
+      LC_MEASUREMENT={{ settings_locales_lc_measurement }}
+      LC_IDENTIFICATION={{ settings_locales_lc_identification }}
+
+- name: "Configure archlinux password policy"
+  become: true
+  ansible.builtin.template:
+    src: "archlinux-pam-pw.j2"
+    dest: "/etc/pam.d/system-auth"
+    mode: "0644"
+  when: ansible_os_family == "Archlinux"
+  # Password policy is technically not required for boot,
+  # But it's quite nice to configure it for boot and therefore
+  # enforce the required policies/configurations wanted for the first passwrod change
+  tags: ["required_for_boot"]
+
+- name: "Configure debian password policy"
+  become: true
+  ansible.builtin.template:
+    src: "debian-pam-pw.j2"
+    dest: "/etc/pam.d/common-password"
+    mode: "0644"
+  when: ansible_os_family == "Debian"
+  # Password policy is technically not required for boot,
+  # But it's quite nice to configure it for boot and therefore
+  # enforce the required policies/configurations wanted for the first passwrod change
+  tags: ["required_for_boot"]

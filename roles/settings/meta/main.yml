@@ -1,0 +1,19 @@
+---
+dependencies: []
+galaxy_info:
+  role_name: settings
+  author: a14m
+  description: "Configure the linux distro settings"
+  company: "kartoffeln.work GmbH."
+  license: "license MIT"
+  min_ansible_version: "2.18"
+  platforms:
+    - name: ArchLinux
+      versions:
+        - all
+    - name: Ubuntu
+      versions:
+        - noble
+    - name: Debian
+      versions:
+        - bookworm
