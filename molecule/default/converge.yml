@@ -7,6 +7,8 @@
     network_wifi_pass: "TEST_WIFI_PASS"
     username: test_user
     user_groups: ["wheel", "test_group"]
+    ssh_port: 1337
   roles:
     - role: network
     - role: user
+    - role: ssh
