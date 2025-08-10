@@ -2,12 +2,17 @@
 id=ethernet
 type=ethernet
 autoconnect=true
-interface-name=eth0
 
 [ethernet]
 
 [ipv4]
+{% if network_ipv4_address is defined %}
+method=manual
+addresses={{ network_ipv4_address }}
+gateway={{ network_ipv4_gateway  }}
+{% else %}
 method=auto
+{% endif %}
 
 [ipv6]
 addr-gen-mode=default
