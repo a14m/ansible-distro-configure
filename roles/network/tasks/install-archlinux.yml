@@ -6,11 +6,3 @@
     state: "present"
     update_cache: true
   tags: [required_for_boot]
-
-- name: "Ensrue network_packages_removed are removed"
-  become: true
-  community.general.pacman:
-    name: "{{ network_packages_removed }}"
-    state: "absent"
-    extra_args: "-n" # Removes config files too
-  # Not required for boot

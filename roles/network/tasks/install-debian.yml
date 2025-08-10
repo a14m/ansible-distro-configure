@@ -7,10 +7,28 @@
     update_cache: true
   tags: [required_for_boot]
 
-- name: "Ensrue network_packages_removed are removed"
+- name: "Set network_default_services facts"
+  ansible.builtin.set_fact:
+    network_default_services:
+      - "dhcpcd"
+      - "networking"
+      - "wpa_supplicant"
+  tags: [required_for_boot]
+
+- name: "Disable conflicting services"
   become: true
-  ansible.builtin.apt:
-    name: "{{ network_packages_removed }}"
-    state: "absent"
-    purge: true
-  # Not required for boot
+  ansible.builtin.systemd_service:
+    name: "{{ item }}"
+    enabled: false
+    state: "stopped"
+  with_items: "{{ network_default_services }}"
+  when: not ansible_is_chroot
+  tags: [required_for_boot]
+
+- name: "(chroot): Disable conflicting services"
+  ansible.builtin.command:
+    cmd: "systemctl disable {{ network_default_services | join(' ') }}"
+  changed_when: true
+  when: ansible_is_chroot
+  # noqa: command-instead-of-module module doesn't work inside chroot
+  tags: [required_for_boot]
