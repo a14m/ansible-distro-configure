@@ -5,4 +5,3 @@
     name: "{{ network_packages }}"
     state: "present"
     update_cache: true
-  tags: [required_for_boot]

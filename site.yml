@@ -6,5 +6,8 @@
     - chroot
   roles:
     - role: "network"
+      tags: ["required_for_boot"]
     - role: "user"
+      tags: ["required_for_boot"]
     - role: "ssh"
+      tags: ["required_for_boot"]

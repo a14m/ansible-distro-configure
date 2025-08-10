@@ -1,18 +1,15 @@
 ---
 - name: "Install OS-specific packages"
   ansible.builtin.include_tasks: "install-{{ ansible_os_family | lower }}.yml"
-  tags: [required_for_boot]
 
 - name: "Set sudo group fact"
   ansible.builtin.set_fact:
     # noqa var-naming[no-role-prefix] the sudo group is global and better named this way than user_sudo_group
     sudo_group: "sudo"
-  tags: [required_for_boot]
 
 - name: "Set user groups fact"
   ansible.builtin.set_fact:
     user_groups: "{{ ([username, sudo_group] + user_groups) | unique }}"
-  tags: [required_for_boot]
 
 - name: "Configure permissions for group: {{ sudo_group }}"
   become: true
@@ -23,7 +20,6 @@
     nopassword: false
     sudoers_path: "/etc/sudoers.d"
     state: present
-  tags: [required_for_boot]
 
 - name: "Ensure user groups are created"
   become: true
@@ -31,7 +27,6 @@
     name: "{{ item }}"
     state: "present"
   with_items: "{{ user_groups }}"
-  tags: [required_for_boot]
 
 # noqa var-naming[no-role-prefix] username is more understandable than user_name
 - name: "Create user: {{ username }}"
@@ -47,7 +42,6 @@
     update_password: "on_create"
   register: user
   notify: "Require password change"
-  tags: [required_for_boot]
 
 - name: "Create user ssh directory"
   ansible.builtin.file:
@@ -55,7 +49,6 @@
     mode: "0700"
     owner: "{{ username }}"
     state: "directory"
-  tags: [required_for_boot]
 
 - name: "Add user ssh authorized_keys"
   ansible.builtin.copy:
@@ -64,4 +57,3 @@
     owner: "{{ username }}"
     content: |
       {{ user_public_keys | join('\n') }}
-  tags: [required_for_boot]
