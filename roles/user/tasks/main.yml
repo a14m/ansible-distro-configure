@@ -2,7 +2,9 @@
 - name: "Ensure sudo installed"
   become: true
   ansible.builtin.package:
-    name: "sudo"
+    name:
+      - "sudo"
+      - "bash"
     state: "present"
 
 - name: "Set sudo group fact"
@@ -41,6 +43,7 @@
     generate_ssh_key: false
     groups: "{{  user_groups }}"
     password: "{{ user_password }}"
+    shell: "/bin/bash"
     state: "present"
     update_password: "on_create"
   register: user
