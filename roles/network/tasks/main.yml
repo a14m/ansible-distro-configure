@@ -22,6 +22,7 @@
       ff02::2     ip6-allrouters
   when: hostname is defined
   # Not required for boot
+  tags: []
 
 - name: "Include OS-specific variables"
   ansible.builtin.include_vars: "{{ ansible_os_family | lower }}.yml"
@@ -44,9 +45,17 @@
   become: true
   tags: [required_for_boot]
   notify:
-    - "Restart network services"
     - "Reload systemd"
+    - "Restart NetworkManager"
+    - "Restart systemd-networkd"
+    - "Restart systemd-resolved"
   block:
+    - name: "Configure systemd-resolved"
+      ansible.builtin.template:
+        src: "resolved.conf.j2"
+        dest: "/etc/systemd/resolved.conf"
+        mode: "0644"
+
     - name: "Configure NetworkManager"
       ansible.builtin.template:
         src: "NetworkManager.conf.j2"
