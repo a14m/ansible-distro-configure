@@ -1,0 +1,9 @@
+---
+- name: Converge
+  hosts: instance
+  vars:
+    ansible_become_method: su
+    network_wifi_ssid: "TEST_WIFI_SSID"
+    network_wifi_pass: "TEST_WIFI_PASS"
+  roles:
+    - role: network
