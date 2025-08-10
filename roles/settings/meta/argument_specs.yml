@@ -1,0 +1,116 @@
+---
+argument_specs:
+  main:
+    options:
+      settings_timezone:
+        type: "str"
+        description: "timezone configuration to use"
+        default: "UTC"
+      settings_locales:
+        type: "list"
+        default: ["de_DE.UTF-8 UTF-8"]
+        elements: "str"
+        description: "The default locales to generate"
+      settings_locales_lang:
+        type: "str"
+        description: "configuration of LANG="
+        default: "de_DE.UTF-8"
+      settings_locales_language:
+        type: "str"
+        description: "configuration of LANGUAGE="
+        default: "de_DE.UTF-8:de:C"
+      settings_locales_lc_ctype:
+        type: "str"
+        description: "configuration of LC_CTYPE="
+        default: "de_DE.UTF-8"
+      settings_locales_lc_numeric:
+        type: "str"
+        description: "configuration of LC_NUMERIC="
+        default: "de_DE.UTF-8"
+      settings_locales_lc_time:
+        type: "str"
+        description: "configuration of LC_TIME="
+        default: "de_DE.UTF-8"
+      settings_locales_lc_collate:
+        type: "str"
+        description: "configuration of LC_COLLATE="
+        default: "de_DE.UTF-8"
+      settings_locales_lc_monetary:
+        type: "str"
+        description: "configuration of LC_MONETARY="
+        default: "de_DE.UTF-8"
+      settings_locales_lc_messages:
+        type: "str"
+        description: "configuration of LC_MESSAGES="
+        default: "de_DE.UTF-8"
+      settings_locales_lc_paper:
+        type: "str"
+        description: "configuration of LC_PAPER="
+        default: "de_DE.UTF-8"
+      settings_locales_lc_name:
+        type: "str"
+        description: "configuration of LC_NAME="
+        default: "de_DE.UTF-8"
+      settings_locales_lc_address:
+        type: "str"
+        description: "configuration of LC_ADDRESS="
+        default: "de_DE.UTF-8"
+      settings_locales_lc_telephone:
+        type: "str"
+        description: "configuration of LC_TELEPHONE="
+        default: "de_DE.UTF-8"
+      settings_locales_lc_measurement:
+        type: "str"
+        description: "configuration of LC_MEASUREMENT="
+        default: "de_DE.UTF-8"
+      settings_locales_lc_identification:
+        type: "str"
+        description: "configuration of LC_IDENTIFICATION="
+        default: "de_DE.UTF-8"
+      settings_pw_policy_enabled:
+        type: "bool"
+        description: "Enable password policy"
+        default: true
+      settings_pw_policy_difok:
+        type: "int"
+        description: "The number of differences between new and old password"
+        default: 0
+      settings_pw_policy_minlen:
+        type: "int"
+        description: "Min password length"
+        default: 8
+      settings_pw_policy_dcredit:
+        type: "int"
+        description: "Num of digits required in password"
+        default: 0
+      settings_pw_policy_ucredit:
+        type: "int"
+        description: "Num of uppercase chars required in password"
+        default: 0
+      settings_pw_policy_ocredit:
+        type: "int"
+        description: "Num of special chars required in password"
+        default: 0
+      settings_pw_policy_lcredit:
+        type: "int"
+        description: "Num of lowercase chars required in password"
+        default: 0
+      settings_pw_policy_minclass:
+        type: "int"
+        description: "Num of required classes (upper/lower/digit/special) chars required in password"
+        default: 0
+      settings_pw_policy_maxrepeat:
+        type: "int"
+        description: "Num of allowed repeats in password"
+        default: 0
+      settings_pw_policy_maxclassrepeat:
+        type: "int"
+        description: "Maximum number of consecutive class repeats in password"
+        default: 0
+      settings_pw_policy_gecoscheck:
+        type: "int"
+        description: |
+          If nonzero, check whether the individual words longer than 3 characters from the
+          passwd GECOS field of the user are contained in the new password.
+          The default is 0 which means that this check is disabled.
+        default: 0
