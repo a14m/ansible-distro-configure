@@ -1,0 +1,89 @@
+---
+- name: "Configure /etc/hostname"
+  become: true
+  ansible.builtin.copy:
+    dest: "/etc/hostname"
+    mode: "0644"
+    content: |
+      {{ hostname }}
+  when: hostname is defined
+  tags: [required_for_boot]
+
+- name: "Configure /etc/hosts"
+  become: true
+  ansible.builtin.copy:
+    dest: "/etc/hosts"
+    mode: "0644"
+    content: |
+      127.0.0.1   localhost
+      127.0.1.1   {{ hostname }}
+      ::1         localhost ip6-localhost ip6-loopback
+      ff02::1     ip6-allnodes
+      ff02::2     ip6-allrouters
+  when: hostname is defined
+  # Not required for boot
+
+- name: "Include OS-specific variables"
+  ansible.builtin.include_vars: "{{ ansible_os_family | lower }}.yml"
+  tags: [required_for_boot]
+
+- name: "Install OS-specific packages"
+  ansible.builtin.include_tasks: "install-{{ ansible_os_family | lower }}.yml"
+  tags: [required_for_boot]
+
+- name: "(chroot): Ensure network_services are enabled"
+  ansible.builtin.command:
+    cmd: "systemctl enable {{ item }}"
+  changed_when: true
+  with_items: "{{ network_services }}"
+  when: ansible_is_chroot
+  # noqa: command-instead-of-module module doesn't work inside chroot
+  tags: [required_for_boot]
+
+- name: "Ensure network_services are enabled"
+  become: true
+  ansible.builtin.systemd_service:
+    name: "{{ item }}"
+    enabled: true
+    state: "started"
+  with_items: "{{ network_services }}"
+  when: not ansible_is_chroot
+  # Not required for boot
+
+- name: "Configure NetworkManager"
+  become: true
+  tags: [required_for_boot]
+  notify:
+    - "Restart NetworkManager"
+    - "Reload systemd"
+  block:
+    - name: "Configure NetworkManager"
+      ansible.builtin.template:
+        src: "NetworkManager.conf.j2"
+        dest: "/etc/NetworkManager/NetworkManager.conf"
+        mode: "0644"
+
+    - name: "Configure NetworkManager Captive Portals"
+      ansible.builtin.get_url:
+        dest: "/etc/NetworkManager/dispatcher.d/90-open_captive_portal"
+        # yamllint disable-line
+        url: "https://raw.githubusercontent.com/Seme4eg/captive-portal-sh/04751034437b6abd92647cab1b22cef586c86f4e/90-open_captive_portal"
+        checksum: "sha1:75f4c827939e7dd433357ab4776c787be02c485b"
+        mode: "0750"
+
+    - name: "Configure ethernet connection"
+      ansible.builtin.template:
+        src: "eth0-connection.nmconnection.j2"
+        dest: "/etc/NetworkManager/system-connections/ethernet.nmconnection"
+        mode: "0600"
+        owner: "root"
+        group: "root"
+
+    - name: "Configure wifi connection"
+      ansible.builtin.template:
+        src: "wifi-connection.nmconnection.j2"
+        dest: "/etc/NetworkManager/system-connections/{{ network_wifi_ssid }}.nmconnection"
+        mode: "0600"
+        owner: "root"
+        group: "root"
+      when: network_wifi_ssid != ""

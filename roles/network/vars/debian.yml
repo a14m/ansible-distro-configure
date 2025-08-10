@@ -1,0 +1,13 @@
+---
+network_packages:
+  - "dhcpcd"
+  - "network-manager"
+  - "systemd-resolved"
+
+network_packages_removed:
+  - "avahi-daemon"
+
+network_services:
+  - "dhcpcd"
+  - "systemd-resolved"
+  - "NetworkManager"

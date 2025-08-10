@@ -1,0 +1,19 @@
+---
+dependencies: []
+galaxy_info:
+  role_name: network
+  author: a14m
+  description: "Configure basic distro networking features"
+  company: "kartoffeln.work GmbH."
+  license: "license MIT"
+  min_ansible_version: "2.18"
+  platforms:
+    - name: ArchLinux
+      versions:
+        - all
+    - name: Ubuntu
+      versions:
+        - noble
+    - name: Debian
+      versions:
+        - bookworm

@@ -4,3 +4,5 @@
   hosts:
     - homelab
     - chroot
+  roles:
+    - role: "network"
