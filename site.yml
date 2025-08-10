@@ -6,3 +6,4 @@
     - chroot
   roles:
     - role: "network"
+    - role: "user"
