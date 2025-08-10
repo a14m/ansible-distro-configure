@@ -1,6 +1,9 @@
 ---
-- name: "Install OS-specific packages"
-  ansible.builtin.include_tasks: "install-{{ ansible_os_family | lower }}.yml"
+- name: "Ensure sudo installed"
+  become: true
+  ansible.builtin.package:
+    name: "sudo"
+    state: "present"
 
 - name: "Set sudo group fact"
   ansible.builtin.set_fact:
@@ -28,8 +31,8 @@
     state: "present"
   with_items: "{{ user_groups }}"
 
-# noqa var-naming[no-role-prefix] username is more understandable than user_name
 - name: "Create user: {{ username }}"
+  # noqa var-naming[no-role-prefix] username is more understandable than user_name
   become: true
   ansible.builtin.user:
     name: "{{ username }}"
