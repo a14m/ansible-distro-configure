@@ -1,3 +1,7 @@
 ---
+username: "test_user"
+user_public_keys:
+  - "ssh-ed25519 AAAA...fMo"
+  - "ssh-rsa AAAA...4I3"
 network_wifi_ssid: "TEST_WIFI_SSID"
 network_wifi_pass: "TEST_WIFI_PASS"
