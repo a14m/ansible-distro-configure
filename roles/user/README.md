@@ -6,6 +6,7 @@ This role creates the user and configures the `sudo` group for the user
 
 - `username` **Required** name of the user to be created.
 - `user_password` created user default password (default: `changeme`).
+- `user_login_shell` the path to default user login shell (default: `/bin/bash`)
 - `user_public_keys` the list of ssh public keys to be added to user authorized_keys
 - `user_groups` extra groups to be created and user added to them (default: [])
 
