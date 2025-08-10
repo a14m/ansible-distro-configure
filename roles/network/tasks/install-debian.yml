@@ -23,7 +23,6 @@
   when: not ansible_is_chroot
   failed_when: false
   # Not required for boot
-  tags: []
 
 - name: "(chroot): Disable conflicting services"
   ansible.builtin.command:

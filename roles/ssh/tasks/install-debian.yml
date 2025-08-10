@@ -1,6 +1,0 @@
----
-- name: "Ensure ssh installed"
-  become: true
-  ansible.builtin.apt:
-    name: "{{ ssh_package_name }}"
-    state: "present"
