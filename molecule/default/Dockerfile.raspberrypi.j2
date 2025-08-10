@@ -17,7 +17,8 @@ RUN apt-get update \
 RUN rm -f /lib/systemd/system/multi-user.target.wants/getty.target
 
 # Mimic Raspberry OS default boot (for testing)
-RUN systemctl enable avahi-daemon
+RUN systemctl enable avahi-daemon \
+    && touch /etc/locale.gen
 
 VOLUME ["/sys/fs/cgroup", "/tmp", "/run", "/opt"]
 
