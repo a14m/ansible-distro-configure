@@ -7,24 +7,24 @@ network_wifi_ssid: "TEST_WIFI_SSID"
 network_wifi_pass: "TEST_WIFI_PASS"
 ssh_port: 39901
 
-settings_timezone: "UTC"
+timezone: "UTC"
 
-settings_locales:
+locales:
   - "en_US.UTF-8 UTF-8"
   - "de_DE.UTF-8 UTF-8"
-settings_locales_lang: "en_US.UTF-8"
-settings_locales_language: "en_US.UTF-8"
-settings_locales_lc_time: "de_DE.UTF-8"
-settings_locales_time_style: "iso"
-settings_locales_lc_collate: "C.UTF-8"
+locales_lang: "en_US.UTF-8"
+locales_language: "en_US.UTF-8"
+locales_lc_time: "de_DE.UTF-8"
+locales_time_style: "iso"
+locales_lc_collate: "C.UTF-8"
 
-settings_pw_policy_enabled: true
-settings_pw_policy_minlen: 8
-settings_pw_policy_dcredit: 1
-settings_pw_policy_ucredit: 1
-settings_pw_policy_ocredit: 1
-settings_pw_policy_lcredit: 1
-settings_pw_policy_minclass: 4
-settings_pw_policy_maxrepeat: 3
-settings_pw_policy_maxclassrepeat: 0
-settings_pw_policy_gecoscheck: 0
+password_policy_enabled: true
+password_policy_minlen: 8
+password_policy_dcredit: 1
+password_policy_ucredit: 1
+password_policy_ocredit: 1
+password_policy_lcredit: 1
+password_policy_minclass: 4
+password_policy_maxrepeat: 3
+password_policy_maxclassrepeat: 0
+password_policy_gecoscheck: 0
