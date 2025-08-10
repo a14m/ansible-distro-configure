@@ -1,22 +1,4 @@
 ---
-# Locales
-settings_locales:
-  - "de_DE.UTF-8 UTF-8"
-settings_locales_lang: "de_DE.UTF-8"
-settings_locales_language: "de_DE:de:C"
-settings_locales_lc_ctype: "de_DE.UTF-8"
-settings_locales_lc_numeric: "de_DE.UTF-8"
-settings_locales_lc_time: "de_DE.UTF-8"
-settings_locales_lc_collate: "de_DE.UTF-8"
-settings_locales_lc_monetary: "de_DE.UTF-8"
-settings_locales_lc_messages: "de_DE.UTF-8"
-settings_locales_lc_paper: "de_DE.UTF-8"
-settings_locales_lc_name: "de_DE.UTF-8"
-settings_locales_lc_address: "de_DE.UTF-8"
-settings_locales_lc_telephone: "de_DE.UTF-8"
-settings_locales_lc_measurement: "de_DE.UTF-8"
-settings_locales_lc_identification: "de_DE.UTF-8"
-
 # Timezone
 settings_timezone: "CET"
 

@@ -1,0 +1,40 @@
+---
+- name: "Include OS-specific variables"
+  ansible.builtin.include_vars: "{{ ansible_os_family | lower }}.yml"
+
+- name: "Ensure locales package is installed"
+  become: true
+  ansible.builtin.package:
+    name: "{{ locales_pkg }}"
+    state: "present"
+
+- name: "Update locale.gen"
+  become: true
+  ansible.builtin.lineinfile:
+    dest: "/etc/locale.gen"
+    mode: "0644"
+    regexp: "^#{{ item }}"
+    line: "{{ item }}"
+  with_items: "{{ locales }}"
+  notify: "Run locale-gen"
+
+- name: "Update locale.conf"
+  become: true
+  ansible.builtin.copy:
+    dest: "/etc/locale.conf"
+    mode: "0644"
+    content: |
+      LANG={{ locales_lang }}
+      LANGUAGE={{ locales_language }}
+      LC_CTYPE={{ locales_lc_ctype }}
+      LC_NUMERIC={{ locales_lc_numeric }}
+      LC_TIME={{ locales_lc_time }}
+      LC_COLLATE={{ locales_lc_collate }}
+      LC_MONETARY={{ locales_lc_monetary }}
+      LC_MESSAGES={{ locales_lc_messages }}
+      LC_PAPER={{ locales_lc_paper }}
+      LC_NAME={{ locales_lc_name }}
+      LC_ADDRESS={{ locales_lc_address }}
+      LC_TELEPHONE={{ locales_lc_telephone }}
+      LC_MEASUREMENT={{ locales_lc_measurement }}
+      LC_IDENTIFICATION={{ locales_lc_identification }}
