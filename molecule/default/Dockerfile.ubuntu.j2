@@ -7,11 +7,12 @@ ARG DEBIAN_FRONTEND=noninteractive
 ENV container docker
 
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends locales systemd avahi-daemon python3 \
-    && apt-get clean \
+    && apt-get install -y --no-install-recommends \
+        locales systemd avahi-daemon python3 iproute2 \
     && rm -Rf /var/lib/apt/lists/* \
     && rm -Rf /usr/share/doc \
-    && rm -Rf /usr/share/man
+    && rm -Rf /usr/share/man \
+    && apt-get clean
 
 # Fix potential UTF-8 errors with ansible-test.
 RUN locale-gen en_US.UTF-8
