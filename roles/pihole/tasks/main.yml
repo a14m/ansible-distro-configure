@@ -1,0 +1,62 @@
+---
+- name: "Crete Pi-hole user"
+  ansible.builtin.user:
+    name: "pihole"
+    system: true
+    shell: "/usr/sbin/nologin"
+    home: "/var/lib/pihole"
+    create_home: true
+
+- name: "Create Pi-hole directories"
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: "directory"
+    owner: "pihole"
+    group: "pihole"
+    mode: "0755"
+  with_items:
+    - "/etc/pihole"
+    - "/var/lib/pihole"
+    - "/var/log/pihole"
+
+- name: "Create Pi-hole configuration file"
+  ansible.builtin.template:
+    src: "pihole.toml.j2"
+    dest: "/etc/pihole/pihole.toml"
+    owner: "pihole"
+    group: "pihole"
+    mode: "0644"
+  notify: "Restart pihole"
+  tags:
+    - molecule-idempotence-notest
+
+- name: "Download Pi-hole installer"
+  ansible.builtin.get_url:
+    url: "https://install.pi-hole.net"
+    dest: "/tmp/install_pihole.sh"
+    mode: "0755"
+
+- name: "Run Pi-hole installer"
+  ansible.builtin.command:
+    cmd: "/tmp/install_pihole.sh --unattended"
+  register: pihole_install
+  environment:
+    PIHOLE_SKIP_OS_CHECK: "true"
+  args:
+    creates: "/usr/local/bin/pihole"
+
+- name: "Show install output"
+  ansible.builtin.debug:
+    var: pihole_install.stdout
+
+- name: "Ensure Pi-hole started/enabled"
+  ansible.builtin.systemd_service:
+    name: "pihole-FTL"
+    enabled: true
+    state: "started"
+    daemon_reload: true
+
+- name: "Update Pi-hole blocklists"
+  ansible.builtin.command:
+    cmd: "pihole -g"
+  changed_when: false

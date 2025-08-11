@@ -1,0 +1,36 @@
+---
+argument_specs:
+  main:
+    options:
+      pihole_password:
+        type: "str"
+        description: "The pi-hole web-server plain text password (double sha265 hashed) default: changeme"
+        default: "{{ ('changeme' | hash('sha256') | hash('sha256'))[:64] }}"
+      pihole_totp_secret:
+        type: "str"
+        description: "The pi-hole TOTP 2FA secret"
+        default: "CHANGEME"
+      pihole_dns:
+        type: "list"
+        description: "The list of DNS servers to use as upstreams"
+        elements: "str"
+        default:
+          - "9.9.9.9"   # Quad9
+          - "1.1.1.1"   # Cloudflare
+          - "8.8.8.8"   # Google
+      pihole_interface:
+        type: "str"
+        description: "The interface to bind the pi-hole on"
+        default: "{{ ansible_default_ipv4.interface }}"
+      pihole_dns_blocking_enabled:
+        type: "bool"
+        description: "The boolean flag to toggle DNS blocking"
+        default: true
+      pihole_dhcp_enabled:
+        type: "bool"
+        description: "The boolean flag to toggle DHCP on the pi-hole"
+        default: false
+      pihole_domain:
+        type: "str"
+        description: "The domain name to be configured when the pi is exposed over the internet"
+        default: ""

@@ -1,0 +1,16 @@
+---
+dependencies: []
+galaxy_info:
+  role_name: pihole
+  author: a14m
+  description: "Configure pihole on supported devices"
+  company: "kartoffeln.work GmbH."
+  license: "license MIT"
+  min_ansible_version: "2.18"
+  platforms:
+    - name: Ubuntu
+      versions:
+        - noble
+    - name: Debian
+      versions:
+        - bookworm
