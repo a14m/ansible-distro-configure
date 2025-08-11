@@ -30,3 +30,11 @@
   roles:
     - role: "locales"
     - role: "timezone"
+
+- name: "Raspberry Pi configure"
+  gather_facts: true
+  hosts:
+    - rpi5.local
+  become: true
+  roles:
+    - role: "pihole"

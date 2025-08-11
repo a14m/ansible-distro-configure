@@ -1,0 +1,61 @@
+# Based on https://github.com/pi-hole/FTL/blob/bc185680fc2af2f7e21bd120f56749051207914f/test/pihole.toml
+
+[misc]
+# Put configuration into read-only mode. This will prevent any changes to the
+# configuration file via the API or CLI. This setting useful when a configuration is
+# to be forced/modified by some third-party application (like infrastructure-as-code
+# providers) and should not be changed by any means.
+readOnly = false
+
+[dns]
+# Array of upstream DNS servers used by Pi-hole
+# Example: [ "8.8.8.8", "127.0.0.1#5335", "docker-resolver" ]
+upstreams = {{ pihole_dns }}
+
+domainNeeded = true       # Never forward plain names (without dots or domain parts)
+expandHosts = true        # Add the domain to simple names in /etc/hosts
+domain = "lan"            # Local domain name
+bogusPriv = true          # Don't forward reverse DNS queries for private IP ranges
+dnssec = false            # Validate DNS replies using DNSSEC
+port = 53                 # Port used by the DNS Server
+
+# Network interface Pi-hole should listen on
+# Usually "eth0" for Ethernet or "wlan0" for WiFi
+interface = "{{ pihole_interface }}"
+
+# Pi-hole interface listening modes
+#   - "LOCAL" (default)
+#       Allow only local requests. This setting accepts DNS queries only from hosts
+#       whose address is on a local subnet.
+#   - "SINGLE"
+#       Permit all origins, accept only on the specified interface. Respond only to
+#       queries arriving on the specified interface.
+#   - "BIND"
+#       By default, FTL binds the wildcard address.
+#   - "ALL"
+#       Permit all origins, accept on all interfaces. Make sure your Pi-hole is firewalled.
+#   - "NONE"
+#       Do not add any configuration concerning the listening mode to the dnsmasq config file.
+listeningMode = "SINGLE"
+
+[dns.cache]
+size = 10000    # Cache size of the DNS server.
+
+[dns.blocking]
+# Master switch for Pi-hole's blocking functionality
+active = {{ pihole_dns_blocking_enabled | lower }}
+
+[dhcp]
+active = {{ pihole_dhcp_enabled | lower }}
+
+[webserver]
+{% if (pihole_domain is defined) and (pihole_domain != '')  %}
+domain = {{ pihole_domain }}
+{% endif %}
+
+[webserver.tls]
+cert = "/etc/pihole/tls.pem"
+
+[webserver.api]
+pwhash = "{{ pihole_password }}"    # valid double hashed string
+totp_secret = "{{ pihole_totp_secret }}"   # valid TOTP secret (20 Bytes in Base32 encoding)
