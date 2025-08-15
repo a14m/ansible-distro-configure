@@ -62,3 +62,16 @@
   ansible.builtin.command:
     cmd: "pihole -g"
   changed_when: false
+
+- name: "Set Pi-hole as system DNS"
+  ansible.builtin.lineinfile:
+    path: "/etc/systemd/resolved.conf"
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+    backup: true
+  notify: "Restart systemd-resolved"
+  with_items:
+    - regexp: "^#?DNSStubListener="
+      line: "DNSStubListener=no"
+    - regexp: "^#?DNS="
+      line: "DNS=127.0.0.1"
