@@ -28,6 +28,7 @@
     - "Restart NetworkManager"
     - "Restart systemd-networkd"
     - "Restart systemd-resolved"
+    - "Restart dhcpcd"
   block:
     - name: "Configure systemd-resolved"
       ansible.builtin.template:
