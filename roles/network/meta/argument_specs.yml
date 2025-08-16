@@ -12,18 +12,6 @@ argument_specs:
         description: "The WIFI Passphrase to be configure when provided"
         required: false
         default: ""
-      network_packages:
-        type: "list"
-        description: "The network packages to install"
-        elements: "str"
-      network_packages_removed:
-        type: "list"
-        description: "The network packages to remove"
-        elements: "str"
-      network_services:
-        type: "list"
-        description: "The network services to enable"
-        elements: "str"
       network_ipv4_address:
         type: "str"
         description: "The network IP(4) address to configure when provided"
