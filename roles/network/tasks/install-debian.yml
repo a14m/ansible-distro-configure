@@ -5,34 +5,6 @@
     pkg: "{{ network_packages }}"
     state: "present"
 
-- name: "Set network_default_services facts"
-  ansible.builtin.set_fact:
-    network_default_services:
-      - "dhcpcd"
-      - "avahi-daemon"
-      - "networking"
-      - "wpa_supplicant"
-      - "resolvconf"
-      - "systemd-networkd"
-
-- name: "Stop/Disable conflicting services"
-  become: true
-  ansible.builtin.systemd_service:
-    name: "{{ item }}"
-    enabled: false
-    state: "stopped"
-  with_items: "{{ network_default_services }}"
-  when: not ansible_is_chroot
-  failed_when: false
-  # Not required for boot
-
-- name: "(chroot): Disable conflicting services"
-  ansible.builtin.command:
-    cmd: "systemctl disable {{ network_default_services | join(' ') }}"
-  changed_when: true
-  when: ansible_is_chroot
-  # noqa: command-instead-of-module module doesn't work inside chroot
-
 - name: "Ensure avahi packages are removed"
   become: true
   ansible.builtin.apt:
