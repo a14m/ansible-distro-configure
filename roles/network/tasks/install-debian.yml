@@ -12,6 +12,8 @@
       - "avahi-daemon"
       - "networking"
       - "wpa_supplicant"
+      - "resolvconf"
+      - "systemd-networkd"
 
 - name: "Stop/Disable conflicting services"
   become: true
