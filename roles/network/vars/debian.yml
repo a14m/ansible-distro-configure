@@ -3,8 +3,8 @@ network_packages:
   - "dhcpcd"
   - "systemd-resolved"
   - "network-manager"
+  - "dnsutils"
 
 network_services:
   - "systemd-resolved"
-  - "systemd-networkd"
   - "NetworkManager"
