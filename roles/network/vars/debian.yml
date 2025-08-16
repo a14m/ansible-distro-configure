@@ -5,6 +5,14 @@ network_packages:
   - "network-manager"
   - "dnsutils"
 
-network_services:
+network_enabled_services:
   - "systemd-resolved"
   - "NetworkManager"
+
+network_disabled_services:
+  - "dhcpcd"
+  - "avahi-daemon"
+  - "networking"
+  - "wpa_supplicant"
+  - "resolvconf"
+  - "systemd-networkd"

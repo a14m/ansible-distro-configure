@@ -13,15 +13,6 @@
     state: "restarted"
   when: not ansible_is_chroot
 
-- name: "Restart systemd-networkd"
-  become: true
-  ansible.builtin.systemd_service:
-    name: "systemd-networkd"
-    enabled: false
-    state: "stopped"
-  when: not ansible_is_chroot
-  failed_when: false
-
 - name: "Restart systemd-resolved"
   become: true
   ansible.builtin.systemd_service:
@@ -30,11 +21,3 @@
     state: "restarted"
   when: not ansible_is_chroot
   failed_when: false
-
-- name: "Restart dhcpcd"
-  become: true
-  ansible.builtin.systemd_service:
-    name: "dhcpcd"
-    enabled: true
-    state: "restarted"
-  when: not ansible_is_chroot
