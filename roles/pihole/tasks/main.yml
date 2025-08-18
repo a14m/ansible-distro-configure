@@ -63,15 +63,35 @@
     cmd: "pihole -g"
   changed_when: false
 
-- name: "Set Pi-hole as system DNS"
-  ansible.builtin.lineinfile:
-    path: "/etc/systemd/resolved.conf"
-    regexp: "{{ item.regexp }}"
-    line: "{{ item.line }}"
-    backup: true
-  notify: "Restart systemd-resolved"
-  with_items:
-    - regexp: "^#?DNSStubListener="
-      line: "DNSStubListener=no"
-    - regexp: "^#?DNS="
-      line: "DNS=127.0.0.1"
+- name: "Configure pihole as system DNS"
+  notify:
+    - "Restart NetworkManager"
+    - "Restart systemd-resolved"
+  block:
+    - name: "Configure NetworkManager to disable DNS management"
+      ansible.builtin.copy:
+        dest: "/etc/NetworkManager/NetworkManager.conf"
+        owner: "root"
+        group: "root"
+        mode: "0644"
+        content: |
+          [main]
+          dns=none
+
+    - name: "Configure systemd-resolved for Pi-hole"
+      ansible.builtin.copy:
+        dest: "/etc/systemd/resolved.conf"
+        owner: "root"
+        group: "root"
+        mode: "0644"
+        content: |
+          [Resolve]
+          DNS=127.0.0.1#53
+          DNSStubListener=no
+
+    - name: "Configure system DNS"
+      ansible.builtin.file:
+        src: "/run/systemd/resolve/resolv.conf"
+        dest: "/etc/resolv.conf"
+        state: "link"
+        force: true
