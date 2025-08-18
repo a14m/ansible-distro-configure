@@ -7,11 +7,14 @@ DNSOverTLS=yes
 # Enable multicast DNS for .local domain resolution (replaces avahi functionality)
 MulticastDNS=yes
 
-# Enable LLMNR for Windows network compatibility
-LLMNR=yes
+# Disable LLMNR to prevent reverse DNS lookup delays
+LLMNR=no
 
 Cache=yes
 CacheFromLocalhost=no
+
+# Reduce timeout for faster reverse DNS fallback
+ResolveUnicastSingleLabel=no
 
 # Enable DNS stub listener on 127.0.0.53:53
 DNSStubListener=yes
