@@ -1,16 +1,15 @@
 ---
 dependencies: []
 galaxy_info:
-  role_name: pihole
-  author: a14m
+  author: "a14m"
   description: "Configure pihole on supported devices"
   company: "kartoffeln.work GmbH."
-  license: "license MIT"
+  license: "MIT"
   min_ansible_version: "2.18"
   platforms:
-    - name: Ubuntu
+    - name: "Ubuntu"
       versions:
-        - noble
-    - name: Debian
+        - "noble"
+    - name: "Debian"
       versions:
-        - bookworm
+        - "bookworm"
