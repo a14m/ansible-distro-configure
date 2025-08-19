@@ -1,0 +1,5 @@
+---
+homebrew_dependencies:
+  - build-essential
+  - curl
+  - git
