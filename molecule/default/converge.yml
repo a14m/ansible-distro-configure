@@ -19,6 +19,7 @@
     - role: password_policy
     - role: locales
     - role: timezone
+    - role: homebrew
     - role: pihole
       vars:
         pihole_interface: "eth0"

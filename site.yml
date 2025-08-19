@@ -30,6 +30,7 @@
   roles:
     - role: "locales"
     - role: "timezone"
+    - role: "homebrew"
 
 - name: "Raspberry Pi configure"
   gather_facts: true
