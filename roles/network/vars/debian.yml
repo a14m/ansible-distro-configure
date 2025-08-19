@@ -13,6 +13,5 @@ network_disabled_services:
   - "dhcpcd"
   - "avahi-daemon"
   - "networking"
-  - "wpa_supplicant"
   - "resolvconf"
   - "systemd-networkd"
