@@ -46,6 +46,7 @@
   changed_when: true
   with_items: "{{ network_disabled_services }}"
   when: ansible_is_chroot
+  failed_when: false
   # noqa: command-instead-of-module module doesn't work inside chroot
 
 - name: "Configure NetworkManager"
