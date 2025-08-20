@@ -1,0 +1,54 @@
+---
+- name: "Include OS-specific variables"
+  ansible.builtin.include_vars: "{{ ansible_os_family | lower }}.yml"
+
+- name: "Ensure wireguard is installed"
+  become: true
+  ansible.builtin.package:
+    name: "{{ wireguard_pkgs }}"
+    state: "present"
+
+- name: "Create wireguard configuration directory"
+  become: true
+  ansible.builtin.file:
+    path: "/etc/wireguard"
+    state: "directory"
+    owner: "root"
+    group: "root"
+    mode: "0700"
+
+- name: "Deploy WireGuard configurations"
+  become: true
+  ansible.builtin.copy:
+    content: "{{ wireguard_connections[item] }}"
+    dest: "/etc/wireguard/{{ item }}.conf"
+    owner: "root"
+    group: "root"
+    mode: "0600"
+    backup: true
+  with_items: "{{ wireguard_connections }}"
+  when: wireguard_connections | length > 0
+
+- name: "Configure autostart connection"
+  become: true
+  block:
+    - name: "Ensure all wireguard connections are stopped"
+      ansible.builtin.systemd:
+        name: "wg-quick@{{ item }}"
+        enabled: false
+        state: "stopped"
+      with_items: "{{ wireguard_connections.keys() | list }}"
+
+    - name: "Ensure all wireguard interfaces are down"
+      ansible.builtin.command:
+        cmd: "wg-quick down {{ item }}"
+      with_items: "{{ wireguard_connections.keys() | list }}"
+      changed_when: true
+      failed_when: false
+
+    - name: "Enable and start wg-quick service for connection {{ wireguard_autostart_connection }}"
+      ansible.builtin.systemd:
+        name: "wg-quick@{{ wireguard_autostart_connection }}"
+        enabled: true
+        state: "started"
+      when: wireguard_autostart_connection != ""
