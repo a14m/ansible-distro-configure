@@ -15,19 +15,30 @@
     python_global_version: "3.13"
     python_versions:
       - "3.13"
-      - "3.12"
     pihole_interface: "eth0"
     pihole_domain: "pi.hole"
+    wireguard_connections:
+      protonvpn-example: |
+        [Interface]
+        PrivateKey = your_private_key_here
+        Address = 10.2.0.2/32
+        DNS = 10.2.0.1
+
+        [Peer]
+        PublicKey = server_public_key
+        AllowedIPs = 0.0.0.0/0
+        Endpoint = example.protonvpn.com:51820
   roles:
-    - role: network
-    - role: user
-    - role: ssh
-    - role: password_policy
-    - role: locales
-    - role: timezone
-    - role: homebrew
-    - role: python
-    - role: pihole
+    - role: "network"
+    - role: "user"
+    - role: "ssh"
+    - role: "password_policy"
+    - role: "locales"
+    - role: "timezone"
+    - role: "homebrew"
+    - role: "python"
+    - role: "wireguard"
+    - role: "pihole"
       when:
         - lookup('ansible.builtin.env', 'MOLECULE_DISTRO') == 'ubuntu' or
           lookup('ansible.builtin.env', 'MOLECULE_DISTRO') == 'raspberrypi'

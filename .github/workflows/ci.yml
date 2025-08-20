@@ -43,11 +43,10 @@ jobs:
           python-version: "3.x"
       - name: Install dependencies
         run: pip3 install ansible molecule molecule-plugins[docker]
-      - name: Copy example files
+      - name: Remove encrypted var files
         run: |
-          # Copy host_vars (from the .example files)
-          for f in group_vars/*.example; do cp "$f" "$(echo "$f" | sed s/\.example//)"; done
-          for f in host_vars/*.example; do cp "$f" "$(echo "$f" | sed s/\.example//)"; done
+          rm host_vars/*.yml
+          rm group_vars/*.yml
       - name: Run
         env:
           PY_COLORS: 1

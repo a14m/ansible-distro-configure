@@ -17,6 +17,7 @@
       become: true
       ansible.builtin.package:
         update_cache: true
+      failed_when: false
 
 - name: "Dev machines configure"
   gather_facts: true
@@ -26,6 +27,7 @@
   roles:
     - role: "locales"
     - role: "timezone"
+    - role: "wireguard"
     - role: "homebrew"
     - role: "python"
 
