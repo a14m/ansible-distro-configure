@@ -1,0 +1,13 @@
+---
+argument_specs:
+  main:
+    options:
+      python_global_version:
+        type: "str"
+        description: "The pyenv python global version to use, default: system"
+        default: "system"
+      python_versions:
+        type: "list"
+        description: "The python versions to install"
+        elements: "str"
+        default: []

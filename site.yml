@@ -27,6 +27,7 @@
     - role: "locales"
     - role: "timezone"
     - role: "homebrew"
+    - role: "python"
 
 - name: "Raspberry Pi configure"
   gather_facts: true
