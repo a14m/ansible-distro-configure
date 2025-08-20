@@ -33,8 +33,13 @@
     NONINTERACTIVE: "1"
 
 - name: "Add homebrew to shell profile"
-  ansible.builtin.lineinfile:
+  ansible.builtin.blockinfile:
     path: "{{ ansible_env.HOME }}/.bashrc"
-    line: 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"'
+    state: "present"
+    prepend_newline: true
+    append_newline: true
+    marker: "# ==== {mark} ANSIBLE HOMEBREW CONFIG"
     create: true
     mode: "0644"
+    block: |
+      eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
