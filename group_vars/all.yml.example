@@ -28,3 +28,8 @@ password_policy_minclass: 4
 password_policy_maxrepeat: 3
 password_policy_maxclassrepeat: 0
 password_policy_gecoscheck: 0
+
+python_global_version: "system"
+python_versions:
+  - "3.11"
+  - "3.13"

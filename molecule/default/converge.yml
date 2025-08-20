@@ -12,6 +12,12 @@
     locales:
       - "en_US.UTF-8 UTF-8"
     timezone: "GMT"
+    python_global_version: "3.13"
+    python_versions:
+      - "3.13"
+      - "3.12"
+    pihole_interface: "eth0"
+    pihole_domain: "pi.hole"
   roles:
     - role: network
     - role: user
@@ -20,10 +26,8 @@
     - role: locales
     - role: timezone
     - role: homebrew
+    - role: python
     - role: pihole
-      vars:
-        pihole_interface: "eth0"
-        pihole_domain: "pi.hole"
       when:
         - lookup('ansible.builtin.env', 'MOLECULE_DISTRO') == 'ubuntu' or
           lookup('ansible.builtin.env', 'MOLECULE_DISTRO') == 'raspberrypi'
