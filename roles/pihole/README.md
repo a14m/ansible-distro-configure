@@ -25,3 +25,4 @@ Update the following
   - Use Other DNSv4 Servers > {{ pihole_ipv4 }}
   - Use Other DNSv6 Servers > {{ pihole_ipv6 }}
 - Internet > Filter > Unrestricted > Add Device > {{ pihole_device_name }}
+- Internet > Filter > Standard > Restrictions > Filters > Add Exception > DNS
