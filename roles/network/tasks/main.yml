@@ -38,7 +38,6 @@
     state: "stopped"
   with_items: "{{ network_disabled_services }}"
   when: not ansible_is_chroot
-  failed_when: false
 
 - name: "(chroot): Ensure network disabled services are disabled"
   ansible.builtin.command:
@@ -46,7 +45,6 @@
   changed_when: true
   with_items: "{{ network_disabled_services }}"
   when: ansible_is_chroot
-  failed_when: false
   # noqa: command-instead-of-module module doesn't work inside chroot
 
 - name: "Configure NetworkManager"
@@ -56,6 +54,12 @@
     - "Restart NetworkManager"
     - "Restart systemd-resolved"
   block:
+    - name: "Remove resolv.conf symlink"
+      ansible.builtin.file:
+        path: "/etc/resolv.conf"
+        state: "absent"
+      when: not ansible_is_chroot
+
     - name: "Configure systemd-resolved"
       ansible.builtin.template:
         src: "resolved.conf.j2"
