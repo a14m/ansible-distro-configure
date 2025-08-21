@@ -43,7 +43,7 @@
       ansible.builtin.command:
         cmd: "wg-quick down {{ item }}"
       with_items: "{{ wireguard_connections.keys() | list }}"
-      changed_when: true
+      changed_when: false
       failed_when: false
 
     - name: "Enable and start wg-quick service for connection {{ wireguard_autostart_connection }}"
