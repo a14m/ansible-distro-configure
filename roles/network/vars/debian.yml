@@ -11,7 +11,5 @@ network_enabled_services:
 
 network_disabled_services:
   - "dhcpcd"
-  - "avahi-daemon"
   - "networking"
-  - "resolvconf"
   - "systemd-networkd"
