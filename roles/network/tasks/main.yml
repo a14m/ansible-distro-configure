@@ -54,12 +54,6 @@
     - "Restart NetworkManager"
     - "Restart systemd-resolved"
   block:
-    - name: "Remove resolv.conf symlink"
-      ansible.builtin.file:
-        path: "/etc/resolv.conf"
-        state: "absent"
-      when: not ansible_is_chroot
-
     - name: "Configure systemd-resolved"
       ansible.builtin.template:
         src: "resolved.conf.j2"

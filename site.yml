@@ -39,4 +39,4 @@
   roles:
     - role: "locales"
     - role: "timezone"
-    - role: "pihole"
+    - role: "wireguard"
