@@ -24,6 +24,12 @@ method=auto
 
 [ipv6]
 addr-gen-mode=default
+{% if network_ipv6_address is defined %}
+method=manual
+addresses={{ network_ipv6_address }}
+gateway={{ network_ipv6_gateway }}
+{% else %}
 method=auto
+{% endif %}
 
 [proxy]

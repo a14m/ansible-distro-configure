@@ -17,6 +17,8 @@
       become: true
       ansible.builtin.package:
         update_cache: true
+      async: 300
+      poll: 5
       failed_when: false
 
 - name: "Dev machines configure"
