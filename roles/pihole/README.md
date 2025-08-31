@@ -19,8 +19,10 @@ This role configure the [pihole](https://github.com/pi-hole/pi-hole) DNS Sinkhol
 Update the following
 
 - Home Network > Network > Network Settings > Change Advanced Network Settings >
-  - IPv6 > DNSv6 Server in the Home Network > Router advertisement enable in the LAN > Set ULA Prefix
-  - IPv4 > DHCP > Local DNS Server > {{ pihole_ipv4 }}
+  - IPv6 > DNSv6 Server in the Home Network > Router advertisement enable in the LAN > Disabled
+  - IPv6 > DNSv6 Server in the Home Network > Disable DHCPv6 server in the FRITZ!Box >
+    - There are no other DHCPv6 servers in the home network.
+  - IPv4 > DHCP > Enable DHCP server > Disabled
 - Internet > Account Information > DNS Server > DNSv4 Server >
   - Use Other DNSv4 Servers > {{ pihole_ipv4 }}
   - Use Other DNSv6 Servers > {{ pihole_ipv6 }}

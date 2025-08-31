@@ -47,6 +47,13 @@ active = {{ pihole_dns_blocking_enabled | lower }}
 
 [dhcp]
 active = {{ pihole_dhcp_enabled | lower }}
+{% if pihole_dhcp_enabled %}
+start = "{{ pihole_dhcp_start }}"
+end = "{{ pihole_dhcp_end }}"
+router = "{{ pihole_dhcp_router }}"
+leaseTime = {{ pihole_dhcp_lease_time }}
+domain = "{{ pihole_dhcp_domain }}"
+{% endif %}
 
 [webserver]
 {% if (pihole_domain is defined) and (pihole_domain != '')  %}
