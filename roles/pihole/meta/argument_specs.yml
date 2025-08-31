@@ -30,6 +30,26 @@ argument_specs:
         type: "bool"
         description: "The boolean flag to toggle DHCP on the pi-hole"
         default: false
+      pihole_dhcp_start:
+        type: "str"
+        description: "The dhcp start address"
+        default: "{{ ansible_default_ipv4.network }}.100"
+      pihole_dhcp_end:
+        type: "str"
+        description: "The dhcp end address"
+        default: "{{ ansible_default_ipv4.network }}.199"
+      pihole_dhcp_address:
+        type: "str"
+        description: "The dhcp server address (local pihole address)"
+        default: "{{ ansible_default_ipv4.address }}"
+      pihole_dhcp_lease_time:
+        type: "int"
+        description: "The dhcp lease time in hours"
+        default: 24
+      pihole_dhcp_domain:
+        type: "str"
+        description: "The dhcp local domain extension"
+        default: "local"
       pihole_domain:
         type: "str"
         description: "The domain name to be configured when the pi is exposed over the internet"
