@@ -5,3 +5,16 @@ network_ipv4_gateway: "10.0.0.1"
 # TOTP generator: `openssl rand -base64 32 | head -c "20" | base32`
 pihole_totp_secret: "CHANGEME"
 pihole_password: "{{ ('changeme' | hash('sha256') | hash('sha256'))[:64] }}"
+
+wireguard_autostart_connection: "protonvpn-us-1"
+wireguard_connections:
+  protonvpn-us-1: |
+    [Interface]
+    PrivateKey = your_private_key_here
+    Address = 10.2.0.2/32
+    DNS = 10.2.0.1
+
+    [Peer]
+    PublicKey = server_public_key
+    AllowedIPs = 0.0.0.0/0
+    Endpoint = us-1.protonvpn.com:51820
