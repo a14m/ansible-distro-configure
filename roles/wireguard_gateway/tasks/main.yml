@@ -1,0 +1,109 @@
+---
+- name: "Ensure iptables are installed"
+  become: true
+  ansible.builtin.package:
+    name: "iptables"
+    state: "present"
+
+- name: "Configure IP forwarding"
+  become: true
+  ansible.builtin.blockinfile:
+    path: "/etc/sysctl.conf"
+    state: "{{ 'present' if wireguard_gateway_enabled else 'absent' }}"
+    prepend_newline: true
+    append_newline: true
+    marker: "# ==== {mark} ANSIBLE WIREGUARD GATEWAY CONFIG"
+    create: true
+    mode: "0644"
+    block: |
+      net.ipv4.ip_forward=1
+      net.ipv6.conf.all.forwarding=1
+  notify: "Reload sysctl"
+
+- name: "Configure VPN gateway routing"
+  become: true
+  ansible.builtin.shell: |
+    {% if wireguard_gateway_enabled %}
+    # Add routes to custom table
+    ip route add default dev {{ wireguard_autostart_connection }} table 100 || true
+    ip -6 route add default dev {{ wireguard_autostart_connection }} table 100 || true
+    # Remove any incorrect policy routing rules first
+    ip -6 rule del iif {{ ansible_default_ipv6.interface }} table 100 || true
+    # Add correct policy routing rules
+    ip rule add iif {{ ansible_default_ipv4.interface }} table 100 priority 200 || true
+    ip -6 rule add iif {{ ansible_default_ipv4.interface }} table 100 priority 200 || true
+    {% else %}
+    # Remove policy routing rules
+    ip rule del iif {{ ansible_default_ipv4.interface }} table 100 || true
+    ip -6 rule del iif {{ ansible_default_ipv4.interface }} table 100 || true
+    # Remove routes from custom table
+    ip route del default dev {{ wireguard_autostart_connection }} table 100 || true
+    ip -6 route del default dev {{ wireguard_autostart_connection }} table 100 || true
+    {% endif %}
+  failed_when: false
+  changed_when: false
+
+# IPv4 iptables rules
+- name: "Add IPv4 NAT masquerading for traffic through VPN"
+  become: true
+  ansible.builtin.iptables:
+    table: "nat"
+    chain: "POSTROUTING"
+    source: "{{ ansible_default_ipv4.network }}/{{ ansible_default_ipv4.prefix }}"
+    out_interface: "{{ wireguard_autostart_connection }}"
+    jump: "MASQUERADE"
+    comment: "NAT local subnet traffic through VPN"
+    state: "{{ 'present' if wireguard_gateway_enabled else 'absent' }}"
+
+- name: "Add IPv4 FORWARD rule to accept traffic from local subnet"
+  become: true
+  ansible.builtin.iptables:
+    chain: "FORWARD"
+    source: "{{ ansible_default_ipv4.network }}/{{ ansible_default_ipv4.prefix }}"
+    jump: "ACCEPT"
+    comment: "Allow forwarding from local subnet"
+    state: "{{ 'present' if wireguard_gateway_enabled else 'absent' }}"
+
+- name: "Add IPv4 FORWARD rule to accept established connections"
+  become: true
+  ansible.builtin.iptables:
+    chain: "FORWARD"
+    match: "conntrack"
+    ctstate: "RELATED,ESTABLISHED"
+    jump: "ACCEPT"
+    comment: "Allow established connections"
+    state: "{{ 'present' if wireguard_gateway_enabled else 'absent' }}"
+
+# IPv6 iptables rules
+- name: "Add IPv6 NAT masquerading for traffic through VPN"
+  become: true
+  ansible.builtin.iptables:
+    table: "nat"
+    chain: "POSTROUTING"
+    source: "{{ (ansible_default_ipv6.address.split(':')[:4] | join(':')) + '::/64' }}"
+    out_interface: "{{ wireguard_autostart_connection }}"
+    jump: "MASQUERADE"
+    comment: "NAT IPv6 local subnet traffic through VPN"
+    ip_version: "ipv6"
+    state: "{{ 'present' if wireguard_gateway_enabled else 'absent' }}"
+
+- name: "Add IPv6 FORWARD rule to accept traffic from local subnet"
+  become: true
+  ansible.builtin.iptables:
+    chain: "FORWARD"
+    source: "{{ (ansible_default_ipv6.address.split(':')[:4] | join(':')) + '::/64' }}"
+    jump: "ACCEPT"
+    comment: "Allow IPv6 forwarding from local subnet"
+    ip_version: "ipv6"
+    state: "{{ 'present' if wireguard_gateway_enabled else 'absent' }}"
+
+- name: "Add IPv6 FORWARD rule to accept established connections"
+  become: true
+  ansible.builtin.iptables:
+    chain: "FORWARD"
+    match: "conntrack"
+    ctstate: "RELATED,ESTABLISHED"
+    jump: "ACCEPT"
+    comment: "Allow IPv6 established connections"
+    ip_version: "ipv6"
+    state: "{{ 'present' if wireguard_gateway_enabled else 'absent' }}"
