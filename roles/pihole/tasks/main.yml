@@ -1,4 +1,30 @@
 ---
+- name: "Set Pi-hole DNS facts"
+  ansible.builtin.set_fact:
+    pihole_enabled: true
+    network_ipv4_dns: "{{ ansible_default_ipv4.address }}"
+    network_ipv6_dns: "{{ ansible_default_ipv6.address }}"
+
+- name: "Reconfigure systemd-resolved for Pi-hole"
+  become: true
+  ansible.builtin.template:
+    src: "{{ role_path }}/../network/templates/resolved.conf.j2"
+    dest: "/etc/systemd/resolved.conf"
+    mode: "0644"
+  notify:
+    - "Restart systemd-resolved"
+
+- name: "Reconfigure NetworkManager connections for Pi-hole DNS"
+  become: true
+  ansible.builtin.template:
+    src: "{{ role_path }}/../network/templates/eth0-connection.nmconnection.j2"
+    dest: "/etc/NetworkManager/system-connections/ethernet.nmconnection"
+    mode: "0600"
+    owner: "root"
+    group: "root"
+  notify:
+    - "Restart NetworkManager"
+
 - name: "Crete Pi-hole user"
   ansible.builtin.user:
     name: "pihole"

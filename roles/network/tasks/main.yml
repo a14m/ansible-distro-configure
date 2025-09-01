@@ -10,18 +10,16 @@
     that:
       - network_ipv4_address is defined
       - network_ipv4_gateway is defined
-      - network_ipv4_dns is defined
-    fail_msg: "network_ipv4_address, network_ipv4_gateway, and network_ipv4_dns are required together"
-  when: network_ipv4_address is defined or network_ipv4_gateway is defined or network_ipv4_dns is defined
+    fail_msg: "network_ipv4_address and network_ipv4_gateway are required together"
+  when: network_ipv4_address is defined or network_ipv4_gateway is defined
 
 - name: "Validate network_ipv6_* params"
   ansible.builtin.assert:
     that:
       - network_ipv6_address is defined
       - network_ipv6_gateway is defined
-      - network_ipv6_dns is defined
-    fail_msg: "network_ipv6_address, network_ipv6_gateway, and network_ipv6_dns are required together"
-  when: network_ipv6_address is defined or network_ipv6_gateway is defined or network_ipv6_dns is defined
+    fail_msg: "network_ipv6_address and network_ipv6_gateway are required together"
+  when: network_ipv6_address is defined or network_ipv6_gateway is defined
 
 - name: "Ensure network enabled services are enabled"
   become: true
