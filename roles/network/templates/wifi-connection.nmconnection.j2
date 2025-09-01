@@ -17,7 +17,8 @@ psk={{ network_wifi_pass }}
 {% if network_ipv4_address is defined %}
 method=manual
 addresses={{ network_ipv4_address }}
-gateway={{ network_ipv4_gateway  }}
+gateway={{ network_ipv4_gateway }}
+dns={{ network_ipv4_dns }}
 {% else %}
 method=auto
 {% endif %}
@@ -28,6 +29,7 @@ addr-gen-mode=default
 method=manual
 addresses={{ network_ipv6_address }}
 gateway={{ network_ipv6_gateway }}
+dns={{ network_ipv6_dns }}
 {% else %}
 method=auto
 {% endif %}

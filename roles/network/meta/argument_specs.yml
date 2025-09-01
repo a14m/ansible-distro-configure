@@ -18,9 +18,15 @@ argument_specs:
       network_ipv4_gateway:
         type: "str"
         description: "The network IP(4) gateway to configure when provided"
+      network_ipv4_dns:
+        type: "str"
+        description: "The network IP(4) gateway to configure when provided"
       network_ipv6_address:
         type: "str"
         description: "The network IP(6) address to configure when provided"
       network_ipv6_gateway:
         type: "str"
         description: "The network IP(6) gateway to configure when provided"
+      network_ipv6_dns:
+        type: "str"
+        description: "The network IP(4) gateway to configure when provided"
