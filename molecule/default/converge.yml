@@ -41,6 +41,7 @@
     - role: "homebrew"
     - role: "python"
     - role: "wireguard"
+    - role: "wireguard_gateway"
     - role: "pihole"
       when:
         - lookup('ansible.builtin.env', 'MOLECULE_DISTRO') == 'ubuntu' or
