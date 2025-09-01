@@ -1,6 +1,11 @@
 ---
+# Not using raspberry pi as gateway or DNS sinkhole
 network_ipv4_address: "10.0.0.203"
 network_ipv4_gateway: "10.0.0.1"
+network_ipv4_dns: "10.0.0.1"
+network_ipv6_address: "fd5c:fd8b:2b8c::203/64"
+network_ipv6_gateway: "fd5c:fd8b:2b8c::1"
+network_ipv6_dns: "fd5c:fd8b:2b8c::1"
 
 wireguard_connections:
   protonvpn-us-1: |
