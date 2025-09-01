@@ -31,6 +31,7 @@
     jump: "MASQUERADE"
     comment: "NAT local subnet traffic through VPN"
     state: "{{ 'present' if wireguard_gateway_enabled else 'absent' }}"
+  when: ansible_default_ipv4.address is defined
 
 - name: "Add IPv4 FORWARD rule to accept traffic from local subnet"
   become: true
@@ -40,6 +41,7 @@
     jump: "ACCEPT"
     comment: "Allow forwarding from local subnet"
     state: "{{ 'present' if wireguard_gateway_enabled else 'absent' }}"
+  when: ansible_default_ipv4.address is defined
 
 - name: "Add IPv4 FORWARD rule to accept established connections"
   become: true
@@ -50,6 +52,7 @@
     jump: "ACCEPT"
     comment: "Allow established connections"
     state: "{{ 'present' if wireguard_gateway_enabled else 'absent' }}"
+  when: ansible_default_ipv4.address is defined
 
 # IPv6 iptables rules
 - name: "Add IPv6 NAT masquerading for traffic through VPN"
@@ -63,6 +66,7 @@
     comment: "NAT IPv6 local subnet traffic through VPN"
     ip_version: "ipv6"
     state: "{{ 'present' if wireguard_gateway_enabled else 'absent' }}"
+  when: ansible_default_ipv6.address is defined
 
 - name: "Add IPv6 FORWARD rule to accept traffic from local subnet"
   become: true
@@ -73,6 +77,7 @@
     comment: "Allow IPv6 forwarding from local subnet"
     ip_version: "ipv6"
     state: "{{ 'present' if wireguard_gateway_enabled else 'absent' }}"
+  when: ansible_default_ipv6.address is defined
 
 - name: "Add IPv6 FORWARD rule to accept established connections"
   become: true
@@ -84,3 +89,4 @@
     comment: "Allow IPv6 established connections"
     ip_version: "ipv6"
     state: "{{ 'present' if wireguard_gateway_enabled else 'absent' }}"
+  when: ansible_default_ipv6.address is defined
