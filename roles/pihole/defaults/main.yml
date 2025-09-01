@@ -2,9 +2,12 @@
 pihole_password: "{{ ('changeme' | hash('sha256') | hash('sha256'))[:64] }}"
 pihole_totp_secret: "CHANGEME"
 pihole_dns:
-  - "9.9.9.9"   # Quad9
-  - "1.1.1.1"   # Cloudflare
-  - "8.8.8.8"   # Google
+  # Cloudflare
+  - "1.1.1.1"
+  - "2606:4700:4700::1111"
+  # Google
+  - "8.8.8.8"
+  - "2001:4860:4860:0:0:0:0:8888"
 pihole_interface: "{{ ansible_default_ipv4.interface }}"
 pihole_dns_blocking_enabled: true
 pihole_dhcp_enabled: false
