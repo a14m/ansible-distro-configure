@@ -20,29 +20,6 @@
       net.ipv6.conf.all.forwarding=1
   notify: "Reload sysctl"
 
-- name: "Configure VPN gateway routing"
-  become: true
-  ansible.builtin.shell: |
-    {% if wireguard_gateway_enabled %}
-    # Add routes to custom table
-    ip route add default dev {{ wireguard_autostart_connection }} table 100 || true
-    ip -6 route add default dev {{ wireguard_autostart_connection }} table 100 || true
-    # Remove any incorrect policy routing rules first
-    ip -6 rule del iif {{ ansible_default_ipv6.interface }} table 100 || true
-    # Add correct policy routing rules
-    ip rule add iif {{ ansible_default_ipv4.interface }} table 100 priority 200 || true
-    ip -6 rule add iif {{ ansible_default_ipv4.interface }} table 100 priority 200 || true
-    {% else %}
-    # Remove policy routing rules
-    ip rule del iif {{ ansible_default_ipv4.interface }} table 100 || true
-    ip -6 rule del iif {{ ansible_default_ipv4.interface }} table 100 || true
-    # Remove routes from custom table
-    ip route del default dev {{ wireguard_autostart_connection }} table 100 || true
-    ip -6 route del default dev {{ wireguard_autostart_connection }} table 100 || true
-    {% endif %}
-  failed_when: false
-  changed_when: false
-
 # IPv4 iptables rules
 - name: "Add IPv4 NAT masquerading for traffic through VPN"
   become: true

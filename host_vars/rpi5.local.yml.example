@@ -6,6 +6,7 @@ network_ipv4_gateway: "10.0.0.1"
 pihole_totp_secret: "CHANGEME"
 pihole_password: "{{ ('changeme' | hash('sha256') | hash('sha256'))[:64] }}"
 
+wireguard_gateway_enabled: true
 wireguard_autostart_connection: "protonvpn-us-1"
 wireguard_connections:
   protonvpn-us-1: |
