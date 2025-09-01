@@ -17,7 +17,7 @@
       become: true
       ansible.builtin.package:
         update_cache: true
-      async: 300
+      async: 60
       poll: 5
       failed_when: false
 

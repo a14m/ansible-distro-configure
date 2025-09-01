@@ -15,9 +15,12 @@ argument_specs:
         description: "The list of DNS servers to use as upstreams"
         elements: "str"
         default:
-          - "9.9.9.9"   # Quad9
-          - "1.1.1.1"   # Cloudflare
-          - "8.8.8.8"   # Google
+          # Cloudflare
+          - "1.1.1.1"
+          - "2606:4700:4700::1111"
+          # Google
+          - "8.8.8.8"
+          - "2001:4860:4860:0:0:0:0:8888"
       pihole_interface:
         type: "str"
         description: "The interface to bind the pi-hole on"
@@ -38,9 +41,9 @@ argument_specs:
         type: "str"
         description: "The dhcp end address"
         default: "{{ ansible_default_ipv4.network }}.199"
-      pihole_dhcp_address:
+      pihole_dhcp_router:
         type: "str"
-        description: "The dhcp server address (local pihole address)"
+        description: "The dhcp server router (gateway) address"
         default: "{{ ansible_default_ipv4.address }}"
       pihole_dhcp_lease_time:
         type: "int"
