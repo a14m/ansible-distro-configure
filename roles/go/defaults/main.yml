@@ -1,0 +1,5 @@
+---
+go_global_version: "1.23"
+go_versions:
+  - "1.21"
+  - "1.23"

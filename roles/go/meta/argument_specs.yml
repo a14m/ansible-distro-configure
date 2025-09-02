@@ -1,0 +1,12 @@
+---
+argument_specs:
+  main:
+    options:
+      go_global_version:
+        type: "str"
+        description: "The go global version to use"
+      go_versions:
+        type: "list"
+        description: "The go versions to install"
+        elements: "str"
+        default: []
