@@ -36,7 +36,7 @@
 - name: "Get installed python versions"
   ansible.builtin.command:
     cmd: "/home/linuxbrew/.linuxbrew/bin/pyenv versions --bare"
-  register: installed_python_versions
+  register: python_installed_versions
   changed_when: false
   failed_when: false
 
@@ -45,9 +45,9 @@
     major_minor: "{{ item | regex_replace('^([0-9]+\\.[0-9]+).*', '\\1') }}"
   ansible.builtin.command:
     cmd: "/home/linuxbrew/.linuxbrew/bin/pyenv uninstall -f {{ item }}"
-  loop: "{{ installed_python_versions.stdout_lines | default([]) }}"
+  loop: "{{ python_installed_versions.stdout_lines | default([]) }}"
   when:
-    - installed_python_versions.rc == 0
+    - python_installed_versions.rc == 0
     - item is regex('^[0-9]+\.[0-9]+')
     - item not in python_versions
     - major_minor not in python_versions
