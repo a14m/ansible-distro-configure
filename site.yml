@@ -33,6 +33,7 @@
     - role: "homebrew"
     - role: "python"
     - role: "go"
+    - role: "docker"
 
 - name: "Raspberry Pi configure"
   gather_facts: true
