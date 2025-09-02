@@ -15,16 +15,16 @@
   ansible.builtin.shell: |
     set -o pipefail
     /home/linuxbrew/.linuxbrew/bin/brew list | grep '^go@' | sed 's/go@//'
-  register: installed_go_versions
+  register: go_installed_versions
   changed_when: false
   failed_when: false
 
 - name: "Remove unwanted Go versions"
   ansible.builtin.command:
     cmd: "/home/linuxbrew/.linuxbrew/bin/brew uninstall go@{{ item }}"
-  with_items: "{{ installed_go_versions.stdout_lines | default([]) }}"
+  with_items: "{{ go_installed_versions.stdout_lines | default([]) }}"
   when:
-    - installed_go_versions.rc == 0
+    - go_installed_versions.rc == 0
     - item not in go_versions
   changed_when: true
 

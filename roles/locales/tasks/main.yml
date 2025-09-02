@@ -11,12 +11,12 @@
 - name: "Read locale.gen file"
   ansible.builtin.slurp:
     src: "/etc/locale.gen"
-  register: locale_gen_content
+  register: locales_content
 
 - name: "Validate locale entries exist in locale.gen"
   ansible.builtin.assert:
     that:
-      - "item in (locale_gen_content.content | b64decode)"
+      - "item in (locales_content.content | b64decode)"
     fail_msg: "Locale '{{ item }}' not found in /etc/locale.gen."
   with_items: "{{ locales }}"
 
@@ -24,12 +24,12 @@
   ansible.builtin.shell: |
     set -o pipefail
     locale -a | grep 'utf8$' | sed 's/.utf8$/.UTF-8 UTF-8/'
-  register: available_locales
+  register: locales_available
   changed_when: false
 
 - name: "Generate locales if missing"
   become: true
-  when: locales | difference(available_locales.stdout_lines) | length > 0
+  when: locales | difference(locales_available.stdout_lines) | length > 0
   block:
     - name: "Update locale.gen"
       ansible.builtin.lineinfile:
