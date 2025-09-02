@@ -8,15 +8,41 @@
     name: "{{ locales_pkg }}"
     state: "present"
 
-- name: "Update locale.gen"
-  become: true
-  ansible.builtin.lineinfile:
-    dest: "/etc/locale.gen"
-    mode: "0644"
-    regexp: "^#{{ item }}"
-    line: "{{ item }}"
+- name: "Read locale.gen file"
+  ansible.builtin.slurp:
+    src: "/etc/locale.gen"
+  register: locale_gen_content
+
+- name: "Validate locale entries exist in locale.gen"
+  ansible.builtin.assert:
+    that:
+      - "item in (locale_gen_content.content | b64decode)"
+    fail_msg: "Locale '{{ item }}' not found in /etc/locale.gen."
   with_items: "{{ locales }}"
-  notify: "Run locale-gen"
+
+- name: "Check if required locales are generated"
+  ansible.builtin.shell: |
+    set -o pipefail
+    locale -a | grep 'utf8$' | sed 's/.utf8$/.UTF-8 UTF-8/'
+  register: available_locales
+  changed_when: false
+
+- name: "Generate locales if missing"
+  become: true
+  when: locales | difference(available_locales.stdout_lines) | length > 0
+  block:
+    - name: "Update locale.gen"
+      ansible.builtin.lineinfile:
+        dest: "/etc/locale.gen"
+        mode: "0644"
+        regexp: "^#{{ item }}"
+        line: "{{ item }}"
+      with_items: "{{ locales }}"
+
+    - name: "Generate locales"
+      ansible.builtin.command:
+        cmd: "locale-gen"
+      changed_when: true
 
 - name: "Update locale.conf"
   become: true
