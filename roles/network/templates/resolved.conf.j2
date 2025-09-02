@@ -1,18 +1,8 @@
 [Resolve]
-{% if not (network_ipv4_dns is defined or network_ipv6_dns is defined) %}
-# Only set global DNS (and DoT) if not using Pi-hole
-# cloudflare-dns.com
-DNS=1.1.1.1 2606:4700:4700::1111
-# dns.google
-FallbackDNS=8.8.8.8 2001:4860:4860::8888
-DNSOverTLS=yes
-DNSSEC=yes
-{% else %}
-# NetworkManager will provide DNS via Pi-hole, no global DNS needed
-# Pi-hole doesn't support DoT/DNSSEC
-DNSOverTLS=no
-DNSSEC=no
-{% endif %}
+DNS={{ network_ipv4_dns | default('1.1.1.1 2606:4700:4700::1111') }}
+FallbackDNS={{ network_ipv6_dns | default('8.8.8.8 2001:4860:4860::8888') }}
+DNSOverTLS={{ 'no' if (network_ipv4_dns is defined or network_ipv6_dns is defined) else 'yes' }}
+DNSSEC={{ 'no' if (network_ipv4_dns is defined or network_ipv6_dns is defined) else 'yes' }}
 # use interface-specific DNS when available but fall back to global (required for VPN DNS to work)
 Domains=~.
 
