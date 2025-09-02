@@ -1,0 +1,10 @@
+---
+argument_specs:
+  main:
+    description:
+    author: "a14m"
+    options:
+      wireguard_gateway_enabled:
+        description: "Toggle flag for enabling/disabling network gateway configurations"
+        type: "bool"
+        default: false
