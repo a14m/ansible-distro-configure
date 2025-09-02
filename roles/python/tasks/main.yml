@@ -35,7 +35,9 @@
 
 - name: "Get installed python versions"
   ansible.builtin.command:
-    cmd: "/home/linuxbrew/.linuxbrew/bin/pyenv versions --bare"
+    cmd: "pyenv versions --bare"
+  environment:
+    PATH: "/home/linuxbrew/.linuxbrew/bin:{{ ansible_env.PATH }}"
   register: python_installed_versions
   changed_when: false
   failed_when: false
@@ -44,7 +46,9 @@
   vars:
     major_minor: "{{ item | regex_replace('^([0-9]+\\.[0-9]+).*', '\\1') }}"
   ansible.builtin.command:
-    cmd: "/home/linuxbrew/.linuxbrew/bin/pyenv uninstall -f {{ item }}"
+    cmd: "pyenv uninstall -f {{ item }}"
+  environment:
+    PATH: "/home/linuxbrew/.linuxbrew/bin:{{ ansible_env.PATH }}"
   loop: "{{ python_installed_versions.stdout_lines | default([]) }}"
   when:
     - python_installed_versions.rc == 0
@@ -55,14 +59,18 @@
 
 - name: "Install python versions"
   ansible.builtin.command:
-    cmd: "/home/linuxbrew/.linuxbrew/bin/pyenv install {{ item }}"
+    cmd: "pyenv install {{ item }}"
   args:
     creates: "{{ ansible_env.HOME }}/.pyenv/versions/{{ item }}*/bin/python"
+  environment:
+    PATH: "/home/linuxbrew/.linuxbrew/bin:{{ ansible_env.PATH }}"
   with_items: "{{ python_versions }}"
 
 - name: "Set global python version"
   ansible.builtin.command:
-    cmd: "/home/linuxbrew/.linuxbrew/bin/pyenv global {{ python_global_version }}"
+    cmd: "pyenv global {{ python_global_version }}"
+  environment:
+    PATH: "/home/linuxbrew/.linuxbrew/bin:{{ ansible_env.PATH }}"
   # The set global version always run and is always changing the system
   # It's intentional to ignore this task for idempotency test
   changed_when: true
