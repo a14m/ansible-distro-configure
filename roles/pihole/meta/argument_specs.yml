@@ -46,9 +46,9 @@ argument_specs:
         description: "The dhcp server router (gateway) address"
         default: "{{ ansible_default_ipv4.address }}"
       pihole_dhcp_lease_time:
-        type: "int"
-        description: "The dhcp lease time in hours"
-        default: 24
+        type: "str"
+        description: "The dhcp lease time string ex. ('45m', '1h', '2d', '1w') empty defaults to dnsmasq default"
+        default: ""
       pihole_dhcp_domain:
         type: "str"
         description: "The dhcp local domain extension"
