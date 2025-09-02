@@ -22,28 +22,28 @@
   failed_when: false
 
 - name: "Remove unwanted Go versions"
-  ansible.builtin.command:
-    cmd: "/home/linuxbrew/.linuxbrew/bin/brew uninstall go@{{ item }}"
+  community.general.homebrew:
+    name: "go@{{ item }}"
+    state: "absent"
   with_items: "{{ go_installed_versions.stdout_lines | default([]) }}"
   when:
     - go_installed_versions.rc == 0
     - item not in go_versions
-  changed_when: true
 
 - name: "Install and configure Go latest"
   when: go_versions | length == 0
   block:
     - name: "Install latest Go"
-      ansible.builtin.command:
-        cmd: "/home/linuxbrew/.linuxbrew/bin/brew install go"
-        creates: "/home/linuxbrew/.linuxbrew/bin/go"
+      community.general.homebrew:
+        name: "go"
+        state: "present"
 
     - name: "Set latest Go as global version"
-      ansible.builtin.command:
-        cmd: "/home/linuxbrew/.linuxbrew/bin/brew link --force go"
+      community.general.homebrew:
+        name: "go"
+        state: "linked"
       # The set global version always run and is always changing the system
       # It's intentional to ignore this task for idempotency test
-      changed_when: true
       tags:
         - molecule-idempotence-notest
 
@@ -51,24 +51,24 @@
   when: go_versions | length > 0
   block:
     - name: "Install specific Go versions"
-      ansible.builtin.command:
-        cmd: "/home/linuxbrew/.linuxbrew/bin/brew install go@{{ item }}"
-        creates: "/home/linuxbrew/.linuxbrew/Cellar/go@{{ item }}"
+      community.general.homebrew:
+        name: "go@{{ item }}"
+        state: "present"
       with_items: "{{ go_versions }}"
 
     - name: "Unlink existing Go package"
-      ansible.builtin.command:
-        cmd: "/home/linuxbrew/.linuxbrew/bin/brew unlink go"
+      community.general.homebrew:
+        name: "go"
+        state: "unlinked"
       when: go_global_version != ""
       failed_when: false
-      changed_when: false
 
     - name: "Set specific Go version as global"
-      ansible.builtin.command:
-        cmd: "/home/linuxbrew/.linuxbrew/bin/brew link --overwrite go@{{ go_global_version }}"
+      community.general.homebrew:
+        name: "go@{{ go_global_version }}"
+        state: "linked"
       when: go_global_version != ""
       # The set global version always run and is always changing the system
       # It's intentional to ignore this task for idempotency test
-      changed_when: true
       tags:
         - molecule-idempotence-notest
