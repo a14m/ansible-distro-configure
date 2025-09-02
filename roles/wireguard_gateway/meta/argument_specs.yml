@@ -1,7 +1,7 @@
 ---
 argument_specs:
   main:
-    description:
+    description: "Configure WireGuard VPN as a network gateway"
     author: "a14m"
     options:
       wireguard_gateway_enabled:
