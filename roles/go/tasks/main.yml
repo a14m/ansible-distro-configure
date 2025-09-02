@@ -1,10 +1,4 @@
 ---
-- name: "Ensure bash is installed"
-  become: true
-  ansible.builtin.package:
-    name: "bash"
-    state: "present"
-
 - name: "Add Go to shell profile"
   ansible.builtin.blockinfile:
     path: "{{ ansible_env.HOME }}/.bashrc"
