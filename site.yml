@@ -32,6 +32,7 @@
     - role: "wireguard"
     - role: "homebrew"
     - role: "python"
+    - role: "go"
 
 - name: "Raspberry Pi configure"
   gather_facts: true
