@@ -53,6 +53,11 @@ argument_specs:
         type: "str"
         description: "The dhcp local domain extension"
         default: "local"
+      pihole_dhcp_hosts:
+        type: "list"
+        description: "The list of static DHCP host reservations (format: MAC,IP,hostname)"
+        elements: "str"
+        default: []
       pihole_domain:
         type: "str"
         description: "The domain name to be configured when the pi is exposed over the internet"

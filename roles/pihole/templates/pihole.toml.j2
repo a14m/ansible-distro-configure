@@ -53,6 +53,7 @@ end = "{{ pihole_dhcp_end }}"
 router = "{{ pihole_dhcp_router }}"
 leaseTime = {{ pihole_dhcp_lease_time }}
 domain = "{{ pihole_dhcp_domain }}"
+hosts = {{ pihole_dhcp_hosts | to_nice_json }}
 {% endif %}
 
 [webserver]
