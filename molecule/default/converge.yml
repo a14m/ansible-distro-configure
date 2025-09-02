@@ -40,6 +40,7 @@
     - role: "timezone"
     - role: "homebrew"
     - role: "python"
+    - role: "go"
     - role: "wireguard"
     - role: "wireguard_gateway"
     - role: "pihole"
