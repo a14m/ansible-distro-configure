@@ -3,7 +3,7 @@ network_packages:
   - "dhcpcd"
   - "systemd-resolved"
   - "network-manager"
-  - "dnsutils"
+  - "dnsutils" # provides dig and nslookup
 
 network_enabled_services:
   - "systemd-resolved"
