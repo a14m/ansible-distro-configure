@@ -1,11 +1,10 @@
 ---
 - name: "Install pyenv and pipx"
-  ansible.builtin.command:
-    cmd: "/home/linuxbrew/.linuxbrew/bin/brew install {{ item }}"
-    creates: "/home/linuxbrew/.linuxbrew/bin/{{ item }}"
-  with_items:
-    - "pyenv"
-    - "pipx"
+  community.general.homebrew:
+    name:
+      - "pyenv"
+      - "pipx"
+    state: "present"
 
 - name: "Add pyenv to shell profile"
   ansible.builtin.blockinfile:
