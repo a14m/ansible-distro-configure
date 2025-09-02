@@ -1,4 +1,10 @@
 ---
+- name: "Ensure bash is installed"
+  become: true
+  ansible.builtin.package:
+    name: "bash"
+    state: "present"
+
 - name: "Add Go to shell profile"
   ansible.builtin.blockinfile:
     path: "{{ ansible_env.HOME }}/.bashrc"
@@ -15,6 +21,8 @@
   ansible.builtin.shell: |
     set -o pipefail
     /home/linuxbrew/.linuxbrew/bin/brew list | grep '^go@' | sed 's/go@//'
+  args:
+    executable: /bin/bash
   register: go_installed_versions
   changed_when: false
   failed_when: false
@@ -39,7 +47,11 @@
     - name: "Set latest Go as global version"
       ansible.builtin.command:
         cmd: "/home/linuxbrew/.linuxbrew/bin/brew link --force go"
+      # The set global version always run and is always changing the system
+      # It's intentional to ignore this task for idempotency test
       changed_when: true
+      tags:
+        - molecule-idempotence-notest
 
 - name: "Install and configure Go versions"
   when: go_versions | length > 0
@@ -61,4 +73,8 @@
       ansible.builtin.command:
         cmd: "/home/linuxbrew/.linuxbrew/bin/brew link --overwrite go@{{ go_global_version }}"
       when: go_global_version != ""
+      # The set global version always run and is always changing the system
+      # It's intentional to ignore this task for idempotency test
       changed_when: true
+      tags:
+        - molecule-idempotence-notest
