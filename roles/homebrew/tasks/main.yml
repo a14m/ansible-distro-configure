@@ -40,14 +40,14 @@
       environment:
         NONINTERACTIVE: "1"
 
-    - name: "Add homebrew to shell profile"
-      ansible.builtin.blockinfile:
-        path: "{{ ansible_env.HOME }}/.bashrc"
-        state: "present"
-        prepend_newline: true
-        append_newline: true
-        marker: "# ==== {mark} ANSIBLE HOMEBREW CONFIG"
-        create: true
-        mode: "0644"
-        block: |
-          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+- name: "Add homebrew to shell profile"
+  ansible.builtin.blockinfile:
+    path: "{{ ansible_env.HOME }}/.bashrc"
+    state: "present"
+    prepend_newline: true
+    append_newline: true
+    marker: "# ==== {mark} ANSIBLE HOMEBREW CONFIG"
+    create: true
+    mode: "0644"
+    block: |
+      eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"

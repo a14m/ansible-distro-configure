@@ -1,10 +1,11 @@
 ---
 - name: "Install pyenv and pipx"
-  community.general.homebrew:
-    name:
-      - "pyenv"
-      - "pipx"
-    state: "present"
+  ansible.builtin.command:
+    cmd: "/home/linuxbrew/.linuxbrew/bin/brew install {{ item }}"
+    creates: "/home/linuxbrew/.linuxbrew/bin/{{ item }}"
+  with_items:
+    - "pyenv"
+    - "pipx"
 
 - name: "Add pyenv to shell profile"
   ansible.builtin.blockinfile:
@@ -34,9 +35,7 @@
 
 - name: "Get installed python versions"
   ansible.builtin.command:
-    cmd: "pyenv versions --bare"
-  environment:
-    PATH: "/home/linuxbrew/.linuxbrew/bin:{{ ansible_env.PATH }}"
+    cmd: "/home/linuxbrew/.linuxbrew/bin/pyenv versions --bare"
   register: installed_python_versions
   changed_when: false
   failed_when: false
@@ -45,9 +44,7 @@
   vars:
     major_minor: "{{ item | regex_replace('^([0-9]+\\.[0-9]+).*', '\\1') }}"
   ansible.builtin.command:
-    cmd: "pyenv uninstall -f {{ item }}"
-  environment:
-    PATH: "/home/linuxbrew/.linuxbrew/bin:{{ ansible_env.PATH }}"
+    cmd: "/home/linuxbrew/.linuxbrew/bin/pyenv uninstall -f {{ item }}"
   loop: "{{ installed_python_versions.stdout_lines | default([]) }}"
   when:
     - installed_python_versions.rc == 0
@@ -58,16 +55,12 @@
 
 - name: "Install python versions"
   ansible.builtin.command:
-    cmd: "pyenv install {{ item }}"
+    cmd: "/home/linuxbrew/.linuxbrew/bin/pyenv install {{ item }}"
   args:
     creates: "{{ ansible_env.HOME }}/.pyenv/versions/{{ item }}*/bin/python"
-  environment:
-    PATH: "/home/linuxbrew/.linuxbrew/bin:{{ ansible_env.PATH }}"
   with_items: "{{ python_versions }}"
 
 - name: "Set global python version"
   ansible.builtin.command:
-    cmd: "pyenv global {{ python_global_version }}"
-  environment:
-    PATH: "/home/linuxbrew/.linuxbrew/bin:{{ ansible_env.PATH }}"
-  changed_when: false
+    cmd: "/home/linuxbrew/.linuxbrew/bin/pyenv global {{ python_global_version }}"
+  changed_when: true
