@@ -4,9 +4,10 @@ argument_specs:
     options:
       go_global_version:
         type: "str"
-        description: "The go global version to use"
+        description: "The go global version to use (latest when empty)"
+        default: ""
       go_versions:
         type: "list"
-        description: "The go versions to install"
+        description: "The go versions to install (latest when empty)"
         elements: "str"
         default: []
