@@ -14,7 +14,7 @@ pihole_dhcp_enabled: false
 pihole_dhcp_start: "{{ ansible_default_ipv4.network | regex_replace('\\.0$', '.100') }}"
 pihole_dhcp_end: "{{ ansible_default_ipv4.network | regex_replace('\\.0$', '.199') }}"
 pihole_dhcp_router: "{{ ansible_default_ipv4.address }}"
-pihole_dhcp_lease_time: 24
+pihole_dhcp_lease_time: ""
 pihole_dhcp_domain: "local"
 pihole_dhcp_hosts: []
 pihole_domain: ""
