@@ -2,14 +2,11 @@
 - name: "Include OS-specific variables"
   ansible.builtin.include_vars: "{{ ansible_os_family | lower }}.yml"
 
-- name: "Ensure locales dependencies are installed"
+- name: "Ensure locales package is installed"
   become: true
   ansible.builtin.package:
-    name: "{{ item }}"
+    name: "{{ locales_pkg }}"
     state: "present"
-  with_items:
-    - "{{ locales_pkg }}"
-    - bash
 
 - name: "Read locale.gen file"
   ansible.builtin.slurp:

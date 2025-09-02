@@ -1,10 +1,9 @@
 ---
-- name: "Ensure sudo installed"
+- name: "Ensure sudo is installed"
   become: true
   ansible.builtin.package:
     name:
       - "sudo"
-      - "bash"
     state: "present"
 
 - name: "Set sudo group fact"
