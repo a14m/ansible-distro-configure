@@ -63,4 +63,8 @@
 - name: "Set global python version"
   ansible.builtin.command:
     cmd: "/home/linuxbrew/.linuxbrew/bin/pyenv global {{ python_global_version }}"
+  # The set global version always run and is always changing the system
+  # It's intentional to ignore this task for idempotency test
   changed_when: true
+  tags:
+    - molecule-idempotence-notest
