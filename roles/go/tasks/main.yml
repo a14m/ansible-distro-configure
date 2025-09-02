@@ -1,0 +1,25 @@
+---
+- name: "Add Go to shell profile"
+  ansible.builtin.blockinfile:
+    path: "{{ ansible_env.HOME }}/.bashrc"
+    state: "present"
+    prepend_newline: true
+    append_newline: true
+    marker: "# ==== {mark} ANSIBLE GO CONFIG"
+    block: |
+      if command -v go 1>/dev/null 2>&1; then
+          export PATH="$HOME/go/bin:$PATH"
+      fi
+
+- name: "Instal Go versions"
+  community.general.homebrew:
+    name:
+      - "go@{{ item }}"
+  with_items: "{{ go_versions }}"
+
+- name: "Set global go version"
+  ansible.builtin.command:
+    cmd: "brew link go@{{ go_global_version }}"
+  environment:
+    PATH: "/home/linuxbrew/.linuxbrew/bin:{{ ansible_env.PATH }}"
+  changed_when: false
