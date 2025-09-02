@@ -15,30 +15,26 @@
   when: go_versions | length == 0
   block:
     - name: "Install latest Go"
-      community.general.homebrew:
-        name: "go"
-        state: "present"
+      ansible.builtin.command:
+        cmd: "/home/linuxbrew/.linuxbrew/bin/brew install go"
+        creates: "/home/linuxbrew/.linuxbrew/bin/go"
 
     - name: "Set latest Go as global version"
       ansible.builtin.command:
-        cmd: "brew link --force go"
-      environment:
-        PATH: "/home/linuxbrew/.linuxbrew/bin:{{ ansible_env.PATH }}"
+        cmd: "/home/linuxbrew/.linuxbrew/bin/brew link --force go"
       changed_when: true
 
 - name: "Install and configure Go versions"
   when: go_versions | length > 0
   block:
     - name: "Install specific Go versions"
-      community.general.homebrew:
-        name: "go@{{ item }}"
-        state: "present"
+      ansible.builtin.command:
+        cmd: "/home/linuxbrew/.linuxbrew/bin/brew install go@{{ item }}"
+        creates: "/home/linuxbrew/.linuxbrew/Cellar/go@{{ item }}"
       with_items: "{{ go_versions }}"
 
     - name: "Set specific Go version as global"
       ansible.builtin.command:
-        cmd: "brew link --force go@{{ go_global_version }}"
-      environment:
-        PATH: "/home/linuxbrew/.linuxbrew/bin:{{ ansible_env.PATH }}"
+        cmd: "/home/linuxbrew/.linuxbrew/bin/brew link --force go@{{ go_global_version }}"
       when: go_global_version != ""
       changed_when: true
