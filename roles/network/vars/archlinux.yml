@@ -2,6 +2,7 @@
 network_packages:
   - "dhcpcd"
   - "networkmanager"
+  - "bind" # provides dig and nslookup
 
 network_enabled_services:
   - "systemd-resolved"
