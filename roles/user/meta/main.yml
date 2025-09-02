@@ -1,5 +1,6 @@
 ---
-dependencies: []
+dependencies:
+  - "bash"
 galaxy_info:
   author: "a14m"
   description: "Configure user and sudo"

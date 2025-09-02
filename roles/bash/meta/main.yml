@@ -1,10 +1,8 @@
 ---
-dependencies:
-  - role: "homebrew"
-  - role: "bash"
+dependencies: []
 galaxy_info:
   author: "a14m"
-  description: "Install Go (versions) on Linux distributions"
+  description: "Install bash"
   company: "kartoffeln.work GmbH."
   license: "MIT"
   min_ansible_version: "2.18"
