@@ -1,0 +1,48 @@
+---
+- name: "Install Podman"
+  become: true
+  ansible.builtin.package:
+    name: "podman"
+    state: "present"
+
+- name: "Enable and start Podman socket service"
+  become: true
+  ansible.builtin.systemd:
+    name: "podman.socket"
+    enabled: true
+    state: started
+
+- name: "Configure Podman for rootless operation"
+  ansible.builtin.command:
+    cmd: "loginctl enable-linger {{ ansible_user_uid }}"
+  become: true
+  changed_when: false
+  failed_when: false
+
+- name: "Create containers configuration directory"
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.config/containers"
+    state: "directory"
+    mode: "0755"
+
+- name: "Configure Podman containers.conf"
+  ansible.builtin.copy:
+    dest: "{{ ansible_env.HOME }}/.config/containers/containers.conf"
+    mode: "0644"
+    content: |
+      [containers]
+      cgroup_manager = "cgroupfs"
+
+      [engine]
+      cgroup_manager = "cgroupfs"
+
+- name: "Configure container registries"
+  become: true
+  ansible.builtin.copy:
+    dest: "/etc/containers/registries.conf"
+    mode: "0644"
+    content: |
+      unqualified-search-registries = ["docker.io"]
+
+      [[registry]]
+      location = "docker.io"
