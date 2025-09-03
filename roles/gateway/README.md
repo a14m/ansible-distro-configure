@@ -1,22 +1,22 @@
-# Ansible Role: wireguard_gateway
+# Ansible Role: gateway
 
-This role configures a Linux host as a WireGuard VPN gateway,
-routing all traffic from local network clients through the VPN connection.
+This role configures a Linux host as a gateway,
+routing all traffic from local network clients through.
 
 ## Role Variables
 
-- `wireguard_gateway_enabled`: Boolean flag to enable/disable gateway functionality (default: `false`)
+- `gateway_enabled`: Boolean flag to enable/disable gateway functionality (default: `false`)
 
 ## What This Role Does
 
-When `wireguard_gateway_enabled` is `true`, the role:
+When `gateway_enabled` is `true`, the role:
 
 - Sets `net.ipv4.ip_forward=1` and `net.ipv6.conf.all.forwarding=1` in `/etc/sysctl.conf`
 - Creates custom routing table (100) to route traffic through VPN
 - Routes IPv4 and IPv6 traffic from local subnet through VPN interface
 - Allows traffic forwarding and established connections
 
-When `wireguard_gateway_enabled` is `false`, the role:
+When `gateway_enabled` is `false`, the role:
 
 - Removes all routing rules and iptables configurations
 - Disables IP forwarding in sysctl configuration
@@ -25,13 +25,13 @@ When `wireguard_gateway_enabled` is `false`, the role:
 ## Example Configuration
 
 ```yaml
-# In host_vars/gateway.yml
-wireguard_gateway_enabled: true
-wireguard_autostart_connection: "protonvpn-us-1"
+# In host_vars/rpi5.local.yml
+gateway_enabled: true
+wireguard_autostart_connection: "protonvpn-us1"
 
 # WireGuard connection configuration
 wireguard_connections:
-  protonvpn-us-1: |
+  protonvpn-us1: |
     [Interface]
     PrivateKey = your_private_key_here
     Address = 10.2.0.2/32
