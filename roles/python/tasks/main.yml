@@ -75,3 +75,9 @@
   changed_when: true
   tags:
     - molecule-idempotence-notest
+
+- name: "Install packaging for community.general.pipx version installs"
+  become: true
+  ansible.builtin.package:
+    name: "python-packaging"
+    state: "present"
