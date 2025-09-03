@@ -44,7 +44,7 @@
     - role: "docker"
     - role: "podman"
     - role: "wireguard"
-    - role: "gateway"
+    - role: "wireguard_gateway"
     - role: "pihole"
       when:
         - lookup('ansible.builtin.env', 'MOLECULE_DISTRO') == 'ubuntu' or

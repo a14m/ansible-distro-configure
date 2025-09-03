@@ -16,7 +16,7 @@ pihole_dhcp_hosts:
   - "ff:ff:ff:ff:ff:fe, 10.0.0.252,TV"
   - "ff:ff:ff:ff:ff:ff, 10.0.0.253,Printer"
 
-gateway_enabled: true
+wireguard_gateway_enabled: true
 wireguard_autostart_connection: "protonvpn-us-1"
 wireguard_connections:
   protonvpn-us-1: |
