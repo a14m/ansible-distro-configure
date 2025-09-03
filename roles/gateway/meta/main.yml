@@ -4,7 +4,7 @@ dependencies:
 
 galaxy_info:
   author: "a14m"
-  description: "Install and configure WireGuard VPN as a network gateway"
+  description: "Configure distro as a network gateway"
   company: "kartoffeln.work GmbH."
   license: "MIT"
   min_ansible_version: "2.18"
