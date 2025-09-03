@@ -1,10 +1,10 @@
 ---
 argument_specs:
   main:
-    description: "Configure the PI as a network gateway forcing all traffic through it (or through active VPN on it)"
+    description: "Configure WireGuard VPN as a network gateway"
     author: "a14m"
     options:
-      gateway_enabled:
+      wireguard_gateway_enabled:
         description: "Toggle flag for enabling/disabling network gateway configurations"
         type: "bool"
         default: false
