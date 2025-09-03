@@ -48,6 +48,7 @@ The playbook configures systems with essential services, networking, user manage
   - Core: hostname, network, user, ssh, password_policy
   - System: locales, timezone, python, homebrew, docker, podman
   - Network: wireguard, gateway, pihole
+  - Tools: ansible (multi-version management with pipx)
 
 **Security & Encryption:**
 
@@ -58,34 +59,35 @@ The playbook configures systems with essential services, networking, user manage
 
 **Network Topology:**
 
-The infrastructure uses a hub-and-spoke network topology with the Raspberry Pi as the central gateway:
+The infrastructure uses a standard local network topology with direct router connectivity:
 
 ```
 Internet
     ↕
 Router (192.168.178.1)
     ↕
-Raspberry Pi Gateway (192.168.178.254)
-    ↕ ← Pi-hole DNS filtering
-    ↕ ← NAT masquerading for local traffic  
-    ↕ ← WireGuard VPN tunnel (optional)
-    ↕
-Local Devices (192.168.178.0/24)
+Local Network (192.168.178.0/24)
+├── Raspberry Pi (192.168.178.254) ← Pi-hole DNS filtering
 ├── archlinux.local (192.168.178.201)
 └── ubuntu.local (192.168.178.202)
 ```
 
 **Traffic Flow:**
 - **DNS Resolution**: All devices → Pi-hole (192.168.178.254) → Upstream DNS
-- **Internet Traffic**: Local devices → Pi Gateway (NAT) → Router → Internet
-- **VPN Traffic** (when enabled): Local devices → Pi Gateway → WireGuard tunnel → Internet
+- **Internet Traffic**: Local devices → Router → Internet (direct routing)
+- **VPN Traffic** (when configured): Individual devices connect to external VPN servers
 - **Container Registry Access**: Configured for Docker Hub via `/etc/containers/registries.conf`
 
-**Gateway Role Features:**
-- Permanent NAT masquerading for direct internet access (always active)
-- Optional WireGuard VPN routing (controlled by `gateway_enabled` variable)
-- IPv4/IPv6 traffic forwarding with persistent iptables rules
-- Automatic rule restoration via `iptables-persistent` on boot
+**Raspberry Pi Services:**
+- Pi-hole DNS filtering and ad blocking
+- WireGuard VPN server capabilities (when `wireguard_gateway_enabled: true`)
+- Standard network participant without NAT gateway functionality by default
+
+**Gateway Role (Optional):**
+The Pi can optionally act as a VPN gateway when `wireguard_gateway_enabled: true`:
+- NAT masquerading for local subnet traffic through WireGuard tunnels
+- IPv4/IPv6 traffic forwarding with configurable iptables rules
+- Controlled by the `wireguard_gateway` role (disabled by default)
 
 **Target Systems:**
 
@@ -109,4 +111,3 @@ Local Devices (192.168.178.0/24)
 
 - Ask me to clarify if the prompt isn't clear enough
 - If a task sounds wrong, please tell me so, and what are the best practices in that case
-
