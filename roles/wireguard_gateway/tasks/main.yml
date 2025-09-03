@@ -21,17 +21,6 @@
   notify: "Reload sysctl"
 
 # IPv4 iptables rules
-- name: "Add IPv4 NAT masquerading for traffic through internet"
-  become: true
-  ansible.builtin.iptables:
-    table: "nat"
-    chain: "POSTROUTING"
-    source: "{{ (ansible_default_ipv4.address.split('.')[0:3] | join('.')) }}.0/24"
-    out_interface: "{{ ansible_default_ipv4.interface }}"
-    jump: "MASQUERADE"
-    comment: "NAT local subnet traffic through internet"
-    state: "present"
-
 - name: "Add IPv4 NAT masquerading for traffic through VPN"
   become: true
   ansible.builtin.iptables:
@@ -64,19 +53,6 @@
     state: "{{ 'present' if wireguard_gateway_enabled else 'absent' }}"
 
 # IPv6 iptables rules
-- name: "Add IPv6 NAT masquerading for traffic through internet"
-  become: true
-  ansible.builtin.iptables:
-    table: "nat"
-    chain: "POSTROUTING"
-    source: "{{ (ansible_default_ipv6.address.split(':')[:4] | join(':')) + '::/64' }}"
-    out_interface: "{{ ansible_default_ipv6.interface }}"
-    jump: "MASQUERADE"
-    comment: "NAT IPv6 local subnet traffic through internet"
-    ip_version: "ipv6"
-    state: "present"
-  when: ansible_default_ipv6.address is defined
-
 - name: "Add IPv6 NAT masquerading for traffic through VPN"
   become: true
   ansible.builtin.iptables:
