@@ -1,0 +1,33 @@
+---
+- name: Converge
+  hosts: archlinux
+  gather_facts: true
+  vars:
+    ansible_become_method: su
+    user_public_keys:
+      - "ssh-ed25519 AAAA...fMo"
+      - "ssh-rsa AAAA...4I3"
+    user_groups: ["wheel", "test_group"]
+    locales:
+      - "en_US.UTF-8 UTF-8"
+    timezone: "GMT"
+
+    python_global_version: "3.13"
+    python_versions:
+      - "3.13"
+  roles:
+    - role: "hostname"
+    - role: "network"
+    - role: "user"
+    - role: "ssh"
+    - role: "password_policy"
+    - role: "locales"
+    - role: "timezone"
+    - role: "wireguard"
+    - role: "wireguard_gateway"
+    - role: "homebrew"
+    - role: "python"
+    - role: "go"
+    - role: "docker"
+    - role: "podman"
+    - role: "ansible"

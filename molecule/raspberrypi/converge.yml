@@ -1,0 +1,28 @@
+---
+- name: Converge
+  hosts: raspberrypi
+  gather_facts: true
+  vars:
+    ansible_become_method: su
+    user_groups: ["wheel", "test_group"]
+    locales:
+      - "en_US.UTF-8 UTF-8"
+    timezone: "GMT"
+    pihole_interface: "eth0"
+    pihole_domain: "pi.hole"
+    pihole_totp_secret: "CHANGEME"
+    pihole_password: "{{ ('changeme' | hash('sha256') | hash('sha256'))[:64] }}"
+    pihole_dhcp_enabled: false
+    wireguard_gateway_enabled: true
+    wireguard_autostart_connection: "protonvpn-us-1"
+  roles:
+    - role: "hostname"
+    - role: "network"
+    - role: "user"
+    - role: "ssh"
+    - role: "password_policy"
+    - role: "locales"
+    - role: "timezone"
+    - role: "wireguard"
+    - role: "wireguard_gateway"
+    - role: "pihole"

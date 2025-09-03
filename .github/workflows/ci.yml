@@ -26,14 +26,13 @@ jobs:
       fail-fast: false
       matrix:
         molecule_distro:
-          - distro: archlinux
-            platform: "linux/amd64"
+          - name: archlinux
             runs_on: "ubuntu-latest"
-          - distro: ubuntu
-            platform: "linux/amd64"
+          - name: ubuntu
             runs_on: "ubuntu-latest"
-          - distro: raspberrypi
-            platform: "linux/arm64/v8"
+          - name: debian
+            runs_on: "ubuntu-latest"
+          - name: raspberrypi
             runs_on: "ubuntu-24.04-arm"
     runs-on: ${{ matrix.molecule_distro.runs_on }}
     steps:
@@ -55,6 +54,4 @@ jobs:
           molecule --version &&
           ansible --version &&
           MOLECULE_COMMAND=${{ matrix.molecule_distro.command }}
-          MOLECULE_PLATFORM=${{ matrix.molecule_distro.platform }}
-          MOLECULE_DISTRO=${{ matrix.molecule_distro.distro }}
-          molecule test
+          molecule test -s ${{ matrix.molecule_distro.name }}
