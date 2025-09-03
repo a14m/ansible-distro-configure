@@ -11,3 +11,4 @@ network_enabled_services:
 network_disabled_services:
   - "dhcpcd"
   - "systemd-networkd"
+  - "systemd-networkd.socket"
