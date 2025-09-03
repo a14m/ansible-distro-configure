@@ -5,6 +5,13 @@
     name: "iptables"
     state: "present"
 
+- name: "Install iptables persistence (Debian only)"
+  become: true
+  ansible.builtin.package:
+    name: "iptables-persistent"
+    state: "present"
+  when: ansible_os_family == "Debian"
+
 - name: "Configure IP forwarding"
   become: true
   ansible.builtin.blockinfile:
@@ -110,3 +117,43 @@
     comment: "Allow IPv6 established connections"
     ip_version: "ipv6"
     state: "{{ 'present' if gateway_enabled else 'absent' }}"
+
+- name: "Create iptables directory (Arch only)"
+  become: true
+  ansible.builtin.file:
+    path: "/etc/iptables"
+    state: "directory"
+    mode: "0755"
+  when: ansible_os_family == "Archlinux"
+
+- name: "Save iptables rules (Debian)"
+  become: true
+  ansible.builtin.command:
+    cmd: "netfilter-persistent save"
+  changed_when: true
+  # The saving of ip tables changes the host
+  # It's intentional to ignore this task for idempotency test
+  tags:
+    - molecule-idempotence-notest
+  when: ansible_os_family == "Debian"
+
+- name: "Save iptables rules (Arch)"
+  become: true
+  ansible.builtin.shell:
+    cmd: "iptables-save > /etc/iptables/iptables.rules && ip6tables-save > /etc/iptables/ip6tables.rules"
+  changed_when: true
+  # The saving of ip tables changes the host
+  # It's intentional to ignore this task for idempotency test
+  tags:
+    - molecule-idempotence-notest
+  when: ansible_os_family == "Archlinux"
+
+- name: "Enable iptables services (Arch only)"
+  become: true
+  ansible.builtin.systemd:
+    name: "{{ item }}"
+    enabled: true
+  with_items:
+    - "iptables"
+    - "ip6tables"
+  when: ansible_os_family == "Archlinux"
