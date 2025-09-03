@@ -7,10 +7,9 @@ dependency:
 driver:
   name: podman
 platforms:
-  - name: instance
-    image: ${MOLECULE_DISTRO:-archlinux}
-    dockerfile: Dockerfile.${MOLECULE_DISTRO:-archlinux}.j2
-    platform: "${MOLECULE_PLATFORM:-linux/amd64}"
+  - name: archlinux
+    dockerfile: Dockerfile.j2
+    platform: "linux/amd64"
     pre_build_image: false
     privileged: true
     command: ${MOLECULE_COMMAND:-"/lib/systemd/systemd"}
@@ -20,6 +19,7 @@ platforms:
     volumes:
       - "/sys/fs/cgroup:/sys/fs/cgroup:rw"
     cgroupns_mode: host
+
 provisioner:
   name: ansible
   inventory:
@@ -27,7 +27,6 @@ provisioner:
       host_vars: "../../host_vars/"
       group_vars: "../../group_vars/"
   env:
-    MOLECULE_DISTRO: "${MOLECULE_DISTRO:-archlinux}"
     ANSIBLE_ROLES_PATH: "../../roles"
   config_options:
     defaults:
