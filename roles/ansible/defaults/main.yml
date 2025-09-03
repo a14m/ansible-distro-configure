@@ -1,0 +1,8 @@
+---
+ansible_core_default_version: "2.18.7"
+ansible_core_versions:
+  - "2.18.7"
+
+molecule_default_version: "25.7.0"
+molecule_versions:
+  - "25.7.0"

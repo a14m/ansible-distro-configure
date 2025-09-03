@@ -1,0 +1,65 @@
+---
+- name: "Validate version format"
+  ansible.builtin.assert:
+    that:
+      - item | regex_search('^[0-9]+\\.[0-9]+\\.[0-9]+$')
+    msg: "Version '{{ item }}' must be in major.minor.patch format"
+  with_items:
+    - "{{ (ansible_core_versions + [ansible_core_default_version]) | unique }}"
+    - "{{ (molecule_versions + [molecule_default_version]) | unique }}"
+
+- name: "Install ansible core versions with suffixes"
+  community.general.pipx:
+    name: "ansible-core=={{ item }}"
+    state: "present"
+    executable: "/home/linuxbrew/.linuxbrew/bin/pipx"
+    suffix: "{{ item }}"
+  with_items: "{{ (ansible_core_versions + [ansible_core_default_version]) | unique }}"
+  # NOTE: pipx module always report the task changed even if it's not.
+  tags:
+    - molecule-idempotence-notest
+
+- name: "Install molecule versions with suffixes"
+  community.general.pipx:
+    name: "molecule=={{ item }}"
+    state: "present"
+    executable: "/home/linuxbrew/.linuxbrew/bin/pipx"
+    suffix: "{{ item }}"
+  with_items: "{{ (molecule_versions + [molecule_default_version]) | unique }}"
+  # NOTE: pipx module always report the task changed even if it's not.
+  tags:
+    - molecule-idempotence-notest
+
+# NOTE: the default pipx module inject_packages doesn't work with suffix
+- name: "Inject molecule-plugins with docker and podman drivers"
+  ansible.builtin.command:
+    cmd: "/home/linuxbrew/.linuxbrew/bin/pipx inject molecule{{ item }} 'molecule-plugins[docker,podman]'"
+  with_items: "{{ (molecule_versions + [molecule_default_version]) | unique }}"
+  register: pipx_inject_result
+  changed_when: "'injected package' in pipx_inject_result.stdout"
+  failed_when: pipx_inject_result.rc != 0 and 'already exists' not in pipx_inject_result.stderr
+
+- name: "Create symlinks for default ansible version"
+  ansible.builtin.file:
+    src: "{{ ansible_user_dir }}/.local/bin/{{ item }}{{ ansible_core_default_version }}"
+    dest: "{{ ansible_user_dir }}/.local/bin/{{ item }}"
+    state: "link"
+    force: true
+  with_items:
+    - "ansible"
+    - "ansible-playbook"
+    - "ansible-galaxy"
+    - "ansible-config"
+    - "ansible-console"
+    - "ansible-doc"
+    - "ansible-inventory"
+    - "ansible-pull"
+    - "ansible-test"
+    - "ansible-vault"
+
+- name: "Create symlinks for default molecule version"
+  ansible.builtin.file:
+    src: "{{ ansible_user_dir }}/.local/bin/molecule{{ molecule_default_version }}"
+    dest: "{{ ansible_user_dir }}/.local/bin/molecule"
+    state: "link"
+    force: true

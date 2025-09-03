@@ -43,6 +43,7 @@
     - role: "go"
     - role: "docker"
     - role: "podman"
+    - role: "ansible"
     - role: "wireguard"
     - role: "wireguard_gateway"
     - role: "pihole"
