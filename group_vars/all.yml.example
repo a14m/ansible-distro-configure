@@ -34,9 +34,9 @@ python_versions:
   - "3.11"
   - "3.13"
 
-wireguard_autostart_connection: "protonvpn-us-1"
+wireguard_autostart_connection: "vpn1"
 wireguard_connections:
-  protonvpn-us-1: |
+  vpn1: |
     [Interface]
     PrivateKey = your_private_key_here
     Address = 10.2.0.2/32

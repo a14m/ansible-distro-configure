@@ -8,6 +8,7 @@ driver:
   name: podman
 platforms:
   - name: debian
+    image: debian
     dockerfile: Dockerfile.j2
     platform: "linux/amd64"
     pre_build_image: false

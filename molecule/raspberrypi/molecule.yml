@@ -8,6 +8,7 @@ driver:
   name: podman
 platforms:
   - name: raspberrypi
+    image: raspberrypi
     dockerfile: Dockerfile.j2
     platform: "linux/arm64/v8"
     pre_build_image: false

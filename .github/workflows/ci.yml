@@ -46,6 +46,10 @@ jobs:
         run: |
           rm host_vars/*.yml
           rm group_vars/*.yml
+      - name: Copy group_vars example files
+        run: |
+          # Use example group_vars files for testing instead of encrypted files
+          for f in group_vars/*.example; do mv "$f" "$(echo "$f" | sed s/\.example//)"; done
       - name: Run
         env:
           PY_COLORS: 1
