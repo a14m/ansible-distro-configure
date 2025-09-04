@@ -11,7 +11,8 @@
     locales:
       - "en_US.UTF-8 UTF-8"
     timezone: "GMT"
-
+    wireguard_autostart_connection: ""
+    wireguard_gateway_enabled: true
     python_global_version: "3.13"
     python_versions:
       - "3.13"
