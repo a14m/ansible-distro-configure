@@ -22,6 +22,31 @@ ansible-playbook site.yml --ask-become-pass
 ansible all -m ping
 ```
 
+**Run molecule testing:**
+
+```bash
+# Run full test suite for a specific scenario
+molecule test -s archlinux
+molecule test -s ubuntu
+molecule test -s debian
+molecule test -s raspberrypi
+
+# Run specific test phases
+molecule converge -s archlinux    # Run converge only
+molecule idempotence -s archlinux # Run idempotence test only
+molecule verify -s archlinux      # Run verify only
+```
+
+**Debug molecule testing on remote machine:**
+
+```bash
+# Copy to remote machine for debugging
+rsync -r . archlinux.local:/opt/ansible-distro-configure
+
+# Run on remote machine with proper PATH
+ssh archlinux.local "cd /opt/ansible-distro-configure && PATH=~/.local/bin:\$PATH ~/.local/bin/molecule test -s archlinux"
+```
+
 ## Architecture Overview
 
 This is an Ansible configuration management repository for multiple Linux distributions

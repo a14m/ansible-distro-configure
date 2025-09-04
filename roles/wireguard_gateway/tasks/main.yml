@@ -1,4 +1,12 @@
 ---
+- name: "Debug IPv4 and IPv6 network facts"
+  ansible.builtin.debug:
+    msg:
+      - "IPv4 default: {{ ansible_default_ipv4 | default('undefined') }}"
+      - "IPv6 default: {{ ansible_default_ipv6 | default('undefined') }}"
+      - "All IPv4: {{ ansible_all_ipv4_addresses | default('undefined') }}"
+      - "All IPv6: {{ ansible_all_ipv6_addresses | default('undefined') }}"
+
 - name: "Ensure iptables are installed"
   become: true
   ansible.builtin.package:
@@ -65,6 +73,7 @@
     ip_version: "ipv6"
     state: "{{ 'present' if wireguard_gateway_enabled else 'absent' }}"
   with_items: "{{ wireguard_connections }}"
+  when: ansible_default_ipv6 is defined and ansible_default_ipv6.address is defined
   failed_when: false
 
 - name: "Add IPv6 FORWARD rule to accept traffic from local subnet"
@@ -76,6 +85,7 @@
     comment: "Allow IPv6 forwarding from local subnet"
     ip_version: "ipv6"
     state: "{{ 'present' if wireguard_gateway_enabled else 'absent' }}"
+  when: ansible_default_ipv6 is defined and ansible_default_ipv6.address is defined
   failed_when: false
 
 - name: "Add IPv6 FORWARD rule to accept established connections"
