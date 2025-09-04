@@ -41,10 +41,10 @@ molecule verify -s archlinux      # Run verify only
 
 ```bash
 # Copy to remote machine for debugging
-rsync -r . archlinux.local:/opt/ansible-distro-configure
+rsync -r . <HOST>:/opt/ansible-distro-configure
 
 # Run on remote machine with proper PATH
-ssh archlinux.local "cd /opt/ansible-distro-configure && PATH=~/.local/bin:\$PATH ~/.local/bin/molecule test -s archlinux"
+ssh <HOST> "cd /opt/ansible-distro-configure && PATH=~/.local/bin:\$PATH ~/.local/bin/molecule test -s archlinux"
 ```
 
 ## Architecture Overview
