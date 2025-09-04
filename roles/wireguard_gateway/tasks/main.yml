@@ -66,7 +66,7 @@
     state: "{{ 'present' if wireguard_gateway_enabled else 'absent' }}"
   with_items: "{{ wireguard_connections }}"
   failed_when: false
-  # NOTE: on github the 'IPv6 default: {}' and that makes teh task fails
+  # NOTE: on github the 'IPv6 default: {}' and that makes the task fails
   tags:
     - molecule-idempotence-notest
 
@@ -80,7 +80,7 @@
     ip_version: "ipv6"
     state: "{{ 'present' if wireguard_gateway_enabled else 'absent' }}"
   failed_when: false
-  # NOTE: on github the 'IPv6 default: {}' and that makes teh task fails
+  # NOTE: on github the 'IPv6 default: {}' and that makes the task fails
   tags:
     - molecule-idempotence-notest
 
