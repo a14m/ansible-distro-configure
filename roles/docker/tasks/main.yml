@@ -1,14 +1,17 @@
 ---
+- name: "Include OS-specific variables"
+  ansible.builtin.include_vars: "{{ ansible_os_family | lower }}.yml"
+
 - name: "Install Docker"
   become: true
   ansible.builtin.package:
-    name: "docker"
+    name: "{{ docker_package }}"
     state: "present"
 
 - name: "Enable and start Docker service"
   become: true
   ansible.builtin.systemd:
-    name: "docker"
+    name: "{{ docker_service }}"
     enabled: true
     state: "started"
 
