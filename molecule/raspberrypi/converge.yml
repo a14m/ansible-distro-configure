@@ -13,8 +13,8 @@
     pihole_totp_secret: "CHANGEME"
     pihole_password: "{{ ('changeme' | hash('sha256') | hash('sha256'))[:64] }}"
     pihole_dhcp_enabled: false
+    wireguard_autostart_connection: ""
     wireguard_gateway_enabled: true
-    wireguard_autostart_connection: "protonvpn-us-1"
   roles:
     - role: "hostname"
     - role: "network"

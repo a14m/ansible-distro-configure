@@ -1,0 +1,2 @@
+roles/ansible/defaults/main.yml var-naming[no-role-prefix] skip
+roles/ansible/tasks/main.yml var-naming[no-role-prefix] skip

@@ -65,6 +65,7 @@
     ip_version: "ipv6"
     state: "{{ 'present' if wireguard_gateway_enabled else 'absent' }}"
   with_items: "{{ wireguard_connections }}"
+  failed_when: false
 
 - name: "Add IPv6 FORWARD rule to accept traffic from local subnet"
   become: true
@@ -75,6 +76,7 @@
     comment: "Allow IPv6 forwarding from local subnet"
     ip_version: "ipv6"
     state: "{{ 'present' if wireguard_gateway_enabled else 'absent' }}"
+  failed_when: false
 
 - name: "Add IPv6 FORWARD rule to accept established connections"
   become: true
@@ -86,3 +88,4 @@
     comment: "Allow IPv6 established connections"
     ip_version: "ipv6"
     state: "{{ 'present' if wireguard_gateway_enabled else 'absent' }}"
+  failed_when: false
