@@ -9,8 +9,6 @@
     name: "pihole"
     system: true
     shell: "/usr/sbin/nologin"
-    home: "/var/lib/pihole"
-    create_home: true
 
 - name: "Create Pi-hole directories"
   ansible.builtin.file:
@@ -21,7 +19,6 @@
     mode: "0755"
   with_items:
     - "/etc/pihole"
-    - "/var/lib/pihole"
     - "/var/log/pihole"
 
 - name: "Create Pi-hole configuration file"
