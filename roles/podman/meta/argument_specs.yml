@@ -1,0 +1,6 @@
+---
+argument_specs:
+  main:
+    short_description: "Install Podman container engine on Linux distributions"
+    description: "Install Podman container engine on Linux distributions"
+    options: {}

@@ -1,0 +1,6 @@
+---
+argument_specs:
+  main:
+    short_description: "Install homebrew package manager on Linux distributions"
+    description: "Install homebrew package manager on Linux distributions"
+    options: {}

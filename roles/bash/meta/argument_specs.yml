@@ -1,0 +1,6 @@
+---
+argument_specs:
+  main:
+    short_description: "Install bash on Linux distribution"
+    description: "Install bash on Linux distribution"
+    options: {}
