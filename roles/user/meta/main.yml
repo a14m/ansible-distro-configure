@@ -1,6 +1,7 @@
 ---
 dependencies:
-  - "bash"
+  - role: "bash"
+  - role: "sudo"
 galaxy_info:
   author: "a14m"
   description: "Configure user and sudo"
