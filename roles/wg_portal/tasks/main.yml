@@ -1,12 +1,4 @@
 ---
-- name: "Ensure wg-portal dependencies are installed"
-  become: true
-  ansible.builtin.package:
-    name:
-      - curl
-      - sudo
-      - acl
-
 - name: "Create wg-portal user"
   become: true
   ansible.builtin.user:

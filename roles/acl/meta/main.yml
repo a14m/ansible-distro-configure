@@ -1,9 +1,8 @@
 ---
-dependencies:
-  - role: "systemd"
+dependencies: []
 galaxy_info:
   author: "a14m"
-  description: "Install Podman container engine on Linux distributions"
+  description: "Install acl"
   company: "kartoffeln.work GmbH."
   license: "MIT"
   min_ansible_version: "2.18"

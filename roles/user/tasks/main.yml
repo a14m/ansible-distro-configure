@@ -1,29 +1,7 @@
 ---
-- name: "Ensure sudo is installed"
-  become: true
-  ansible.builtin.package:
-    name:
-      - "sudo"
-    state: "present"
-
-- name: "Set sudo group fact"
-  ansible.builtin.set_fact:
-    # noqa var-naming[no-role-prefix] the sudo group is global and better named this way than user_sudo_group
-    sudo_group: "sudo"
-
 - name: "Set user groups fact"
   ansible.builtin.set_fact:
-    user_groups: "{{ ([username, sudo_group] + user_groups) | unique }}"
-
-- name: "Configure permissions for group: {{ sudo_group }}"
-  become: true
-  community.general.sudoers:
-    name: "enable-sudo-group"
-    group: "{{ sudo_group }}"
-    commands: "ALL"
-    nopassword: false
-    sudoers_path: "/etc/sudoers.d"
-    state: present
+    user_groups: "{{ ([username, 'sudo'] + user_groups) | unique }}"
 
 - name: "Ensure user groups are created"
   become: true
