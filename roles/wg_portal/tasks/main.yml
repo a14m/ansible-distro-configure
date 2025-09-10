@@ -1,10 +1,18 @@
 ---
+- name: "Create wg-portal group"
+  become: true
+  ansible.builtin.group:
+    name: "wg-portal"
+    system: true
+
 - name: "Create wg-portal user"
   become: true
   ansible.builtin.user:
     name: "wg-portal"
+    group: "wg-portal"
     system: true
     shell: "/usr/sbin/nologin"
+    create_home: false
 
 - name: "Check if wg-portal is already installed"
   become: true
@@ -15,13 +23,11 @@
 - name: "Create wg-portal directories"
   become: true
   ansible.builtin.file:
-    path: "{{ item }}"
+    path: "/etc/wg-portal"
     state: "directory"
     owner: "root"
     group: "wg-portal"
-    mode: "0755"
-  with_items:
-    - "/etc/wg-portal"
+    mode: "0750"
 
 - name: "Install wg-portal"
   become: true
@@ -39,10 +45,41 @@
       args:
         creates: "/etc/wg-portal/wg-portal"
 
+- name: "Set ACL for wg-portal group on /etc/wireguard"
+  become: true
+  ansible.posix.acl:
+    path: "/etc/wireguard"
+    entity: "wg-portal"
+    etype: "group"
+    permissions: "rx"
+    recursive: true
+    state: "present"
+
+- name: "Set ACL mask for /etc/wireguard"
+  become: true
+  ansible.posix.acl:
+    path: "/etc/wireguard"
+    etype: "mask"
+    permissions: "rx"
+    recursive: true
+    state: "present"
+
+- name: "Create wg-portal sudoers file"
+  become: true
+  ansible.builtin.copy:
+    content: |
+      %wg-portal ALL=(ALL) NOPASSWD: /usr/bin/wg-quick up *, /usr/bin/wg-quick down *
+      %wg-portal ALL=(ALL) NOPASSWD: /usr/bin/wg show
+    dest: "/etc/sudoers.d/wg-portal"
+    mode: "0440"
+    validate: "visudo -cf %s"
+
 - name: "Create wg-portal configuration file"
   become: true
   ansible.builtin.template:
     src: "config.yml.j2"
     dest: "/etc/wg-portal/config.yml"
-    mode: "0644"
+    owner: "root"
+    group: "wg-portal"
+    mode: "0640"
   notify: "Restart wg-portal"
