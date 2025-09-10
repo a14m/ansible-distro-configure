@@ -1,0 +1,6 @@
+---
+argument_specs:
+  main:
+    short_description: "Install Docker Engine on Linux distributions"
+    description: "Install Docker Engine on Linux distributions"
+    options: {}

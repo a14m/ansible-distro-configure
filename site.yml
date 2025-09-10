@@ -46,6 +46,5 @@
     - role: "locales"
     - role: "timezone"
     - role: "wireguard"
-    - role: "wireguard_gateway"
     - role: "wg_portal"
     - role: "pihole"

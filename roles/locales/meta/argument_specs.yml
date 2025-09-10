@@ -1,6 +1,8 @@
 ---
 argument_specs:
   main:
+    short_description: "Configure the linux distro locales"
+    description: "Configure the linux distro locales"
     options:
       locales:
         type: "list"

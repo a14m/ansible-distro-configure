@@ -1,0 +1,6 @@
+---
+argument_specs:
+  main:
+    short_description: "Install curl on Linux distribution"
+    description: "Install curl on Linux distribution"
+    options: {}

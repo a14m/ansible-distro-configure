@@ -1,6 +1,8 @@
 ---
 argument_specs:
   main:
+    short_description: "Install ansible and molecule on Linux distributions"
+    description: "Install ansible and molecule on Linux distributions"
     options:
       ansible_core_default_version:
         type: "str"
