@@ -1,0 +1,6 @@
+---
+argument_specs:
+  main:
+    short_description: "Update distro package cache"
+    description: "Update Linux distribution default package cache"
+    options: {}
