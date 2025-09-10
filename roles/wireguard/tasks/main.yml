@@ -33,7 +33,7 @@
   become: true
   block:
     - name: "Ensure all wireguard connections are stopped"
-      ansible.builtin.systemd:
+      ansible.builtin.systemd_service:
         name: "wg-quick@{{ item }}"
         enabled: false
         state: "stopped"
@@ -47,7 +47,7 @@
       failed_when: false
 
     - name: "Enable and start wg-quick service for connection {{ wireguard_autostart_connection }}"
-      ansible.builtin.systemd:
+      ansible.builtin.systemd_service:
         name: "wg-quick@{{ wireguard_autostart_connection }}"
         enabled: true
         state: "started"
