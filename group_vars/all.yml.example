@@ -34,9 +34,9 @@ python_versions:
   - "3.11"
   - "3.13"
 
-wireguard_autostart_connection: "vpn1"
+wireguard_autostart_connection: "wg-vpn0"
 wireguard_connections:
-  vpn1: |
+  wg-vpn0: |
     [Interface]
     PrivateKey = your_private_key_here
     Address = 10.2.0.2/32
@@ -45,4 +45,4 @@ wireguard_connections:
     [Peer]
     PublicKey = server_public_key
     AllowedIPs = 0.0.0.0/0
-    Endpoint = us-1.protonvpn.com:51820
+    Endpoint = vpn.com:51820
