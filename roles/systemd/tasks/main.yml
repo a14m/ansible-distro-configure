@@ -1,0 +1,6 @@
+---
+- name: "Ensure systemd is installed"
+  become: true
+  ansible.builtin.package:
+    name: "systemd"
+    state: "present"

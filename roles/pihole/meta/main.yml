@@ -1,5 +1,7 @@
 ---
-dependencies: []
+dependencies:
+  - role: "network"
+  - role: "systemd"
 galaxy_info:
   author: "a14m"
   description: "Configure pihole on supported devices"

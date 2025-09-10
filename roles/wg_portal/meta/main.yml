@@ -1,9 +1,14 @@
 ---
 dependencies:
+  # These dependencies are used in the install/uninstall script
+  - role: "bash"
   - role: "systemd"
+  - role: "sudo"
+  - role: "curl"
+  - role: "acl"
 galaxy_info:
   author: "a14m"
-  description: "Install Podman container engine on Linux distributions"
+  description: "Install and configure wg-portal VPN web interface manager"
   company: "kartoffeln.work GmbH."
   license: "MIT"
   min_ansible_version: "2.18"
