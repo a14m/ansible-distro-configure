@@ -1,0 +1,56 @@
+---
+- name: "Ensure wg-portal dependencies are installed"
+  become: true
+  ansible.builtin.package:
+    name:
+      - curl
+      - sudo
+      - acl
+
+- name: "Create wg-portal user"
+  become: true
+  ansible.builtin.user:
+    name: "wg-portal"
+    system: true
+    shell: "/usr/sbin/nologin"
+
+- name: "Check if wg-portal is already installed"
+  become: true
+  ansible.builtin.stat:
+    path: "/etc/wg-portal/wg-portal"
+  register: wg_portal_binary_check
+
+- name: "Create wg-portal directories"
+  become: true
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: "directory"
+    owner: "root"
+    group: "wg-portal"
+    mode: "0755"
+  with_items:
+    - "/etc/wg-portal"
+
+- name: "Install wg-portal"
+  become: true
+  when: not wg_portal_binary_check.stat.exists
+  block:
+    - name: "Download wg-portal installer"
+      ansible.builtin.get_url:
+        url: "https://git.sr.ht/~a14m/wg-portal/blob/main/deployment/install.sh"
+        dest: "/tmp/install_wg-portal.sh"
+        mode: "0755"
+
+    - name: "Run wg-portal installer"
+      ansible.builtin.command:
+        cmd: "/tmp/install_wg-portal.sh {{ wg_portal_version }}"
+      args:
+        creates: "/etc/wg-portal/wg-portal"
+
+- name: "Create wg-portal configuration file"
+  become: true
+  ansible.builtin.template:
+    src: "config.yml.j2"
+    dest: "/etc/wg-portal/config.yml"
+    mode: "0644"
+  notify: "Restart wg-portal"
