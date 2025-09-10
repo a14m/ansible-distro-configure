@@ -1,32 +1,22 @@
 ---
-- name: "Distro bootstrap configure"
-  gather_facts: true
-  # Password policy is technically not required for boot,
-  # But it's quite nice to configure it for boot and therefore
-  # enforce the required policies/configurations wanted for the first passwrod change
-  tags: ["required_for_boot"]
-  hosts: all
-  roles:
-    - role: "hostname"
-    - role: "network"
-    - role: "user"
-    - role: "ssh"
-    - role: "password_policy"
-  pre_tasks:
-    - name: "Update package cache"
-      become: true
-      ansible.builtin.package:
-        update_cache: true
-      async: 60
-      poll: 5
-      failed_when: false
-
 - name: "Dev machines configure"
   gather_facts: true
   hosts:
     - archlinux.local
     - ubuntu.local
   roles:
+    - role: "package_cache"
+      tags: ["required_for_boot"]
+    - role: "hostname"
+      tags: ["required_for_boot"]
+    - role: "network"
+      tags: ["required_for_boot"]
+    - role: "user"
+      tags: ["required_for_boot"]
+    - role: "ssh"
+      tags: ["required_for_boot"]
+    - role: "password_policy"
+      tags: ["required_for_boot"]
     - role: "locales"
     - role: "timezone"
     - role: "wireguard"
@@ -43,6 +33,18 @@
     - rpi5.local
   become: true
   roles:
+    - role: "package_cache"
+      tags: ["required_for_boot"]
+    - role: "hostname"
+      tags: ["required_for_boot"]
+    - role: "network"
+      tags: ["required_for_boot"]
+    - role: "user"
+      tags: ["required_for_boot"]
+    - role: "ssh"
+      tags: ["required_for_boot"]
+    - role: "password_policy"
+      tags: ["required_for_boot"]
     - role: "locales"
     - role: "timezone"
     - role: "wireguard"
