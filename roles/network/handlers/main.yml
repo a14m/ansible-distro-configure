@@ -1,13 +1,13 @@
 ---
 - name: "Reload systemd"
   become: true
-  ansible.builtin.systemd:
+  ansible.builtin.systemd_service:
     daemon_reload: true
   when: not ansible_is_chroot
 
 - name: "Restart NetworkManager"
   become: true
-  ansible.builtin.systemd:
+  ansible.builtin.systemd_service:
     name: "NetworkManager"
     enabled: true
     state: "restarted"
@@ -15,7 +15,7 @@
 
 - name: "Restart systemd-resolved"
   become: true
-  ansible.builtin.systemd:
+  ansible.builtin.systemd_service:
     name: "systemd-resolved"
     enabled: true
     state: "restarted"
