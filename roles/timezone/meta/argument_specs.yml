@@ -1,6 +1,8 @@
 ---
 argument_specs:
   main:
+    short_description: "Configure the linux distro timezone"
+    description: "Configure the linux distro timezone"
     options:
       timezone:
         type: "str"

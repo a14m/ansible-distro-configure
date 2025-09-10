@@ -1,6 +1,8 @@
 ---
 argument_specs:
   main:
+    short_description: "Configure basic distro networking features"
+    description: "Configure basic distro networking features"
     options:
       network_wifi_ssid:
         type: "str"

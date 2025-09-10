@@ -1,0 +1,18 @@
+---
+argument_specs:
+  main:
+    short_description: "Install and configure wg-portal VPN web interface manager"
+    description: "Install and configure wg-portal VPN web interface manager"
+    options:
+      wg_portal_version:
+        description: "Version of wg-portal to install"
+        type: "str"
+        default: "latest"
+      wg_portal_port:
+        description: "Port for wg-portal web interface"
+        type: "str"
+        default: "8080"
+      wg_portal_password:
+        description: "Password hash for wg-portal authentication"
+        type: "str"
+        default: "{{ ('changeme' | hash('sha256') | hash('sha256'))[:64] }}"
