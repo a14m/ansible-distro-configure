@@ -25,6 +25,7 @@
     - role: "locales"
     - role: "timezone"
     - role: "wireguard"
+    - role: "gateway"
     - role: "homebrew"
     - role: "python"
     - role: "go"
