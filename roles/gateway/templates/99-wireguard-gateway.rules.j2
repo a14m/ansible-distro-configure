@@ -1,0 +1,2 @@
+ACTION=="add", SUBSYSTEM=="net", KERNEL=="wg*", TAG+="systemd", ENV{SYSTEMD_WANTS}="gateway-vpn-mode.service"
+ACTION=="remove", SUBSYSTEM=="net", KERNEL=="wg*", TAG+="systemd", ENV{SYSTEMD_WANTS}="gateway-direct-mode.service"
