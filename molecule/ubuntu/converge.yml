@@ -12,7 +12,8 @@
       - "en_US.UTF-8 UTF-8"
     timezone: "GMT"
     wireguard_autostart_connection: ""
-    wireguard_gateway_enabled: false
+    gateway_enabled: false
+    gateway_local_ipv4_subnet: "10.0.0.0/24"
     python_global_version: "3.13"
     python_versions:
       - "3.13"

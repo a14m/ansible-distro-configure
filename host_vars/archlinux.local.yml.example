@@ -1,11 +1,11 @@
 ---
 # Using raspberry pi as gateway (VPN) and DNS sinkhole (pihole)
 network_ipv4_address: "10.0.0.201"
-network_ipv4_gateway: "10.0.0.200"
-network_ipv4_dns: "10.0.0.200"
+network_ipv4_gateway: "10.0.0.254"
+network_ipv4_dns: "10.0.0.254"
 network_ipv6_address: "fd5c:fd8b:2b8c::201/64"
-network_ipv6_gateway: "fd5c:fd8b:2b8c::200"
-network_ipv6_dns: "fd5c:fd8b:2b8c::200"
+network_ipv6_gateway: "fd5c:fd8b:2b8c::254"
+network_ipv6_dns: "fd5c:fd8b:2b8c::254"
 
 wireguard_connections:
   wg-vpn1: |
