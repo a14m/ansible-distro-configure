@@ -1,0 +1,15 @@
+[Unit]
+Description=Gateway Init Service
+Documentation=man:systemd.service(5)
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/gateway-apply-rules vpn
+ExecStart=/usr/local/bin/gateway-apply-rules direct
+User=root
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

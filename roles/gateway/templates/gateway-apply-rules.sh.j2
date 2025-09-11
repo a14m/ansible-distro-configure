@@ -1,0 +1,93 @@
+#!/bin/bash
+
+set -euo pipefail
+
+SCRIPT_NAME="gateway-apply-rules"
+LOG_FACILITY="local0.info"
+
+# Ansible template variables - configured at deployment time
+GATEWAY_SUBNET="{{ gateway_local_ipv4_subnet }}"
+GATEWAY_INTERFACE="{{ gateway_router_interface }}"
+log_message() {
+    echo "[$SCRIPT_NAME] $1" | logger -t "$SCRIPT_NAME" -p "$LOG_FACILITY"
+    echo "[$(date '+%Y-%m-%d %H:%M:%S')] $1"
+}
+
+detect_vpn_interfaces() {
+    ip link show | grep -E '^[0-9]+: wg.*:.*UP' | cut -d: -f2 | tr -d ' ' || true
+}
+
+clear_rules() {
+    log_message "Clearing existing gateway rules"
+    iptables -F FORWARD 2>/dev/null || true
+    iptables -t nat -D POSTROUTING -s "$GATEWAY_SUBNET" -o wg+ -j MASQUERADE 2>/dev/null || true
+    iptables -t nat -D POSTROUTING -s "$GATEWAY_SUBNET" -o "$GATEWAY_INTERFACE" -j MASQUERADE 2>/dev/null || true
+    iptables -D OUTPUT -o wg+ -j ACCEPT 2>/dev/null || true
+    iptables -D OUTPUT -o "$GATEWAY_INTERFACE" -j ACCEPT 2>/dev/null || true
+}
+
+apply_vpn_mode() {
+    local vpn_interfaces="$1"
+    log_message "Applying VPN mode rules for interfaces: $vpn_interfaces"
+    iptables -t nat -A POSTROUTING -s "$GATEWAY_SUBNET" -o wg+ -j MASQUERADE
+    iptables -A OUTPUT -o wg+ -j ACCEPT
+    iptables -A FORWARD -s "$GATEWAY_SUBNET" -o wg+ -j ACCEPT
+    iptables -A FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+    log_message "VPN mode rules applied - traffic routed through VPN"
+}
+
+apply_direct_rules() {
+    log_message "Applying direct mode rules"
+    iptables -t nat -A POSTROUTING -s "$GATEWAY_SUBNET" -o "$GATEWAY_INTERFACE" -j MASQUERADE
+    iptables -A OUTPUT -o "$GATEWAY_INTERFACE" -j ACCEPT
+    iptables -A FORWARD -s "$GATEWAY_SUBNET" -o "$GATEWAY_INTERFACE" -j ACCEPT
+    iptables -A FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+    log_message "Direct mode rules applied - normal routing active"
+}
+
+handle_vpn_mode() {
+    local vpn_interfaces
+    vpn_interfaces=$(detect_vpn_interfaces)
+
+    if [ -n "$vpn_interfaces" ]; then
+        clear_rules
+        apply_vpn_mode "$vpn_interfaces"
+        log_message "Switched to VPN mode"
+    else
+        log_message "No VPN interfaces found, ignoring VPN mode request"
+    fi
+}
+
+handle_direct_mode() {
+    local vpn_interfaces
+    vpn_interfaces=$(detect_vpn_interfaces)
+
+    if [ -z "$vpn_interfaces" ]; then
+        clear_rules
+        apply_direct_rules
+        log_message "Switched to direct mode"
+    else
+        log_message "VPN interfaces still active: $vpn_interfaces"
+    fi
+}
+
+main() {
+    local mode="$1"
+
+    case "$mode" in
+        "vpn")
+            handle_vpn_mode
+            ;;
+        "direct")
+            handle_direct_mode
+            ;;
+        *)
+            log_message "Unknown mode: $mode"
+            exit 1
+            ;;
+    esac
+}
+
+trap 'log_message "Script failed with error on line $LINENO"' ERR
+
+main "$@"

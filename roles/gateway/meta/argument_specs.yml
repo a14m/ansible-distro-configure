@@ -1,0 +1,20 @@
+---
+argument_specs:
+  main:
+    author: "a14m"
+    description: "Configure system as intelligent network gateway with dynamic VPN routing"
+    options:
+      gateway_enabled:
+        description: "Enable gateway functionality"
+        type: "bool"
+        default: false
+        required: false
+      gateway_local_ipv4_subnet:
+        description: "Local subnet CIDR for NAT and routing rules (e.g., '192.168.178.0/24')"
+        type: "str"
+        required: true
+      gateway_router_interface:
+        description: "Default route interface for direct routing mode"
+        type: "str"
+        default: "{{ ansible_default_ipv4.interface }}"
+        required: false
