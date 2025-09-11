@@ -24,5 +24,6 @@
     - role: "locales"
     - role: "timezone"
     - role: "wireguard"
+    - role: "gateway"
     - role: "wg_portal"
     - role: "pihole"
