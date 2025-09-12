@@ -2,7 +2,7 @@
 - name: "Validate version format"
   ansible.builtin.assert:
     that:
-      - item | regex_search('^[0-9]+\\.[0-9]+\\.[0-9]+$')
+      - item | regex_search('^[0-9]+\\.[0-9]+\\.[0-9]+$') is not none
     msg: "Version '{{ item }}' must be in major.minor.patch format"
   with_items:
     - "{{ (ansible_core_versions + [ansible_core_default_version]) | unique }}"
