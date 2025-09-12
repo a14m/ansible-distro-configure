@@ -1,0 +1,29 @@
+---
+- name: "Dev machines configure"
+  gather_facts: true
+  hosts:
+    - archlinux.local
+    - ubuntu.local
+  roles:
+    - role: "locales"
+    - role: "timezone"
+    - role: "wireguard"
+    - role: "homebrew"
+    - role: "python"
+    - role: "go"
+    - role: "docker"
+    - role: "podman"
+    - role: "ansible"
+
+- name: "Raspberry Pi configure"
+  gather_facts: true
+  hosts:
+    - rpi5.local
+  become: true
+  roles:
+    - role: "locales"
+    - role: "timezone"
+    - role: "wireguard"
+    - role: "gateway"
+    - role: "wg_portal"
+    - role: "pihole"
