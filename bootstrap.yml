@@ -1,0 +1,15 @@
+---
+- name: "Dev machines bootstrap"
+  gather_facts: true
+  tags: ["required_for_boot"]
+  hosts:
+    - archlinux.local
+    - ubuntu.local
+    - rpi5.local
+  roles:
+    - role: "package_cache"
+    - role: "hostname"
+    - role: "network"
+    - role: "user"
+    - role: "ssh"
+    - role: "password_policy"

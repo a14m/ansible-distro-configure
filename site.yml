@@ -1,53 +1,6 @@
 ---
-- name: "Dev machines configure"
-  gather_facts: true
-  hosts:
-    - archlinux.local
-    - ubuntu.local
-  roles:
-    - role: "package_cache"
-      tags: ["required_for_boot"]
-    - role: "hostname"
-      tags: ["required_for_boot"]
-    - role: "network"
-      tags: ["required_for_boot"]
-    - role: "user"
-      tags: ["required_for_boot"]
-    - role: "ssh"
-      tags: ["required_for_boot"]
-    - role: "password_policy"
-      tags: ["required_for_boot"]
-    - role: "locales"
-    - role: "timezone"
-    - role: "wireguard"
-    - role: "homebrew"
-    - role: "python"
-    - role: "go"
-    - role: "docker"
-    - role: "podman"
-    - role: "ansible"
+- name: "Bootstrap"
+  ansible.builtin.import_playbook: "bootstrap.yml"
 
-- name: "Raspberry Pi configure"
-  gather_facts: true
-  hosts:
-    - rpi5.local
-  become: true
-  roles:
-    - role: "package_cache"
-      tags: ["required_for_boot"]
-    - role: "hostname"
-      tags: ["required_for_boot"]
-    - role: "network"
-      tags: ["required_for_boot"]
-    - role: "user"
-      tags: ["required_for_boot"]
-    - role: "ssh"
-      tags: ["required_for_boot"]
-    - role: "password_policy"
-      tags: ["required_for_boot"]
-    - role: "locales"
-    - role: "timezone"
-    - role: "wireguard"
-    - role: "gateway"
-    - role: "wg_portal"
-    - role: "pihole"
+- name: "Configure"
+  ansible.builtin.import_playbook: "configure.yml"
