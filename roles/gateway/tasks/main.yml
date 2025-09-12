@@ -5,6 +5,7 @@
     name:
       - "iptables"
       - "iproute2"
+      - "udev"
     state: "present"
 
 - name: "Configure IP forwarding"

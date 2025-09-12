@@ -8,7 +8,7 @@ ENV container docker
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
-        locales systemd avahi-daemon python3 iproute2 ifupdown \
+        locales systemd avahi-daemon python3 iproute2 ifupdown udev \
     && rm -Rf /var/lib/apt/lists/* \
     && rm -Rf /usr/share/doc \
     && rm -Rf /usr/share/man \
@@ -17,10 +17,10 @@ RUN apt-get update \
 # Fix potential UTF-8 errors with ansible-test.
 RUN locale-gen en_US.UTF-8
 
-# Remove unnecessary getty and udev targets that result in high CPU usage when using
+# Remove unnecessary getty target that result in high CPU usage when using
 # multiple containers with Molecule (https://github.com/ansible/molecule/issues/1104)
-RUN rm -f /lib/systemd/system/systemd*udev* \
-  && rm -f /lib/systemd/system/getty.target
+# Keeping the udev because the gateway role depends on that
+RUN rm -f /lib/systemd/system/getty.target
 
 # Mimic Ubuntu OS default boot (for testing)
 RUN systemctl enable avahi-daemon
