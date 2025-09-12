@@ -82,8 +82,8 @@ journalctl -u gateway-direct-mode.service -f
 
 ```bash
 # Verify iptables rules
-iptables -L -n -v
-iptables -t nat -L -n -v
+sudo iptables -L -n -v
+sudo iptables -t nat -L -n -v
 
 # Check WireGuard interface detection
 ip link show | grep wg
