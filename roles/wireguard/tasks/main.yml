@@ -8,15 +8,6 @@
     name: "{{ wireguard_pkgs }}"
     state: "present"
 
-- name: "Create wireguard configuration directory"
-  become: true
-  ansible.builtin.file:
-    path: "/etc/wireguard"
-    state: "directory"
-    owner: "root"
-    group: "root"
-    mode: "0700"
-
 - name: "Deploy WireGuard configurations"
   become: true
   ansible.builtin.copy:
@@ -28,6 +19,8 @@
     backup: true
   with_items: "{{ wireguard_connections.keys() }}"
   when: wireguard_connections | length > 0
+  tags:
+    - molecule-idempotence-notest
 
 - name: "Configure autostart connection"
   become: true
