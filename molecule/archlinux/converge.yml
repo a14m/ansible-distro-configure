@@ -33,3 +33,4 @@
     - role: "docker"
     - role: "podman"
     - role: "ansible"
+    - role: "nginx"

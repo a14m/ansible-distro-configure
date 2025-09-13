@@ -26,5 +26,6 @@
     - role: "timezone"
     - role: "wireguard"
     - role: "gateway"
+    - role: "nginx"
     - role: "wg_portal"
     - role: "pihole"
