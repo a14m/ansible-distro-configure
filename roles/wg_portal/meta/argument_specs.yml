@@ -16,3 +16,7 @@ argument_specs:
         description: "Password hash for wg-portal authentication"
         type: "str"
         default: "{{ ('changeme' | hash('sha256') | hash('sha256'))[:64] }}"
+      wg_portal_by_nginx:
+        description: "Serve wg_portal behind nginx reverse proxy"
+        type: "bool"
+        default: false

@@ -4,3 +4,9 @@
   ansible.builtin.systemd_service:
     name: "wg-portal.service"
     state: "restarted"
+
+- name: "Restart nginx"
+  become: true
+  ansible.builtin.systemd_service:
+    name: "nginx"
+    state: "restarted"
