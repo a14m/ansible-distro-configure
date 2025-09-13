@@ -83,3 +83,29 @@
     group: "wg-portal"
     mode: "0640"
   notify: "Restart wg-portal"
+
+- name: "Create wg-portal nginx configurations"
+  become: true
+  when: wg_portal_by_nginx is defined and wg_portal_by_nginx != ""
+  ansible.builtin.copy:
+    content: |
+      location / {
+        proxy_pass http://127.0.0.1:{{ wg_portal_port }}/;
+      }
+      location /api/connections {
+        proxy_pass http://127.0.0.1:{{ wg_portal_port }}/api/connections;
+      }
+      location /api/status {
+        proxy_pass http://127.0.0.1:{{ wg_portal_port }}/api/status;
+      }
+    dest: "/etc/nginx/conf.d/wg-portal.conf"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+    backup: true
+    # workaround issue: https://github.com/ansible/ansible/issues/9112
+    # ref: https://serverfault.com/a/811520
+    validate: >
+      bash -c 'echo "events { worker_connections 2; } http { server { include %s; } }" > /tmp/nginx.conf;
+        sudo nginx -T -c /tmp/nginx.conf; ec=$?; rm -f /tmp/nginx.conf; exit $ec'
+  notify: "Restart nginx"
