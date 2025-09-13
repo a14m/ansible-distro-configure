@@ -36,6 +36,17 @@ http {
     access_log /var/log/nginx/access.log;
     error_log /var/log/nginx/error.log;
 
+    {% if nginx_server_name | regex_search('\.local$') %}
+    # HTTP server - serve .local domains
+    server {
+        listen 80 default_server;
+        listen [::]:80 default_server;
+
+        server_name {{ nginx_server_name }};
+
+        include /etc/nginx/conf.d/*.conf;
+    }
+    {% else %}
     # HTTP server - redirect to HTTPS
     server {
         listen 80 default_server;
@@ -47,6 +58,7 @@ http {
             return 301 https://$server_name$request_uri;
         }
     }
+    {% endif %}
 
     # HTTPS server
     server {
