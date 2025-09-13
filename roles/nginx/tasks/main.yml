@@ -1,0 +1,120 @@
+---
+- name: "Include OS-specific variables"
+  ansible.builtin.include_vars: "{{ ansible_os_family | lower }}.yml"
+
+- name: "Ensure nginx is installed"
+  become: true
+  ansible.builtin.package:
+    name: "nginx"
+    state: "present"
+
+- name: "Ensure nginx directories exist"
+  become: true
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: "directory"
+    owner: "root"
+    group: "root"
+    mode: "0755"
+  with_items:
+    - "/etc/nginx/conf.d"
+    - "/etc/nginx/modules-enabled"
+    - "/var/log/nginx"
+    - "/etc/ssl/certs"
+
+- name: "Ensure SSL private directory has correct permissions"
+  become: true
+  ansible.builtin.file:
+    path: "/etc/ssl/private"
+    state: "directory"
+    owner: "root"
+    group: "root"
+    mode: "0700"
+
+- name: "Check if SSL certificate exists"
+  become: true
+  ansible.builtin.stat:
+    path: "{{ nginx_ssl_certificate }}"
+  register: ssl_cert_check
+
+- name: "Check if SSL private key exists"
+  become: true
+  ansible.builtin.stat:
+    path: "{{ nginx_ssl_certificate_key }}"
+  register: ssl_key_check
+
+- name: "Generate self-signed SSL certificate"
+  become: true
+  ansible.builtin.command:
+    cmd: >
+      openssl req -x509 -newkey rsa:2048 -days 365 -nodes
+      -keyout "{{ nginx_ssl_certificate_key }}"
+      -out "{{ nginx_ssl_certificate }}"
+      -subj "/CN={{ nginx_server_name }}"
+      -addext "subjectAltName=DNS:{{ nginx_server_name }},DNS:localhost,IP:127.0.0.1"
+  when: not ssl_cert_check.stat.exists or not ssl_key_check.stat.exists
+  changed_when: true
+
+- name: "Set SSL certificate permissions"
+  become: true
+  ansible.builtin.file:
+    path: "{{ nginx_ssl_certificate }}"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+  when: not ssl_cert_check.stat.exists or not ssl_key_check.stat.exists
+
+- name: "Set SSL private key permissions"
+  become: true
+  ansible.builtin.file:
+    path: "{{ nginx_ssl_certificate_key }}"
+    owner: "root"
+    group: "root"
+    mode: "0600"
+  when: not ssl_cert_check.stat.exists or not ssl_key_check.stat.exists
+
+- name: "Create nginx configuration"
+  become: true
+  ansible.builtin.template:
+    src: "nginx.conf.j2"
+    dest: "/etc/nginx/nginx.conf"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+    backup: true
+    validate: "nginx -t -c %s"
+  notify: "Restart nginx"
+
+- name: "Start and enable nginx"
+  become: true
+  ansible.builtin.systemd_service:
+    name: "nginx"
+    state: "started"
+    enabled: true
+
+# Create logrotate configurations
+# Rotate weekly
+# Keep 3 month (12 rotations)
+- name: "Create nginx logrotate configuration"
+  become: true
+  ansible.builtin.copy:
+    content: |
+      /var/log/nginx/*.log {
+        weekly
+        missingok
+        rotate 12
+        compress
+        delaycompress
+        notifempty
+        create 0644 root root
+        postrotate
+          if [ -f /var/run/nginx.pid ]; then
+            kill -USR1 `cat /var/run/nginx.pid`
+          fi
+        endscript
+      }
+    dest: "/etc/logrotate.d/nginx"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+  failed_when: false
