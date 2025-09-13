@@ -61,8 +61,18 @@ hosts = {{ pihole_dhcp_hosts | to_nice_json }}
 domain = {{ pihole_domain }}
 {% endif %}
 
+{% if (pihole_port is defined) and (pihole_port != '')  %}
+port = "{{ pihole_port }}"
+[webserver.tls]
+cert = ""
+{% else %}
+port = "80,443s"
 [webserver.tls]
 cert = "/etc/pihole/tls.pem"
+{% endif %}
+
+[webserver.paths]
+webhome = "/admin/"
 
 [webserver.api]
 pwhash = "{{ pihole_password }}"    # valid double hashed string
