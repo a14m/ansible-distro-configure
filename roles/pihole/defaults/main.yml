@@ -18,3 +18,5 @@ pihole_dhcp_lease_time: ""
 pihole_dhcp_domain: "local"
 pihole_dhcp_hosts: []
 pihole_domain: ""
+pihole_port: "8081"
+pihole_by_nginx: false

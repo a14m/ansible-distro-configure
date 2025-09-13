@@ -64,3 +64,11 @@ argument_specs:
         type: "str"
         description: "The domain name to be configured when the pi is exposed over the internet"
         default: ""
+      pihole_port:
+        type: "str"
+        description: "The port to serve pihole on, when empty use pihole default 80,433"
+        default: "8081"
+      pihole_by_nginx:
+        description: "Serve pihole behind nginx reverse proxy"
+        type: "bool"
+        default: false
