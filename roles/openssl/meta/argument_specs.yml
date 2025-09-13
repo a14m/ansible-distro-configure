@@ -1,0 +1,6 @@
+---
+argument_specs:
+  main:
+    short_description: "Install openssl on Linux distribution"
+    description: "Install openssl on Linux distribution"
+    options: {}
