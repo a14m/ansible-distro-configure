@@ -1,0 +1,6 @@
+---
+- name: "Ensure logrotate is installed"
+  become: true
+  ansible.builtin.package:
+    name: "logrotate"
+    state: "present"
