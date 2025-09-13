@@ -1,0 +1,6 @@
+---
+nginx_server_name: "{{ ansible_hostname }}.local"
+nginx_worker_processes: 2
+nginx_worker_connections: 512
+nginx_ssl_certificate: "/etc/ssl/certs/nginx-selfsigned.crt"
+nginx_ssl_certificate_key: "/etc/ssl/private/nginx-selfsigned.key"

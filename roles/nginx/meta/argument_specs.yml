@@ -1,0 +1,26 @@
+---
+argument_specs:
+  main:
+    short_description: "Minimal nginx reverse proxy"
+    description: "Configure nginx as a reverse proxy with TLS 1.3 and automatic SSL certificate generation"
+    options:
+      nginx_server_name:
+        type: "str"
+        description: "The server name for nginx configuration"
+        default: "{{ ansible_hostname }}.local"
+      nginx_worker_processes:
+        type: "int"
+        description: "Number of nginx worker processes"
+        default: 2
+      nginx_worker_connections:
+        type: "int"
+        description: "Number of worker connections per process"
+        default: 512
+      nginx_ssl_certificate:
+        type: "str"
+        description: "Path to SSL certificate file"
+        default: "/etc/ssl/certs/nginx-selfsigned.crt"
+      nginx_ssl_certificate_key:
+        type: "str"
+        description: "Path to SSL private key file"
+        default: "/etc/ssl/private/nginx-selfsigned.key"
