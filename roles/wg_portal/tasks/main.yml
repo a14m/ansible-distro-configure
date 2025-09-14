@@ -53,6 +53,7 @@
     etype: "group"
     permissions: "rx"
     recursive: true
+    default: true
     state: "present"
 
 - name: "Set ACL mask for /etc/wireguard"
@@ -62,6 +63,7 @@
     etype: "mask"
     permissions: "rx"
     recursive: true
+    default: true
     state: "present"
 
 - name: "Create wg-portal sudoers file"
