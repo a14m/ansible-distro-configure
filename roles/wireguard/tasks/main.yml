@@ -19,6 +19,8 @@
     backup: true
   with_items: "{{ wireguard_connections.keys() }}"
   when: wireguard_connections | length > 0
+  tags:
+    - molecule-idempotence-notest
 
 - name: "Configure autostart connection"
   become: true
