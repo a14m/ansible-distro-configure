@@ -24,6 +24,7 @@
 
 - name: "Configure autostart connection"
   become: true
+  when: wireguard_autostart_connection != ""
   block:
     - name: "Ensure all wireguard connections are stopped"
       ansible.builtin.systemd_service:
@@ -44,4 +45,3 @@
         name: "wg-quick@{{ wireguard_autostart_connection }}"
         enabled: true
         state: "started"
-      when: wireguard_autostart_connection != ""
