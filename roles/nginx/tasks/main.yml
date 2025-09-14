@@ -35,13 +35,13 @@
   become: true
   ansible.builtin.stat:
     path: "{{ nginx_ssl_certificate }}"
-  register: ssl_cert_check
+  register: nginx_ssl_cert_check
 
 - name: "Check if SSL private key exists"
   become: true
   ansible.builtin.stat:
     path: "{{ nginx_ssl_certificate_key }}"
-  register: ssl_key_check
+  register: nginx_ssl_key_check
 
 - name: "Generate self-signed SSL certificate"
   become: true
@@ -52,7 +52,7 @@
       -out "{{ nginx_ssl_certificate }}"
       -subj "/CN={{ nginx_server_name }}"
       -addext "subjectAltName=DNS:{{ nginx_server_name }},DNS:localhost,IP:127.0.0.1"
-  when: not ssl_cert_check.stat.exists or not ssl_key_check.stat.exists
+  when: not nginx_ssl_cert_check.stat.exists or not nginx_ssl_key_check.stat.exists
   changed_when: true
 
 - name: "Set SSL certificate permissions"
@@ -62,7 +62,7 @@
     owner: "root"
     group: "root"
     mode: "0644"
-  when: not ssl_cert_check.stat.exists or not ssl_key_check.stat.exists
+  when: not nginx_ssl_cert_check.stat.exists or not nginx_ssl_key_check.stat.exists
 
 - name: "Set SSL private key permissions"
   become: true
@@ -71,7 +71,7 @@
     owner: "root"
     group: "root"
     mode: "0600"
-  when: not ssl_cert_check.stat.exists or not ssl_key_check.stat.exists
+  when: not nginx_ssl_cert_check.stat.exists or not nginx_ssl_key_check.stat.exists
 
 - name: "Create nginx configuration"
   become: true
