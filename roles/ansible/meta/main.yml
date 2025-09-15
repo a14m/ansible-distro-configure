@@ -3,7 +3,7 @@ dependencies:
   - role: "python"
 galaxy_info:
   author: "a14m"
-  description: "Install ansible and molecule on Linux distributions"
+  description: "Install ansible and molecule using uv on Linux distributions"
   company: "kartoffeln.work GmbH."
   license: "MIT"
   min_ansible_version: "2.18"

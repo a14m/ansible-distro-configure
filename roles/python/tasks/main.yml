@@ -2,85 +2,29 @@
 - name: "Include OS-specific variables"
   ansible.builtin.include_vars: "{{ ansible_os_family | lower }}.yml"
 
-- name: "Install pyenv and pipx"
+- name: "Install uv"
   community.general.homebrew:
-    name:
-      - "pyenv"
-      - "pipx"
+    name: "uv"
     state: "present"
 
-- name: "Add pyenv to shell profile"
+- name: "Add uv to shell profile"
   ansible.builtin.blockinfile:
     path: "{{ ansible_env.HOME }}/.bashrc"
     state: "present"
     prepend_newline: true
     append_newline: true
-    marker: "# ==== {mark} ANSIBLE PYENV CONFIG"
+    marker: "# ==== {mark} ANSIBLE UV PYTHON CONFIG"
     block: |
-      if command -v pyenv 1>/dev/null 2>&1; then
-          export PYENV_ROOT="$HOME/.pyenv"
-          export PATH="$PYENV_ROOT/bin:$PATH"
-          eval "$(pyenv init - bash)"
+      if command -v uv 1>/dev/null 2>&1; then
+        export PATH="$HOME/.local/bin:$PATH"
       fi
-
-- name: "Add pipx to shell profile"
-  ansible.builtin.blockinfile:
-    path: "{{ ansible_env.HOME }}/.bashrc"
-    state: "present"
-    prepend_newline: true
-    append_newline: true
-    marker: "# ==== {mark} ANSIBLE PIPX CONFIG"
-    block: |
-      if command -v pipx 1>/dev/null 2>&1; then
-          export PATH="$PATH:$HOME/.local/bin"
-      fi
-
-- name: "Get installed python versions"
-  ansible.builtin.command:
-    cmd: "pyenv versions --bare"
-  environment:
-    PATH: "/home/linuxbrew/.linuxbrew/bin:{{ ansible_env.PATH }}"
-  register: python_installed_versions
-  changed_when: false
-  failed_when: false
-
-- name: "Remove unwanted python versions"
-  vars:
-    major_minor: "{{ item | regex_replace('^([0-9]+\\.[0-9]+).*', '\\1') }}"
-  ansible.builtin.command:
-    cmd: "pyenv uninstall -f {{ item }}"
-  environment:
-    PATH: "/home/linuxbrew/.linuxbrew/bin:{{ ansible_env.PATH }}"
-  loop: "{{ python_installed_versions.stdout_lines | default([]) }}"
-  when:
-    - python_installed_versions.rc == 0
-    - item is regex('^[0-9]+\.[0-9]+')
-    - item not in python_versions
-    - major_minor not in python_versions
-  changed_when: true
 
 - name: "Install python versions"
   ansible.builtin.command:
-    cmd: "pyenv install {{ item }}"
+    cmd: "uv python install {{ item }}"
   args:
-    creates: "{{ ansible_env.HOME }}/.pyenv/versions/{{ item }}*/bin/python"
+    creates: "{{ ansible_env.HOME }}/.local/share/uv/python/cpython-{{ item }}-*/bin/python"
   environment:
     PATH: "/home/linuxbrew/.linuxbrew/bin:{{ ansible_env.PATH }}"
   with_items: "{{ python_versions }}"
-
-- name: "Set global python version"
-  ansible.builtin.command:
-    cmd: "pyenv global {{ python_global_version }}"
-  environment:
-    PATH: "/home/linuxbrew/.linuxbrew/bin:{{ ansible_env.PATH }}"
-  # The set global version always run and is always changing the system
-  # It's intentional to ignore this task for idempotency test
-  changed_when: true
-  tags:
-    - molecule-idempotence-notest
-
-- name: "Install packaging for community.general.pipx version installs"
-  become: true
-  ansible.builtin.package:
-    name: "{{ python_packaging }}"
-    state: "present"
+  when: python_versions | length > 0

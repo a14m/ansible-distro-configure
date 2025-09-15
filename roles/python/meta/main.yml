@@ -3,7 +3,7 @@ dependencies:
   - role: "homebrew"
 galaxy_info:
   author: "a14m"
-  description: "Install pyenv, pipx and python (versions) on Linux distributions"
+  description: "Install uv and python (versions) on Linux distributions"
   company: "kartoffeln.work GmbH."
   license: "MIT"
   min_ansible_version: "2.18"
