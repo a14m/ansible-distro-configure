@@ -11,6 +11,7 @@
     pkg:
       - "avahi-daemon"
       - "avahi-utils"
+      - "dhcpcd"
     state: "absent"
     autoremove: true
     purge: true
