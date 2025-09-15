@@ -1,7 +1,8 @@
 ---
 network_packages:
-  - "networkmanager"
-  - "bind" # provides dig and nslookup
+  - "systemd-resolved"
+  - "network-manager"
+  - "dnsutils" # provides dig and nslookup
 
 network_enabled_services:
   - "systemd-resolved"
@@ -9,4 +10,3 @@ network_enabled_services:
 
 network_disabled_services:
   - "systemd-networkd"
-  - "systemd-networkd.socket"

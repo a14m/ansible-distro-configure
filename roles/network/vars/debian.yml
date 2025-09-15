@@ -1,6 +1,5 @@
 ---
 network_packages:
-  - "dhcpcd"
   - "systemd-resolved"
   - "network-manager"
   - "dnsutils" # provides dig and nslookup
@@ -10,6 +9,5 @@ network_enabled_services:
   - "NetworkManager"
 
 network_disabled_services:
-  - "dhcpcd"
   - "networking"
   - "systemd-networkd"
