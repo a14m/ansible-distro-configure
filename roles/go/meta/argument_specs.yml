@@ -4,12 +4,8 @@ argument_specs:
     short_description: "Install Go (versions) on Linux distributions"
     description: "Install Go (versions) on Linux distributions"
     options:
-      go_global_version:
-        type: "str"
-        description: "The go global version to use (latest when empty)"
-        default: ""
       go_versions:
         type: "list"
-        description: "The go versions to install (latest when empty)"
+        description: "The extra go versions to install (latest is used as version manager)"
         elements: "str"
         default: []
