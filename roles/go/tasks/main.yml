@@ -1,4 +1,9 @@
 ---
+- name: "Install latest Go via Homebrew"
+  community.general.homebrew:
+    name: "go"
+    state: "present"
+
 - name: "Add Go to shell profile"
   ansible.builtin.blockinfile:
     path: "{{ ansible_env.HOME }}/.bashrc"
@@ -9,66 +14,25 @@
     block: |
       if command -v go 1>/dev/null 2>&1; then
           export PATH="$HOME/go/bin:$PATH"
+          export PATH="$HOME/sdk/*/bin:$PATH"
       fi
 
-- name: "Get installed Go versions"
-  ansible.builtin.shell: |
-    set -o pipefail
-    /home/linuxbrew/.linuxbrew/bin/brew list | grep '^go@' | sed 's/go@//'
+- name: "Install Go version managers"
+  ansible.builtin.command:
+    cmd: "go install golang.org/dl/go{{ item }}@latest"
   args:
-    executable: /bin/bash
-  register: go_installed_versions
-  changed_when: false
-  failed_when: false
-
-- name: "Remove unwanted Go versions"
-  community.general.homebrew:
-    name: "go@{{ item }}"
-    state: "absent"
-  with_items: "{{ go_installed_versions.stdout_lines | default([]) }}"
-  when:
-    - go_installed_versions.rc == 0
-    - item not in go_versions
-
-- name: "Install and configure Go latest"
-  when: go_versions | length == 0
-  block:
-    - name: "Install latest Go"
-      community.general.homebrew:
-        name: "go"
-        state: "present"
-
-    - name: "Set latest Go as global version"
-      community.general.homebrew:
-        name: "go"
-        state: "linked"
-      # The set global version always run and is always changing the system
-      # It's intentional to ignore this task for idempotency test
-      tags:
-        - molecule-idempotence-notest
-
-- name: "Install and configure Go versions"
+    creates: "{{ ansible_env.HOME }}/go/bin/go{{ item }}"
+  environment:
+    PATH: "/home/linuxbrew/.linuxbrew/bin:{{ ansible_env.PATH }}"
+  with_items: "{{ go_versions }}"
   when: go_versions | length > 0
-  block:
-    - name: "Install specific Go versions"
-      community.general.homebrew:
-        name: "go@{{ item }}"
-        state: "present"
-      with_items: "{{ go_versions }}"
 
-    - name: "Unlink existing Go package"
-      community.general.homebrew:
-        name: "go"
-        state: "unlinked"
-      when: go_global_version != ""
-      failed_when: false
-
-    - name: "Set specific Go version as global"
-      community.general.homebrew:
-        name: "go@{{ go_global_version }}"
-        state: "linked"
-      when: go_global_version != ""
-      # The set global version always run and is always changing the system
-      # It's intentional to ignore this task for idempotency test
-      tags:
-        - molecule-idempotence-notest
+- name: "Download and install Go versions"
+  ansible.builtin.command:
+    cmd: "{{ ansible_env.HOME }}/go/bin/go{{ item }} download"
+  args:
+    creates: "{{ ansible_env.HOME }}/sdk/go{{ item }}/bin/go"
+  environment:
+    PATH: "/home/linuxbrew/.linuxbrew/bin:{{ ansible_env.PATH }}"
+  with_items: "{{ go_versions }}"
+  when: go_versions | length > 0
