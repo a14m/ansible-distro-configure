@@ -1,0 +1,26 @@
+---
+argument_specs:
+  main:
+    short_description: "Install and configure Prometheus monitoring system"
+    description: "Install and configure Prometheus monitoring system"
+    options:
+      prometheus_port:
+        description: "Port for Prometheus web interface"
+        type: "int"
+        default: 9090
+      prometheus_retention:
+        description: "Data retention period for Prometheus"
+        type: "str"
+        default: "15d"
+      prometheus_scrape_interval:
+        description: "Global scrape interval for metrics collection"
+        type: "str"
+        default: "15s"
+      prometheus_evaluation_interval:
+        description: "Interval for evaluating rules"
+        type: "str"
+        default: "15s"
+      node_exporter_port:
+        description: "Port for node-exporter metrics endpoint"
+        type: "int"
+        default: 9100

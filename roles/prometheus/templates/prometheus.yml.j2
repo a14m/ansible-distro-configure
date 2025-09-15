@@ -1,0 +1,16 @@
+global:
+  scrape_interval: {{ prometheus_scrape_interval }}
+  evaluation_interval: {{ prometheus_scrape_interval }}
+
+rule_files:
+
+scrape_configs:
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:{{ prometheus_port }}']
+
+  - job_name: 'node'
+    static_configs:
+      - targets: ['localhost:{{ prometheus_node_exporter_port }}']
+    scrape_interval: {{ prometheus_scrape_interval }}
+    metrics_path: /metrics
