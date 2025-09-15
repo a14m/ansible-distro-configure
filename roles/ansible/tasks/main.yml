@@ -6,18 +6,48 @@
       - molecule_version | regex_search('^[0-9]+\\.[0-9]+\\.[0-9]+$') is not none
     msg: "Version must be in major.minor.patch format"
 
-- name: "Install ansible core"
-  ansible.builtin.command:
-    cmd: "uv tool install ansible-core=={{ ansible_core_version }}"
+- name: "Check ansible-core version {{ ansible_core_version }}"
+  ansible.builtin.shell: |
+    set -euo pipefail
+    uv tool list | grep "^ansible-core " | awk '{print $2}' | sed 's/^v//'
   args:
-    creates: "{{ ansible_env.HOME }}/.local/bin/ansible-core"
+    executable: /bin/bash
   environment:
     PATH: "/home/linuxbrew/.linuxbrew/bin:{{ ansible_env.PATH }}"
+  register: ansible_core_installed_version
+  changed_when: false
+  failed_when: false
 
-- name: "Install molecule"
-  ansible.builtin.command:
-    cmd: "uv tool install molecule=={{ molecule_version }} --with 'molecule-plugins[docker,podman]'"
+- name: "Install ansible core version {{ ansible_core_version }}"
+  ansible.builtin.shell: |
+    set -euo pipefail
+    uv tool install ansible-core=={{ ansible_core_version }}
   args:
-    creates: "{{ ansible_env.HOME }}/.local/bin/molecule"
+    executable: /bin/bash
   environment:
     PATH: "/home/linuxbrew/.linuxbrew/bin:{{ ansible_env.PATH }}"
+  changed_when: true
+  when: ansible_core_installed_version.stdout != ansible_core_version
+
+- name: "Check molecule version {{ molecule_version }}"
+  ansible.builtin.shell: |
+    set -euo pipefail
+    uv tool list | grep "^molecule " | awk '{print $2}' | sed 's/^v//'
+  args:
+    executable: /bin/bash
+  environment:
+    PATH: "/home/linuxbrew/.linuxbrew/bin:{{ ansible_env.PATH }}"
+  register: molecule_installed_version
+  changed_when: false
+  failed_when: false
+
+- name: "Install molecule version {{ molecule_version }}"
+  ansible.builtin.shell: |
+    set -euo pipefail
+    uv tool install molecule=={{ molecule_version }} --with 'molecule-plugins[docker,podman]'
+  args:
+    executable: /bin/bash
+  environment:
+    PATH: "/home/linuxbrew/.linuxbrew/bin:{{ ansible_env.PATH }}"
+  changed_when: true
+  when: molecule_installed_version.stdout != molecule_version
