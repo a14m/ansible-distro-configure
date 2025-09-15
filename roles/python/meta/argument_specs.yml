@@ -4,12 +4,8 @@ argument_specs:
     short_description: "Install pyenv, pipx and python (versions) on Linux distributions"
     description: "Install pyenv, pipx and python (versions) on Linux distributions"
     options:
-      python_global_version:
-        type: "str"
-        description: "The pyenv python global version to use, default: system"
-        default: "system"
       python_versions:
         type: "list"
-        description: "The python versions to install"
+        description: "The extra python versions to install (system is used by default when available)"
         elements: "str"
         default: []
