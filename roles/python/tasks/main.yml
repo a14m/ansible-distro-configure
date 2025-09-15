@@ -23,7 +23,7 @@
   ansible.builtin.command:
     cmd: "uv python install {{ item }}"
   args:
-    creates: "{{ ansible_env.HOME }}/.local/share/uv/python/cpython-{{ item }}-*/bin/python"
+    creates: "{{ ansible_env.HOME }}/.local/share/uv/python/cpython-{{ item }}*/bin/python{{ item }}"
   environment:
     PATH: "/home/linuxbrew/.linuxbrew/bin:{{ ansible_env.PATH }}"
   with_items: "{{ python_versions }}"
