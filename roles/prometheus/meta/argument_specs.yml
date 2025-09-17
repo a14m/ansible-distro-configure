@@ -4,6 +4,10 @@ argument_specs:
     short_description: "Install and configure Prometheus monitoring with node exporter"
     description: "Install and configure Prometheus monitoring with node exporter"
     options:
+      prometheus_host:
+        description: "host for Prometheus web interface"
+        type: "str"
+        default: "127.0.0.1"
       prometheus_port:
         description: "Port for Prometheus web interface"
         type: "int"
