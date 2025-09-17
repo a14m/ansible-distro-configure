@@ -45,21 +45,21 @@
   notify: "Restart prometheus"
 
 # NOTE: show systemd configurations using: systemctl cat prometheus
-- name: "Configure prometheus port via environment file"
+- name: "Configure prometheus host/port via environment file"
   become: true
   ansible.builtin.copy:
     content: |
-      PROMETHEUS_ARGS="--web.listen-address=0.0.0.0:{{ prometheus_port }}"
+      PROMETHEUS_ARGS="--web.listen-address={{ prometheus_host }}:{{ prometheus_port }}"
     dest: "/etc/conf.d/prometheus"
     mode: "0644"
   notify: "Restart prometheus"
 
 # NOTE: show systemd configurations using: systemctl cat prometheus-node-exporter
-- name: "Configure node-exporter port via environment file"
+- name: "Configure node-exporter host/port via environment file"
   become: true
   ansible.builtin.copy:
     content: |
-      NODE_EXPORTER_ARGS="--web.listen-address=:{{ prometheus_node_exporter_port }}"
+      NODE_EXPORTER_ARGS="--web.listen-address={{ prometheus_host }}:{{ prometheus_node_exporter_port }}"
     dest: "/etc/conf.d/prometheus-node-exporter"
     mode: "0644"
   notify: "Restart node-exporter"
