@@ -1,4 +1,5 @@
 ---
+prometheus_host: "127.0.0.1"
 prometheus_port: 9090
 prometheus_retention: "15d"
 prometheus_scrape_interval: "15s"
