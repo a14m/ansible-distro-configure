@@ -1,6 +1,12 @@
 ---
-prometheus_host: "127.0.0.1"
+prometheus_host: "localhost"
 prometheus_port: 9090
 prometheus_retention: "15d"
 prometheus_scrape_interval: "15s"
 prometheus_node_exporter_port: 9100
+
+prometheus_targets:
+  - "{{ prometheus_host }}:{{ prometheus_port }}"
+
+prometheus_node_exporter_targets:
+  - "{{ prometheus_host }}:{{ prometheus_node_exporter_port }}"
