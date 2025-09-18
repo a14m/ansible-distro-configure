@@ -29,10 +29,6 @@ password_policy_maxrepeat: 3
 password_policy_maxclassrepeat: 0
 password_policy_gecoscheck: 0
 
-python_versions:
-  - "3.12"
-  - "3.13"
-
 wireguard_autostart_connection: "wg-vpn0"
 wireguard_connections:
   wg-vpn0: |
