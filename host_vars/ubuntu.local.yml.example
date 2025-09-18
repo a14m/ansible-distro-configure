@@ -7,6 +7,12 @@ network_ipv6_address: "fd5c:fd8b:2b8c::203/64"
 network_ipv6_gateway: "fd5c:fd8b:2b8c::1"
 network_ipv6_dns: "fd5c:fd8b:2b8c::1"
 
+python_versions:
+  - "3.13.7"
+  - "3.12.11"
+ansible_core_version: "2.18.7"
+molecule_version: "25.7.0"
+
 wireguard_connections:
   wg-vpn3: |
     [Interface]
