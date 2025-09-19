@@ -33,3 +33,32 @@ wireguard_connections:
 gateway_enabled: true
 gateway_router_interface: "{{ network_interface }}"
 gateway_local_ipv4_subnet: "10.0.0.0/24"
+
+prometheus_host: "localhost"
+prometheus_port: 9090
+prometheus_retention: "15d"
+prometheus_scrape_interval: "15s"
+prometheus_node_exporter_port: 9100
+grafana_port: 3000
+grafana_admin_user: "admin"
+grafana_admin_password: "changeme"
+grafana_database_type: "sqlite3"
+grafana_dashboards:
+  - id: 1860
+    revision: 37
+    name: "node-exporter-full"
+    datasource_mappings:
+      - key: "000000001"
+        value: "prometheus"
+  - id: 3662
+    revision: 2
+    name: "prometheus-overview"
+    datasource_mappings:
+      - key: "${DS_THEMIS}"
+        value: "prometheus"
+  - id: 11074
+    revision: 9
+    name: "node-exporter-prometheus"
+    datasource_mappings:
+      - key: "${DS__VICTORIAMETRICS}"
+        value: "prometheus"
