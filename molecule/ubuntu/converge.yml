@@ -34,3 +34,5 @@
     - role: "podman"
     - role: "ansible"
     - role: "nginx"
+    - role: "prometheus"
+    - role: "grafana"
