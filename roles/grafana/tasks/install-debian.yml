@@ -1,4 +1,10 @@
 ---
+- name: "Ensure sqlite3 installed"
+  become: true
+  ansible.builtin.package:
+    name: "sqlite3"
+    state: "present"
+
 - name: "Download Grafana GPG key"
   become: true
   ansible.builtin.get_url:

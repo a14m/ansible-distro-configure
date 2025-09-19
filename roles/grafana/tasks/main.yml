@@ -47,7 +47,7 @@
     mode: "0640"
   loop:
     - src: "grafana.ini.j2"
-      dest: "/etc/grafana.ini"
+      dest: "{{ grafana_config_file }}"
     - src: "datasources/prometheus.yml.j2"
       dest: "/etc/grafana/provisioning/datasources/prometheus.yml"
     - src: "dashboards/dashboards.yml.j2"
