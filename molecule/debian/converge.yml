@@ -17,6 +17,17 @@
     python_global_version: "3.13"
     python_versions:
       - "3.13"
+    prometheus_host: "localhost"
+    prometheus_port: 9090
+    prometheus_node_exporter_port: 9100
+    grafana_port: 3000
+    grafana_dashboards:
+      - id: 1860
+        revision: 37
+        name: "node-exporter-full"
+        datasource_mappings:
+          - key: "000000001"
+            value: "prometheus"
   roles:
     - role: "hostname"
     - role: "network"
@@ -34,3 +45,5 @@
     - role: "podman"
     - role: "ansible"
     - role: "nginx"
+    - role: "prometheus"
+    - role: "grafana"
