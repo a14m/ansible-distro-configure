@@ -28,3 +28,5 @@
     - role: "nginx"
     - role: "wg_portal"
     - role: "pihole"
+    - role: "prometheus"
+    - role: "grafana"
