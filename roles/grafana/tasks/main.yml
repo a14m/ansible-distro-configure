@@ -56,6 +56,11 @@
 
 - name: "Provision Grafana community dashboards"
   notify: "Restart grafana"
+  # grafana downloaded dashboards are being rewritten after successful download
+  # this is to correct the datasource mapping in the downloaded files
+  # This is why these tasks are not idempotent and can't be.
+  tags:
+    - molecule-idempotence-notest
   block:
     - name: "Download Grafana community dashboards"
       become: true
