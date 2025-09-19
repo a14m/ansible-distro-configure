@@ -1,0 +1,84 @@
+---
+argument_specs:
+  main:
+    short_description: "Install and configure Grafana with datasources and dashboards"
+    description: "Install and configure Grafana monitoring system with Prometheus datasources and community dashboards"
+    options:
+      grafana_port:
+        description: "Port for Grafana web interface"
+        type: "int"
+        default: 3000
+      grafana_admin_user:
+        description: "Grafana admin username"
+        type: "str"
+        default: "admin"
+      grafana_admin_password:
+        description: "Grafana admin password"
+        type: "str"
+        default: "changeme"
+      grafana_database_type:
+        description: "Database type for Grafana"
+        type: "str"
+        default: "sqlite3"
+        choices:
+          - "sqlite3"
+          - "mysql"
+          - "postgres"
+      grafana_datasources:
+        description: "List of datasources to provision"
+        type: "list"
+        elements: "dict"
+        default: []
+        options:
+          name:
+            description: "Name of the datasource"
+            type: "str"
+            required: true
+          uid:
+            description: "Unique identifier for the datasource to be used in dashboard configurations"
+            type: "str"
+            required: true
+          type:
+            description: "Type of datasource"
+            type: "str"
+            default: "prometheus"
+          url:
+            description: "URL of the datasource"
+            type: "str"
+            required: true
+          default:
+            description: "Whether this is the default datasource"
+            type: "bool"
+            default: false
+      grafana_dashboards:
+        description: "List of community dashboards to download and provision"
+        type: "list"
+        elements: "dict"
+        default: []
+        options:
+          id:
+            description: "Grafana.com dashboard ID"
+            type: "int"
+            required: true
+          revision:
+            description: "Dashboard revision number"
+            type: "int"
+            required: true
+          name:
+            description: "Local name for the dashboard file"
+            type: "str"
+            required: true
+          datasource_mappings:
+            description: "List of datasource variable mappings for the dashboard"
+            type: "list"
+            elements: "dict"
+            default: []
+            options:
+              key:
+                description: "Original datasource reference to replace"
+                type: "str"
+                required: true
+              value:
+                description: "Target datasource UID to use"
+                type: "str"
+                required: true

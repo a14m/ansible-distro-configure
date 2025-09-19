@@ -1,0 +1,6 @@
+---
+- name: "Install grafana"
+  become: true
+  ansible.builtin.package:
+    name: "grafana"
+    state: "present"

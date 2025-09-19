@@ -1,0 +1,25 @@
+---
+- name: "Download Grafana GPG key"
+  become: true
+  ansible.builtin.get_url:
+    url: "https://apt.grafana.com/gpg.key"
+    dest: "/etc/apt/trusted.gpg.d/grafana.asc"
+    mode: "0644"
+
+- name: "Add Grafana repository"
+  become: true
+  ansible.builtin.apt_repository:
+    repo: "deb [signed-by=/etc/apt/trusted.gpg.d/grafana.asc] https://apt.grafana.com stable main"
+    state: "present"
+    filename: "grafana"
+
+- name: "Update package cache"
+  become: true
+  ansible.builtin.apt:
+    update_cache: true
+
+- name: "Install grafana"
+  become: true
+  ansible.builtin.package:
+    name: "grafana"
+    state: "present"
