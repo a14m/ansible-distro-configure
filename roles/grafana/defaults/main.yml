@@ -10,22 +10,4 @@ grafana_datasources:
     url: "http://localhost:9090"
     default: true
 
-grafana_dashboards:
-  - id: 1860
-    revision: 37
-    name: "node-exporter-full"
-    datasource_mappings:
-      - key: "000000001"
-        value: "prometheus"
-  - id: 3662
-    revision: 2
-    name: "prometheus-overview"
-    datasource_mappings:
-      - key: "${DS_THEMIS}"
-        value: "prometheus"
-  - id: 11074
-    revision: 9
-    name: "node-exporter-prometheus"
-    datasource_mappings:
-      - key: "${DS__VICTORIAMETRICS}"
-        value: "prometheus"
+grafana_dashboards: []
