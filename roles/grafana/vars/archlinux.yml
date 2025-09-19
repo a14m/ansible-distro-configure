@@ -1,2 +1,3 @@
 ---
 grafana_service_name: "grafana"
+grafana_config_file: "/etc/grafana.ini"
