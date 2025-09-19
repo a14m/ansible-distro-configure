@@ -59,7 +59,10 @@
   become: true
   ansible.builtin.copy:
     content: |
-      NODE_EXPORTER_ARGS="--web.listen-address={{ prometheus_host }}:{{ prometheus_node_exporter_port }}"
+      NODE_EXPORTER_ARGS="
+        --web.listen-address={{ prometheus_host }}:{{ prometheus_node_exporter_port }}
+        --collector.systemd
+      "
     dest: "/etc/conf.d/prometheus-node-exporter"
     mode: "0644"
   notify: "Restart node-exporter"
