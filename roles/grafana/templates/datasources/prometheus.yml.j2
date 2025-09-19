@@ -1,0 +1,12 @@
+apiVersion: 1
+
+datasources:
+{% for ds in grafana_datasources %}
+  - name: "{{ ds.name }}"
+    type: "{{ ds.type | default('prometheus') }}"
+    uid: "{{ ds.uid }}"
+    access: proxy
+    url: "{{ ds.url }}"
+    isDefault: {{ ds.default | default(false) }}
+    editable: false
+{% endfor %}
