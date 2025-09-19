@@ -1,4 +1,7 @@
 ---
+- name: "Include OS-specific variables"
+  ansible.builtin.include_vars: "{{ ansible_distribution | lower }}.yml"
+
 - name: "Create prometheus group"
   become: true
   ansible.builtin.group:
@@ -50,7 +53,7 @@
   ansible.builtin.copy:
     content: |
       PROMETHEUS_ARGS="--web.listen-address={{ prometheus_host }}:{{ prometheus_port }}"
-    dest: "/etc/conf.d/prometheus"
+    dest: "{{ prometheus_env_file }}"
     mode: "0644"
   notify: "Restart prometheus"
 
@@ -63,7 +66,7 @@
         --web.listen-address={{ prometheus_host }}:{{ prometheus_node_exporter_port }}
         --collector.systemd
       "
-    dest: "/etc/conf.d/prometheus-node-exporter"
+    dest: "{{ prometheus_node_exporter_env_file }}"
     mode: "0644"
   notify: "Restart node-exporter"
 
