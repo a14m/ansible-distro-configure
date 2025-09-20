@@ -21,7 +21,7 @@
 - name: "Install ansible core version {{ ansible_core_version }}"
   ansible.builtin.shell: |
     set -euo pipefail
-    uv tool install ansible-core=={{ ansible_core_version }}
+    uv tool install ansible-core=={{ ansible_core_version }} --force
   args:
     executable: /bin/bash
   environment:
@@ -44,7 +44,7 @@
 - name: "Install molecule version {{ molecule_version }}"
   ansible.builtin.shell: |
     set -euo pipefail
-    uv tool install molecule=={{ molecule_version }} --with 'molecule-plugins[docker,podman]'
+    uv tool install molecule=={{ molecule_version }} --with 'molecule-plugins[docker,podman]' --force
   args:
     executable: /bin/bash
   environment:
