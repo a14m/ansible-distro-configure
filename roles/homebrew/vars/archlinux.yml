@@ -1,5 +1,0 @@
----
-homebrew_dependencies:
-  - base-devel
-  - curl
-  - git
