@@ -1,10 +1,8 @@
 ---
-dependencies:
-  - role: "curl"
-  - role: "git"
+dependencies: []
 galaxy_info:
   author: "a14m"
-  description: "Install homebrew package manager on Linux distributions"
+  description: "Install git"
   company: "kartoffeln.work GmbH."
   license: "MIT"
   min_ansible_version: "2.18"
