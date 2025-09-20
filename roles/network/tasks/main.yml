@@ -27,14 +27,14 @@
     name: "{{ item }}"
     enabled: true
     state: "started"
-  with_items: "{{ network_enabled_services }}"
+  loop: "{{ network_enabled_services }}"
   when: not ansible_is_chroot
 
 - name: "(chroot): Ensure network enabled services are enabled"
   ansible.builtin.command:
     cmd: "systemctl enable {{ item }}"
   changed_when: true
-  with_items: "{{ network_enabled_services }}"
+  loop: "{{ network_enabled_services }}"
   when: ansible_is_chroot
   # noqa: command-instead-of-module module doesn't work inside chroot
 
@@ -44,14 +44,14 @@
     name: "{{ item }}"
     enabled: false
     state: "stopped"
-  with_items: "{{ network_disabled_services }}"
+  loop: "{{ network_disabled_services }}"
   when: not ansible_is_chroot
 
 - name: "(chroot): Ensure network disabled services are disabled"
   ansible.builtin.command:
     cmd: "systemctl disable {{ item }}"
   changed_when: true
-  with_items: "{{ network_disabled_services }}"
+  loop: "{{ network_disabled_services }}"
   when: ansible_is_chroot
   # noqa: command-instead-of-module module doesn't work inside chroot
 

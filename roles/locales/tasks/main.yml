@@ -18,7 +18,7 @@
     that:
       - "item in (locales_content.content | b64decode)"
     fail_msg: "Locale '{{ item }}' not found in /etc/locale.gen."
-  with_items: "{{ locales }}"
+  loop: "{{ locales }}"
 
 - name: "Check if required locales are generated"
   ansible.builtin.shell: |
@@ -39,7 +39,7 @@
         mode: "0644"
         regexp: "^#{{ item }}"
         line: "{{ item }}"
-      with_items: "{{ locales }}"
+      loop: "{{ locales }}"
 
     - name: "Generate locales"
       ansible.builtin.command:

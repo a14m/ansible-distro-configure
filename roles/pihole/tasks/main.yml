@@ -17,7 +17,7 @@
     owner: "pihole"
     group: "pihole"
     mode: "0755"
-  with_items:
+  loop:
     - "/etc/pihole"
     - "/var/log/pihole"
 
