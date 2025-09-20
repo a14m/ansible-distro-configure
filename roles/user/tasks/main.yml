@@ -8,7 +8,7 @@
   ansible.builtin.group:
     name: "{{ item }}"
     state: "present"
-  with_items: "{{ user_groups }}"
+  loop: "{{ user_groups }}"
 
 - name: "Create user: {{ username }}"
   # noqa var-naming[no-role-prefix] username is more understandable than user_name

@@ -25,7 +25,7 @@
     owner: "prometheus"
     group: "prometheus"
     mode: "0755"
-  with_items:
+  loop:
     - "/etc/prometheus"
     - "/var/lib/prometheus"
 
@@ -76,6 +76,6 @@
     name: "{{ item }}"
     state: "started"
     enabled: true
-  with_items:
+  loop:
     - "prometheus"
     - "prometheus-node-exporter"

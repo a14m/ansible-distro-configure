@@ -24,7 +24,7 @@
     creates: "{{ ansible_env.HOME }}/go/bin/go{{ item }}"
   environment:
     PATH: "/home/linuxbrew/.linuxbrew/bin:{{ ansible_env.PATH }}"
-  with_items: "{{ go_versions }}"
+  loop: "{{ go_versions }}"
   when: go_versions | length > 0
 
 - name: "Download and install Go versions"
@@ -34,5 +34,5 @@
     creates: "{{ ansible_env.HOME }}/sdk/go{{ item }}/bin/go"
   environment:
     PATH: "/home/linuxbrew/.linuxbrew/bin:{{ ansible_env.PATH }}"
-  with_items: "{{ go_versions }}"
+  loop: "{{ go_versions }}"
   when: go_versions | length > 0

@@ -17,7 +17,7 @@
     group: "root"
     mode: "0600"
     backup: true
-  with_items: "{{ wireguard_connections.keys() }}"
+  loop: "{{ wireguard_connections.keys() }}"
   when: wireguard_connections | length > 0
   tags:
     - molecule-idempotence-notest
@@ -31,12 +31,12 @@
         name: "wg-quick@{{ item }}"
         enabled: false
         state: "stopped"
-      with_items: "{{ wireguard_connections.keys() | list }}"
+      loop: "{{ wireguard_connections.keys() | list }}"
 
     - name: "Ensure all wireguard interfaces are down"
       ansible.builtin.command:
         cmd: "wg-quick down {{ item }}"
-      with_items: "{{ wireguard_connections.keys() | list }}"
+      loop: "{{ wireguard_connections.keys() | list }}"
       changed_when: false
       failed_when: false
 
