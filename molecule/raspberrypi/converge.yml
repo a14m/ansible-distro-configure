@@ -16,6 +16,7 @@
     wireguard_autostart_connection: ""
     gateway_enabled: true
     gateway_local_ipv4_subnet: "10.0.0.0/24"
+    gateway_router_interface: "eth0"
     grafana_dashboards:
       - id: 1860
         revision: 37
