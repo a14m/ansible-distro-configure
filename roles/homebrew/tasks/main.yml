@@ -1,7 +1,4 @@
 ---
-- name: "Include OS-specific variables"
-  ansible.builtin.include_vars: "{{ ansible_os_family | lower }}.yml"
-
 - name: "Check if homebrew is already installed"
   ansible.builtin.stat:
     path: "/home/linuxbrew/.linuxbrew/bin/brew"
@@ -10,13 +7,6 @@
 - name: "Install homebrew"
   when: not homebrew_binary_check.stat.exists
   block:
-    - name: "Install homebrew dependencies"
-      become: true
-      ansible.builtin.package:
-        name: "{{ item }}"
-        state: "present"
-      loop: "{{ homebrew_dependencies }}"
-
     - name: "Create linuxbrew directory"
       become: true
       ansible.builtin.file:
