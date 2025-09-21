@@ -1,0 +1,12 @@
+---
+- name: "Install gnome packages"
+  become: true
+  ansible.builtin.package:
+    name: "{{ gnome_packages }}"
+    state: "present"
+
+- name: "Enable GDM display manager"
+  become: true
+  ansible.builtin.systemd:
+    name: "gdm3"
+    enabled: true
