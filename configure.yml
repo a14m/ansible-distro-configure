@@ -1,8 +1,22 @@
 ---
-- name: "Dev machines configure"
+- name: "Archlinux configure"
   gather_facts: true
   hosts:
     - archlinux.local
+  roles:
+    - role: "locales"
+    - role: "timezone"
+    - role: "wireguard"
+    - role: "homebrew"
+    - role: "python"
+    - role: "go"
+    - role: "docker"
+    - role: "podman"
+    - role: "ansible"
+
+- name: "Ubuntu configure"
+  gather_facts: true
+  hosts:
     - ubuntu.local
   roles:
     - role: "locales"
@@ -14,6 +28,7 @@
     - role: "docker"
     - role: "podman"
     - role: "ansible"
+    - role: "gnome"
 
 - name: "Raspberry Pi configure"
   gather_facts: true
