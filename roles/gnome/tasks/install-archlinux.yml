@@ -10,3 +10,19 @@
   ansible.builtin.systemd:
     name: "gdm"
     enabled: true
+
+- name: "Enable polkit service"
+  become: true
+  ansible.builtin.systemd:
+    name: "polkit"
+    enabled: true
+
+- name: "Configure polkit admin rule for sudo group"
+  become: true
+  ansible.builtin.copy:
+    dest: "/etc/polkit-1/rules.d/50-default.rules"
+    mode: "0644"
+    content: |
+      polkit.addAdminRule(function(action, subject) {
+          return ["unix-group:sudo"];
+      });

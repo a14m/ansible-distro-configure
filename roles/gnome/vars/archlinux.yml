@@ -2,3 +2,5 @@
 gnome_packages:
   - "gnome"
   - "gdm"
+  - "polkit"
+  - "polkit-gnome"
