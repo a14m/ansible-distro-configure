@@ -9,6 +9,6 @@
 
 - name: "Enable GDM display manager"
   become: true
-  ansible.builtin.systemd:
+  ansible.builtin.systemd_service:
     name: "gdm3"
     enabled: true
