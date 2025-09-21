@@ -1,6 +1,6 @@
 # Based on the amazing work of geerlingguy <3
 # FROM docker.io/geerlingguy/docker-debian12-ansible
-FROM docker.io/library/debian:12.11
+FROM docker.io/library/debian:12.12
 
 ARG DEBIAN_FRONTEND=noninteractive
 
@@ -8,7 +8,7 @@ ENV container docker
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
-        systemd python3 avahi-daemon iproute2 ifupdown udev \
+        systemd python3 avahi-daemon dhcpcd iproute2 ifupdown udev \
     && rm -Rf /var/lib/apt/lists/* \
     && rm -Rf /usr/share/doc \
     && rm -Rf /usr/share/man \
@@ -16,7 +16,7 @@ RUN apt-get update \
 
 RUN rm -f /lib/systemd/system/multi-user.target.wants/getty.target
 
-# Mimic Raspberry OS default boot (for testing)
+# Mimic Debian OS default boot (for testing)
 RUN systemctl enable avahi-daemon \
     && touch /etc/locale.gen
 
