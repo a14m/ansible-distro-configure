@@ -7,13 +7,13 @@
 
 - name: "Enable GDM display manager"
   become: true
-  ansible.builtin.systemd:
+  ansible.builtin.systemd_service:
     name: "gdm"
     enabled: true
 
 - name: "Enable polkit service"
   become: true
-  ansible.builtin.systemd:
+  ansible.builtin.systemd_service:
     name: "polkit"
     enabled: true
 
