@@ -23,6 +23,7 @@
   become: true
   ansible.builtin.apt:
     update_cache: true
+  changed_when: false
 
 - name: "Install grafana"
   become: true
