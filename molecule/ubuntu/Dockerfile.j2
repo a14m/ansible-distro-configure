@@ -1,6 +1,6 @@
 # Based on the amazing work of geerlingguy <3
 # FROM docker.io/geerlingguy/docker-ubuntu2404-ansible
-FROM docker.io/library/ubuntu:noble-20250805
+FROM docker.io/library/ubuntu:noble-20250910
 
 ARG DEBIAN_FRONTEND=noninteractive
 
@@ -8,7 +8,7 @@ ENV container docker
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
-        locales systemd avahi-daemon python3 iproute2 ifupdown udev \
+        locales systemd avahi-daemon dhcpcd python3 iproute2 ifupdown udev \
     && rm -Rf /var/lib/apt/lists/* \
     && rm -Rf /usr/share/doc \
     && rm -Rf /usr/share/man \
