@@ -16,7 +16,7 @@
     owner: "root"
     group: "root"
     mode: "0755"
-  with_items:
+  loop:
     - "/etc/nginx/conf.d"
     - "/etc/nginx/modules-enabled"
     - "/var/log/nginx"
