@@ -5,10 +5,6 @@
     pkg: "{{ network_packages }}"
     state: "present"
 
-- name: "Collect facts about installed packages"
-  ansible.builtin.package_facts:
-    manager: "apt"
-
 - name: "Ensure avahi/dhcpcd packages are removed"
   become: true
   ansible.builtin.apt:
@@ -19,7 +15,3 @@
     state: "absent"
     autoremove: true
     purge: true
-  when: >
-    'avahi-daemon' in ansible_facts.packages or
-    'avahi-utils' in ansible_facts.packages or
-    'dhcpcd' in ansible_facts.packages
