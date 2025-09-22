@@ -37,3 +37,4 @@
     - role: "nginx"
     - role: "prometheus"
     - role: "grafana"
+    - role: "gnome"
