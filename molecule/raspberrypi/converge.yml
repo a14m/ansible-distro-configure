@@ -39,3 +39,4 @@
     - role: "pihole"
     - role: "prometheus"
     - role: "grafana"
+    - role: "gnome"
