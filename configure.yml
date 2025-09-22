@@ -13,6 +13,7 @@
     - role: "docker"
     - role: "podman"
     - role: "ansible"
+    - role: "rsync"
 
 - name: "Ubuntu configure"
   gather_facts: true
@@ -29,6 +30,7 @@
     - role: "podman"
     - role: "ansible"
     - role: "gnome"
+    - role: "rsync"
 
 - name: "Raspberry Pi configure"
   gather_facts: true
