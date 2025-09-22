@@ -3,7 +3,7 @@ gnome_packages:
   - "gnome-core"
   - "gdm3"
   - "network-manager-gnome"
-  - "firefox-esr"
+  - "firefox"
   - "gnome-software"
   - "packagekit"
   - "appstream"
