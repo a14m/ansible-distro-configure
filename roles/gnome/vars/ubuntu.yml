@@ -1,9 +1,0 @@
----
-gnome_packages:
-  - "gnome-core"
-  - "gdm3"
-  - "network-manager-gnome"
-  - "firefox"
-  - "gnome-software"
-  - "packagekit"
-  - "appstream"
