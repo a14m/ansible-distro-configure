@@ -1,5 +1,7 @@
 ---
 gnome_packages:
-  - "gnome-core"
+  - "vanilla-gnome-desktop"
+  - "vanilla-gnome-default-settings"
   - "gdm3"
   - "gnome-software"
+  - "gnome-tweaks"
