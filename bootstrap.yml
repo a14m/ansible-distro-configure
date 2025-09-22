@@ -1,5 +1,5 @@
 ---
-- name: "Dev machines bootstrap"
+- name: "Local machine bootstrap"
   gather_facts: true
   tags: ["required_for_boot"]
   hosts:
