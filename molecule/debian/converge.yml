@@ -49,3 +49,4 @@
     - role: "prometheus"
     - role: "grafana"
     - role: "gnome"
+    - role: "rsync"
