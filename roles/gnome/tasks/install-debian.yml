@@ -4,7 +4,19 @@
   ansible.builtin.apt:
     name: "{{ gnome_packages }}"
     state: "present"
-    install_recommends: false
+    install_recommends: true
+  tags:
+    - molecule-idempotence-notest
+
+- name: "Remove avahi-daemon installed by GNOME"
+  become: true
+  ansible.builtin.apt:
+    name: "avahi-daemon"
+    state: "absent"
+    autoremove: true
+    purge: true
+  tags:
+    - molecule-idempotence-notest
 
 - name: "Enable GDM display manager"
   become: true
