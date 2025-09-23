@@ -12,7 +12,7 @@ pihole_interface: "{{ network_interface }}"
 pihole_dhcp_enabled: true
 pihole_dhcp_start: "10.0.0.100"
 pihole_dhcp_end: "10.0.0.199"
-pihole_dhcp_router: "10.0.0.200"
+pihole_dhcp_router: "{{ network_ipv4_address }}"
 pihole_dhcp_hosts:
   - "ff:ff:ff:ff:ff:fe, 10.0.0.252,TV"
   - "ff:ff:ff:ff:ff:ff, 10.0.0.253,Printer"

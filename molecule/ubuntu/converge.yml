@@ -14,7 +14,6 @@
     wireguard_autostart_connection: ""
     gateway_enabled: false
     gateway_local_ipv4_subnet: "10.0.0.0/24"
-    gateway_router_interface: "eth0"
     python_global_version: "3.13"
     python_versions:
       - "3.13"

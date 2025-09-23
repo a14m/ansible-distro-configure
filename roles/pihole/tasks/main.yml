@@ -4,6 +4,17 @@
     msg: "Pihole role cannot work when network_ipv4_dns or network_ipv6_dns are defined"
   when: network_ipv4_dns is defined or network_ipv6_dns is defined
 
+- name: "Validate pihole_dhcp_* params"
+  ansible.builtin.assert:
+    that:
+      - pihole_dhcp_start is defined
+      - pihole_dhcp_end is defined
+      - pihole_dhcp_router is defined
+      - pihole_dhcp_lease_time is defined
+      - pihole_dhcp_domain is defined
+      - pihole_dhcp_hosts is defined
+  when: pihole_dhcp_enabled
+
 - name: "Crete Pi-hole user"
   ansible.builtin.user:
     name: "pihole"

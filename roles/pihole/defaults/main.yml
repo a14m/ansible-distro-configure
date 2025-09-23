@@ -8,12 +8,9 @@ pihole_dns:
   # Google
   - "8.8.8.8"
   - "2001:4860:4860:0:0:0:0:8888"
-pihole_interface: "{{ ansible_default_ipv4.interface }}"
+pihole_interface: "eth0"
 pihole_dns_blocking_enabled: true
 pihole_dhcp_enabled: false
-pihole_dhcp_start: "{{ ansible_default_ipv4.network | regex_replace('\\.0$', '.100') }}"
-pihole_dhcp_end: "{{ ansible_default_ipv4.network | regex_replace('\\.0$', '.199') }}"
-pihole_dhcp_router: "{{ ansible_default_ipv4.address }}"
 pihole_dhcp_lease_time: ""
 pihole_dhcp_domain: "local"
 pihole_dhcp_hosts: []
