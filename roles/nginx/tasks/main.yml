@@ -20,16 +20,6 @@
     - "/etc/nginx/conf.d"
     - "/etc/nginx/modules-enabled"
     - "/var/log/nginx"
-    - "/etc/ssl/certs"
-
-- name: "Ensure SSL private directory has correct permissions"
-  become: true
-  ansible.builtin.file:
-    path: "/etc/ssl/private"
-    state: "directory"
-    owner: "root"
-    group: "root"
-    mode: "0700"
 
 - name: "Check if SSL certificate exists"
   become: true
