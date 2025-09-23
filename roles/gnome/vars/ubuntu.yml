@@ -1,6 +1,7 @@
 ---
 gnome_packages:
-  - "task-gnome-desktop"
+  - "vanilla-gnome-desktop"
+  - "vanilla-gnome-default-settings"
   - "gdm3"
   - "gnome-software"
   - "gnome-tweaks"
