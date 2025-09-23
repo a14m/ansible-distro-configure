@@ -16,5 +16,5 @@ argument_specs:
       gateway_router_interface:
         description: "Default route interface for direct routing mode"
         type: "str"
-        default: "{{ ansible_default_ipv4.interface }}"
+        default: "eth0"
         required: false

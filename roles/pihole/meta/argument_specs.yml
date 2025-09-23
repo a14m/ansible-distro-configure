@@ -26,7 +26,7 @@ argument_specs:
       pihole_interface:
         type: "str"
         description: "The interface to bind the pi-hole on"
-        default: "{{ ansible_default_ipv4.interface }}"
+        default: "eth0"
       pihole_dns_blocking_enabled:
         type: "bool"
         description: "The boolean flag to toggle DNS blocking"
@@ -38,15 +38,12 @@ argument_specs:
       pihole_dhcp_start:
         type: "str"
         description: "The dhcp start address"
-        default: "{{ ansible_default_ipv4.network }}.100"
       pihole_dhcp_end:
         type: "str"
         description: "The dhcp end address"
-        default: "{{ ansible_default_ipv4.network }}.199"
       pihole_dhcp_router:
         type: "str"
         description: "The dhcp server router (gateway) address"
-        default: "{{ ansible_default_ipv4.address }}"
       pihole_dhcp_lease_time:
         type: "str"
         description: "The dhcp lease time string ex. ('45m', '1h', '2d', '1w') empty defaults to dnsmasq default"
