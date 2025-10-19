@@ -2,17 +2,24 @@
 - name: "Include OS-specific variables"
   ansible.builtin.include_vars: "{{ ansible_os_family | lower }}.yml"
 
+- name: "Check if uv binary exists"
+  ansible.builtin.stat:
+    path: "{{ ansible_env.HOME }}/.local/bin/uv"
+  register: python_uv_binary
+
 - name: "Download uv installer"
   ansible.builtin.get_url:
     url: "https://astral.sh/uv/install.sh"
     dest: "/tmp/install_uv.sh"
     mode: "0755"
+  when: not python_uv_binary.stat.exists
 
 - name: "Run uv installer"
   ansible.builtin.command:
     cmd: "/tmp/install_uv.sh"
   args:
     creates: "{{ ansible_env.HOME }}/.local/bin/uv"
+  when: not python_uv_binary.stat.exists
 
 - name: "Add uv to shell profile"
   ansible.builtin.blockinfile:
