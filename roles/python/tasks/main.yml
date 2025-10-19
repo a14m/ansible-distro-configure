@@ -2,10 +2,17 @@
 - name: "Include OS-specific variables"
   ansible.builtin.include_vars: "{{ ansible_os_family | lower }}.yml"
 
-- name: "Install uv"
-  community.general.homebrew:
-    name: "uv"
-    state: "present"
+- name: "Download uv installer"
+  ansible.builtin.get_url:
+    url: "https://astral.sh/uv/install.sh"
+    dest: "/tmp/install_uv.sh"
+    mode: "0755"
+
+- name: "Run uv installer"
+  ansible.builtin.command:
+    cmd: "/tmp/install_uv.sh"
+  args:
+    creates: "{{ ansible_env.HOME }}/.local/bin/uv"
 
 - name: "Add uv to shell profile"
   ansible.builtin.blockinfile:
@@ -24,7 +31,5 @@
     cmd: "uv python install {{ item }}"
   args:
     creates: "{{ ansible_env.HOME }}/.local/share/uv/python/cpython-{{ item }}*/bin/python{{ item }}"
-  environment:
-    PATH: "/home/linuxbrew/.linuxbrew/bin:{{ ansible_env.PATH }}"
   loop: "{{ python_versions }}"
   when: python_versions | length > 0

@@ -1,6 +1,7 @@
 ---
 dependencies:
-  - role: "homebrew"
+  - role: "bash"
+  - role: "curl"
 galaxy_info:
   author: "a14m"
   description: "Install uv and python (versions) on Linux distributions"

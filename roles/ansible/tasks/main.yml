@@ -12,8 +12,6 @@
     uv tool list | grep "^ansible-core " | awk '{print $2}' | sed 's/^v//'
   args:
     executable: /bin/bash
-  environment:
-    PATH: "/home/linuxbrew/.linuxbrew/bin:{{ ansible_env.PATH }}"
   register: ansible_core_installed_version
   changed_when: false
   failed_when: false
@@ -24,8 +22,6 @@
     uv tool install ansible-core=={{ ansible_core_version }} --force
   args:
     executable: /bin/bash
-  environment:
-    PATH: "/home/linuxbrew/.linuxbrew/bin:{{ ansible_env.PATH }}"
   changed_when: true
   when: ansible_core_installed_version.stdout != ansible_core_version
 
@@ -35,8 +31,6 @@
     uv tool list | grep "^molecule " | awk '{print $2}' | sed 's/^v//'
   args:
     executable: /bin/bash
-  environment:
-    PATH: "/home/linuxbrew/.linuxbrew/bin:{{ ansible_env.PATH }}"
   register: molecule_installed_version
   changed_when: false
   failed_when: false
@@ -47,7 +41,5 @@
     uv tool install molecule=={{ molecule_version }} --with 'molecule-plugins[docker,podman]' --force
   args:
     executable: /bin/bash
-  environment:
-    PATH: "/home/linuxbrew/.linuxbrew/bin:{{ ansible_env.PATH }}"
   changed_when: true
   when: molecule_installed_version.stdout != molecule_version
