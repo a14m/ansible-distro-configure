@@ -45,11 +45,17 @@
   tags:
     - molecule-idempotence-notest
 
+- name: "Check if pihole binary exists"
+  ansible.builtin.stat:
+    path: "/usr/local/bin/pihole"
+  register: pihole_binary
+
 - name: "Download Pi-hole installer"
   ansible.builtin.get_url:
     url: "https://install.pi-hole.net"
     dest: "/tmp/install_pihole.sh"
     mode: "0755"
+  when: not pihole_binary.stat.exists
 
 - name: "Run Pi-hole installer"
   ansible.builtin.command:
@@ -59,6 +65,7 @@
     PIHOLE_SKIP_OS_CHECK: "true"
   args:
     creates: "/usr/local/bin/pihole"
+  when: not pihole_binary.stat.exists
 
 - name: "Show install output"
   ansible.builtin.debug:
