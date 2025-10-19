@@ -60,32 +60,12 @@ To switch the default version:
 
 The symlinks will be updated to point to the new default versions.
 
-## Manual Cleanup
-
-This role does not automatically remove unused versions. To manually clean up old installations:
-
-### List installed versions
-
-```bash
-pipx list --short
-```
-
-### Remove specific versions
-
-```bash
-# Remove ansible-core versions
-pipx uninstall ansible-core2.18.0
-
-# Remove molecule versions
-pipx uninstall molecule25.7.0
-```
-
 ## Requirements
 
-- pipx must be installed and available at `/home/linuxbrew/.linuxbrew/bin/pipx`
-- The `community.general` Ansible collection for the pipx module
+- `uv`
+- `python`
 
-These requirements are satisfied with the `homebrew` and `python` roles (added as dependencies)
+These are installed via `python` role
 
 ## Example Playbook
 
