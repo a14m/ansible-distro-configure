@@ -4,3 +4,14 @@
   ansible.builtin.package:
     name: "bash"
     state: "present"
+
+- name: "Ensure .bashrc/.profile exists"
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: "touch"
+    mode: "0644"
+    modification_time: "preserve"
+    access_time: "preserve"
+  loop:
+    - "{{ ansible_env.HOME }}/.bashrc"
+    - "{{ ansible_env.HOME }}/.profile"
