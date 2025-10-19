@@ -1,8 +1,31 @@
 ---
-- name: "Install latest Go via Homebrew"
-  community.general.homebrew:
-    name: "go"
-    state: "present"
+- name: "Check installed go versions"
+  ansible.builtin.command:
+    cmd: "go version"
+  register: go_installed_version
+  changed_when: false
+  failed_when: false
+
+- name: "Install go"
+  when: go_version not in go_installed_version.stdout
+  block:
+    - name: "Set go facts"
+      ansible.builtin.set_fact:
+        go_arch: "{{ 'amd64' if ansible_architecture == 'x86_64' else 'arm64' }}"
+        go_platform: "{{ ansible_system | lower }}"
+
+    - name: "Download Go"
+      ansible.builtin.get_url:
+        url: "https://dl.google.com/go/go{{ go_version }}.{{ go_platform }}-{{ go_arch }}.tar.gz"
+        dest: "/tmp/go.tar.gz"
+        mode: "0644"
+
+    - name: "Unarchive Go"
+      become: true
+      ansible.builtin.unarchive:
+        src: "/tmp/go.tar.gz"
+        dest: "/usr/local"
+        remote_src: true
 
 - name: "Add Go to shell profile"
   ansible.builtin.blockinfile:
@@ -13,26 +36,6 @@
     marker: "# ==== {mark} ANSIBLE GO CONFIG"
     block: |
       if command -v go 1>/dev/null 2>&1; then
-          export PATH="$HOME/go/bin:$PATH"
-          export PATH="$HOME/sdk/*/bin:$PATH"
+        export PATH="$PATH:/usr/local/go/bin"
+        export PATH="$HOME/go/bin:$PATH"
       fi
-
-- name: "Install Go version managers"
-  ansible.builtin.command:
-    cmd: "go install golang.org/dl/go{{ item }}@latest"
-  args:
-    creates: "{{ ansible_env.HOME }}/go/bin/go{{ item }}"
-  environment:
-    PATH: "/home/linuxbrew/.linuxbrew/bin:{{ ansible_env.PATH }}"
-  loop: "{{ go_versions }}"
-  when: go_versions | length > 0
-
-- name: "Download and install Go versions"
-  ansible.builtin.command:
-    cmd: "{{ ansible_env.HOME }}/go/bin/go{{ item }} download"
-  args:
-    creates: "{{ ansible_env.HOME }}/sdk/go{{ item }}/bin/go"
-  environment:
-    PATH: "/home/linuxbrew/.linuxbrew/bin:{{ ansible_env.PATH }}"
-  loop: "{{ go_versions }}"
-  when: go_versions | length > 0
