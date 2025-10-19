@@ -1,11 +1,10 @@
 ---
 argument_specs:
   main:
-    short_description: "Install Go (versions) on Linux distributions"
-    description: "Install Go (versions) on Linux distributions"
+    short_description: "Install Go on Linux distributions"
+    description: "Install Go on Linux distributions"
     options:
-      go_versions:
-        type: "list"
-        description: "The extra go versions to install (latest is used as version manager)"
-        elements: "str"
-        default: []
+      go_version:
+        type: "str"
+        description: "Default go version to install"
+        default: "1.25.3"
