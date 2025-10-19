@@ -2,6 +2,8 @@
 - name: Converge
   hosts: debian
   gather_facts: true
+  environment:
+    PATH: "{{ ansible_env.HOME }}/.local/bin:{{ ansible_env.PATH }}"
   vars:
     ansible_become_method: su
     user_public_keys:
