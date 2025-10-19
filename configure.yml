@@ -3,6 +3,8 @@
   gather_facts: true
   hosts:
     - archlinux.local
+  environment:
+    PATH: "{{ ansible_env.HOME }}/.local/bin:{{ ansible_env.PATH }}"
   roles:
     - role: "locales"
     - role: "timezone"
@@ -18,6 +20,8 @@
   gather_facts: true
   hosts:
     - ubuntu.local
+  environment:
+    PATH: "{{ ansible_env.HOME }}/.local/bin:{{ ansible_env.PATH }}"
   roles:
     - role: "locales"
     - role: "timezone"
