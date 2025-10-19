@@ -1,6 +1,5 @@
 ---
 dependencies:
-  - role: "homebrew"
   - role: "bash"
 galaxy_info:
   author: "a14m"
