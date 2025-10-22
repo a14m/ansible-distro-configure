@@ -1,4 +1,4 @@
 ---
-wireguard_pkgs:
+wireguard_packages:
   - "wireguard-tools"
   - "systemd-resolvconf"

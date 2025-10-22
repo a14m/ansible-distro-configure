@@ -5,7 +5,7 @@
 - name: "Ensure locales package is installed"
   become: true
   ansible.builtin.package:
-    name: "{{ locales_pkg }}"
+    name: "{{ locales_package }}"
     state: "present"
 
 - name: "Read locale.gen file"

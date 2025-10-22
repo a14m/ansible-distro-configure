@@ -5,7 +5,7 @@
 - name: "Ensure wireguard is installed"
   become: true
   ansible.builtin.package:
-    name: "{{ wireguard_pkgs }}"
+    name: "{{ wireguard_packages }}"
     state: "present"
 
 - name: "Deploy WireGuard configurations"
