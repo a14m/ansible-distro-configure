@@ -5,7 +5,7 @@
 - name: "Ensure password_policy package is installed"
   become: true
   ansible.builtin.package:
-    name: "{{ password_policy_pkg }}"
+    name: "{{ password_policy_package }}"
     state: "present"
 
 - name: "Configure archlinux password policy"

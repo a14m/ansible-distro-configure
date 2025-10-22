@@ -2,24 +2,24 @@
 - name: "Include OS-specific variables"
   ansible.builtin.include_vars: "{{ ansible_os_family | lower }}.yml"
 
-- name: "Ensure ssh_package_name installed"
+- name: "Ensure ssh package is installed"
   become: true
   ansible.builtin.package:
-    name: "{{ ssh_package_name }}"
+    name: "{{ ssh_package }}"
     state: "present"
 
-- name: "Ensure ssh_service_name is enabled"
+- name: "Ensure ssh service is enabled"
   become: true
   ansible.builtin.service:
-    name: "{{ ssh_service_name }}"
+    name: "{{ ssh_service }}"
     state: "started"
     enabled: true
   when: not ansible_is_chroot
 
-- name: "(chroot): Ensure ssh_service_name is enabled"
+- name: "(chroot): Ensure ssh service is enabled"
   # noqa: command-instead-of-module intentional isnide chroot
   ansible.builtin.command:
-    cmd: "systemctl enable {{ ssh_service_name }}"
+    cmd: "systemctl enable {{ ssh_service }}"
   when: ansible_is_chroot
   changed_when: true
 
