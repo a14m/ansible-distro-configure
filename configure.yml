@@ -15,6 +15,7 @@
     - role: "podman"
     - role: "ansible"
     - role: "rsync"
+    - role: "gpg"
 
 - name: "Ubuntu configure"
   gather_facts: true
@@ -33,6 +34,7 @@
     - role: "ansible"
     - role: "gnome"
     - role: "rsync"
+    - role: "gpg"
 
 - name: "Raspberry Pi configure"
   gather_facts: true
@@ -49,3 +51,4 @@
     - role: "pihole"
     - role: "prometheus"
     - role: "grafana"
+    - role: "gpg"

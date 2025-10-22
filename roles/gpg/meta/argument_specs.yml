@@ -1,0 +1,6 @@
+---
+argument_specs:
+  main:
+    short_description: "Install gpg and pinentry packages"
+    description: "Install gpg and pinentry packages"
+    options: {}
