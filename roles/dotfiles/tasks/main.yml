@@ -1,0 +1,15 @@
+---
+- name: "Clone dotfiles git repo"
+  ansible.builtin.git:
+    repo: "{{ dotfiles_repo_url }}"
+    dest: "{{ ansible_env.HOME }}/.rc"
+    clone: true
+    update: false
+    single_branch: true
+    version: main
+
+- name: "Setup dotfiles"
+  ansible.builtin.shell:
+    cmd: "{{ dotfiles_setup_script }}"
+    executable: /bin/bash
+    creates: "{{ ansible_env.HOME }}/.bash_profile"

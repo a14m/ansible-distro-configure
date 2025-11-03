@@ -16,6 +16,7 @@
     - role: "ansible"
     - role: "rsync"
     - role: "gpg"
+    - role: "dotfiles"
 
 - name: "Ubuntu configure"
   gather_facts: true
@@ -35,6 +36,7 @@
     - role: "gnome"
     - role: "rsync"
     - role: "gpg"
+    - role: "dotfiles"
 
 - name: "Raspberry Pi configure"
   gather_facts: true
@@ -52,3 +54,4 @@
     - role: "prometheus"
     - role: "grafana"
     - role: "gpg"
+    - role: "dotfiles"
