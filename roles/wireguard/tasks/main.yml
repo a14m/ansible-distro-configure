@@ -16,7 +16,6 @@
     owner: "root"
     group: "root"
     mode: "0600"
-    backup: true
   loop: "{{ wireguard_connections.keys() }}"
   when: wireguard_connections | length > 0
   tags:
