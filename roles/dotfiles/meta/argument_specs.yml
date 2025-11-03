@@ -1,0 +1,14 @@
+---
+argument_specs:
+  main:
+    short_description: "Configure dotfile repo"
+    description: "Configure dotfile repo"
+    options:
+      dotfiles_repo_url:
+        type: "str"
+        description: "The dotfiles git repo URL"
+        required: true
+      dotfiles_setup_script:
+        type: "str"
+        description: "The dotfiles setup script"
+        required: true

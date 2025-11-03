@@ -1,0 +1,6 @@
+---
+argument_specs:
+  main:
+    short_description: "Install stow on Linux distribution"
+    description: "Install stow on Linux distribution"
+    options: {}

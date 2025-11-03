@@ -40,3 +40,4 @@
     - role: "gnome"
     - role: "rsync"
     - role: "gpg"
+    - role: "dotfiles"
