@@ -36,7 +36,7 @@
 - name: "Install python versions"
   ansible.builtin.command:
     cmd: "uv python install {{ item }}"
-  args:
-    creates: "{{ ansible_env.HOME }}/.local/share/uv/python/cpython-{{ item }}*/bin/python{{ item }}"
+  register: python_install_result
+  changed_when: "'already installed' not in python_install_result.stderr"
   loop: "{{ python_versions }}"
   when: python_versions | length > 0
