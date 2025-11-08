@@ -8,13 +8,6 @@
     name: "{{ password_store_packages }}"
     state: "present"
 
-- name: "Add GitHub to known_hosts"
-  ansible.builtin.known_hosts:
-    name: "github.com"
-    key: "github.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl"
-    path: "{{ ansible_env.HOME }}/.ssh/known_hosts"
-    state: present
-
 - name: "Clone password store git repo"
   ansible.builtin.git:
     repo: "{{ password_store_repo_url }}"

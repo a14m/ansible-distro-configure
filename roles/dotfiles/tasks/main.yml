@@ -1,11 +1,4 @@
 ---
-- name: "Add sr.ht to known_hosts"
-  ansible.builtin.known_hosts:
-    name: "git.sr.ht"
-    key: "git.sr.ht ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMZvRd4EtM7R+IHVMWmDkVU3VLQTSwQDSAvW0t2Tkj60"
-    path: "{{ ansible_env.HOME }}/.ssh/known_hosts"
-    state: present
-
 - name: "Clone dotfiles git repo"
   ansible.builtin.git:
     repo: "{{ dotfiles_repo_url }}"
