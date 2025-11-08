@@ -8,9 +8,13 @@ network_wifi_pass: "TEST_WIFI_PASS"
 ssh_port: 39901
 gpg_public_keys:
   - |
+    # generate using
+    # gpg --export --armor keyID
     -----BEGIN PGP PUBLIC KEY BLOCK-----
 
-    generate using: gpg --export --armor keyID
+    mCMEZBDEPxYJKwYBB...
+    ...
+    =pdo1
     -----END PGP PUBLIC KEY BLOCK-----
 
 timezone: "UTC"
@@ -39,6 +43,7 @@ dotfiles_repo_url: "https://git.sr.ht/~a14m/.rc"
 dotfiles_setup_script: |
   cd ~/.rc
   stow --no-folding .
+  chmod 0700 ~/.gnupg
   git remote set-url origin git@git.sr.ht:~a14m/.rc
 
 wireguard_autostart_connection: "wg-vpn0"
