@@ -1,0 +1,19 @@
+---
+dependencies:
+  - role: "git"
+galaxy_info:
+  author: "a14m"
+  description: "Configure pass for unix (password store)"
+  company: "kartoffeln.work GmbH."
+  license: "MIT"
+  min_ansible_version: "2.18"
+  platforms:
+    - name: "ArchLinux"
+      versions:
+        - "all"
+    - name: "Ubuntu"
+      versions:
+        - "noble"
+    - name: "Debian"
+      versions:
+        - "bookworm"

@@ -17,6 +17,7 @@
     - role: "rsync"
     - role: "gpg"
     - role: "dotfiles"
+    - role: "password_store"
 
 - name: "Ubuntu configure"
   gather_facts: true
@@ -37,6 +38,7 @@
     - role: "rsync"
     - role: "gpg"
     - role: "dotfiles"
+    - role: "password_store"
 
 - name: "Raspberry Pi configure"
   gather_facts: true
@@ -55,3 +57,4 @@
     - role: "grafana"
     - role: "gpg"
     - role: "dotfiles"
+    - role: "password_store"
