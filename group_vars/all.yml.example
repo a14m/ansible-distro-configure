@@ -6,6 +6,12 @@ user_public_keys:
 network_wifi_ssid: "TEST_WIFI_SSID"
 network_wifi_pass: "TEST_WIFI_PASS"
 ssh_port: 39901
+gpg_public_keys:
+  - |
+    -----BEGIN PGP PUBLIC KEY BLOCK-----
+
+    generate using: gpg --export --armor keyID
+    -----END PGP PUBLIC KEY BLOCK-----
 
 timezone: "UTC"
 

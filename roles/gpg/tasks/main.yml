@@ -7,3 +7,15 @@
   ansible.builtin.package:
     name: "{{ gpg_packages }}"
     state: "present"
+
+- name: "Import GPG public keys"
+  ansible.builtin.shell: |
+    set -euo pipefail
+    echo "{{ item }}" | gpg --import
+  args:
+    executable: /bin/bash
+  loop: "{{ gpg_public_keys }}"
+  when: gpg_public_keys is defined
+  register: gpg_import_result
+  changed_when: "'imported' in gpg_import_result.stderr"
+  failed_when: gpg_import_result.rc != 0 and 'already in secret keyring' not in gpg_import_result.stderr
