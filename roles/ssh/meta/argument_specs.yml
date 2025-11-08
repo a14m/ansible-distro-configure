@@ -13,3 +13,8 @@ argument_specs:
         required: false
         default: 2222
         description: "The default ssh port configuration (to avoid port 22 pwn/testing)"
+      ssh_known_hosts:
+        type: "list"
+        elements: "str"
+        required: false
+        description: "List of SSH known_hosts entries in 'hostname keytype keydata' format"
