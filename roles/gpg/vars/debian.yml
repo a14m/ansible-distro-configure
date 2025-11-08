@@ -2,3 +2,6 @@
 gpg_packages:
   - "gnupg2"
   - "pinentry-tty"
+  - "pcscd"
+  - "scdaemon"
+  - "pcsc-tools"

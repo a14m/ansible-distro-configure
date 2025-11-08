@@ -7,3 +7,19 @@
   ansible.builtin.package:
     name: "{{ gpg_packages }}"
     state: "present"
+
+# Disable socket creation by systemd
+# This is done to avoid conflicting sockets for forwarding gpg-agent (for smartcards)
+# Without it, the gpg-agent will listen to these created sockets on startup and causes
+# Warning: remote port forwarding failed for listen path
+- name: Mask GPG agent systemd sockets
+  ansible.builtin.systemd_service:
+    name: "{{ item }}"
+    enabled: false
+    masked: true
+    scope: user
+  loop:
+    - gpg-agent.socket
+    - gpg-agent-ssh.socket
+    - gpg-agent-extra.socket
+    - gpg-agent-browser.socket
