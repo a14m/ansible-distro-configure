@@ -80,6 +80,7 @@
       ChallengeResponseAuthentication no
       GSSAPIAuthentication no
       X11Forwarding no
+      StreamLocalBindUnlink yes
   notify:
     - "Restart ssh"
 
