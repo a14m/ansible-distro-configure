@@ -1,0 +1,4 @@
+---
+password_store_packages:
+  - "pass"
+  - "pass-otp"
