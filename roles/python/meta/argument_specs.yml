@@ -1,8 +1,8 @@
 ---
 argument_specs:
   main:
-    short_description: "Install pyenv, pipx and python (versions) on Linux distributions"
-    description: "Install pyenv, pipx and python (versions) on Linux distributions"
+    short_description: "Install uv, pipx and python (versions) on Linux distributions"
+    description: "Install uv, pipx and python (versions) on Linux distributions"
     options:
       python_versions:
         type: "list"
