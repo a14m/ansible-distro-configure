@@ -7,14 +7,16 @@ network_wifi_ssid: "TEST_WIFI_SSID"
 network_wifi_pass: "TEST_WIFI_PASS"
 ssh_port: 39901
 gpg_public_keys:
+  # gpg --export --armor keyID
   - |
-    # generate using
-    # gpg --export --armor keyID
     -----BEGIN PGP PUBLIC KEY BLOCK-----
 
-    mCMEZBDEPxYJKwYBB...
-    ...
-    =pdo1
+    mDMEaQ/mwBYJKwYBBAHaRw8BAQdAf/q5SPlxG6QAKcTIo+TMsCabKM0Huy/is6fL
+    07BHVo20HFRlc3QgVXNlciA8dGVzdEBleGFtcGxlLmNvbT6IkwQTFgoAOxYhBHVA
+    jj+TfMUsAFfUMtGYo0VqlTV1BQJpD+bAAhsDBQsJCAcCAiICBhUKCQgLAgQWAgMB
+    Ah4HAheAAAoJENGYo0VqlTV1ajQBALZLAy0YmyGxVZg67ClzDMgyGfc44eHXclPT
+    1HJC52u1AP4slgW0KiTgCU/aHQDwZcrFOqMFP+yzr3RGlrkzc9K0BQ==
+    =u+nG
     -----END PGP PUBLIC KEY BLOCK-----
 
 timezone: "UTC"
