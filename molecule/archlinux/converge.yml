@@ -19,6 +19,7 @@
     python_global_version: "3.13"
     python_versions:
       - "3.13"
+    vimrc_repo_url: "https://git.sr.ht/~a14m/.vim"
   roles:
     - role: "hostname"
     - role: "network"
@@ -41,3 +42,4 @@
     - role: "rsync"
     - role: "gpg"
     - role: "dotfiles"
+    - role: "vim"

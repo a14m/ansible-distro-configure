@@ -18,6 +18,7 @@
     - role: "gpg"
     - role: "dotfiles"
     - role: "password_store"
+    - role: "vim"
 
 - name: "Ubuntu configure"
   gather_facts: true
@@ -39,6 +40,7 @@
     - role: "gpg"
     - role: "dotfiles"
     - role: "password_store"
+    - role: "vim"
 
 - name: "Raspberry Pi configure"
   gather_facts: true
@@ -58,3 +60,4 @@
     - role: "gpg"
     - role: "dotfiles"
     - role: "password_store"
+    - role: "vim"
