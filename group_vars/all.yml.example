@@ -47,6 +47,7 @@ dotfiles_setup_script: |
   git remote set-url origin git@git.sr.ht:~a14m/.rc
 
 password_store_repo_url: "git@github.com:a14m/.pass"
+vimrc_repo_url: "git@git.sr.ht:~a14m/.vim"
 
 wireguard_autostart_connection: "wg-vpn0"
 wireguard_connections:

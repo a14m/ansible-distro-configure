@@ -23,6 +23,7 @@
         datasource_mappings:
           - key: "000000001"
             value: "prometheus"
+    vimrc_repo_url: "https://git.sr.ht/~a14m/.vim"
   roles:
     - role: "hostname"
     - role: "network"
@@ -42,3 +43,4 @@
     - role: "rsync"
     - role: "gpg"
     - role: "dotfiles"
+    - role: "vim"
