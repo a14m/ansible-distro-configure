@@ -8,3 +8,7 @@ argument_specs:
         type: "str"
         description: "The vimrc git repo URL"
         required: true
+      vimrc_setup_script:
+        type: "str"
+        description: "The vimrc setup script"
+        required: true
