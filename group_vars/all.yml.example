@@ -50,6 +50,9 @@ dotfiles_setup_script: |
 
 password_store_repo_url: "git@github.com:a14m/.pass"
 vimrc_repo_url: "git@git.sr.ht:~a14m/.vim"
+vimrc_setup_script: |
+  # NOTE: based on https://stackoverflow.com/a/33734425/1769515
+  vim -E -s -u ~/.vimrc +PlugInstall +qall
 
 wireguard_autostart_connection: "wg-vpn0"
 wireguard_connections:

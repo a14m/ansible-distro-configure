@@ -12,7 +12,7 @@
     clone: true
     update: false
     single_branch: true
-    version: main
+    version: "main"
 
 - name: "Ensure .vimrc is linked"
   ansible.builtin.file:
@@ -20,13 +20,11 @@
     dest: "{{ ansible_env.HOME }}/.vimrc"
     state: "link"
 
-# NOTE: based on https://stackoverflow.com/a/33734425/1769515
+# We don't care much if vim failed to install all plugins
+# this can be manually fixed later when needed
 - name: "Setup vim plugins"
-  ansible.builtin.command:
-    cmd: vim -E -s -u ~/.vimrc +PlugInstall +qall
+  ansible.builtin.shell:
+    cmd: "{{ vimrc_setup_script }}"
+    executable: "/bin/bash"
     creates: "{{ ansible_env.HOME }}/.vim/bundle/"
-  environment:
-    TERM: dumb
-  # We don't care much if vim failed to install all plugins
-  # this can be manually fixed later when needed
   failed_when: false
