@@ -1,6 +1,7 @@
 ---
 dependencies:
   - role: "git"
+  - role: "python"
 galaxy_info:
   author: "a14m"
   description: "Install and configure vim"
