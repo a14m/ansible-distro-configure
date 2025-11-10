@@ -40,3 +40,10 @@
     owner: "{{ username }}"
     content: |
       {{ user_public_keys | join('\n') }}
+
+- name: "Enable lingering for user systemd instance"
+  become: true
+  ansible.builtin.command:
+    cmd: "loginctl enable-linger {{ username }}"
+    creates: "/var/lib/systemd/linger/{{ username }}"
+  when: not ansible_is_chroot
