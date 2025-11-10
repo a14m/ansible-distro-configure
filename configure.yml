@@ -46,7 +46,6 @@
   gather_facts: true
   hosts:
     - rpi5.local
-  become: true
   roles:
     - role: "locales"
     - role: "timezone"
