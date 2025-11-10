@@ -16,12 +16,14 @@
   when: pihole_dhcp_enabled
 
 - name: "Crete Pi-hole user"
+  become: true
   ansible.builtin.user:
     name: "pihole"
     system: true
     shell: "/usr/sbin/nologin"
 
 - name: "Create Pi-hole directories"
+  become: true
   ansible.builtin.file:
     path: "{{ item }}"
     state: "directory"
@@ -33,6 +35,7 @@
     - "/var/log/pihole"
 
 - name: "Create Pi-hole configuration file"
+  become: true
   ansible.builtin.template:
     src: "pihole.toml.j2"
     dest: "/etc/pihole/pihole.toml"
@@ -58,6 +61,7 @@
   when: not pihole_binary.stat.exists
 
 - name: "Run Pi-hole installer"
+  become: true
   ansible.builtin.command:
     cmd: "/tmp/install_pihole.sh --unattended"
   register: pihole_install
@@ -72,6 +76,7 @@
     var: pihole_install.stdout
 
 - name: "Ensure Pi-hole started/enabled"
+  become: true
   ansible.builtin.systemd_service:
     name: "pihole-FTL"
     enabled: true
@@ -79,11 +84,13 @@
     daemon_reload: true
 
 - name: "Update Pi-hole blocklists"
+  become: true
   ansible.builtin.command:
     cmd: "pihole -g"
   changed_when: false
 
 - name: "Configure pihole as system DNS"
+  become: true
   tags:
     # linking the systemd run files fails in molecule tests
     # This is not relevant to the testing itself, so it's safe to ignore
