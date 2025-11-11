@@ -46,6 +46,8 @@ dotfiles_setup_script: |
   cd ~/.rc
   stow --no-folding .
   chmod 0700 ~/.gnupg
+  gpgconf --kill gpg-agent
+  gpg-connect-agent /bye
   git remote set-url origin git@git.sr.ht:~a14m/.rc
 
 password_store_repo_url: "git@github.com:a14m/.pass"
