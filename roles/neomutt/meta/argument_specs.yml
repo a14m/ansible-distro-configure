@@ -1,0 +1,6 @@
+---
+argument_specs:
+  main:
+    short_description: "Install neomutt on Linux distribution"
+    description: "Install neomutt on Linux distribution"
+    options: {}
