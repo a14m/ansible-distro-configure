@@ -44,3 +44,4 @@
     - role: "gpg"
     - role: "dotfiles"
     - role: "vim"
+    - role: "neomutt"
