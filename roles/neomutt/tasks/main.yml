@@ -1,0 +1,6 @@
+---
+- name: "Ensure neomutt is installed"
+  become: true
+  ansible.builtin.package:
+    name: "neomutt"
+    state: "present"
