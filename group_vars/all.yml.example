@@ -58,7 +58,9 @@ vimrc_setup_script: |
 
 wireguard_autostart_connection: "wg-vpn0"
 wireguard_connections:
-  wg-vpn0: |
+  # All wireguard config files are prefixed with wg-
+  # The following connection will be named wg-vpn0
+  vpn0: |
     [Interface]
     PrivateKey = your_private_key_here
     Address = 10.2.0.2/32

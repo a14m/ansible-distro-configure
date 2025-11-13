@@ -8,18 +8,38 @@
     name: "{{ wireguard_packages }}"
     state: "present"
 
-- name: "Deploy WireGuard configurations"
+- name: "Find existing WireGuard connections"
+  become: true
+  ansible.builtin.shell: |
+    set -euo pipefail
+    ls /etc/wireguard/wg-*.conf | xargs -n1 basename | sed 's/^wg-//;s/\.conf$//'
+  args:
+    executable: /bin/bash
+  register: wireguard_existing_connections
+  changed_when: false
+  failed_when: false
+
+- name: "Remove extra WireGuard connections"
+  become: true
+  ansible.builtin.file:
+    path: "/etc/wireguard/wg-{{ item }}.conf"
+    state: "absent"
+  loop: "{{ wireguard_existing_connections.stdout_lines }}"
+  when:
+    - wireguard_existing_connections.stdout_lines is defined
+    - wireguard_existing_connections.stdout_lines | length > 0
+    - item not in wireguard_connections.keys()
+
+- name: "Deploy WireGuard connections"
   become: true
   ansible.builtin.copy:
     content: "{{ wireguard_connections[item] }}"
-    dest: "/etc/wireguard/{{ item }}.conf"
+    dest: "/etc/wireguard/wg-{{ item }}.conf"
     owner: "root"
     group: "root"
     mode: "0600"
   loop: "{{ wireguard_connections.keys() }}"
   when: wireguard_connections | length > 0
-  tags:
-    - molecule-idempotence-notest
 
 - name: "Configure autostart connection"
   become: true
@@ -27,20 +47,20 @@
   block:
     - name: "Ensure all wireguard connections are stopped"
       ansible.builtin.systemd_service:
-        name: "wg-quick@{{ item }}"
+        name: "wg-quick@wg-{{ item }}"
         enabled: false
         state: "stopped"
       loop: "{{ wireguard_connections.keys() | list }}"
 
     - name: "Ensure all wireguard interfaces are down"
       ansible.builtin.command:
-        cmd: "wg-quick down {{ item }}"
+        cmd: "wg-quick down wg-{{ item }}"
       loop: "{{ wireguard_connections.keys() | list }}"
       changed_when: false
       failed_when: false
 
     - name: "Enable and start wg-quick service for connection {{ wireguard_autostart_connection }}"
       ansible.builtin.systemd_service:
-        name: "wg-quick@{{ wireguard_autostart_connection }}"
+        name: "wg-quick@wg-{{ wireguard_autostart_connection }}"
         enabled: true
         state: "started"
