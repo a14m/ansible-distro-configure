@@ -41,16 +41,25 @@
   loop: "{{ wireguard_connections.keys() }}"
   when: wireguard_connections | length > 0
 
+- name: "Ensure all wireguard interfaces are disabled on startup"
+  become: true
+  ansible.builtin.systemd_service:
+    name: "wg-quick@wg-{{ item }}"
+    enabled: false
+    state: "stopped"
+  when: wireguard_autostart_connection == ""
+  loop: "{{ wireguard_connections.keys() | list }}"
+
 - name: "Configure autostart connection"
   become: true
   when: wireguard_autostart_connection != ""
   block:
-    - name: "Ensure all wireguard connections are stopped"
-      ansible.builtin.systemd_service:
-        name: "wg-quick@wg-{{ item }}"
-        enabled: false
-        state: "stopped"
-      loop: "{{ wireguard_connections.keys() | list }}"
+    - name: "Validate wireguard_autostart_connection"
+      ansible.builtin.assert:
+        that:
+          - wireguard_autostart_connection in wireguard_connections.keys()
+        fail_msg: "wireguard_autostart_connection '{{ wireguard_autostart_connection }}'
+          is not defined in wireguard_connections"
 
     - name: "Ensure all wireguard interfaces are down"
       ansible.builtin.command:
