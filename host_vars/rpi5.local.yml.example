@@ -17,9 +17,11 @@ pihole_dhcp_hosts:
   - "ff:ff:ff:ff:ff:fe, 10.0.0.252,TV"
   - "ff:ff:ff:ff:ff:ff, 10.0.0.253,Printer"
 
-wireguard_autostart_connection: "wg-vpn2"
+wireguard_autostart_connection: "vpn2"
 wireguard_connections:
-  wg-vpn2: |
+  # All wireguard config files are prefixed (internally) with wg-
+  # The following connection/interface will be named wg-vpn2
+  vpn2: |
     [Interface]
     PrivateKey = your_private_key_here
     Address = 10.2.0.2/32
