@@ -40,6 +40,12 @@
     mode: "0600"
   loop: "{{ wireguard_connections.keys() }}"
   when: wireguard_connections | length > 0
+  tags:
+    # The reason the test is ignored is the following:
+    # 1st run: wireguard role deploys all the configured VPN connections
+    # 1st run: wg_portal updates the (ACL) file permissions /etc/wireguard
+    # 2nd run: wireguard sees the file changed, deploys again (changed)
+    - molecule-idempotence-notest
 
 - name: "Ensure all wireguard interfaces are disabled on startup"
   become: true
