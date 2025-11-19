@@ -5,6 +5,10 @@ After=network.target
 
 [Service]
 Type=oneshot
+# Both commands run at boot to handle either scenario:
+# - If VPN autostart is enabled: vpn applies rules, direct ignores (VPN active)
+# - If no VPN autostart: vpn ignores (no interfaces), direct applies rules
+# The gateway-apply-rules script checks interface state and only applies appropriate rules
 ExecStart=/usr/local/bin/gateway-apply-rules vpn
 ExecStart=/usr/local/bin/gateway-apply-rules direct
 User=root
