@@ -24,3 +24,14 @@ wireguard_connections:
     PublicKey = server_public_key
     AllowedIPs = 0.0.0.0/0
     Endpoint = vpn.com:51820
+
+firefox_install_browserpass: false
+firefox_install_passff: true
+firefox_extra_extensions:
+  "tabby@whatsyouridea.com":
+    installation_mode: "force_installed"
+    install_url: "https://addons.mozilla.org/firefox/downloads/latest/tabby-window-tab-manager/latest.xpi"
+firefox_policies_override:
+  DisableAppUpdate: true
+  DisableFirefoxStudies: false
+  DisableTelemetry: false

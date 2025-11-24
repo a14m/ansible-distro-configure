@@ -1,0 +1,124 @@
+---
+# Check firefox policies documentation at:
+# https://mozilla.github.io/policy-templates/
+# The policies override dictionary can be used to override the default policies.
+# This is merged with the _firefox_policies_default dictionary,
+# and converted into JSON format using a Jinja2 tojson filter.
+firefox_policies_override: {}
+firefox_extra_extensions: {}
+
+# Default extensions to be installed in Firefox.
+firefox_default_extensions:
+  "*":
+    installation_mode: "allowed" # options: allowed, blocked, force_installed, normal_installed
+    allowed_types:
+      - "extension"
+      - "theme"
+      - "dictionary"
+      - "locale"
+  # Get the guid using `curl -s "https://addons.mozilla.org/api/v5/addons/addon/{slug}/" | jq '.guid'`
+  # where the {slug} is found on the https://addons.mozilla.org/en-US/firefox/ search.
+  "uBlock0@raymondhill.net":
+    installation_mode: "force_installed"
+    install_url: "https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/latest.xpi"
+  "{d7742d87-e61d-4b78-b8a1-b469842139fa}":
+    installation_mode: "force_installed"
+    install_url: "https://addons.mozilla.org/firefox/downloads/latest/vimium-ff/latest.xpi"
+  "jid1-MnnxcxisBPnSXQ@jetpack":
+    installation_mode: "force_installed"
+    install_url: "https://addons.mozilla.org/firefox/downloads/latest/privacy-badger17/latest.xpi"
+  "woop-NoopscooPsnSXQ@jetpack":
+    installation_mode: "force_installed"
+    install_url: "https://addons.mozilla.org/firefox/downloads/latest/privacy-possum/latest.xpi"
+  "languagetool-webextension@languagetool.org":
+    installation_mode: "force_installed"
+    install_url: "https://addons.mozilla.org/firefox/downloads/latest/languagetool/latest.xpi"
+
+# Default (sensible) policies for Firefox.
+firefox_default_policies:
+  AutofillAddressEnabled: true
+  AutofillCreditCardEnabled: false
+  BlockAboutAddons: false
+  BlockAboutConfig: false
+  BlockAboutProfiles: false
+  BlockAboutSupport: false
+  CaptivePortal: true
+  DisableDeveloperTools: false
+  DisableEncryptedClientHello: false
+  DisableFeedbackCommands: true
+  DisableFirefoxAccounts: false
+  DisableFirefoxScreenshots: true
+  DisableFirefoxStudies: true
+  DisablePasswordReveal: false
+  DisableProfileImport: true
+  DisableProfileRefresh: true
+  DisableSafeMode: false
+  DisableTelemetry: true
+  DisablePocket: true
+  DisplayBookmarksToolbar: "always" # options: always, never, newtab
+  DisplayMenuBar: "default-on" # options: always, never, default-on, default-off
+  DNSOverHTTPS:
+    Enabled: true
+    Fallback: true
+  DontCheckDefaultBrowser: true
+  EnableTrackingProtection:
+    Value: true
+    Category: "strict" # options: standard, strict
+  ExtensionSettings:
+    "{{ firefox_default_extensions | combine(firefox_extra_extensions) }}"
+  FirefoxHome:
+    Search: true
+    TopSites: true
+    SponsoredTopSites: false
+    SponsoredPocket: false
+    SponsoredStories: false
+    Highlights: true
+    Pocket: false
+    Stories: false
+    Snippets: true
+    Locked: false
+  FirefoxSuggest:
+    WebSuggestions: false
+    SponsoredSuggestions: false
+    ImproveSuggest: false
+    Locked: false
+    GenerativeAI:
+      Enabled: false
+      Locked: false
+  Homepage:
+    StartupPage: "homepage" # options: none, homepage, previous-session, homepage-locked
+  HttpsOnlyMode: "enabled" # options: allowed, disallowed, enabled, force_enabled
+  LegacyProfiles: false
+  PasswordManagerEnabled: false
+  PictureInPicture:
+    Enabled: true
+  PostQuantumKeyAgreementEnabled: true
+  PrintingEnabled: true
+  PrivateBrowsingModeAvailability: 0 # options: 0 (enabled), 1 (disabled), 2 (forced)
+  RequestedLocales:
+    - "en-US"
+    - "de"
+  SearchBar: "unified" # options: unified, separate
+  SearchEngines:
+    Default: "DuckDuckGo"
+    PreventInstalls: true
+    Remove:
+      - "Bing"
+      - "Ecosia"
+      - "Amazon"
+      - "eBay"
+      - "Twitter"
+      - "Wikipedia (en)"
+  SearchSuggestEnabled: true
+  ShowHomeButton: false
+  SkipTermsOfUse: true
+  TranslateEnabled: true
+  UserMessaging:
+    ExtensionRecommendations: false
+    FeatureRecommendations: false
+    UrlbarInterventions: false
+    SkipOnboarding: true
+    MoreFromMozilla: false
+    FirfoxLabs: false
+  UseSystemPrintDialog: true
+  VisualSearchEnabled: true
