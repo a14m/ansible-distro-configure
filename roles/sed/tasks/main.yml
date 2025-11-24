@@ -1,0 +1,6 @@
+---
+- name: "Ensure sed is installed"
+  become: true
+  ansible.builtin.package:
+    name: "sed"
+    state: "present"
