@@ -9,9 +9,9 @@
     state: "present"
 
 - name: "Create Firefox profile"
-  ansible.builtin.command: "firefox --headless -no-remote -CreateProfile {{ ansible_env.USER }}-profile"
+  ansible.builtin.command: "firefox --headless -no-remote -CreateProfile {{ ansible_user_id }}-profile"
   args:
-    creates: "{{ firefox_folder }}/*{{ ansible_env.USER }}-profile/prefs.js"
+    creates: "{{ firefox_folder }}/*{{ ansible_user_id }}-profile/prefs.js"
 
 - name: "Install browserpass extension for Firefox"
   ansible.builtin.include_tasks: "install_browserpass.yml"
