@@ -1,0 +1,45 @@
+---
+- name: "Include OS-specific variables"
+  ansible.builtin.include_vars: "{{ ansible_os_family | lower }}.yml"
+
+- name: "Ensure firefox is installed"
+  become: true
+  ansible.builtin.package:
+    name: "{{ firefox_package }}"
+    state: "present"
+
+- name: "Create Firefox profile"
+  ansible.builtin.command: "firefox --headless -no-remote -CreateProfile {{ ansible_env.USER }}-profile"
+  args:
+    creates: "{{ firefox_folder }}/*{{ ansible_env.USER }}-profile/prefs.js"
+
+- name: "Install browserpass extension for Firefox"
+  ansible.builtin.include_tasks: "install_browserpass.yml"
+  when: firefox_install_browserpass | default(false)
+
+# NOTE: passff extension is using sed during install and python to run
+# That's why the firefox role depends on these roles
+- name: "Install passff extension for Firefox"
+  ansible.builtin.include_tasks: "install_passff.yml"
+  when: firefox_install_passff | default(false)
+
+- name: "Create policies directory"
+  become: true
+  ansible.builtin.file:
+    path: "/etc/firefox/policies"
+    state: "directory"
+    mode: "0755"
+
+- name: "Set firefox_policies fact"
+  ansible.builtin.set_fact:
+    firefox_policies: "{{ firefox_default_policies | combine(firefox_policies_override) }}"
+
+- name: "Create Firefox policies file"
+  become: true
+  ansible.builtin.copy:
+    dest: "/etc/firefox/policies/policies.json"
+    mode: "0644"
+    content: |
+      {
+        "policies": {{ firefox_policies | tojson(indent=4) }}
+      }

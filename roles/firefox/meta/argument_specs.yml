@@ -1,0 +1,136 @@
+---
+# NOTE: The defaults below are sensible role defaults and are not meant to be changed directly.
+# Use the override variables (firefox_policies_override, firefox_extra_extensions) to customize behavior.
+argument_specs:
+  main:
+    short_description: "Configure firefox settings and policies"
+    description: "Configure firefox settings and policies"
+    options:
+      firefox_policies_override:
+        type: "dict"
+        description: "Override default firefox policies"
+        default: {}
+      firefox_extra_extensions:
+        type: "dict"
+        description: "Extra firefox extensions to install via policies (added to the default extensions)"
+        default: {}
+      firefox_default_extensions:
+        # Default extensions to be installed in Firefox via policies
+        # - uBlock Origin
+        # - Vimium FF
+        # - Privacy Badger
+        # - Privacy Possum
+        # - LanguageTool
+        type: "dict"
+        description: "Default firefox extensions configurations to install via policies"
+        default:
+          "*":
+            installation_mode: "allowed"
+            allowed_types:
+              - "extension"
+              - "theme"
+              - "dictionary"
+              - "locale"
+          "uBlock0@raymondhill.net":
+            installation_mode: "force_installed"
+            install_url: "https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/latest.xpi"
+          "{d7742d87-e61d-4b78-b8a1-b469842139fa}":
+            installation_mode: "force_installed"
+            install_url: "https://addons.mozilla.org/firefox/downloads/latest/vimium-ff/latest.xpi"
+          "jid1-MnnxcxisBPnSXQ@jetpack":
+            installation_mode: "force_installed"
+            install_url: "https://addons.mozilla.org/firefox/downloads/latest/privacy-badger17/latest.xpi"
+          "woop-NoopscooPsnSXQ@jetpack":
+            installation_mode: "force_installed"
+            install_url: "https://addons.mozilla.org/firefox/downloads/latest/privacy-possum/latest.xpi"
+          "languagetool-webextension@languagetool.org":
+            installation_mode: "force_installed"
+            install_url: "https://addons.mozilla.org/firefox/downloads/latest/languagetool/latest.xpi"
+      firefox_default_policies:
+        type: "dict"
+        description: "Default (sensible) policies for Firefox"
+        default:
+          AutofillAddressEnabled: true
+          AutofillCreditCardEnabled: false
+          BlockAboutAddons: false
+          BlockAboutConfig: false
+          BlockAboutProfiles: false
+          BlockAboutSupport: false
+          CaptivePortal: true
+          DisableDeveloperTools: false
+          DisableEncryptedClientHello: false
+          DisableFeedbackCommands: true
+          DisableFirefoxAccounts: false
+          DisableFirefoxScreenshots: true
+          DisableFirefoxStudies: true
+          DisablePasswordReveal: false
+          DisableProfileImport: true
+          DisableProfileRefresh: true
+          DisableSafeMode: false
+          DisableTelemetry: true
+          DisablePocket: true
+          DisplayBookmarksToolbar: "always"
+          DisplayMenuBar: "default-on"
+          DNSOverHTTPS:
+            Enabled: true
+            Fallback: true
+          DontCheckDefaultBrowser: true
+          EnableTrackingProtection:
+            Value: true
+            Category: "strict"
+          FirefoxHome:
+            Search: true
+            TopSites: true
+            SponsoredTopSites: false
+            SponsoredPocket: false
+            SponsoredStories: false
+            Highlights: true
+            Pocket: false
+            Stories: false
+            Snippets: true
+            Locked: false
+          FirefoxSuggest:
+            WebSuggestions: false
+            SponsoredSuggestions: false
+            ImproveSuggest: false
+            Locked: false
+            GenerativeAI:
+              Enabled: false
+              Locked: false
+          Homepage:
+            StartupPage: "homepage"
+          HttpsOnlyMode: "enabled"
+          LegacyProfiles: false
+          PasswordManagerEnabled: false
+          PictureInPicture:
+            Enabled: true
+          PostQuantumKeyAgreementEnabled: true
+          PrintingEnabled: true
+          PrivateBrowsingModeAvailability: 0
+          RequestedLocales:
+            - "en-US"
+            - "de"
+          SearchBar: "unified"
+          SearchEngines:
+            Default: "DuckDuckGo"
+            PreventInstalls: true
+            Remove:
+              - "Bing"
+              - "Ecosia"
+              - "Amazon"
+              - "eBay"
+              - "Twitter"
+              - "Wikipedia (en)"
+          SearchSuggestEnabled: true
+          ShowHomeButton: false
+          SkipTermsOfUse: true
+          TranslateEnabled: true
+          UserMessaging:
+            ExtensionRecommendations: false
+            FeatureRecommendations: false
+            UrlbarInterventions: false
+            SkipOnboarding: true
+            MoreFromMozilla: false
+            FirfoxLabs: false
+          UseSystemPrintDialog: true
+          VisualSearchEnabled: true

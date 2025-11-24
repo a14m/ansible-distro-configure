@@ -20,6 +20,8 @@
     python_versions:
       - "3.13"
     vimrc_repo_url: "https://git.sr.ht/~a14m/.vim"
+    firefox_install_browserpass: true
+    firefox_install_passff: true
   roles:
     - role: "hostname"
     - role: "network"
@@ -44,3 +46,4 @@
     - role: "dotfiles"
     - role: "vim"
     - role: "neomutt"
+    - role: "firefox"
