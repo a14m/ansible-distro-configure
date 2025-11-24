@@ -1,0 +1,48 @@
+---
+- name: "Add browserpass to default extensions"
+  ansible.builtin.set_fact:
+    firefox_default_extensions: "{{ firefox_default_extensions | combine(firefox_browserpass_extension) }}"
+  vars:
+    firefox_browserpass_extension:
+      "browserpass@maximbaz.com":
+        installation_mode: "force_installed"
+        install_url: "https://addons.mozilla.org/firefox/downloads/latest/browserpass-ce/latest.xpi"
+
+- name: "Ensure browserpass native messaging host is installed"
+  become: true
+  ansible.builtin.package:
+    name: "{{ firefox_browserpass_packages }}"
+    state: "present"
+
+- name: "Create native messaging hosts directory"
+  become: true
+  ansible.builtin.file:
+    path: "/usr/lib/mozilla/native-messaging-hosts"
+    state: "directory"
+    mode: "0755"
+
+- name: "Create browserpass native messaging hosts file"
+  become: true
+  ansible.builtin.copy:
+    dest: "/usr/lib/mozilla/native-messaging-hosts/com.github.browserpass.native.json"
+    mode: "0644"
+    content: |
+      {
+          "name": "com.github.browserpass.native",
+          "description": "Browserpass native component for the Firefox extension",
+          "path": "/usr/lib/browserpass/browserpass-wrapper",
+          "type": "stdio",
+          "allowed_extensions": ["browserpass@maximbaz.com"]
+      }
+
+- name: "Create browserpass-native wrapper"
+  become: true
+  ansible.builtin.copy:
+    dest: "/usr/lib/browserpass/browserpass-wrapper"
+    mode: "0755"
+    content: |
+      #!/bin/sh
+      # NOTE: this uses the dotfiles pinentry-wrapper which forces the usage of GUI pinentry in this case.
+      # REF: https://git.sr.ht/~a14m/.rc/tree/94b355aa0ce648e3d41bfa7ef76611e3650523d2/item/.gnupg/pinentry-wrapper
+      export PINENTRY_USER_DATA=gnome
+      exec /usr/lib/browserpass/browserpass-native "$@"

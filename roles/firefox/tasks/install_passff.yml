@@ -1,0 +1,44 @@
+---
+- name: "Add passff to default extensions"
+  ansible.builtin.set_fact:
+    firefox_default_extensions: "{{ firefox_default_extensions | combine(firefox_passff_extension) }}"
+  vars:
+    firefox_passff_extension:
+      "passff@invicem.pro":
+        installation_mode: "force_installed"
+        install_url: "https://addons.mozilla.org/firefox/downloads/latest/passff/latest.xpi"
+
+- name: "Ensure passff native messaging host is installed"
+  become: true
+  ansible.builtin.shell: |
+    set -euo pipefail
+    curl -sSL https://codeberg.org/PassFF/passff-host/releases/download/latest/install_host_app.sh | bash -s -- firefox
+  args:
+    creates: "/usr/lib/mozilla/native-messaging-hosts/pro.invicem.passff.json"
+    executable: "/bin/bash"
+
+- name: "Create browserpass native messaging hosts file"
+  become: true
+  ansible.builtin.copy:
+    dest: "/usr/lib/mozilla/native-messaging-hosts/passff.json"
+    mode: "0644"
+    content: |
+      {
+        "name": "passff",
+        "description": "Host for communicating with zx2c4 pass",
+        "path": "/usr/lib/mozilla/native-messaging-hosts/passff-wrapper",
+        "type": "stdio",
+        "allowed_extensions": [ "passff@invicem.pro" ]
+      }
+
+- name: "Create passff wrapper"
+  become: true
+  ansible.builtin.copy:
+    dest: "/usr/lib/mozilla/native-messaging-hosts/passff-wrapper"
+    mode: "0755"
+    content: |
+      #!/bin/sh
+      # NOTE: this uses the dotfiles pinentry-wrapper which forces the usage of GUI pinentry in this case.
+      # REF: https://git.sr.ht/~a14m/.rc/tree/94b355aa0ce648e3d41bfa7ef76611e3650523d2/item/.gnupg/pinentry-wrapper
+      export PINENTRY_USER_DATA=gnome
+      exec /usr/lib/mozilla/native-messaging-hosts/passff.py "$@"

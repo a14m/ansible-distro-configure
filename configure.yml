@@ -20,6 +20,7 @@
     - role: "password_store"
     - role: "vim"
     - role: "neomutt"
+    - role: "firefox"
 
 - name: "Ubuntu configure"
   gather_facts: true
@@ -43,6 +44,7 @@
     - role: "password_store"
     - role: "vim"
     - role: "neomutt"
+    - role: "firefox"
 
 - name: "Raspberry Pi configure"
   gather_facts: true
