@@ -1,8 +1,5 @@
 ---
-dependencies:
-  - role: "sed"
-  - role: "python"
-  - role: "bash"
+dependencies: []
 galaxy_info:
   author: "a14m"
   description: "Configure firefox settings and policies."
