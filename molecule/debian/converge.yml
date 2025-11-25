@@ -31,6 +31,7 @@
           - key: "000000001"
             value: "prometheus"
     vimrc_repo_url: "https://git.sr.ht/~a14m/.vim"
+    password_store_repo_url: "https://github.com/octocat/Spoon-Knife"
     firefox_install_browserpass: true
     firefox_install_passff: true
   roles:
@@ -57,4 +58,5 @@
     - role: "dotfiles"
     - role: "vim"
     - role: "neomutt"
+    - role: "password_store"
     - role: "firefox"

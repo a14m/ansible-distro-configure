@@ -1,4 +1,15 @@
 ---
+# NOTE: This part of the role depends on
+# - role: "curl"
+# - role: "sed"
+# - role: "python"
+# - role: "bash"
+# - role: "password_store"
+#
+# As it uses these tools to install and run passff.
+# The curl, sed, bash are used for installation.
+# Python is used to run the passff native messaging host.
+# pass is required by passff to access the password store, and errors when not found.
 - name: "Add passff to default extensions"
   ansible.builtin.set_fact:
     firefox_default_extensions: "{{ firefox_default_extensions | combine(firefox_passff_extension) }}"
