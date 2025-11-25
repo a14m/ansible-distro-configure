@@ -15,4 +15,5 @@
     clone: true
     update: false
     single_branch: true
-    version: main
+    version: "refs/heads/main"
+    force: true
