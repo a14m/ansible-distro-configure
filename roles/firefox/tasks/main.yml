@@ -8,17 +8,44 @@
     name: "{{ firefox_package }}"
     state: "present"
 
-- name: "Create Firefox profile"
-  ansible.builtin.command: "firefox --headless -no-remote -CreateProfile ansible-profile"
+- name: "Initialize Firefox default profile"
+  ansible.builtin.command: "timeout 3 firefox --headless"
+  failed_when: false
   args:
-    creates: "{{ firefox_folder }}/*ansible-profile/prefs.js"
+    creates: "{{ firefox_folder }}/profiles.ini"
+  changed_when: false
+
+- name: "Find default Firefox profile directory"
+  ansible.builtin.find:
+    paths: "{{ firefox_folder }}"
+    patterns: "*.default*"
+    file_type: "directory"
+  register: firefox_default_profile
+
+- name: "Set Firefox profile path"
+  ansible.builtin.set_fact:
+    firefox_profile_path: "{{ firefox_default_profile.files[0].path }}"
+  when: firefox_default_profile.matched > 0
+
+- name: "Set firefox_user_prefs fact"
+  ansible.builtin.set_fact:
+    firefox_user_prefs: "{{ firefox_default_user_prefs | combine(firefox_user_prefs_override) }}"
+
+- name: "Deploy user.js to Firefox profile"
+  ansible.builtin.template:
+    src: "user.js.j2"
+    dest: "{{ firefox_profile_path }}/user.js"
+    mode: "0644"
 
 - name: "Install browserpass extension for Firefox"
   ansible.builtin.include_tasks: "install_browserpass.yml"
   when: firefox_install_browserpass | default(false)
 
-# NOTE: passff extension is using sed during install and python to run
-# That's why the firefox role depends on these roles
+# NOTE: passff extension is using sed/curl during install and python/pass to run
+# Make sure those dependencies are installed on the target system before enabling this part.
+# It doesn't make a lot of sense to have all these dependencies added to the firefox role, just for using
+# this extension, which isn't enabled by default.
+# Personally I find it has better UI/UX than browserpass, but browserpass is more lightweight.
 - name: "Install passff extension for Firefox"
   ansible.builtin.include_tasks: "install_passff.yml"
   when: firefox_install_passff | default(false)

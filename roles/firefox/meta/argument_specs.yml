@@ -1,6 +1,8 @@
 ---
 # NOTE: The defaults below are sensible role defaults and are not meant to be changed directly.
-# Use the override variables (firefox_policies_override, firefox_extra_extensions) to customize behavior.
+# Use the override variables (firefox_policies_override, firefox_extra_extensions, firefox_user_prefs_override)
+# to customize behavior.
+# But also you can change these defaults directly.
 argument_specs:
   main:
     short_description: "Configure firefox settings and policies"
@@ -8,11 +10,15 @@ argument_specs:
     options:
       firefox_policies_override:
         type: "dict"
-        description: "Override default firefox policies"
+        description: "Override role's default firefox policies"
         default: {}
       firefox_extra_extensions:
         type: "dict"
         description: "Extra firefox extensions to install via policies (added to the default extensions)"
+        default: {}
+      firefox_user_prefs_override:
+        type: "dict"
+        description: "Override role's default user pref (user.js preferences for Firefox profile)"
         default: {}
       firefox_default_extensions:
         # Default extensions to be installed in Firefox via policies
@@ -134,3 +140,29 @@ argument_specs:
             FirfoxLabs: false
           UseSystemPrintDialog: true
           VisualSearchEnabled: true
+      firefox_default_user_prefs:
+        type: "dict"
+        description: "Default (sensible) user.js preference for Firefox"
+        default:
+          "browser.newtabpage.enabled": false
+          "browser.aboutConfig.showWarning": false
+          "browser.tabs.closeWindowWithLastTab": false
+          "privacy.trackingprotection.enabled": true
+          "privacy.trackingprotection.socialtracking.enabled": true
+          "privacy.donottrackheader.enabled": true
+          "dom.security.https_only_mode": true
+          "dom.security.https_only_mode_ever_enabled": true
+          "datareporting.healthreport.uploadEnabled": false
+          "datareporting.policy.dataSubmissionEnabled": false
+          "toolkit.telemetry.unified": false
+          "toolkit.telemetry.enabled": false
+          "toolkit.telemetry.server": ""
+          "toolkit.telemetry.archive.enabled": false
+          "toolkit.telemetry.newProfilePing.enabled": false
+          "toolkit.telemetry.shutdownPingSender.enabled": false
+          "toolkit.telemetry.updatePing.enabled": false
+          "toolkit.telemetry.bhrPing.enabled": false
+          "toolkit.telemetry.firstShutdownPing.enabled": false
+          "extensions.pocket.enabled": false
+          "sidebar.verticalTabs": true
+          "sidebar.verticalTabs.dragToPinPromo.dismissed": true
