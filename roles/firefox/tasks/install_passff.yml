@@ -25,7 +25,7 @@
     set -euo pipefail
     curl -sSL https://codeberg.org/PassFF/passff-host/releases/download/latest/install_host_app.sh | bash -s -- firefox
   args:
-    creates: "/usr/lib/mozilla/native-messaging-hosts/pro.invicem.passff.json"
+    creates: "/usr/lib/mozilla/native-messaging-hosts/passff.py"
     executable: "/bin/bash"
 
 - name: "Create browserpass native messaging hosts file"
