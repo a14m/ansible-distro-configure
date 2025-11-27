@@ -8,6 +8,7 @@
   roles:
     - role: "locales"
     - role: "timezone"
+    - role: "which"
     - role: "wireguard"
     - role: "go"
     - role: "python"
