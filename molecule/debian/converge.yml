@@ -59,4 +59,5 @@
     - role: "vim"
     - role: "neomutt"
     - role: "password_store"
+    - role: "which"
     - role: "firefox"
