@@ -35,3 +35,7 @@ firefox_policies_override:
   DisableAppUpdate: true
   DisableFirefoxStudies: false
   DisableTelemetry: false
+
+fonts_extra:
+  - "fonts-font-awesome"
+  - "fonts-google-fira"

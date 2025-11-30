@@ -9,6 +9,7 @@
     - role: "locales"
     - role: "timezone"
     - role: "which"
+    - role: "fonts"
     - role: "wireguard"
     - role: "go"
     - role: "python"
@@ -32,6 +33,7 @@
   roles:
     - role: "locales"
     - role: "timezone"
+    - role: "fonts"
     - role: "wireguard"
     - role: "go"
     - role: "python"
