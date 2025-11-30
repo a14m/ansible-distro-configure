@@ -43,6 +43,7 @@ password_policy_gecoscheck: 0
 
 dotfiles_repo_url: "https://git.sr.ht/~a14m/.rc"
 dotfiles_setup_script: |
+  rm -f ~/.bash_profile
   cd ~/.rc
   stow --no-folding .
   chmod 0700 ~/.gnupg
