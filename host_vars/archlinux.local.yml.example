@@ -24,3 +24,7 @@ wireguard_connections:
     PublicKey = server_public_key
     AllowedIPs = 0.0.0.0/0
     Endpoint = vpn.com:51820
+
+fonts_extra:
+  - "ttf-dejavu"
+  - "noto-fonts"

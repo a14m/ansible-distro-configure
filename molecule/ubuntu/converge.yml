@@ -50,3 +50,4 @@
     - role: "password_store"
     - role: "which"
     - role: "firefox"
+    - role: "fonts"

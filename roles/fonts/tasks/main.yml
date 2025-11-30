@@ -1,0 +1,10 @@
+---
+- name: "Include OS-specific variables"
+  ansible.builtin.include_vars: "{{ ansible_os_family | lower }}.yml"
+
+- name: "Ensure fonts are installed"
+  become: true
+  ansible.builtin.package:
+    name: "{{ item }}"
+    state: "present"
+  loop: "{{ fonts_default + fonts_extra }}"
