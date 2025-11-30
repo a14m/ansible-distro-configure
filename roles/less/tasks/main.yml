@@ -1,0 +1,6 @@
+---
+- name: "Ensure less is installed"
+  become: true
+  ansible.builtin.package:
+    name: "less"
+    state: "present"

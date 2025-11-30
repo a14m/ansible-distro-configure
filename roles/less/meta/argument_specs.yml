@@ -1,0 +1,6 @@
+---
+argument_specs:
+  main:
+    short_description: "Install less on Linux distribution"
+    description: "Install less on Linux distribution"
+    options: {}

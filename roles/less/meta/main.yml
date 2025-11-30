@@ -1,9 +1,8 @@
 ---
-dependencies:
-  - role: "less"
+dependencies: []
 galaxy_info:
   author: "a14m"
-  description: "Install git"
+  description: "Install less"
   company: "kartoffeln.work GmbH."
   license: "MIT"
   min_ansible_version: "2.18"
