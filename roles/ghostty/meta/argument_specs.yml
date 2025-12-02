@@ -1,0 +1,6 @@
+---
+argument_specs:
+  main:
+    short_description: "Install ghostty terminal on ArchLinux"
+    description: "Install ghostty terminal on Linux distribution"
+    options: {}
