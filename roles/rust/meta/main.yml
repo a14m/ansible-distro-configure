@@ -1,0 +1,20 @@
+---
+dependencies:
+  - role: "bash"
+  - role: "curl"
+galaxy_info:
+  author: "a14m"
+  description: "Install Rust via rustup on Linux distributions"
+  company: "kartoffeln.work GmbH."
+  license: "MIT"
+  min_ansible_version: "2.18"
+  platforms:
+    - name: "ArchLinux"
+      versions:
+        - "all"
+    - name: "Ubuntu"
+      versions:
+        - "noble"
+    - name: "Debian"
+      versions:
+        - "bookworm"

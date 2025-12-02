@@ -46,6 +46,7 @@
     - role: "gateway"
     - role: "python"
     - role: "go"
+    - role: "rust"
     - role: "docker"
     - role: "podman"
     - role: "ansible"
