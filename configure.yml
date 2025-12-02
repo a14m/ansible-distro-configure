@@ -23,6 +23,7 @@
     - role: "vim"
     - role: "neomutt"
     - role: "firefox"
+    - role: "yay"
 
 - name: "Ubuntu configure"
   gather_facts: true

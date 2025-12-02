@@ -1,0 +1,6 @@
+---
+argument_specs:
+  main:
+    short_description: "Install yay AUR helper on ArchLinux"
+    description: "Install yay AUR helper on ArchLinux"
+    options: {}
