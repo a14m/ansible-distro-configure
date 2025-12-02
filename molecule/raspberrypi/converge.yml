@@ -52,3 +52,4 @@
     - role: "which"
     - role: "firefox"
     - role: "fonts"
+    - role: "alacritty"
