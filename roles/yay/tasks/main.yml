@@ -1,0 +1,37 @@
+---
+- name: "Ensure base-devel is installed"
+  become: true
+  ansible.builtin.package:
+    name: "base-devel"
+    state: "present"
+
+- name: "Check if yay exists"
+  ansible.builtin.stat:
+    path: "/usr/bin/yay"
+  register: yay_binary
+
+- name: "Install yay"
+  when: not yay_binary.stat.exists
+  block:
+    - name: "Clone yay-bin"
+      ansible.builtin.git:
+        repo: "https://aur.archlinux.org/yay-bin.git"
+        dest: "/tmp/yay-bin"
+        clone: true
+        update: false
+        single_branch: true
+        version: "master"
+
+    - name: "Build yay-bin"
+      ansible.builtin.command:
+        cmd: "makepkg --syncdeps --noconfirm"
+        chdir: "/tmp/yay-bin"
+      args:
+        creates: "/tmp/yay-bin/yay-bin-*.pkg.tar.zst"
+
+    - name: "Install yay bin"
+      become: true
+      ansible.builtin.shell:
+        cmd: "pacman -U --noconfirm /tmp/yay-bin/yay-bin-*.pkg.tar.zst"
+      args:
+        creates: "/usr/bin/yay"
