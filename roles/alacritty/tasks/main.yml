@@ -1,0 +1,6 @@
+---
+- name: "Ensure Alacritty is installed"
+  become: true
+  ansible.builtin.package:
+    name: "alacritty"
+    state: "present"
