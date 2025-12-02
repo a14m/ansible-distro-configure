@@ -1,0 +1,38 @@
+---
+- name: "Check if cargo binary exists"
+  ansible.builtin.stat:
+    path: "{{ ansible_env.HOME }}/.cargo/bin/cargo"
+  register: rust_cargo_binary
+
+- name: "Download rustup installer"
+  ansible.builtin.get_url:
+    url: "https://sh.rustup.rs"
+    dest: "/tmp/install_rustup.sh"
+    mode: "0755"
+  when: not rust_cargo_binary.stat.exists
+
+- name: "Run rustup installer"
+  ansible.builtin.command:
+    cmd: "/tmp/install_rustup.sh -y --default-toolchain {{ rust_toolchain }} --profile minimal"
+  args:
+    creates: "{{ ansible_env.HOME }}/.cargo/bin/cargo"
+  when: not rust_cargo_binary.stat.exists
+
+- name: "Add cargo to shell profile"
+  ansible.builtin.blockinfile:
+    path: "{{ ansible_env.HOME }}/.bashrc"
+    state: "present"
+    prepend_newline: true
+    append_newline: true
+    marker: "# ==== {mark} ANSIBLE RUST CONFIG"
+    block: |
+      if [ -f "$HOME/.cargo/env" ]; then
+        source "$HOME/.cargo/env"
+      fi
+
+- name: "Install rust components"
+  ansible.builtin.command:
+    cmd: "{{ ansible_env.HOME }}/.cargo/bin/rustup component add {{ item }}"
+  register: rust_component_result
+  changed_when: "'is up to date' not in rust_component_result.stdout"
+  loop: "{{ rust_components }}"

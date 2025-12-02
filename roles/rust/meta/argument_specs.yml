@@ -1,0 +1,15 @@
+---
+argument_specs:
+  main:
+    short_description: "Install Rust via rustup on Linux distributions"
+    description: "Install Rust via rustup on Linux distributions"
+    options:
+      rust_toolchain:
+        type: "str"
+        description: "The Rust toolchain to install (stable, beta, nightly)"
+        default: "stable"
+      rust_components:
+        type: "list"
+        description: "Additional rustup components to install"
+        elements: "str"
+        default: []
