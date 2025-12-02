@@ -31,6 +31,7 @@
     - role: "password_policy"
     - role: "locales"
     - role: "timezone"
+    - role: "yay"
     - role: "wireguard"
     - role: "gateway"
     - role: "python"
