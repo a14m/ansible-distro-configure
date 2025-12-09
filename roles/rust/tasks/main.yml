@@ -18,6 +18,12 @@
     creates: "{{ ansible_env.HOME }}/.cargo/bin/cargo"
   when: not rust_cargo_binary.stat.exists
 
+- name: "Remove cargo default shell profile modification"
+  ansible.builtin.lineinfile:
+    path: "{{ ansible_env.HOME }}/.bashrc"
+    line: '. "$HOME/.cargo/env"'
+    state: "absent"
+
 - name: "Add cargo to shell profile"
   ansible.builtin.blockinfile:
     path: "{{ ansible_env.HOME }}/.bashrc"
