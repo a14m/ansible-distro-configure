@@ -1,0 +1,6 @@
+---
+- name: "Ensure jq is installed"
+  become: true
+  ansible.builtin.package:
+    name: "jq"
+    state: "present"
