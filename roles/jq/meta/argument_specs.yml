@@ -1,0 +1,6 @@
+---
+argument_specs:
+  main:
+    short_description: "Install jq on Linux distribution"
+    description: "Install jq on Linux distribution"
+    options: {}
