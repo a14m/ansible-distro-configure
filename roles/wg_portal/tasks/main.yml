@@ -85,6 +85,7 @@
     group: "wg-portal"
     mode: "0640"
   notify: "Restart wg-portal"
+  no_log: true
 
 - name: "Create wg-portal nginx configurations"
   become: true
