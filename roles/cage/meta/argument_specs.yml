@@ -1,0 +1,6 @@
+---
+argument_specs:
+  main:
+    short_description: "Install cage on Arch Linux"
+    description: "Install cage on Arch Linux"
+    options: {}
