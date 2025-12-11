@@ -43,6 +43,7 @@
     group: "pihole"
     mode: "0644"
   notify: "Restart pihole"
+  no_log: true
   # pihole.toml is being rewritten after successful setup
   # This is why this task is not idempotent and can't be.
   tags:
