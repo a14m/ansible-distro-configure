@@ -16,6 +16,13 @@
     - role: "user"
     - role: "ssh"
     - role: "password_policy"
+  tasks:
+    - name: "Configure passwordless sudo for testing"
+      ansible.builtin.copy:
+        content: "%test_group ALL=(ALL) NOPASSWD: ALL\n"
+        dest: "/etc/sudoers.d/test_group"
+        mode: "0440"
+        validate: 'visudo -cf %s'
 
 - name: "Configure"
   hosts: "raspberrypi"
@@ -24,7 +31,7 @@
   environment:
     PATH: "{{ ansible_env.HOME }}/.local/bin:{{ ansible_env.PATH }}"
   vars:
-    ansible_become_method: su
+    ansible_become_method: sudo
     locales:
       - "en_US.UTF-8 UTF-8"
     timezone: "GMT"

@@ -18,10 +18,6 @@ RUN (cd /lib/systemd/system/sysinit.target.wants/; \
 # https://gitlab.archlinux.org/archlinux/archlinux-docker/-/issues/59
 RUN cp -r /usr/share/i18n/locales/en_US /usr/share/i18n/locales/de_DE;
 
-# Enable passwordless sudo for test_group (created by the user role)
-RUN echo '%test_group ALL=(ALL) NOPASSWD: ALL' > /etc/sudoers.d/test_group && \
-  chmod 0440 /etc/sudoers.d/test_group
-
 VOLUME ["/sys/fs/cgroup"]
 
 CMD ["/lib/systemd/systemd"]
