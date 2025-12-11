@@ -51,6 +51,7 @@
     - src: "dashboards/dashboards.yml.j2"
       dest: "/etc/grafana/provisioning/dashboards/dashboards.yml"
   notify: "Restart grafana"
+  no_log: true
 
 - name: "Provision Grafana community dashboards"
   notify: "Restart grafana"

@@ -25,6 +25,7 @@
     update_password: "on_create"
   register: user
   notify: "Require password change"
+  no_log: true
 
 - name: "Create user ssh directory"
   ansible.builtin.file:
