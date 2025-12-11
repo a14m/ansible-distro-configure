@@ -20,6 +20,7 @@
 - name: "Configure"
   hosts: "archlinux"
   gather_facts: true
+  remote_user: "{{ username }}"
   environment:
     PATH: "{{ ansible_env.HOME }}/.local/bin:{{ ansible_env.PATH }}"
   vars:
