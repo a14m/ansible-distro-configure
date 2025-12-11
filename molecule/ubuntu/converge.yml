@@ -1,6 +1,6 @@
 ---
-- name: Converge
-  hosts: ubuntu
+- name: "Bootstrap"
+  hosts: "ubuntu"
   gather_facts: true
   environment:
     PATH: "{{ ansible_env.HOME }}/.local/bin:{{ ansible_env.PATH }}"
@@ -10,6 +10,20 @@
       - "ssh-ed25519 AAAA...fMo"
       - "ssh-rsa AAAA...4I3"
     user_groups: ["wheel", "test_group"]
+  roles:
+    - role: "hostname"
+    - role: "network"
+    - role: "user"
+    - role: "ssh"
+    - role: "password_policy"
+
+- name: "Configure"
+  hosts: "ubuntu"
+  gather_facts: true
+  environment:
+    PATH: "{{ ansible_env.HOME }}/.local/bin:{{ ansible_env.PATH }}"
+  vars:
+    ansible_become_method: su
     locales:
       - "en_US.UTF-8 UTF-8"
     timezone: "GMT"
@@ -24,11 +38,6 @@
     firefox_install_browserpass: true
     firefox_install_passff: true
   roles:
-    - role: "hostname"
-    - role: "network"
-    - role: "user"
-    - role: "ssh"
-    - role: "password_policy"
     - role: "locales"
     - role: "timezone"
     - role: "jq"
