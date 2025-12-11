@@ -1,0 +1,36 @@
+---
+- name: "Ensure nautilus packages are installed"
+  become: true
+  ansible.builtin.package:
+    name: "{{ item }}"
+    state: "present"
+  loop:
+    - "nautilus"
+
+- name: "Configure nautilus preferences"
+  ansible.builtin.command:
+    cmd: "gsettings set {{ item.key }} {{ item.value }}"
+  environment:
+    DBUS_SESSION_BUS_ADDRESS: "unix:path=/run/user/{{ ansible_user_uid }}/bus"
+  changed_when: false
+  loop:
+    - key: "org.gnome.nautilus.preferences default-folder-viewer"
+      value: "'{{ nautilus_folder_viewer }}'"
+    - key: "org.gnome.nautilus.preferences show-hidden-files"
+      value: "{{ nautilus_show_hidden_files | lower }}"
+    - key: "org.gnome.nautilus.preferences default-sort-order"
+      value: "'{{ nautilus_sort_order }}'"
+    - key: "org.gnome.nautilus.preferences always-use-location-entry"
+      value: "{{ nautilus_always_use_location_entry | lower }}"
+
+- name: "Configure nautilus default folders"
+  ansible.builtin.command:
+    cmd: "xdg-user-dirs-update --set {{ item.name }} {{ item.path }}"
+  changed_when: false
+  loop:
+    - { name: "DESKTOP", path: "{{ ansible_env.HOME }}/Desktop" }
+    - { name: "DOCUMENTS", path: "{{ ansible_env.HOME }}/Documents" }
+    - { name: "DOWNLOAD", path: "{{ ansible_env.HOME }}/Downloads" }
+    - { name: "MUSIC", path: "{{ ansible_env.HOME }}/Music" }
+    - { name: "PICTURES", path: "{{ ansible_env.HOME }}/Pictures" }
+    - { name: "VIDEOS", path: "{{ ansible_env.HOME }}/Videos" }
