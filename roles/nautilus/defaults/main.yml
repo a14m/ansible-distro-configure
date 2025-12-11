@@ -1,0 +1,5 @@
+---
+nautilus_folder_viewer: "list-view"
+nautilus_show_hidden_files: false
+nautilus_sort_order: "name"
+nautilus_always_use_location_entry: false

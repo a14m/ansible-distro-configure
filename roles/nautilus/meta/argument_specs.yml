@@ -1,0 +1,32 @@
+---
+argument_specs:
+  main:
+    short_description: "Install Nautilus file manager on ArchLinux"
+    description: "Install Nautilus file manager on ArchLinux"
+    options:
+      nautilus_folder_viewer:
+        type: "str"
+        description: "The default folder viewer mode"
+        default: "list-view"
+        choices:
+          - "list-view"
+          - "icon-view"
+      nautilus_show_hidden_files:
+        type: "bool"
+        description: "Whether to show hidden files by default"
+        default: false
+      nautilus_sort_order:
+        type: "str"
+        description: "The default sort order for files"
+        default: "name"
+        choices:
+          - "name"
+          - "size"
+          - "type"
+          - "date_modified"
+          - "date_accessed"
+          - "date_created"
+      nautilus_always_use_location_entry:
+        type: "bool"
+        description: "Whether to show the full path in the location bar"
+        default: false
