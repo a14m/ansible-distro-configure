@@ -55,11 +55,6 @@
     firefox_install_browserpass: true
     firefox_install_passff: true
   roles:
-    - role: "hostname"
-    - role: "network"
-    - role: "user"
-    - role: "ssh"
-    - role: "password_policy"
     - role: "locales"
     - role: "timezone"
     - role: "jq"
