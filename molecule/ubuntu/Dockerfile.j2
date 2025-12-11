@@ -25,6 +25,10 @@ RUN rm -f /lib/systemd/system/getty.target
 # Mimic Ubuntu OS default boot (for testing)
 RUN systemctl enable avahi-daemon
 
+# Enable passwordless sudo for test_group (created by the user role)
+RUN echo '%test_group ALL=(ALL) NOPASSWD: ALL' > /etc/sudoers.d/test_group && \
+  chmod 0440 /etc/sudoers.d/test_group
+
 VOLUME ["/sys/fs/cgroup", "/tmp", "/run", "/opt"]
 
 CMD ["/lib/systemd/systemd"]
