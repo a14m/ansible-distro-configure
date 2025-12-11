@@ -1,0 +1,6 @@
+---
+- name: "Ensure cage is installed"
+  become: true
+  ansible.builtin.package:
+    name: "cage"
+    state: "present"

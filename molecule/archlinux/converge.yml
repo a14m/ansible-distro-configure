@@ -56,3 +56,4 @@
     - role: "fonts"
     - role: "alacritty"
     - role: "ghostty"
+    - role: "cage"
