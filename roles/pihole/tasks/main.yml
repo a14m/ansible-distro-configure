@@ -71,10 +71,7 @@
   args:
     creates: "/usr/local/bin/pihole"
   when: not pihole_binary.stat.exists
-
-- name: "Show install output"
-  ansible.builtin.debug:
-    var: pihole_install.stdout
+  notify: "Show install output"
 
 - name: "Ensure Pi-hole started/enabled"
   become: true
