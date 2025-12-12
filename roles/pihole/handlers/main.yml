@@ -16,3 +16,7 @@
   ansible.builtin.systemd_service:
     name: "NetworkManager"
     state: "restarted"
+
+- name: "Show install output"
+  ansible.builtin.debug:
+    var: pihole_install.stdout
