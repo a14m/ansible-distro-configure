@@ -1,7 +1,11 @@
 ---
 # Default user password: changeme
-# Password will be required to change after first usage
-user_password:
+# Default Password will be required to change after first usage
+user_default_password:
   '$6$jF4YTa1r2tKMH4b3$9KdWeEXJ0RfaS0EfTE6CPFmJFxPABXa455U0Wc47iGxqvsgchkcuRAha/hus//mG7mxWdfEFkLkCKeBsdyLcX/'
+
+# If provided, the user_password will be used instead of the default password and won't require change on first login
+# user_password:
+#   '$6$jF4YTa1r2tKMH4b3$9KdWeEXJ0RfaS0EfTE6CPFmJFxPABXa455U0Wc47iGxqvsgchkcuRAha/hus//mG7mxWdfEFkLkCKeBsdyLcX/'
 
 user_groups: []

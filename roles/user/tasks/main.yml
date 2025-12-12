@@ -10,7 +10,24 @@
     state: "present"
   loop: "{{ user_groups }}"
 
-- name: "Create user: {{ username }}"
+- name: "Create user with user_default_password"
+  # noqa var-naming[no-role-prefix] username is more understandable than user_name
+  become: true
+  ansible.builtin.user:
+    name: "{{ username }}"
+    append: true
+    create_home: true
+    generate_ssh_key: false
+    groups: "{{  user_groups }}"
+    password: "{{ user_default_password }}"
+    shell: "/bin/bash"
+    state: "present"
+    update_password: "on_create"
+  register: user
+  notify: "Require password change"
+  when: not user_password is defined
+
+- name: "Create user with user_password"
   # noqa var-naming[no-role-prefix] username is more understandable than user_name
   become: true
   ansible.builtin.user:
@@ -23,9 +40,8 @@
     shell: "/bin/bash"
     state: "present"
     update_password: "on_create"
-  register: user
-  notify: "Require password change"
   no_log: true
+  when: user_password is defined
 
 - name: "Create user ssh directory"
   ansible.builtin.file:
