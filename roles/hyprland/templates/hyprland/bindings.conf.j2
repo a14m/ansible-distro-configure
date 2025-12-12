@@ -1,0 +1,67 @@
+# Configure Hyprland Bindings
+#
+# See https://wiki.hypr.land/Configuring/Keywords/
+# See https://wiki.hypr.land/Configuring/Binds/
+
+bindd = SUPER, Q, Quit, killactive,
+bindd = SUPER CONTROL, Q, Logout, exit,
+
+# Switch workspaces with ctrl + [0-9] (MacOS-like)
+bind = CONTROL, 1, workspace, 1
+bind = CONTROL, 2, workspace, 2
+bind = CONTROL, 3, workspace, 3
+bind = CONTROL, 4, workspace, 4
+bind = CONTROL, 5, workspace, 5
+bind = CONTROL, 6, workspace, 6
+bind = CONTROL, 7, workspace, 7
+bind = CONTROL, 8, workspace, 8
+bind = CONTROL, 9, workspace, 9
+bind = CONTROL, 0, workspace, 10
+
+# Move active window to a workspace with ctrl + SHIFT + [0-9]
+bind = CONTROL SHIFT, 1, movetoworkspace, 1
+bind = CONTROL SHIFT, 2, movetoworkspace, 2
+bind = CONTROL SHIFT, 3, movetoworkspace, 3
+bind = CONTROL SHIFT, 4, movetoworkspace, 4
+bind = CONTROL SHIFT, 5, movetoworkspace, 5
+bind = CONTROL SHIFT, 6, movetoworkspace, 6
+bind = CONTROL SHIFT, 7, movetoworkspace, 7
+bind = CONTROL SHIFT, 8, movetoworkspace, 8
+bind = CONTROL SHIFT, 9, movetoworkspace, 9
+bind = CONTROL SHIFT, 0, movetoworkspace, 10
+
+# Move/resize windows with mouse (SUPER + SHIFT + left/right click)
+bindm = SUPER SHIFT, mouse:272, movewindow
+bindm = SUPER SHIFT, mouse:273, resizewindow
+
+# Move focus with (SUPER + h/j/k/l)
+binde = SUPER, h, movefocus, l
+binde = SUPER, j, movefocus, d
+binde = SUPER, k, movefocus, u
+binde = SUPER, l, movefocus, r
+
+# Swap windows with (SUPER + SHIFT + h/j/k/l)
+binde = SUPER SHIFT, h, swapwindow, l
+binde = SUPER SHIFT, j, swapwindow, d
+binde = SUPER SHIFT, k, swapwindow, u
+binde = SUPER SHIFT, l, swapwindow, r
+
+# Resize windows with (SUPER + CONTROL + h/j/k/l)
+binde = SUPER CONTROL, h, resizeactive, -20 0
+binde = SUPER CONTROL, j, resizeactive, 0 20
+binde = SUPER CONTROL, k, resizeactive, 0 -20
+binde = SUPER CONTROL, l, resizeactive, 20 0
+
+# Laptop multimedia keys for volume and LCD brightness
+bindel = ,XF86AudioRaiseVolume, exec, wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+
+bindel = ,XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-
+bindel = ,XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
+bindel = ,XF86AudioMicMute, exec, wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle
+bindel = ,XF86MonBrightnessUp, exec, brightnessctl -e4 -n2 set 5%+
+bindel = ,XF86MonBrightnessDown, exec, brightnessctl -e4 -n2 set 5%-
+
+# Requires playerctl
+bindl = , XF86AudioNext, exec, playerctl next
+bindl = , XF86AudioPause, exec, playerctl play-pause
+bindl = , XF86AudioPlay, exec, playerctl play-pause
+bindl = , XF86AudioPrev, exec, playerctl previous
