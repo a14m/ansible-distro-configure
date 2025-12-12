@@ -8,6 +8,11 @@ argument_specs:
         type: "str"
         required: true
         description: "The username of the created account."
+      user_password:
+        type: "str"
+        required: false
+        description: "If provided, the password will be used for the user account."
+        no_log: true
       user_public_keys:
         type: "list"
         required: true
