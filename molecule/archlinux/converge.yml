@@ -75,3 +75,4 @@
     - role: "alacritty"
     - role: "ghostty"
     - role: "cage"
+    - role: "hyprland"

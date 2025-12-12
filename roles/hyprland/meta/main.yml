@@ -1,0 +1,16 @@
+---
+dependencies:
+  - role: "uwsm"
+  - role: "cage"
+  - role: "greetd"
+  - role: "nautilus"
+galaxy_info:
+  author: "a14m"
+  description: "Install hyprland"
+  company: "kartoffeln.work GmbH."
+  license: "MIT"
+  min_ansible_version: "2.18"
+  platforms:
+    - name: "ArchLinux"
+      versions:
+        - "all"
