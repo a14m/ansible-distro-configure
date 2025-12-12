@@ -1,0 +1,6 @@
+---
+argument_specs:
+  main:
+    short_description: "Install hyprland on ArchLinux"
+    description: "Install hyprland on Linux distribution"
+    options: {}
