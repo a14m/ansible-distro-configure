@@ -1,0 +1,6 @@
+---
+argument_specs:
+  main:
+    short_description: "Install greetd on Arch Linux"
+    description: "Install greetd on Arch Linux"
+    options: {}
