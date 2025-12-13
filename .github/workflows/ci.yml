@@ -32,6 +32,8 @@ jobs:
         molecule_distro:
           - name: archlinux
             runs_on: "ubuntu-latest"
+          - name: archlinux-gnome
+            runs_on: "ubuntu-latest"
           - name: ubuntu
             runs_on: "ubuntu-latest"
           - name: debian
