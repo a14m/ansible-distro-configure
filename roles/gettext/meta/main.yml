@@ -1,11 +1,8 @@
 ---
-dependencies:
-  - role: "git"
-  - role: "stow"
-  - role: "gettext"
+dependencies: []
 galaxy_info:
   author: "a14m"
-  description: "Configure dotfiles repo"
+  description: "Install gettext (envsubst)"
   company: "kartoffeln.work GmbH."
   license: "MIT"
   min_ansible_version: "2.18"
