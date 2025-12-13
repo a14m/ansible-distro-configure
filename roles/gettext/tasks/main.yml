@@ -1,0 +1,9 @@
+---
+- name: "Include OS-specific variables"
+  ansible.builtin.include_vars: "{{ ansible_os_family | lower }}.yml"
+
+- name: "Ensure envsubst is installed"
+  become: true
+  ansible.builtin.package:
+    name: "{{ gettext_package }}"
+    state: "present"
