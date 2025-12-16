@@ -4,7 +4,6 @@ dependencies:
 galaxy_info:
   author: "a14m"
   description: "Configure distro ssh with hardening"
-  company: "kartoffeln.work GmbH."
   license: "license MIT"
   min_ansible_version: "2.18"
   platforms:

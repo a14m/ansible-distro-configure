@@ -3,7 +3,6 @@ dependencies: []
 galaxy_info:
   author: "a14m"
   description: "Install sed"
-  company: "kartoffeln.work GmbH."
   license: "MIT"
   min_ansible_version: "2.18"
   platforms:

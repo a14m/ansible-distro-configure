@@ -5,7 +5,6 @@ dependencies:
 galaxy_info:
   author: "a14m"
   description: "Configure user and user public keys"
-  company: "kartoffeln.work GmbH."
   license: "MIT"
   min_ansible_version: "2.18"
   platforms:
