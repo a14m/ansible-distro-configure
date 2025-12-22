@@ -1,0 +1,6 @@
+---
+argument_specs:
+  main:
+    short_description: "Install man on Linux distribution"
+    description: "Install manual pages on Linux distribution"
+    options: {}

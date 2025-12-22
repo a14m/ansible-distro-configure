@@ -9,6 +9,8 @@
     - role: "locales"
     - role: "timezone"
     - role: "which"
+    - role: "bash"
+    - role: "man"
     - role: "jq"
     - role: "fonts"
     - role: "wireguard"
@@ -35,6 +37,8 @@
   roles:
     - role: "locales"
     - role: "timezone"
+    - role: "bash"
+    - role: "man"
     - role: "jq"
     - role: "fonts"
     - role: "wireguard"
@@ -59,6 +63,8 @@
   roles:
     - role: "locales"
     - role: "timezone"
+    - role: "bash"
+    - role: "man"
     - role: "jq"
     - role: "wireguard"
     - role: "gateway"
