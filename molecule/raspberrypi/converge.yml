@@ -58,6 +58,8 @@
   roles:
     - role: "locales"
     - role: "timezone"
+    - role: "bash"
+    - role: "man"
     - role: "jq"
     - role: "python"
     - role: "go"
