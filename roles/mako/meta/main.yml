@@ -1,13 +1,8 @@
 ---
-dependencies:
-  - role: "uwsm"
-  - role: "cage"
-  - role: "greetd"
-  - role: "nautilus"
-  - role: "mako"
+dependencies: []
 galaxy_info:
   author: "a14m"
-  description: "Install hyprland"
+  description: "Install mako on Arch Linux"
   license: "MIT"
   min_ansible_version: "2.18"
   platforms:
