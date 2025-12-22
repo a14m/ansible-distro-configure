@@ -1,0 +1,6 @@
+---
+- name: "Ensure man is installed"
+  become: true
+  ansible.builtin.package:
+    name: "man-db"
+    state: "present"
