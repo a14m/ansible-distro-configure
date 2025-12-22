@@ -7,15 +7,6 @@
   loop:
     - "hyprland"
 
-- name: "Deploy custom hyprland desktop entry"
-  become: true
-  ansible.builtin.template:
-    src: "hyprland-custom.desktop.j2"
-    dest: "/usr/share/wayland-sessions/hyprland-custom.desktop"
-    mode: "0644"
-    owner: "root"
-    group: "root"
-
 - name: "Configure greetd"
   become: true
   ansible.builtin.copy:
@@ -27,27 +18,29 @@
       [terminal]
       vt = 1
       [default_session]
-      command = "cage -s -- gtkgreet -c 'uwsm start hyprland-custom.desktop'"
+      command = "cage -s -- gtkgreet -c 'uwsm start hyprland.desktop'"
       user = "greeter"
   notify:
     - "Restart greetd"
 
-- name: "Create hyprland config directory"
+- name: "Create system config directory"
   become: true
   ansible.builtin.file:
     path: "/etc/hypr"
     state: "directory"
     mode: "0755"
+  loop:
+    - "{{ ansible_env.HOME }}/.config/hypr"
 
-- name: "Configure hyprland defaults"
+- name: "Configure system defaults"
   become: true
   ansible.builtin.template:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
     mode: "0644"
   loop:
-    - src: "hyprland/hyprland.conf.j2"
-      dest: "/etc/hypr/hyprland.conf"
+    - src: "hyprland/autostart.conf.j2"
+      dest: "/etc/hypr/autostart.conf"
     - src: "hyprland/monitors.conf.j2"
       dest: "/etc/hypr/monitors.conf"
     - src: "hyprland/input.conf.j2"
@@ -58,3 +51,5 @@
       dest: "/etc/hypr/envs.conf"
     - src: "hyprland/looknfeel.conf.j2"
       dest: "/etc/hypr/looknfeel.conf"
+    - src: "hyprland/hyprland.conf.j2"
+      dest: "/etc/hypr/hyprland.conf"
