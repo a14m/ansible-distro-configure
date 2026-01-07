@@ -77,4 +77,5 @@
     - role: "ghostty"
     - role: "xdg-terminal-exec"
     - role: "btop"
+    - role: "bluetui"
     - role: "hyprland"
