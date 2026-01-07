@@ -1,0 +1,11 @@
+---
+- name: "Ensure bluetooth, bluetui and bluetoothctl packages are installed"
+  become: true
+  ansible.builtin.package:
+    name:
+      - "bluez"
+      - "bluez-utils"
+      - "bluetui"
+    state: "present"
+  notify:
+    - "Start bluetooth"
