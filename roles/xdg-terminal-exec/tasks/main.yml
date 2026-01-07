@@ -1,0 +1,10 @@
+---
+- name: Download xdg-terminal-exec
+  become: true
+  ansible.builtin.get_url:
+    url: "{{ xdg_terminal_exec_url }}"
+    dest: "/usr/local/bin/xdg-terminal-exec"
+    mode: "0755"
+  vars:
+    xdg_terminal_exec_url: >
+      https://raw.githubusercontent.com/Vladimir-csp/xdg-terminal-exec/{{ xdg_terminal_exec_version }}/xdg-terminal-exec
