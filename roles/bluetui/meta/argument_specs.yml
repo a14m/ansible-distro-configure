@@ -1,0 +1,6 @@
+---
+argument_specs:
+  main:
+    short_description: "Install bluetui on Arch Linux"
+    description: "Install bluetui on Arch Linux"
+    options: {}
