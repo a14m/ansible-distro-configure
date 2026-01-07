@@ -2,7 +2,7 @@
 dependencies: []
 galaxy_info:
   author: "a14m"
-  description: "Install greetd on Arch Linux"
+  description: "Install greetd on ArchLinux"
   license: "MIT"
   min_ansible_version: "2.18"
   platforms:

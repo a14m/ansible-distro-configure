@@ -2,7 +2,7 @@
 dependencies: []
 galaxy_info:
   author: "a14m"
-  description: "Install bluetui on Arch Linux"
+  description: "Install bluetui on ArchLinux"
   license: "MIT"
   min_ansible_version: "2.18"
   platforms:
