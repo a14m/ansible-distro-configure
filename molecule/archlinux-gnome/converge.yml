@@ -75,7 +75,5 @@
     - role: "firefox"
     - role: "fonts"
     - role: "alacritty"
-    - role: "ghostty"
-    - role: "xdg-terminal-exec"
     - role: "btop"
     - role: "bluetui"

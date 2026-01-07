@@ -1,6 +1,0 @@
----
-- name: "Ensure Ghostty is installed"
-  become: true
-  ansible.builtin.package:
-    name: "ghostty"
-    state: "present"
