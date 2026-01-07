@@ -2,7 +2,7 @@
 dependencies: []
 galaxy_info:
   author: "a14m"
-  description: "Install uwsm on Arch Linux"
+  description: "Install uwsm on ArchLinux"
   license: "MIT"
   min_ansible_version: "2.18"
   platforms:
