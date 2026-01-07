@@ -1,6 +1,0 @@
----
-argument_specs:
-  main:
-    short_description: "Install xdg-terminal-exec on Linux distro"
-    description: "Install xdg-terminal-exec on Linux distro"
-    options: {}
