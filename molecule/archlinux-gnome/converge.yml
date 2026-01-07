@@ -77,3 +77,4 @@
     - role: "alacritty"
     - role: "btop"
     - role: "bluetui"
+    - role: "wlctl"

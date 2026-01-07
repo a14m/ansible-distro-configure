@@ -1,0 +1,6 @@
+---
+argument_specs:
+  main:
+    short_description: "Install wlctl"
+    description: "Install wlctl"
+    options: {}
