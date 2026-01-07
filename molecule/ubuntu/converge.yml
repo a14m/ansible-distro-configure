@@ -75,3 +75,4 @@
     - role: "fonts"
     - role: "alacritty"
     - role: "xdg-terminal-exec"
+    - role: "btop"

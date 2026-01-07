@@ -77,3 +77,4 @@
     - role: "alacritty"
     - role: "ghostty"
     - role: "xdg-terminal-exec"
+    - role: "btop"
