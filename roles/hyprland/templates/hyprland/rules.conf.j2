@@ -1,0 +1,11 @@
+# Scroll nicely in the terminal
+windowrule = scroll_touchpad 1.5, match:class (Alacritty|kitty)
+windowrule = scroll_touchpad 0.2, match:class com.mitchellh.ghostty
+
+# Floating windows
+windowrule = float on, match:tag floating-window
+windowrule = center on, match:tag floating-window
+windowrule = size 875 600, match:tag floating-window
+
+windowrule = tag +floating-window, match:class (work.kartoffln.bluetui|work.kartoffln.btop)
+windowrule = float on, match:class org.gnome.Calculator
