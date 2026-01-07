@@ -1,0 +1,6 @@
+---
+- name: "Ensure btop is installed"
+  become: true
+  ansible.builtin.package:
+    name: "btop"
+    state: "present"
