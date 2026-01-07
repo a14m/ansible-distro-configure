@@ -86,3 +86,4 @@
     - role: "fonts"
     - role: "alacritty"
     - role: "btop"
+    - role: "wlctl"
