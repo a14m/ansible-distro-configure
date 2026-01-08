@@ -1,0 +1,6 @@
+---
+- name: "Ensure brightnessctl is installed"
+  become: true
+  ansible.builtin.package:
+    name: "brightnessctl"
+    state: "present"

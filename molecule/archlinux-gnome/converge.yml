@@ -79,3 +79,4 @@
     - role: "bluetui"
     - role: "wlctl"
     - role: "pipewire"
+    - role: "brightnessctl"
