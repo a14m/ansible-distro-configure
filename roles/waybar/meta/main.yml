@@ -1,0 +1,17 @@
+---
+dependencies:
+  - role: "fonts"
+  - role: "alacritty"
+  - role: "btop"
+  - role: "bluetui"
+  - role: "wlctl"
+  - role: "wiremix"
+galaxy_info:
+  author: "a14m"
+  description: "Install waybar"
+  license: "MIT"
+  min_ansible_version: "2.18"
+  platforms:
+    - name: "ArchLinux"
+      versions:
+        - "all"

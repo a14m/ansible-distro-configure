@@ -1,0 +1,6 @@
+---
+argument_specs:
+  main:
+    short_description: "Install waybar on ArchLinux"
+    description: "Install waybar on Linux distribution"
+    options: {}
