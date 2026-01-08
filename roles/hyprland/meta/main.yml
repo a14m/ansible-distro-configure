@@ -5,6 +5,8 @@ dependencies:
   - role: "greetd"
   - role: "nautilus"
   - role: "mako"
+  - role: "pipewire"
+  - role: "brightnessctl"
 galaxy_info:
   author: "a14m"
   description: "Install hyprland"
