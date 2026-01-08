@@ -77,6 +77,35 @@
     - role: "btop"
     - role: "bluetui"
     - role: "wlctl"
+  tasks:
+    - name: "Debug systemd-logind status"
+      ansible.builtin.shell:
+        cmd: "{{ item }}"
+      loop:
+        - "systemctl is-active dbus"
+        - "systemctl is-active systemd-logind"
+        - "loginctl list-sessions"
+        - "ls -la /run/user/ || echo 'no /run/user'"
+        - "ls -la /run/user/1000/ || echo 'no user dir'"
+        - "systemctl --user status || echo 'user systemd failed'"
+      become: true
+      become_user: "{{ username }}"
+      register: debug_output
+      failed_when: false
+
+    - name: "Show debug output"
+      ansible.builtin.debug:
+        var: debug_output
+
+- name: "Configure pipewire"
+  hosts: "archlinux"
+  gather_facts: true
+  remote_user: "{{ username }}"
+  environment:
+    PATH: "{{ ansible_env.HOME }}/.local/bin:{{ ansible_env.PATH }}"
+  vars:
+    ansible_become_method: sudo
+  roles:
     - role: "pipewire"
     - role: "brightnessctl"
     - role: "wiremix"
