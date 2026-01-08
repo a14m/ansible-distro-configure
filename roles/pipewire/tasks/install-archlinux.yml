@@ -1,0 +1,17 @@
+---
+- name: "Ensure pulseaudio is removed"
+  become: true
+  community.general.pacman:
+    name: "pulseaudio"
+    state: "absent"
+    extra_args: "--nosave --recursive"
+
+- name: "Ensure pipewire packages are installed"
+  become: true
+  community.general.pacman:
+    name:
+      - "pipewire"
+      - "wireplumber"
+      - "pipewire-pulse"
+      - "pipewire-alsa"
+    state: "present"

@@ -1,0 +1,6 @@
+---
+argument_specs:
+  main:
+    short_description: "Install pipewire on Linux distribution"
+    description: "Install pipewire on Linux distribution"
+    options: {}
