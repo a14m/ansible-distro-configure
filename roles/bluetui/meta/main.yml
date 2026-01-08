@@ -1,5 +1,6 @@
 ---
-dependencies: []
+dependencies:
+  - role: "systemd"
 galaxy_info:
   author: "a14m"
   description: "Install bluetui on ArchLinux"
