@@ -1,0 +1,115 @@
+/* vim: set filetype=css : */
+@define-color activeColor rgb(64, 208, 255);
+@define-color inactiveColor rgb(124, 124, 124);
+@define-color background rgb(0, 0, 0);
+@define-color foreground rgb(124, 124, 124);
+
+* {
+    font-family: 'JetBrainsMono Nerd Font';
+    font-size: 14px;
+}
+
+@keyframes blink {
+    to {
+        color: @foreground;
+    }
+}
+
+
+#waybar {
+    all:unset;
+}
+
+window#waybar.hidden {
+    opacity: 0.2;
+}
+
+.modules-left {
+    color: @foreground;
+    padding: 5px 10px;
+    background: alpha(@background,.5);
+    border-radius: 50px;
+}
+.modules-center {
+    color: @foreground;
+    padding: 5px 10px;
+    background: alpha(@background,.5);
+    border-radius: 50px;
+}
+.modules-right {
+    color: @foreground;
+    padding: 5px 10px;
+    background: alpha(@background,.5);
+    border-radius: 50px;
+}
+
+tooltip {
+}
+
+#workspaces {
+    padding: 0px 0px;
+    color: @inactiveColor;
+}
+
+#workspaces button {
+    all:unset;
+    padding: 0px 5px;
+}
+
+#workspaces button.active {
+    border: none;
+    color: @activeColor;
+}
+
+#clock{
+    padding: 0px 5px;
+}
+
+#network,
+#bluetooth,
+#language,
+#battery,
+#cpu,
+#memory,
+#disk,
+#temprature,
+#backlight,
+#pulseaudio,
+#wireplumber {
+    padding: 0px 10px;
+    color: inherit;
+}
+
+#workspaces button:hover,
+#clock:hover,
+#network:hover,
+#bluetooth:hover,
+#language:hover,
+#battery:hover,
+#battery.charging:hover, #battery.plugged:hover, #battery.full:hover,
+#cpu:hover,
+#memory:hover,
+#disk:hover,
+#temprature:hover,
+#backlight:hover,
+#pulseaudio:hover,
+#wireplumber:hover {
+    color: #FFFFFF;
+}
+
+#battery.charging, #battery.plugged, #battery.full {
+    color: #32CD32;
+}
+
+#battery.warning:not(.charging) {
+    color: #F1C40F;
+}
+
+#battery.critical:not(.charging) {
+    color: #DC143C;
+    animation-name: blink;
+    animation-duration: 1s;
+    animation-timing-function: steps(2, end);
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
