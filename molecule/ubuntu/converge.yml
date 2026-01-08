@@ -76,3 +76,4 @@
     - role: "alacritty"
     - role: "btop"
     - role: "wlctl"
+    - role: "pipewire"
