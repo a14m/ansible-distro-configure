@@ -80,3 +80,4 @@
     - role: "wlctl"
     - role: "pipewire"
     - role: "brightnessctl"
+    - role: "wiremix"
