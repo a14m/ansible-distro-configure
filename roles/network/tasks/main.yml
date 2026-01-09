@@ -38,18 +38,18 @@
   when: ansible_is_chroot
   # noqa: command-instead-of-module module doesn't work inside chroot
 
-- name: "Ensure network disabled services are disabled"
+- name: "Ensure network disabled services are masked"
   become: true
   ansible.builtin.systemd_service:
     name: "{{ item }}"
-    enabled: false
+    masked: true
     state: "stopped"
   loop: "{{ network_disabled_services }}"
   when: not ansible_is_chroot
 
-- name: "(chroot): Ensure network disabled services are disabled"
+- name: "(chroot): Ensure network disabled services are masked"
   ansible.builtin.command:
-    cmd: "systemctl disable {{ item }}"
+    cmd: "systemctl mask {{ item }}"
   changed_when: true
   loop: "{{ network_disabled_services }}"
   when: ansible_is_chroot
