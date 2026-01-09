@@ -1,8 +1,0 @@
-#!/bin/bash
-
-# This works on laptops but not sure if on desktops it will have the same name
-# That's why switching all the keyboards layout instead (which is safer)
-# exec hyprctl switchxkblayout at-translated-set-2-keyboard next
-exec hyprctl devices -j \
-  | jq -r '.keyboards[] | select (.name | endswith("keyboard")).name' \
-  | xargs -I {} hyprctl switchxkblayout {} next
