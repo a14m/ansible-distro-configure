@@ -8,7 +8,6 @@ dependencies:
   - role: "pipewire"
   - role: "brightnessctl"
   - role: "waybar"
-  - role: "swaybg"
 galaxy_info:
   author: "a14m"
   description: "Install hyprland"

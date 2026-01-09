@@ -1,6 +1,0 @@
----
-- name: "Ensure swaybg is installed"
-  become: true
-  ansible.builtin.package:
-    name: "swaybg"
-    state: "present"
