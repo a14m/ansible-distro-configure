@@ -1,0 +1,6 @@
+---
+argument_specs:
+  main:
+    short_description: "Install hyprlock on ArchLinux"
+    description: "Install hyprlock on ArchLinux"
+    options: {}

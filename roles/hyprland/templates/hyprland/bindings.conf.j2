@@ -4,7 +4,8 @@
 # See https://wiki.hypr.land/Configuring/Binds/
 
 bindd = SUPER, Q, Quit, killactive,
-bindd = SUPER CONTROL, Q, Logout, exit,
+bindd = SUPER CONTROL, Q, Lock System, exec, hyprlock
+bindd = SUPER SHIFT, Q, Logout, exit,
 
 # Switch workspaces with ctrl + [0-9] (MacOS-like)
 bind = CONTROL, 1, workspace, 1
