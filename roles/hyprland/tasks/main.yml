@@ -53,5 +53,7 @@
       dest: "/etc/hypr/looknfeel.conf"
     - src: "hyprland/rules.conf.j2"
       dest: "/etc/hypr/rules.conf"
+    - src: "hyprland/hyprlock.conf.j2"
+      dest: "/etc/hypr/hyprlock.conf"
     - src: "hyprland/hyprland.conf.j2"
       dest: "/etc/hypr/hyprland.conf"
