@@ -5,6 +5,7 @@
     name: "{{ item }}"
     state: "present"
   loop:
+    - "hyprlock"
     - "hyprland"
 
 - name: "Configure greetd"

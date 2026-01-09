@@ -9,7 +9,6 @@ dependencies:
   - role: "brightnessctl"
   - role: "waybar"
   - role: "swaybg"
-  - role: "hyprlock"
 galaxy_info:
   author: "a14m"
   description: "Install hyprland"
