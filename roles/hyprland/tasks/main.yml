@@ -7,6 +7,7 @@
   loop:
     - "swaybg"
     - "hyprlock"
+    - "hypridle"
     - "hyprland"
 
 - name: "Configure greetd"
@@ -57,5 +58,7 @@
       dest: "/etc/hypr/rules.conf"
     - src: "hyprland/hyprlock.conf.j2"
       dest: "/etc/hypr/hyprlock.conf"
+    - src: "hyprland/hypridle.conf.j2"
+      dest: "/etc/hypr/hypridle.conf"
     - src: "hyprland/hyprland.conf.j2"
       dest: "/etc/hypr/hyprland.conf"
