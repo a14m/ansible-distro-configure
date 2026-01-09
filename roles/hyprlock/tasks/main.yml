@@ -1,6 +1,0 @@
----
-- name: "Ensure hyprlock is installed"
-  become: true
-  ansible.builtin.package:
-    name: "hyprlock"
-    state: "present"
