@@ -1,6 +1,0 @@
----
-argument_specs:
-  main:
-    short_description: "Install swaybg on ArchLinux"
-    description: "Install swaybg on ArchLinux"
-    options: {}
