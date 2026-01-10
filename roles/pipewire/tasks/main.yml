@@ -2,17 +2,20 @@
 - name: "Include OS-specific tasks"
   ansible.builtin.include_tasks: "install-{{ ansible_os_family | lower }}.yml"
 
+- name: "Ensure pulseaudio services are masked"
+  ansible.builtin.systemd_service:
+    name: "pulseaudio"
+    masked: true
+    state: "stopped"
+    scope: "user"
+
 - name: "Ensure pipewire services are restarted"
   ansible.builtin.systemd_service:
     name: "{{ item }}"
     enabled: "true"
-    state: "restarted"
+    state: "started"
     scope: "user"
   loop:
     - "pipewire"
     - "pipewire-pulse"
     - "wireplumber"
-  tags:
-    # Since this is the recommended way for ensuring the services are started
-    # must be ignored from idempotence testing because it always reports changed
-    - molecule-idempotence-notest
