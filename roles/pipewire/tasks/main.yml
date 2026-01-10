@@ -8,6 +8,7 @@
     masked: true
     state: "stopped"
     scope: "user"
+  failed_when: false
 
 - name: "Ensure pipewire services are restarted"
   ansible.builtin.systemd_service:
