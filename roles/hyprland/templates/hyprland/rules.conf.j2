@@ -10,3 +10,17 @@ windowrule = size 875 600, match:tag floating-window
 windowrule = tag +floating-window, match:class (work.kartoffln.bluetui|work.kartoffln.btop|work.kartoffln.wlctl)
 windowrule = tag +floating-window, match:class (work.kartoffln.wiremix)
 windowrule = float on, match:class org.gnome.Calculator
+
+# Picture-in-picture overlays
+windowrule = tag +pic-in-pic, match:title (Picture.?in.?[Pp]icture)
+windowrule = float on, match:tag pic-in-pic
+windowrule = pin on, match:tag pic-in-pic
+windowrule = size 600 338, match:tag pic-in-pic
+windowrule = opacity 1.0 override 1.0 override, match:tag pic-in-pic
+windowrule = move (monitor_w-window_w-40) (monitor_h*0.04), match:tag pic-in-pic
+
+# Browser types
+windowrule = tag +chromium-based-browser, match:class ((google-)?[cC]hrom(e|ium)|[bB]rave-browser|[mM]icrosoft-edge|Vivaldi-stable|helium)
+windowrule = tag +firefox-based-browser, match:class ([fF]irefox|zen|librewolf)
+windowrule = opacity 1.0 override 0.97 override, match:tag chromium-based-browser
+windowrule = opacity 1.0 override 0.97 override, match:tag firefox-based-browser
