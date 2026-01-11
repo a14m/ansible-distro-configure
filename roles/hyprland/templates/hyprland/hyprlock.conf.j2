@@ -1,4 +1,10 @@
+# Variables
 $font = JetBrainsMono Nerd Font
+$inner_color = rgba(17, 17, 17, 7.0)
+$outer_color = rgba(33ccffee) rgba(00ff99ee) 45deg
+$check_color = rgba(00ff99ee) rgba(ff6633ee) 120deg
+$fail_color = rgba(ff6633ee) rgba(ff0066ee) 40deg
+$font_color = rgb(143, 143, 143)
 
 general {
     hide_cursor = false
@@ -20,26 +26,26 @@ background {
     blur_passes = 3
 }
 
+# Password input
 input-field {
     monitor =
-    outline_thickness = 2
-    halign = center
-    valign = center
-
-    inner_color = rgba(17, 17, 17, 7.0)
-    outer_color = rgba(33ccffee) rgba(00ff99ee) 45deg
-    check_color = rgba(00ff99ee) rgba(ff6633ee) 120deg
-    fail_color = rgba(ff6633ee) rgba(ff0066ee) 40deg
-
-    font_color = rgb(143, 143, 143)
     font_family = $font
+    font_color = $font_color
 
     placeholder_text = Enter Password
+    fade_on_empty = false
     fail_text = <i>$FAIL ($ATTEMPTS)</i>
 
-    rounding = 50
     shadow_passes = 0
-    fade_on_empty = false
+    rounding = 50
+    outline_thickness = 2
+    inner_color = $inner_color
+    outer_color = $outer_color
+    check_color = $check_color
+    fail_color = $fail_color
+
+    halign = center
+    valign = center
 }
 
 # TIME
@@ -48,10 +54,11 @@ label {
     text = $TIME
     font_size = 108
     font_family = $font
+    color = $font_color
 
-    position = -30, 0
     halign = right
     valign = top
+    position = -30, 0
 }
 
 # DATE
@@ -60,21 +67,69 @@ label {
     text = cmd[update:60000] date +"%A, %d %B %Y" # update every 60 seconds
     font_size = 36
     font_family = $font
+    color = $font_color
 
-    position = -30, -150
     halign = right
     valign = top
+    position = -30, -150
 }
 
+# Keyboard switcher
 label {
     monitor =
     text = $LAYOUT
     font_size = 12
     font_family = $font
+    color = $font_color
+
     onclick = hyprctl switchxkblayout all next
 
-    position = 10, -10
     halign = left
     valign = top
+    position = 10, -10
 }
 
+# Reboot
+label {
+    monitor =
+    text = <span> 󰑙 </span>
+    font_size = 36
+    font_family = $font
+    color = $font_color
+
+    onclick = reboot now
+
+    halign = center
+    valign = center
+    position = 0, -150
+}
+
+# Power off
+label {
+    monitor =
+    text = <span>  </span>
+    font_size = 36
+    font_family = $font
+    color = $font_color
+
+    onclick = shutdown now
+
+    halign = center
+    valign = center
+    position = -150, -150
+}
+
+# Suspend
+label {
+    monitor =
+    text = <span> 󰤄 </span>
+    font_size = 36
+    font_family = $font
+    color = $font_color
+
+    onclick = systemctl suspend
+
+    halign = center
+    valign = center
+    position = 150, -150
+}
