@@ -27,6 +27,8 @@
     - role: "neomutt"
     - role: "firefox"
     - role: "yay"
+    - role: "alacritty"
+    - role: "hyprland"
 
 - name: "Ubuntu configure"
   gather_facts: true
