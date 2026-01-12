@@ -21,7 +21,7 @@
       [terminal]
       vt = 1
       [default_session]
-      command = "cage -s -- gtkgreet -c 'uwsm start hyprland.desktop'"
+      command = "tuigreet -c 'uwsm start hyprland.desktop' --theme=border=cyan"
       user = "greeter"
   notify:
     - "Restart greetd"

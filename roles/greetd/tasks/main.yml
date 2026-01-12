@@ -6,6 +6,24 @@
     state: "present"
   loop:
     - "greetd"
-    - "greetd-gtkgreet"
+    - "greetd-tuigreet"
+  notify:
+    - "Enable greetd"
+
+- name: "Ensure greetd service override directory exists"
+  become: true
+  ansible.builtin.file:
+    path: "/etc/systemd/system/greetd.service.d"
+    state: "directory"
+    mode: "0755"
+
+- name: "Override greetd service to start last"
+  become: true
+  ansible.builtin.copy:
+    dest: "/etc/systemd/system/greetd.service.d/override.conf"
+    mode: "0644"
+    content: |
+      [Service]
+      Type=idle
   notify:
     - "Enable greetd"
