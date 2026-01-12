@@ -1,7 +1,6 @@
 ---
 dependencies:
   - role: "uwsm"
-  - role: "cage"
   - role: "greetd"
   - role: "nautilus"
   - role: "mako"
