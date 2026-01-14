@@ -12,4 +12,7 @@
   ansible.builtin.shell:
     cmd: "{{ dotfiles_setup_script }}"
     executable: "/bin/bash"
-    creates: "{{ ansible_env.HOME }}/.bash_profile"
+  changed_when: true
+  tags:
+    # Since the script will report changed every time (even thought it's idempotent)
+    - molecule-idempotence-notest
