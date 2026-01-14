@@ -1,0 +1,57 @@
+#!/bin/bash
+
+# Extracted from omarchy with a little modifications
+if [[ -z $1 ]]; then
+  echo "Usage: theme-set <theme-name>"
+  exit 1
+fi
+
+THEMES_PATH="$HOME/.config/hyprthemes/themes"
+CURRENT_THEME_PATH="$HOME/.config/hyprthemes/current"
+THEME_NAME=$(echo "$1" | sed -E 's/<[^>]+>//g' | tr '[:upper:]' '[:lower:]' | tr ' ' '-')
+
+if [[ ! -d "$THEMES_PATH/$THEME_NAME" ]]; then
+  echo "Theme '$THEME_NAME' does not exist"
+  exit 1
+fi
+
+# Get close to as atomic as possible.
+ln -sfn "$THEMES_PATH/$THEME_NAME" "$CURRENT_THEME_PATH.new"
+rm -rf "$CURRENT_THEME_PATH"
+mv "$CURRENT_THEME_PATH.new" "$CURRENT_THEME_PATH"
+./.config/hyprthemes/scripts/theme-bg-next
+
+pkill -x waybar || true
+setsid uwsm-app -- waybar >/dev/null 2>&1 &
+
+# pkill -x swayosd-server || true
+# setsid uwsm-app -- swayosd-server >/dev/null 2>&1 &
+
+hyprctl reload >/dev/null 2>&1
+
+pkill -SIGUSR2 btop || true
+
+makoctl reload
+
+if [[ -f ~/.config/alacritty/alacritty.toml ]]; then
+  touch ~/.config/alacritty/alacritty.toml
+fi
+killall -SIGUSR1 kitty >/dev/null 2>&1 || true
+killall -SIGUSR2 ghostty >/dev/null 2>&1 || true
+
+# if [[ -f ~/.config/hyprthemes/current/light.mode ]]; then
+  # gsettings set org.gnome.desktop.interface color-scheme "prefer-light"
+  # gsettings set org.gnome.desktop.interface gtk-theme "Adwaita"
+# else
+  # gsettings set org.gnome.desktop.interface color-scheme "prefer-dark"
+  # gsettings set org.gnome.desktop.interface gtk-theme "Adwaita-dark"
+# fi
+
+# # Change gnome icon theme color
+# GNOME_ICONS_THEME=~/.config/hyprthemes/current/icons.theme
+# if [[ -f $GNOME_ICONS_THEME ]]; then
+  # gsettings set org.gnome.desktop.interface icon-theme "$(<$GNOME_ICONS_THEME)"
+# else
+  # gsettings set org.gnome.desktop.interface icon-theme "Yaru-blue"
+# fi
+

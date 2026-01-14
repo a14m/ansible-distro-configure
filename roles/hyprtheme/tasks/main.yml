@@ -1,0 +1,40 @@
+---
+- name: "Set themes fact"
+  ansible.builtin.set_fact:
+    hyprthemes:
+      - "catppuccin"
+      - "everforest"
+
+- name: "Create current theme directory"
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.config/hyprthemes/current"
+    state: "directory"
+    mode: "0755"
+
+- name: "Create themes directory"
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.config/hyprthemes/themes/{{ item }}"
+    state: "directory"
+    mode: "0755"
+  loop: "{{ hyprthemes }}"
+
+- name: "Create scripts directory"
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.config/hyprthemes/scripts"
+    state: "directory"
+    mode: "0755"
+
+- name: "Template themes"
+  ansible.builtin.include_tasks: "template-theme.yml"
+  vars:
+    theme_name: "{{ item }}"
+  loop: "{{ hyprthemes }}"
+
+- name: "Copy theme scripts"
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: "{{ ansible_env.HOME }}/.config/hyprthemes/{{ item }}"
+    mode: "0755"
+  loop:
+    - "scripts/theme-set"
+    - "scripts/theme-bg-next"
