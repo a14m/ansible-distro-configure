@@ -1,0 +1,10 @@
+{% macro hex_to_rgb(hex) -%}
+{{ hex[1:3] | int(base=16)}}, {{ hex[3:5] | int(base=16) }}, {{ hex[5:7] | int(base=16) }}
+{%- endmacro %}
+
+$font = {{ hyprtheme_default_font }}
+$color = rgba({{ hex_to_rgb(background) }}, 1.0)
+$inner_color = rgba({{ hex_to_rgb(background) }}, 0.8)
+$outer_color = rgba({{ hex_to_rgb(accent) }}, 1.0)
+$font_color = rgba({{ hex_to_rgb(foreground) }}, 1.0)
+$check_color = rgba({{ hex_to_rgb(foreground) }}, 1.0)
