@@ -1,0 +1,32 @@
+---
+- name: "Load theme variables"
+  ansible.builtin.include_vars: "vars/{{ theme_name }}.yml"
+
+- name: "Set theme files fact"
+  ansible.builtin.set_fact:
+    theme_files:
+      - "alacritty.toml"
+      - "btop.theme"
+      - "ghostty.conf"
+      - "hyprland.conf"
+      - "hyprlock.conf"
+      - "icons.theme"
+      - "kitty.conf"
+      - "swayosd.css"
+      - "walker.css"
+      - "waybar.css"
+
+- name: "Template theme files for: {{ theme_name }}"
+  ansible.builtin.template:
+    src: "theme/{{ file }}.j2"
+    dest: "{{ ansible_env.HOME }}/.config/hyprthemes/themes/{{ theme_name }}/{{ file }}"
+    mode: "0644"
+  loop: "{{ theme_files }}"
+  loop_control:
+    loop_var: file
+
+- name: "Copy static theme files for: {{ theme_name }}"
+  ansible.builtin.copy:
+    src: "themes/{{ theme_name }}/"
+    dest: "{{ ansible_env.HOME }}/.config/hyprthemes/themes/{{ theme_name }}/"
+    mode: "0644"
