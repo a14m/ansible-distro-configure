@@ -1,10 +1,6 @@
+source = ~/.config/hyprthemes/current/hyprlock.conf
+
 # Variables
-$font = JetBrainsMono Nerd Font
-$inner_color = rgba(17, 17, 17, 7.0)
-$outer_color = rgba(33ccffee) rgba(00ff99ee) 45deg
-$check_color = rgba(00ff99ee) rgba(ff6633ee) 120deg
-$fail_color = rgba(ff6633ee) rgba(ff0066ee) 40deg
-$font_color = rgb(143, 143, 143)
 
 general {
     hide_cursor = false
@@ -22,7 +18,8 @@ animations {
 
 background {
     monitor =
-    path = /home/$USER/.config/themes/current/background
+    # path = ~/.config/hyprthemes/current/background
+    color = $color
     blur_passes = 3
 }
 
@@ -42,7 +39,6 @@ input-field {
     inner_color = $inner_color
     outer_color = $outer_color
     check_color = $check_color
-    fail_color = $fail_color
 
     halign = center
     valign = center

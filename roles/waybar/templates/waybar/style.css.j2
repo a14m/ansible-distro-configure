@@ -1,8 +1,5 @@
 /* vim: set filetype=css : */
-@define-color activeColor rgb(64, 208, 255);
-@define-color inactiveColor rgb(124, 124, 124);
-@define-color background rgb(0, 0, 0);
-@define-color foreground rgb(124, 124, 124);
+@import "{{ ansible_user_dir }}/.config/hyprthemes/current/waybar.css";
 
 * {
     font-family: 'JetBrainsMono Nerd Font';
@@ -94,7 +91,7 @@ tooltip {
 #backlight:hover,
 #pulseaudio:hover,
 #wireplumber:hover {
-    color: #FFFFFF;
+    color: @activeColor;
 }
 
 #battery.charging, #battery.plugged, #battery.full {
