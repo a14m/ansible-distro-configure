@@ -2,7 +2,7 @@
 
 # Cycles through the background images available
 
-THEMES_PATH="$HOME/.config/hyprthemes/"
+THEMES_PATH="$HOME/.config/hyprtheme/"
 THEME_BACKGROUNDS_PATH="$THEMES_PATH/current/backgrounds/"
 CURRENT_BACKGROUND_LINK="$THEMES_PATH/current/background"
 
