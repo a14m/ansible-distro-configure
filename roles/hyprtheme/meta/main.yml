@@ -1,0 +1,12 @@
+---
+dependencies:
+  - role: "fonts"
+galaxy_info:
+  author: "a14m"
+  description: "Install hyprland themes"
+  license: "MIT"
+  min_ansible_version: "2.18"
+  platforms:
+    - name: "ArchLinux"
+      versions:
+        - "all"
