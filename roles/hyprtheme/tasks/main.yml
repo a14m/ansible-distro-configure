@@ -43,3 +43,14 @@
   loop:
     - "scripts/theme-set"
     - "scripts/theme-bg-next"
+
+- name: "Set default theme"
+  ansible.builtin.command:
+    # Running the command creates the symlinks for the current themes, using the hyprland.conf file to avoid rerunning
+    # This will run only if there is no current theme in place
+    # This will ignore the errors in the script, because the script restarts some hyprland services, which
+    # will fail on ssh connection, but having the theme files placed in the right directory will make sure that
+    # the first setup of hyprtheme is working and doesn't show errors on first boot
+    cmd: "{{ ansible_env.HOME }}/.config/hyprtheme/scripts/theme-set {{ hyprtheme_default_theme }}"
+    creates: "{{ ansible_env.HOME }}/.config/hyprtheme/current/hyprland.conf"
+  failed_when: false
