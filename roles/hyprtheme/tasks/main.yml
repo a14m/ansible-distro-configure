@@ -4,6 +4,11 @@
     hyprtheme_themes:
       - "catppuccin"
       - "everforest"
+      - "gruvbox"
+      - "matte-black"
+      - "osaka-jade"
+      - "ristretto"
+      - "tokyo-night"
 
 - name: "Create current theme directory"
   ansible.builtin.file:
