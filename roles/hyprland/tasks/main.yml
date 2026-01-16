@@ -9,6 +9,8 @@
     - "hyprlock"
     - "hypridle"
     - "hyprland"
+    - "xdg-desktop-portal-gtk"
+    - "xdg-desktop-portal-hyprland"
 
 - name: "Configure greetd"
   become: true
