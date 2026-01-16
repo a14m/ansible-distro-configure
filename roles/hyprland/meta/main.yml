@@ -8,6 +8,7 @@ dependencies:
   - role: "brightnessctl"
   - role: "waybar"
   - role: "hyprtheme"
+  - role: "hyprcursor"
 galaxy_info:
   author: "a14m"
   description: "Install hyprland"
