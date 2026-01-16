@@ -1,0 +1,14 @@
+---
+argument_specs:
+  main:
+    short_description: "Install banana cursor for Hyprland"
+    description: "Install banana cursor for Hyprland"
+    options:
+      hyprcursor_version:
+        type: "str"
+        description: "Release version tag"
+        default: "v2.0.0"
+      hyprcursor_variant:
+        type: "str"
+        description: "Cursor variant (Banana, Banana-Blue, Banana-Green, Banana-Red)"
+        default: "Banana"
