@@ -20,3 +20,9 @@
   changed_when: "'imported' in gpg_import_result.stderr"
   failed_when: gpg_import_result.rc != 0 and 'already in secret keyring' not in gpg_import_result.stderr
   no_log: true
+
+- name: "Enable smart-card reader daemon"
+  become: true
+  ansible.builtin.systemd_service:
+    name: "pcscd.socket"
+    enabled: true

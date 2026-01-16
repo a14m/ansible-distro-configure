@@ -2,3 +2,6 @@
 gpg_packages:
   - "gnupg"
   - "pinentry"
+  - "pcsclite"
+  - "ccid"
+  - "pcsc-tools"
