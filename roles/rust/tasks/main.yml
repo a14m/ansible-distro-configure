@@ -18,6 +18,11 @@
     creates: "{{ ansible_env.HOME }}/.cargo/bin/cargo"
   when: not rust_cargo_binary.stat.exists
 
+- name: "Ensure default toolchain is set"
+  ansible.builtin.command:
+    cmd: "{{ ansible_env.HOME }}/.cargo/bin/rustup default {{ rust_toolchain }}"
+  changed_when: false
+
 - name: "Remove cargo default shell profile modification"
   ansible.builtin.lineinfile:
     path: "{{ ansible_env.HOME }}/.bashrc"
