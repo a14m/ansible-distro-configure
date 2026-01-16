@@ -5,3 +5,4 @@ gpg_packages:
   - "pcsclite"
   - "ccid"
   - "pcsc-tools"
+  - "gcr"
