@@ -1,0 +1,25 @@
+---
+- name: "Ensure hyprcursor is installed"
+  become: true
+  ansible.builtin.package:
+    name: "hyprcursor"
+    state: "present"
+
+- name: "Ensure icons directory exists"
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.local/share/icons"
+    state: "directory"
+    mode: "0755"
+
+- name: "Check if cursor theme exists"
+  ansible.builtin.stat:
+    path: "{{ ansible_env.HOME }}/.local/share/icons/{{ hyprcursor_variant }}"
+  register: hyprcursor_theme_dir
+
+- name: "Download and extract banana cursor"
+  ansible.builtin.unarchive:
+    # yamllint disable-line
+    src: "https://github.com/ful1e5/banana-cursor/releases/download/{{ hyprcursor_version }}/{{ hyprcursor_variant }}.tar.xz"
+    dest: "{{ ansible_env.HOME }}/.local/share/icons"
+    remote_src: true
+  when: not hyprcursor_theme_dir.stat.exists
