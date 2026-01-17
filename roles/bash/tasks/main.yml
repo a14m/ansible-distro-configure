@@ -5,7 +5,8 @@
     name: "bash"
     state: "present"
 
-- name: "Ensure .bashrc/.profile exists"
+- name: "Ensure .bash(rc|_profile) and .profile exists"
+  # This is used by different setup scripts adding their init in one of these
   ansible.builtin.file:
     path: "{{ item }}"
     state: "touch"
@@ -14,4 +15,5 @@
     access_time: "preserve"
   loop:
     - "{{ ansible_env.HOME }}/.bashrc"
+    - "{{ ansible_env.HOME }}/.bash_profile"
     - "{{ ansible_env.HOME }}/.profile"
