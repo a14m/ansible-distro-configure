@@ -45,17 +45,11 @@ dotfiles_repo_url: "https://git.sr.ht/~a14m/.rc"
 dotfiles_setup_script: |
   set -e
 
-  rm -f ~/.bash_profile
+  rm -f ~/.bash_profile ~/.bashrc
   cd ~/.rc
   stow --no-folding --adopt .
   git restore .
   git remote set-url origin git@git.sr.ht:~a14m/.rc
-
-  ln -sf ~/.rc/.gnupg/pinentry-wrapper ~/.local/bin/pinentry-wrapper
-  envsubst < ~/.gnupg/gpg-agent.conf.template > ~/.gnupg/gpg-agent.conf
-  chmod 0700 ~/.gnupg
-  gpgconf --kill gpg-agent 2>/dev/null || true
-  gpg-connect-agent /bye 2>/dev/null || true
 
 password_store_repo_url: "git@github.com:a14m/.pass"
 vimrc_repo_url: "git@git.sr.ht:~a14m/.vim"
