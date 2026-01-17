@@ -26,3 +26,6 @@ windowrule = tag +chromium-based-browser, match:class ((google-)?[cC]hrom(e|ium)
 windowrule = tag +firefox-based-browser, match:class ([fF]irefox|zen|librewolf)
 windowrule = opacity 1.0 override 0.97 override, match:tag chromium-based-browser
 windowrule = opacity 1.0 override 0.97 override, match:tag firefox-based-browser
+
+# Pinentry windows
+windowrule = match:class (pinentry-)(.*), stay_focused on
