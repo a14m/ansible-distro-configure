@@ -4,5 +4,5 @@ font_packages:
   - "fonts-recommended"
   - "fonts-noto"
   - "fonts-noto-cjk"
-  - "fonts-noto-emoji"
+  - "fonts-noto-color-emoji"
   - "fonts-noto-extra"
