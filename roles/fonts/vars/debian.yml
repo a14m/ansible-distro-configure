@@ -1,4 +1,8 @@
 ---
-fonts_default:
+fonts:
   - "fonts-jetbrains-mono"
-  - "fonts-dejavu"
+  - "gnu-free-fonts"
+  - "noto-fonts"
+  - "noto-fonts-cjk"
+  - "noto-fonts-emoji"
+  - "noto-fonts-extra"

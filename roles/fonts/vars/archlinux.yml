@@ -1,5 +1,8 @@
 ---
-fonts_default:
+fonts:
   - "ttf-jetbrains-mono-nerd"
-  - "ttf-meslo-nerd"
-  - "ttf-dejavu-nerd"
+  - "gnu-free-fonts"
+  - "noto-fonts"
+  - "noto-fonts-cjk"
+  - "noto-fonts-emoji"
+  - "noto-fonts-extra"
