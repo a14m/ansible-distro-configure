@@ -1,0 +1,6 @@
+---
+argument_specs:
+  main:
+    short_description: "Install sshpass on Linux distribution"
+    description: "Install sshpass on Linux distribution"
+    options: {}
