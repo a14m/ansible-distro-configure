@@ -1,0 +1,6 @@
+---
+argument_specs:
+  main:
+    short_description: "Install git-crypt on Linux distribution"
+    description: "Install git-crypt on Linux distribution"
+    options: {}
