@@ -42,7 +42,7 @@ EOF
 git clone https://git.sr.ht/~a14m/ansible-distro-configure /opt/distro-configure
 cp /opt/distro-configure/host_vars/${DISTRO}.local.yml.example /opt/distro-configure/host_vars/${DISTRO}.local.yml
 
-cd /opt/distro-install
+cd /opt/distro-configure
 ansible-galaxy install -r requirements.yml
 
 ansible-playbook site.yml --ask-become-pass
