@@ -4,21 +4,15 @@ argument_specs:
     short_description: "Install ansible and molecule on Linux distributions"
     description: "Install ansible and molecule on Linux distributions"
     options:
-      ansible_core_default_version:
+      ansible_core_version:
         type: "str"
         description: "The default ansible-core version to use (must be in major.minor.patch format)"
-        default: "2.18.7"
-      ansible_core_versions:
-        type: "list"
-        elements: "str"
-        description: "List of ansible-core versions to install (must be in major.minor.patch format)"
-        default: ["2.18.7"]
-      molecule_default_version:
+        default: "2.19.3"
+      molecule_version:
         type: "str"
         description: "The default molecule version to use (must be in major.minor.patch format)"
-        default: "25.7.0"
-      molecule_versions:
-        type: "list"
-        elements: "str"
-        description: "List of molecule versions to install (must be in major.minor.patch format)"
-        default: ["25.7.0"]
+        default: "25.9.0"
+      ansible_lint_version:
+        type: "str"
+        description: "The default ansible-lint version to use (must be in major.minor.patch format)"
+        default: "25.9.2"
