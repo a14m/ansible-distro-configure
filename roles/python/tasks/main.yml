@@ -27,9 +27,9 @@
     state: "present"
     prepend_newline: true
     append_newline: true
-    marker: "# ==== {mark} ANSIBLE UV PYTHON CONFIG"
+    marker: "# ==== {mark} ANSIBLE PATH CONFIG"
     block: |
-      if command -v uv 1>/dev/null 2>&1; then
+      if [ -d "$HOME/.local/bin" ]; then
         export PATH="$HOME/.local/bin:$PATH"
       fi
 
