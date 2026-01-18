@@ -3,9 +3,4 @@ argument_specs:
   main:
     short_description: "Install fonts on Linux distributions"
     description: "Install fonts on Linux distributions"
-    options:
-      fonts_extra:
-        type: "list"
-        description: "Extra font packages to install in addition to default fonts"
-        elements: "str"
-        default: []
+    options: {}
