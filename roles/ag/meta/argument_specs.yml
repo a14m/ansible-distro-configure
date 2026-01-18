@@ -1,0 +1,6 @@
+---
+argument_specs:
+  main:
+    short_description: "Install the silver searcher (ag) on Linux distribution"
+    description: "Install the silver searcher (ag) on Linux distribution"
+    options: {}

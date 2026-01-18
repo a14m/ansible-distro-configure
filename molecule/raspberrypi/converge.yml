@@ -61,6 +61,7 @@
     - role: "bash"
     - role: "man"
     - role: "jq"
+    - role: "ag"
     - role: "python"
     - role: "go"
     - role: "rust"
