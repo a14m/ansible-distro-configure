@@ -2,9 +2,51 @@
 - name: "Include OS-specific variables"
   ansible.builtin.include_vars: "{{ ansible_os_family | lower }}.yml"
 
+- name: "Ensure fontconfig is installed"
+  become: true
+  ansible.builtin.package:
+    name: "fontconfig"
+    state: "present"
+
 - name: "Ensure fonts are installed"
   become: true
   ansible.builtin.package:
     name: "{{ item }}"
     state: "present"
-  loop: "{{ fonts_default + fonts_extra }}"
+  loop: "{{ fonts }}"
+
+- name: "Ensure fontconfig global directory exists"
+  become: true
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: "directory"
+    mode: "0755"
+  loop:
+    - "/etc/fonts"
+    - "/etc/fonts/conf.d"
+
+- name: "Add global font configurations"
+  become: true
+  ansible.builtin.template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: "0644"
+  loop:
+    - src: "local.conf.j2"
+      dest: "/etc/fonts/local.conf"
+
+- name: "Configure fonts presets"
+  become: true
+  ansible.builtin.file:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    state: "link"
+  loop:
+    - src: "/usr/share/fontconfig/conf.avail/10-sub-pixel-rgb.conf"
+      dest: "/etc/fonts/conf.d/10-sub-pixel-rgb.conf"
+    - src: "/usr/share/fontconfig/conf.avail/10-hinting-slight.conf"
+      dest: "/etc/fonts/conf.d/10-hinting-slight.conf"
+    - src: "/usr/share/fontconfig/conf.avail/11-lcdfilter-default.conf"
+      dest: "/etc/fonts/conf.d/11-lcdfilter-default.conf"
+    - src: "/usr/share/fontconfig/conf.avail/70-no-bitmaps-except-emoji.conf"
+      dest: "/etc/fonts/conf.d/70-no-bitmaps-except-emoji.conf"
