@@ -62,6 +62,7 @@
     - role: "man"
     - role: "jq"
     - role: "ag"
+    - role: "tmux"
     - role: "python"
     - role: "go"
     - role: "rust"

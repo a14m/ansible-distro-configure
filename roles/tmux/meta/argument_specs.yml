@@ -1,0 +1,6 @@
+---
+argument_specs:
+  main:
+    short_description: "Install tmux on Linux distribution"
+    description: "Install tmux on Linux distribution"
+    options: {}
