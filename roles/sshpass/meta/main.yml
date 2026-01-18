@@ -1,10 +1,8 @@
 ---
-dependencies:
-  - role: "python"
-  - role: "sshpass"
+dependencies: []
 galaxy_info:
   author: "a14m"
-  description: "Install ansible and molecule using uv on Linux distributions"
+  description: "Install sshpass"
   license: "MIT"
   min_ansible_version: "2.18"
   platforms:
