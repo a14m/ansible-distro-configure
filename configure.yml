@@ -76,6 +76,7 @@
     - role: "bash"
     - role: "man"
     - role: "jq"
+    - role: "ag"
     - role: "wireguard"
     - role: "gateway"
     - role: "nginx"
