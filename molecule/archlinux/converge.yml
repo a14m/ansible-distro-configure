@@ -53,6 +53,7 @@
     - role: "man"
     - role: "jq"
     - role: "ag"
+    - role: "tmux"
     - role: "yay"
     - role: "wireguard"
     - role: "gateway"
