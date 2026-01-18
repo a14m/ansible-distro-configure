@@ -64,6 +64,7 @@
     - role: "man"
     - role: "jq"
     - role: "ag"
+    - role: "tmux"
     - role: "wireguard"
     - role: "gateway"
     - role: "python"
