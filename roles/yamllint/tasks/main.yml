@@ -5,7 +5,7 @@
     uv tool list | grep "^yamllint " | awk '{print $2}' | sed 's/^v//'
   args:
     executable: /bin/bash
-  register: ansible_lint_installed_version
+  register: yamllint_installed_version
   changed_when: false
   failed_when: false
 
@@ -16,4 +16,4 @@
   args:
     executable: /bin/bash
   changed_when: true
-  when: ansible_lint_installed_version.stdout != yamllint_version
+  when: yamllint_installed_version.stdout != yamllint_version
