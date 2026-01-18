@@ -43,3 +43,22 @@
     executable: /bin/bash
   changed_when: true
   when: molecule_installed_version.stdout != molecule_version
+
+- name: "Check ansible-lint version {{ ansible_lint_version }}"
+  ansible.builtin.shell: |
+    set -euo pipefail
+    uv tool list | grep "^ansible-lint " | awk '{print $2}' | sed 's/^v//'
+  args:
+    executable: /bin/bash
+  register: ansible_lint_installed_version
+  changed_when: false
+  failed_when: false
+
+- name: "Install ansible lint version {{ ansible_lint_version }}"
+  ansible.builtin.shell: |
+    set -euo pipefail
+    uv tool install ansible-lint=={{ ansible_lint_version }} --force
+  args:
+    executable: /bin/bash
+  changed_when: true
+  when: ansible_lint_installed_version.stdout != ansible_lint_version
