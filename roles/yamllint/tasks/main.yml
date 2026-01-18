@@ -1,0 +1,19 @@
+---
+- name: "Check yamllint version {{ yamllint_version }}"
+  ansible.builtin.shell: |
+    set -euo pipefail
+    uv tool list | grep "^yamllint " | awk '{print $2}' | sed 's/^v//'
+  args:
+    executable: /bin/bash
+  register: ansible_lint_installed_version
+  changed_when: false
+  failed_when: false
+
+- name: "Install yamllint version {{ yamllint_version }}"
+  ansible.builtin.shell: |
+    set -euo pipefail
+    uv tool install yamllint=={{ yamllint_version }} --force
+  args:
+    executable: /bin/bash
+  changed_when: true
+  when: ansible_lint_installed_version.stdout != yamllint_version
