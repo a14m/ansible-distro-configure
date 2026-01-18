@@ -1,11 +1,9 @@
 ---
 dependencies:
   - role: "python"
-  - role: "sshpass"
-  - role: "yamllint"
 galaxy_info:
   author: "a14m"
-  description: "Install ansible and molecule using uv on Linux distributions"
+  description: "Install yamllint using uv on Linux distributions"
   license: "MIT"
   min_ansible_version: "2.18"
   platforms:

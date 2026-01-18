@@ -1,0 +1,10 @@
+---
+argument_specs:
+  main:
+    short_description: "Install yamllint on Linux distributions"
+    description: "Install yamllint on Linux distributions"
+    options:
+      yamllint_version:
+        type: "str"
+        description: "The default yamllint version to use (must be in major.minor.patch format)"
+        default: "1.37.1"
