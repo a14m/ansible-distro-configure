@@ -1,0 +1,8 @@
+---
+font_packages:
+  - "fonts-jetbrains-mono"
+  - "fonts-recommended"
+  - "fonts-noto"
+  - "fonts-noto-cjk"
+  - "fonts-noto-emoji"
+  - "fonts-noto-extra"
