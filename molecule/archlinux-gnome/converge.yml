@@ -74,7 +74,7 @@
     - role: "password_store"
     - role: "which"
     - role: "firefox"
-    - role: "fonts"
+    - role: "font"
     - role: "alacritty"
     - role: "btop"
     - role: "bluetui"

@@ -1,5 +1,5 @@
 ---
-fonts:
+font_packages:
   - "ttf-jetbrains-mono-nerd"
   - "gnu-free-fonts"
   - "noto-fonts"
