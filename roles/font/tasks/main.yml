@@ -13,7 +13,7 @@
   ansible.builtin.package:
     name: "{{ item }}"
     state: "present"
-  loop: "{{ fonts }}"
+  loop: "{{ font_packages }}"
 
 - name: "Ensure fontconfig global directory exists"
   become: true
