@@ -6,3 +6,13 @@ font_packages:
   - "noto-fonts-cjk"
   - "noto-fonts-emoji"
   - "noto-fonts-extra"
+
+font_presets:
+  - src: "/usr/share/fontconfig/conf.avail/10-sub-pixel-rgb.conf"
+    dest: "/etc/fonts/conf.d/10-sub-pixel-rgb.conf"
+  - src: "/usr/share/fontconfig/conf.avail/10-hinting-slight.conf"
+    dest: "/etc/fonts/conf.d/10-hinting-slight.conf"
+  - src: "/usr/share/fontconfig/conf.avail/11-lcdfilter-default.conf"
+    dest: "/etc/fonts/conf.d/11-lcdfilter-default.conf"
+  - src: "/usr/share/fontconfig/conf.avail/70-no-bitmaps-except-emoji.conf"
+    dest: "/etc/fonts/conf.d/70-no-bitmaps-except-emoji.conf"
