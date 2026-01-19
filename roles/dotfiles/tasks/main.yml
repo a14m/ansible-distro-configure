@@ -12,7 +12,7 @@
   ansible.builtin.shell:
     cmd: "{{ dotfiles_setup_script }}"
     executable: "/bin/bash"
-  register: dotfile_setup
+  register: dotfiles_setup
   changed_when: true
   tags:
     # Since the script will report changed every time (even thought it's idempotent)
@@ -20,7 +20,7 @@
 
 - name: "Show dotfile setup output"
   ansible.builtin.debug:
-    var: dotfile_setup.stdout
+    var: dotfiles_setup.stdout
   tags:
     # Since this doesn't run on idempotence testing
     - molecule-idempotence-notest
