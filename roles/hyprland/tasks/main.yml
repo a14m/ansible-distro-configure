@@ -21,7 +21,7 @@
     mode: "0644"
     content: |
       [terminal]
-      vt = 1
+      vt = 2
       [default_session]
       command = "tuigreet -c 'uwsm start hyprland.desktop' --theme=border=cyan"
       user = "greeter"
