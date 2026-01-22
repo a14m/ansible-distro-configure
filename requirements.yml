@@ -6,3 +6,5 @@ collections:
     version: "2.1.0"
   - name: containers.podman
     version: "1.18.0"
+  - name: kewlfft.aur
+    version: "0.13.0"

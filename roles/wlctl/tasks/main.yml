@@ -1,7 +1,8 @@
 ---
 - name: "Ensure wlctl is installed"
-  community.general.cargo:
+  become: true
+  become_user: "aur_builder"
+  kewlfft.aur.aur:
     name: "wlctl"
     state: "present"
-  environment:
-    PATH: "{{ ansible_env.HOME }}/.cargo/bin:{{ ansible_env.PATH }}"
+    use: "yay"

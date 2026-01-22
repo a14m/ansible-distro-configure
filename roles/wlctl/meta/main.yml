@@ -1,7 +1,6 @@
 ---
 dependencies:
-  - role: "gcc"
-  - role: "rust"
+  - role: "yay"
 galaxy_info:
   author: "a14m"
   description: "Install wlctl"
