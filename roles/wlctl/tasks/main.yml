@@ -3,6 +3,6 @@
   become: true
   become_user: "aur_builder"
   kewlfft.aur.aur:
-    name: "wlctl"
+    name: "wlctl-bin"
     state: "present"
     use: "yay"
