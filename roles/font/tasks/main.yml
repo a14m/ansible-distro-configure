@@ -34,6 +34,8 @@
   loop:
     - src: "local.conf.j2"
       dest: "/etc/fonts/local.conf"
+  notify:
+    - "Update font-cache"
 
 - name: "Configure fonts presets"
   become: true
