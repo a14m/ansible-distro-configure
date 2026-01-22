@@ -44,3 +44,8 @@
     dest: "{{ item.dest }}"
     state: "link"
   loop: "{{ font_presets }}"
+
+- name: "Configure gnome font"
+  ansible.builtin.command:
+    cmd: 'gsettings set org.gnome.desktop.interface font-name "Noto Sans"'
+  changed_when: false
