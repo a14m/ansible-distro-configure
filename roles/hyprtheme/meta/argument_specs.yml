@@ -8,7 +8,7 @@ argument_specs:
         description: "The initial default theme to be used"
         type: "str"
         default: "everforest"
-      hyprtheme_default_font:
-        description: "The default theme font to be used"
+      hyprtheme_default_mono_font:
+        description: "The default theme mono font to be used"
         type: "str"
         default: "JetBrainsMono Nerd Font"
