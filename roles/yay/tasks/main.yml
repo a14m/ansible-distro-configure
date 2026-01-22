@@ -35,3 +35,33 @@
         cmd: "pacman -U --noconfirm /tmp/yay-bin/yay-bin-*.pkg.tar.zst"
       args:
         creates: "/usr/bin/yay"
+
+- name: "Configure yay aur_builder passwordless"
+  # yay builder is the user that is allowed to execute yay wihtout password
+  # to be able to use yay automation or archlinux
+  # Ref: https://github.com/kewlfft/ansible-aur?tab=readme-ov-file#usage
+  block:
+    - name: "Create the 'aur_builder' user"
+      become: true
+      ansible.builtin.user:
+        name: aur_builder
+        create_home: true
+        group: wheel
+
+    - name: "Allow 'username' to become 'aur_builder' user without a password"
+      become: true
+      ansible.builtin.lineinfile:
+        path: "/etc/sudoers.d/10-aur_builder-become"
+        line: "{{ username }} ALL=(aur_builder) NOPASSWD: ALL"
+        create: true
+        mode: "0644"
+        validate: "visudo -cf %s"
+
+    - name: "Allow the 'aur_builder' user to run 'sudo pacman' without a password"
+      become: true
+      ansible.builtin.lineinfile:
+        path: "/etc/sudoers.d/11-aur_builder-pacman"
+        line: "aur_builder ALL=(ALL) NOPASSWD: /usr/bin/pacman"
+        create: true
+        mode: "0644"
+        validate: "visudo -cf %s"
