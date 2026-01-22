@@ -1,4 +1,4 @@
 ---
-ansible_core_version: "2.19.3"
+ansible_core_version: "2.20.1"
 molecule_version: "25.9.0"
 ansible_lint_version: "25.9.2"
