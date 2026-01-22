@@ -10,9 +10,3 @@ galaxy_info:
     - name: "ArchLinux"
       versions:
         - "all"
-    - name: "Ubuntu"
-      versions:
-        - "noble"
-    - name: "Debian"
-      versions:
-        - "bookworm"
