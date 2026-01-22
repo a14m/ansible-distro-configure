@@ -4,3 +4,8 @@
 
 - name: "Include OS-specific tasks"
   ansible.builtin.include_tasks: "install-{{ ansible_os_family | lower }}.yml"
+
+- name: "Configure gnome font"
+  ansible.builtin.command:
+    cmd: 'gsettings set org.gnome.desktop.interface font-name "Noto Sans"'
+  changed_when: false

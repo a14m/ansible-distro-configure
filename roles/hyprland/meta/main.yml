@@ -6,6 +6,7 @@ dependencies:
   - role: "mako"
   - role: "pipewire"
   - role: "brightnessctl"
+  - role: "font"
   - role: "waybar"
   - role: "hyprtheme"
   - role: "hyprcursor"
