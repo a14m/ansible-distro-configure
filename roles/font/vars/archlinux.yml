@@ -1,11 +1,9 @@
 ---
 font_packages:
   - "ttf-jetbrains-mono-nerd"
-  - "gnu-free-fonts"
+  - "ttf-jetbrains-mono"
   - "noto-fonts"
-  - "noto-fonts-cjk"
   - "noto-fonts-emoji"
-  - "noto-fonts-extra"
 
 font_presets:
   - src: "/usr/share/fontconfig/conf.avail/10-sub-pixel-rgb.conf"

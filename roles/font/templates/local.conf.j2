@@ -19,6 +19,15 @@
       <const>lcddefault</const>
     </edit>
   </match>
+  <!-- Default font for the Arabic language (no fc-match pattern) -->
+  <match>
+    <test compare="contains" name="lang">
+      <string>ar</string>
+    </test>
+    <edit mode="prepend" name="family">
+      <string>"Noto Sans Arabic"</string>
+    </edit>
+  </match>
   <!-- Configure default fonts & fallback fonts -->
   <!-- Replace fonts with preferred fonts -->
   <!-- Noto Emoji allows for emojis to render in all apps including the terminal, remove if not needed  -->
@@ -26,7 +35,9 @@
     <family>serif</family>
     <prefer>
       <family>Noto Serif</family>
+      <family>Noto Sans Arabic</family>
       <family>FreeSerif</family>
+      <family>Noto Color Emoji</family>
       <family>Noto Emoji</family>
     </prefer>
   </alias>
@@ -34,7 +45,9 @@
     <family>sans-serif</family>
     <prefer>
       <family>Noto Sans</family>
+      <family>Noto Sans Arabic</family>
       <family>FreeSans</family>
+      <family>Noto Color Emoji</family>
       <family>Noto Emoji</family>
     </prefer>
   </alias>
@@ -42,6 +55,7 @@
     <family>sans</family>
     <prefer>
       <family>Noto Sans</family>
+      <family>Noto Sans Arabic</family>
       <family>FreeSans</family>
       <family>Noto Color Emoji</family>
       <family>Noto Emoji</family>
@@ -51,7 +65,7 @@
     <family>monospace</family>
     <prefer>
       <family>JetBrainsMono</family>
-      <family>Noto Mono</family>
+      <family>Noto Sans Mono</family>
       <family>Noto Color Emoji</family>
       <family>Noto Emoji</family>
     </prefer>
@@ -60,7 +74,7 @@
     <family>mono</family>
     <prefer>
       <family>JetBrainsMono</family>
-      <family>Noto Mono</family>
+      <family>Noto Sans Mono</family>
       <family>Noto Color Emoji</family>
       <family>Noto Emoji</family>
     </prefer>
