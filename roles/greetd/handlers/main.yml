@@ -4,5 +4,4 @@
   ansible.builtin.systemd_service:
     name: "greetd"
     enabled: true
-    state: "started"
     daemon_reload: true
