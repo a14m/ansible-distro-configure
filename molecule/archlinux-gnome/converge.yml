@@ -76,7 +76,7 @@
     - role: "which"
     - role: "firefox"
     - role: "font"
-    - role: "font_aur"
+    - role: "aur_font"
     - role: "alacritty"
     - role: "btop"
     - role: "bluetui"
