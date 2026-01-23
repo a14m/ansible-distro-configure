@@ -8,6 +8,7 @@
   roles:
     - role: "locales"
     - role: "timezone"
+    - role: "yay"
     - role: "font"
     - role: "font_aur"
     - role: "which"
@@ -31,7 +32,6 @@
     - role: "vim"
     - role: "neomutt"
     - role: "firefox"
-    - role: "yay"
     - role: "alacritty"
     - role: "hyprland"
 
