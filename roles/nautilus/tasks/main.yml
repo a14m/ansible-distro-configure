@@ -11,7 +11,7 @@
   ansible.builtin.command:
     cmd: "gsettings set {{ item.key }} {{ item.value }}"
   environment:
-    DBUS_SESSION_BUS_ADDRESS: "unix:path=/run/user/{{ ansible_user_uid }}/bus"
+    DBUS_SESSION_BUS_ADDRESS: "unix:path=/run/user/{{ ansible_facts['user_uid'] }}/bus"
   changed_when: false
   loop:
     - key: "org.gnome.nautilus.preferences default-folder-viewer"
@@ -28,9 +28,9 @@
     cmd: "xdg-user-dirs-update --set {{ item.name }} {{ item.path }}"
   changed_when: false
   loop:
-    - { name: "DESKTOP", path: "{{ ansible_env.HOME }}/Desktop" }
-    - { name: "DOCUMENTS", path: "{{ ansible_env.HOME }}/Documents" }
-    - { name: "DOWNLOAD", path: "{{ ansible_env.HOME }}/Downloads" }
-    - { name: "MUSIC", path: "{{ ansible_env.HOME }}/Music" }
-    - { name: "PICTURES", path: "{{ ansible_env.HOME }}/Pictures" }
-    - { name: "VIDEOS", path: "{{ ansible_env.HOME }}/Videos" }
+    - { name: "DESKTOP", path: "{{ ansible_facts['env'].HOME }}/Desktop" }
+    - { name: "DOCUMENTS", path: "{{ ansible_facts['env'].HOME }}/Documents" }
+    - { name: "DOWNLOAD", path: "{{ ansible_facts['env'].HOME }}/Downloads" }
+    - { name: "MUSIC", path: "{{ ansible_facts['env'].HOME }}/Music" }
+    - { name: "PICTURES", path: "{{ ansible_facts['env'].HOME }}/Pictures" }
+    - { name: "VIDEOS", path: "{{ ansible_facts['env'].HOME }}/Videos" }

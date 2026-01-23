@@ -1,6 +1,6 @@
 ---
 firefox_package: "firefox"
-firefox_folder: "{{ ansible_env.HOME }}/snap/firefox/common/.mozilla/firefox"
+firefox_folder: "{{ ansible_facts['env'].HOME }}/snap/firefox/common/.mozilla/firefox"
 
 firefox_browserpass_packages:
   - "webext-browserpass"

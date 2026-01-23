@@ -11,8 +11,8 @@
   block:
     - name: "Set go facts"
       ansible.builtin.set_fact:
-        go_arch: "{{ 'amd64' if ansible_architecture == 'x86_64' else 'arm64' }}"
-        go_platform: "{{ ansible_system | lower }}"
+        go_arch: "{{ 'amd64' if ansible_facts['architecture'] == 'x86_64' else 'arm64' }}"
+        go_platform: "{{ ansible_facts['system'] | lower }}"
 
     - name: "Download Go"
       ansible.builtin.get_url:
@@ -29,7 +29,7 @@
 
 - name: "Add Go to shell profile"
   ansible.builtin.blockinfile:
-    path: "{{ ansible_env.HOME }}/.bashrc"
+    path: "{{ ansible_facts['env'].HOME }}/.bashrc"
     state: "present"
     prepend_newline: true
     append_newline: true

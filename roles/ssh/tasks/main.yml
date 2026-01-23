@@ -1,6 +1,6 @@
 ---
 - name: "Include OS-specific variables"
-  ansible.builtin.include_vars: "{{ ansible_os_family | lower }}.yml"
+  ansible.builtin.include_vars: "{{ ansible_facts['os_family'] | lower }}.yml"
 
 - name: "Ensure ssh package is installed"
   become: true
@@ -14,13 +14,13 @@
     name: "{{ ssh_service }}"
     state: "started"
     enabled: true
-  when: not ansible_is_chroot
+  when: not ansible_facts['is_chroot']
 
 - name: "(chroot): Ensure ssh service is enabled"
   # noqa: command-instead-of-module intentional isnide chroot
   ansible.builtin.command:
     cmd: "systemctl enable {{ ssh_service }}"
-  when: ansible_is_chroot
+  when: ansible_facts['is_chroot']
   changed_when: true
 
 - name: "Generate /etc/ssh/ RSA host key"
@@ -46,7 +46,7 @@
   ansible.builtin.copy:
     dest: "/etc/ssh/sshd_config"
     mode: "0640"
-    validate: "{{ 'sshd -T -f %s' if (not ansible_is_chroot) else omit }}"
+    validate: "{{ 'sshd -T -f %s' if (not ansible_facts['is_chroot']) else omit }}"
     content: |
       KbdInteractiveAuthentication no   # default installation is no
       UsePAM no                         # default installation is yes
@@ -70,7 +70,7 @@
   ansible.builtin.copy:
     dest: "/etc/ssh/sshd_config.d/99-auth-policy.conf"
     mode: "0640"
-    validate: "{{ 'sshd -T -f %s' if (not ansible_is_chroot) else omit }}"
+    validate: "{{ 'sshd -T -f %s' if (not ansible_facts['is_chroot']) else omit }}"
     content: |
       Port {{ ssh_port }}
       PasswordAuthentication no
@@ -89,7 +89,7 @@
   ansible.builtin.copy:
     dest: "/etc/ssh/sshd_config.d/99-allowed-users.conf"
     mode: "0640"
-    validate: "{{ 'sshd -T -f %s' if (not ansible_is_chroot) else omit }}"
+    validate: "{{ 'sshd -T -f %s' if (not ansible_facts['is_chroot']) else omit }}"
     content: |
       AllowUsers {{ username }}
   notify:
@@ -99,7 +99,7 @@
   ansible.builtin.known_hosts:
     name: "{{ item.split(' ') | first }}"
     key: "{{ item }}"
-    path: "{{ ansible_env.HOME }}/.ssh/known_hosts"
+    path: "{{ ansible_facts['env'].HOME }}/.ssh/known_hosts"
     state: present
   loop: "{{ ssh_known_hosts }}"
   when: ssh_known_hosts is defined and ssh_known_hosts | length > 0
