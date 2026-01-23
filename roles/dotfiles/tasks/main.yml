@@ -2,7 +2,7 @@
 - name: "Clone dotfiles git repo"
   ansible.builtin.git:
     repo: "{{ dotfiles_repo_url }}"
-    dest: "{{ ansible_env.HOME }}/.rc"
+    dest: "{{ ansible_facts['env'].HOME }}/.rc"
     clone: true
     update: false
     single_branch: true

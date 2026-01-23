@@ -3,7 +3,7 @@
   become: true
   ansible.builtin.systemd_service:
     daemon_reload: true
-  when: not ansible_is_chroot
+  when: not ansible_facts['is_chroot']
 
 - name: "Restart NetworkManager"
   become: true
@@ -11,7 +11,7 @@
     name: "NetworkManager"
     enabled: true
     state: "restarted"
-  when: not ansible_is_chroot
+  when: not ansible_facts['is_chroot']
 
 - name: "Restart systemd-resolved"
   become: true
@@ -19,5 +19,5 @@
     name: "systemd-resolved"
     enabled: true
     state: "restarted"
-  when: not ansible_is_chroot
+  when: not ansible_facts['is_chroot']
   failed_when: false

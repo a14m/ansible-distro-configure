@@ -7,7 +7,7 @@ argument_specs:
       nginx_server_name:
         type: "str"
         description: "The server name for nginx configuration"
-        default: "{{ ansible_hostname }}.local"
+        default: "{{ ansible_facts['hostname'] }}.local"
       nginx_worker_processes:
         type: "int"
         description: "Number of nginx worker processes"
