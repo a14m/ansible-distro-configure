@@ -1,9 +1,9 @@
 ---
 - name: "Include OS-specific variables"
-  ansible.builtin.include_vars: "{{ ansible_distribution | lower }}.yml"
+  ansible.builtin.include_vars: "{{ ansible_facts['distribution'] | lower }}.yml"
 
 - name: "Include OS-specific tasks"
-  ansible.builtin.include_tasks: "install-{{ ansible_os_family | lower }}.yml"
+  ansible.builtin.include_tasks: "install-{{ ansible_facts['os_family'] | lower }}.yml"
 
 - name: "Validate network_ipv4_* params"
   ansible.builtin.assert:
@@ -28,14 +28,14 @@
     enabled: true
     state: "started"
   loop: "{{ network_enabled_services }}"
-  when: not ansible_is_chroot
+  when: not ansible_facts['is_chroot']
 
 - name: "(chroot): Ensure network enabled services are enabled"
   ansible.builtin.command:
     cmd: "systemctl enable {{ item }}"
   changed_when: true
   loop: "{{ network_enabled_services }}"
-  when: ansible_is_chroot
+  when: ansible_facts['is_chroot']
   # noqa: command-instead-of-module module doesn't work inside chroot
 
 - name: "Ensure network disabled services are masked"
@@ -45,14 +45,14 @@
     masked: true
     state: "stopped"
   loop: "{{ network_disabled_services }}"
-  when: not ansible_is_chroot
+  when: not ansible_facts['is_chroot']
 
 - name: "(chroot): Ensure network disabled services are masked"
   ansible.builtin.command:
     cmd: "systemctl mask {{ item }}"
   changed_when: true
   loop: "{{ network_disabled_services }}"
-  when: ansible_is_chroot
+  when: ansible_facts['is_chroot']
   # noqa: command-instead-of-module module doesn't work inside chroot
 
 - name: "Configure NetworkManager"

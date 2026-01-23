@@ -63,4 +63,4 @@
   ansible.builtin.command:
     cmd: "loginctl enable-linger {{ username }}"
     creates: "/var/lib/systemd/linger/{{ username }}"
-  when: not ansible_is_chroot
+  when: not ansible_facts['is_chroot']

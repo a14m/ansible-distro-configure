@@ -14,20 +14,20 @@
 
 - name: "Configure Podman for rootless operation"
   ansible.builtin.command:
-    cmd: "loginctl enable-linger {{ ansible_user_uid }}"
+    cmd: "loginctl enable-linger {{ ansible_facts['user_uid'] }}"
   become: true
   changed_when: false
   failed_when: false
 
 - name: "Create containers configuration directory"
   ansible.builtin.file:
-    path: "{{ ansible_env.HOME }}/.config/containers"
+    path: "{{ ansible_facts['env'].HOME }}/.config/containers"
     state: "directory"
     mode: "0755"
 
 - name: "Configure Podman containers.conf"
   ansible.builtin.copy:
-    dest: "{{ ansible_env.HOME }}/.config/containers/containers.conf"
+    dest: "{{ ansible_facts['env'].HOME }}/.config/containers/containers.conf"
     mode: "0644"
     content: |
       [containers]

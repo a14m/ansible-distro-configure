@@ -3,11 +3,11 @@
   become: true
   ansible.builtin.systemd_service:
     daemon_reload: true
-  when: not ansible_is_chroot
+  when: not ansible_facts['is_chroot']
 
 - name: "Restart ssh"
   become: true
   ansible.builtin.systemd_service:
     name: "{{ ssh_service }}"
     state: "restarted"
-  when: not ansible_is_chroot
+  when: not ansible_facts['is_chroot']

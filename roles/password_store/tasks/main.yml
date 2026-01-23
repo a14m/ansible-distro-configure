@@ -1,6 +1,6 @@
 ---
 - name: "Include OS-specific variables"
-  ansible.builtin.include_vars: "{{ ansible_os_family | lower }}.yml"
+  ansible.builtin.include_vars: "{{ ansible_facts['os_family'] | lower }}.yml"
 
 - name: "Ensure pass packages are installed"
   become: true
@@ -11,7 +11,7 @@
 - name: "Clone password store git repo"
   ansible.builtin.git:
     repo: "{{ password_store_repo_url }}"
-    dest: "{{ ansible_env.HOME }}/.password-store"
+    dest: "{{ ansible_facts['env'].HOME }}/.password-store"
     clone: true
     update: false
     single_branch: true

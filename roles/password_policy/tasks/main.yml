@@ -1,6 +1,6 @@
 ---
 - name: "Include OS-specific variables"
-  ansible.builtin.include_vars: "{{ ansible_os_family | lower }}.yml"
+  ansible.builtin.include_vars: "{{ ansible_facts['os_family'] | lower }}.yml"
 
 - name: "Ensure password_policy package is installed"
   become: true
@@ -14,7 +14,7 @@
     src: "archlinux-pam-pw.j2"
     dest: "/etc/pam.d/system-auth"
     mode: "0644"
-  when: ansible_os_family == "Archlinux"
+  when: ansible_facts['os_family'] == "Archlinux"
 
 - name: "Configure debian password policy"
   become: true
@@ -22,4 +22,4 @@
     src: "debian-pam-pw.j2"
     dest: "/etc/pam.d/common-password"
     mode: "0644"
-  when: ansible_os_family == "Debian"
+  when: ansible_facts['os_family'] == "Debian"

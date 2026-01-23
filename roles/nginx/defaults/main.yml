@@ -1,5 +1,5 @@
 ---
-nginx_server_name: "{{ ansible_hostname }}.local"
+nginx_server_name: "{{ ansible_facts['hostname'] }}.local"
 nginx_worker_processes: 2
 nginx_worker_connections: 512
 nginx_ssl_certificate: "/etc/ssl/certs/nginx-selfsigned.crt"

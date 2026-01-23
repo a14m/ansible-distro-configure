@@ -47,7 +47,7 @@ jobs:
         with:
           python-version: "3.13"
       - name: Install dependencies
-        run: pip3 install ansible-core==2.19.3 molecule==25.9.0 molecule-plugins[docker,podman]==25.8.12
+        run: pip3 install ansible-core==2.20.1 molecule==25.9.0 molecule-plugins[docker,podman]==25.8.12
       - name: Remove encrypted var files
         run: |
           rm host_vars/*.yml
