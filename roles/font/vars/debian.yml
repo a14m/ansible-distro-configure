@@ -2,6 +2,7 @@
 font_packages:
   - "fonts-jetbrains-mono"
   - "fonts-recommended"
+  - "fonts-paratype"
   - "fonts-noto"
   - "fonts-noto-cjk"
   - "fonts-noto-color-emoji"
