@@ -1,0 +1,10 @@
+---
+- name: "Ensure AUR fonts are installed"
+  become: true
+  become_user: "aur_builder"
+  kewlfft.aur.aur:
+    name: "{{ item }}"
+    state: "present"
+    use: "yay"
+  loop:
+    - "ttf-paratype"

@@ -9,6 +9,7 @@
     - role: "locales"
     - role: "timezone"
     - role: "font"
+    - role: "font_aur"
     - role: "which"
     - role: "bash"
     - role: "man"
