@@ -28,9 +28,9 @@
     cmd: "xdg-user-dirs-update --set {{ item.name }} {{ item.path }}"
   changed_when: false
   loop:
-    - { name: "DESKTOP", path: "{{ ansible_facts['env'].HOME }}/Desktop" }
-    - { name: "DOCUMENTS", path: "{{ ansible_facts['env'].HOME }}/Documents" }
-    - { name: "DOWNLOAD", path: "{{ ansible_facts['env'].HOME }}/Downloads" }
-    - { name: "MUSIC", path: "{{ ansible_facts['env'].HOME }}/Music" }
-    - { name: "PICTURES", path: "{{ ansible_facts['env'].HOME }}/Pictures" }
-    - { name: "VIDEOS", path: "{{ ansible_facts['env'].HOME }}/Videos" }
+    - { name: "DESKTOP", path: "{{ ansible_facts['env']['HOME'] }}/Desktop" }
+    - { name: "DOCUMENTS", path: "{{ ansible_facts['env']['HOME'] }}/Documents" }
+    - { name: "DOWNLOAD", path: "{{ ansible_facts['env']['HOME'] }}/Downloads" }
+    - { name: "MUSIC", path: "{{ ansible_facts['env']['HOME'] }}/Music" }
+    - { name: "PICTURES", path: "{{ ansible_facts['env']['HOME'] }}/Pictures" }
+    - { name: "VIDEOS", path: "{{ ansible_facts['env']['HOME'] }}/Videos" }

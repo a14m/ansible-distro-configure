@@ -19,7 +19,7 @@
 - name: "Template theme files for: {{ hyprtheme_name }}"
   ansible.builtin.template:
     src: "theme/{{ file }}.j2"
-    dest: "{{ ansible_facts['env'].HOME }}/.config/hyprtheme/themes/{{ hyprtheme_name }}/{{ file }}"
+    dest: "{{ ansible_facts['env']['HOME'] }}/.config/hyprtheme/themes/{{ hyprtheme_name }}/{{ file }}"
     mode: "0644"
   loop: "{{ hyprtheme_theme_files }}"
   loop_control:
@@ -35,7 +35,7 @@
 - name: "Copy static theme files for: {{ hyprtheme_name }}"
   ansible.builtin.copy:
     src: "themes/{{ hyprtheme_name }}/"
-    dest: "{{ ansible_facts['env'].HOME }}/.config/hyprtheme/themes/{{ hyprtheme_name }}/"
+    dest: "{{ ansible_facts['env']['HOME'] }}/.config/hyprtheme/themes/{{ hyprtheme_name }}/"
     mode: "0644"
   tags:
     # This is ignored because it is possible that some themes (ex. matte-black), would provide

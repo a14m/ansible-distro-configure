@@ -21,13 +21,13 @@
 
 - name: "Create containers configuration directory"
   ansible.builtin.file:
-    path: "{{ ansible_facts['env'].HOME }}/.config/containers"
+    path: "{{ ansible_facts['env']['HOME'] }}/.config/containers"
     state: "directory"
     mode: "0755"
 
 - name: "Configure Podman containers.conf"
   ansible.builtin.copy:
-    dest: "{{ ansible_facts['env'].HOME }}/.config/containers/containers.conf"
+    dest: "{{ ansible_facts['env']['HOME'] }}/.config/containers/containers.conf"
     mode: "0644"
     content: |
       [containers]

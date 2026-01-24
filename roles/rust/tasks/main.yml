@@ -1,7 +1,7 @@
 ---
 - name: "Check if cargo binary exists"
   ansible.builtin.stat:
-    path: "{{ ansible_facts['env'].HOME }}/.cargo/bin/cargo"
+    path: "{{ ansible_facts['env']['HOME'] }}/.cargo/bin/cargo"
   register: rust_cargo_binary
 
 - name: "Download rustup installer"
@@ -15,23 +15,23 @@
   ansible.builtin.command:
     cmd: "/tmp/install_rustup.sh -y --default-toolchain {{ rust_toolchain }} --profile minimal"
   args:
-    creates: "{{ ansible_facts['env'].HOME }}/.cargo/bin/cargo"
+    creates: "{{ ansible_facts['env']['HOME'] }}/.cargo/bin/cargo"
   when: not rust_cargo_binary.stat.exists
 
 - name: "Ensure default toolchain is set"
   ansible.builtin.command:
-    cmd: "{{ ansible_facts['env'].HOME }}/.cargo/bin/rustup default {{ rust_toolchain }}"
+    cmd: "{{ ansible_facts['env']['HOME'] }}/.cargo/bin/rustup default {{ rust_toolchain }}"
   changed_when: false
 
 - name: "Remove cargo default shell profile modification"
   ansible.builtin.lineinfile:
-    path: "{{ ansible_facts['env'].HOME }}/.bashrc"
+    path: "{{ ansible_facts['env']['HOME'] }}/.bashrc"
     line: '. "$HOME/.cargo/env"'
     state: "absent"
 
 - name: "Add cargo to shell profile"
   ansible.builtin.blockinfile:
-    path: "{{ ansible_facts['env'].HOME }}/.bashrc"
+    path: "{{ ansible_facts['env']['HOME'] }}/.bashrc"
     state: "present"
     prepend_newline: true
     append_newline: true
@@ -43,7 +43,7 @@
 
 - name: "Install rust components"
   ansible.builtin.command:
-    cmd: "{{ ansible_facts['env'].HOME }}/.cargo/bin/rustup component add {{ item }}"
+    cmd: "{{ ansible_facts['env']['HOME'] }}/.cargo/bin/rustup component add {{ item }}"
   register: rust_component_result
   changed_when: "'is up to date' not in rust_component_result.stdout"
   loop: "{{ rust_components }}"

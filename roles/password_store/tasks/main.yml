@@ -11,7 +11,7 @@
 - name: "Clone password store git repo"
   ansible.builtin.git:
     repo: "{{ password_store_repo_url }}"
-    dest: "{{ ansible_facts['env'].HOME }}/.password-store"
+    dest: "{{ ansible_facts['env']['HOME'] }}/.password-store"
     clone: true
     update: false
     single_branch: true
