@@ -99,7 +99,7 @@
   ansible.builtin.known_hosts:
     name: "{{ item.split(' ') | first }}"
     key: "{{ item }}"
-    path: "{{ ansible_facts['env']['HOME'] }}/.ssh/known_hosts"
+    path: "/home/{{ username }}/.ssh/known_hosts"
     state: present
   loop: "{{ ssh_known_hosts }}"
   when: ssh_known_hosts is defined and ssh_known_hosts | length > 0
