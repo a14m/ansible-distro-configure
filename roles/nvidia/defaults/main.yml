@@ -1,12 +1,11 @@
 ---
+nvidia_packages:
+  - "libva-nvidia-driver"
+
 nvidia_aur_packages:
   - "nvidia-580xx-dkms"
   - "nvidia-580xx-utils"
-
-nvidia_packages:
-  - "linux-headers"
-  - "nvidia-settings"
-  - "libva-nvidia-driver"
+  - "nvidia-580xx-settings"
 
 nvidia_modules:
   - "nvidia"

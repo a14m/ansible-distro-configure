@@ -1,0 +1,6 @@
+---
+- name: "Ensure linux-headers is installed"
+  become: true
+  ansible.builtin.package:
+    name: "linux-headers"
+    state: "present"
