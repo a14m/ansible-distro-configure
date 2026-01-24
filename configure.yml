@@ -4,7 +4,7 @@
   hosts:
     - archlinux.local
   environment:
-    PATH: "{{ '~/.local/bin:$PATH' }}"
+    PATH: "{{ ansible_env.HOME }}/.local/bin:{{ ansible_env.PATH }}"
   roles:
     - role: "locales"
     - role: "timezone"
@@ -41,7 +41,7 @@
   hosts:
     - ubuntu.local
   environment:
-    PATH: "{{ '~/.local/bin:$PATH' }}"
+    PATH: "{{ ansible_env.HOME }}/.local/bin:{{ ansible_env.PATH }}"
   roles:
     - role: "locales"
     - role: "timezone"
