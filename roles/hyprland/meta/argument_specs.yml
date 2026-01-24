@@ -3,4 +3,8 @@ argument_specs:
   main:
     short_description: "Install hyprland on ArchLinux"
     description: "Install hyprland on ArchLinux"
-    options: {}
+    options:
+      hyprland_nvidia:
+        type: "bool"
+        default: false
+        description: "Enable NVIDIA-specific environment variables for Wayland"

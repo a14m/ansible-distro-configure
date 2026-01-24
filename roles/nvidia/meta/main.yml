@@ -1,0 +1,12 @@
+---
+dependencies:
+  - role: "yay"
+galaxy_info:
+  author: "a14m"
+  description: "Install and configure NVIDIA proprietary drivers"
+  license: "MIT"
+  min_ansible_version: "2.18"
+  platforms:
+    - name: "ArchLinux"
+      versions:
+        - "all"
