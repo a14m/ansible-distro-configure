@@ -1,0 +1,40 @@
+---
+- name: "Install NVIDIA packages"
+  become: true
+  ansible.builtin.package:
+    name: "{{ nvidia_packages }}"
+    state: "present"
+
+- name: "Install NVIDIA driver from AUR"
+  become: true
+  become_user: "aur_builder"
+  kewlfft.aur.aur:
+    name: "{{ nvidia_aur_packages }}"
+    state: "present"
+    use: "yay"
+
+- name: "Configure NVIDIA DRM kernel mode setting"
+  become: true
+  ansible.builtin.template:
+    src: "nvidia.conf.j2"
+    dest: "/etc/modprobe.d/nvidia.conf"
+    mode: "0644"
+  notify: "Rebuild initramfs"
+
+- name: "Get current mkinitcpio MODULES"
+  become: true
+  ansible.builtin.shell:
+    cmd: "grep '^MODULES=' /etc/mkinitcpio.conf | sed 's/MODULES=(\\(.*\\))/\\1/'"
+  register: "current_modules"
+  changed_when: false
+
+- name: "Add NVIDIA modules to mkinitcpio"
+  become: true
+  vars:
+    existing_modules: "{{ current_modules.stdout.split() | reject('in', nvidia_modules) | list }}"
+    all_modules: "{{ existing_modules + nvidia_modules }}"
+  ansible.builtin.lineinfile:
+    path: "/etc/mkinitcpio.conf"
+    regexp: "^MODULES=\\(.*\\)"
+    line: "MODULES=({{ all_modules | join(' ') }})"
+  notify: "Rebuild initramfs"

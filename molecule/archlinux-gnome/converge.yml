@@ -84,3 +84,4 @@
     - role: "pipewire"
     - role: "brightnessctl"
     - role: "wiremix"
+    - role: "nvidia"
