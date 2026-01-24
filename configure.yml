@@ -33,6 +33,7 @@
     - role: "neomutt"
     - role: "firefox"
     - role: "alacritty"
+    - role: "nvidia"
     - role: "hyprland"
 
 - name: "Ubuntu configure"
