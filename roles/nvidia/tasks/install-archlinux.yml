@@ -23,15 +23,17 @@
 
 - name: "Get current mkinitcpio MODULES"
   become: true
-  ansible.builtin.shell:
-    cmd: "grep '^MODULES=' /etc/mkinitcpio.conf | sed 's/MODULES=(\\(.*\\))/\\1/'"
-  register: "current_modules"
+  ansible.builtin.shell: |
+    set -euo pipefail
+    grep '^MODULES=' /etc/mkinitcpio.conf | sed 's/MODULES=(\\(.*\\))/\\1/'
+  # noqa var-naming[no-role-prefix] as it describes the current kernel modules and not the nvidia modules
+  register: "current_kernel_modules"
   changed_when: false
 
 - name: "Add NVIDIA modules to mkinitcpio"
   become: true
   vars:
-    existing_modules: "{{ current_modules.stdout.split() | reject('in', nvidia_modules) | list }}"
+    existing_modules: "{{ current_kernel_modules.stdout.split() | reject('in', nvidia_modules) | list }}"
     all_modules: "{{ existing_modules + nvidia_modules }}"
   ansible.builtin.lineinfile:
     path: "/etc/mkinitcpio.conf"
