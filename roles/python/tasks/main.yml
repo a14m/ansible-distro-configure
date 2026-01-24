@@ -4,7 +4,7 @@
 
 - name: "Check if uv binary exists"
   ansible.builtin.stat:
-    path: "{{ ansible_facts['env'].HOME }}/.local/bin/uv"
+    path: "{{ ansible_facts['env']['HOME'] }}/.local/bin/uv"
   register: python_uv_binary
 
 - name: "Download uv installer"
@@ -18,12 +18,12 @@
   ansible.builtin.command:
     cmd: "/tmp/install_uv.sh"
   args:
-    creates: "{{ ansible_facts['env'].HOME }}/.local/bin/uv"
+    creates: "{{ ansible_facts['env']['HOME'] }}/.local/bin/uv"
   when: not python_uv_binary.stat.exists
 
 - name: "Add uv to shell profile"
   ansible.builtin.blockinfile:
-    path: "{{ ansible_facts['env'].HOME }}/.bashrc"
+    path: "{{ ansible_facts['env']['HOME'] }}/.bashrc"
     state: "present"
     prepend_newline: true
     append_newline: true

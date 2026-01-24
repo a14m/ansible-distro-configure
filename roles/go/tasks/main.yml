@@ -29,7 +29,7 @@
 
 - name: "Add Go to shell profile"
   ansible.builtin.blockinfile:
-    path: "{{ ansible_facts['env'].HOME }}/.bashrc"
+    path: "{{ ansible_facts['env']['HOME'] }}/.bashrc"
     state: "present"
     prepend_newline: true
     append_newline: true
