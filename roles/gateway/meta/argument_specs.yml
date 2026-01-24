@@ -13,6 +13,11 @@ argument_specs:
         description: "Local subnet CIDR for NAT and routing rules (e.g., '192.168.178.0/24')"
         type: "str"
         required: true
+      gateway_local_ipv6_subnet:
+        description: "Local IPv6 subnet CIDR for NAT and routing rules (e.g., '2a02:3102:4ced:ec00::/64')"
+        type: "str"
+        required: false
+        default: ""
       gateway_router_interface:
         description: "Default route interface for direct routing mode"
         type: "str"

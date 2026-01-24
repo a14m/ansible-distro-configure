@@ -1,3 +1,4 @@
 ---
 gateway_enabled: false
 gateway_router_interface: "eth0"
+gateway_local_ipv6_subnet: ""
