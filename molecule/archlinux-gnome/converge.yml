@@ -32,7 +32,6 @@
     PATH: "{{ ansible_env.HOME }}/.local/bin:{{ ansible_env.PATH }}"
   vars:
     ansible_become_method: sudo
-    ansible_is_chroot: false
     locales:
       - "en_US.UTF-8 UTF-8"
     timezone: "GMT"
@@ -46,6 +45,10 @@
     password_store_repo_url: "https://github.com/octocat/Spoon-Knife"
     firefox_install_browserpass: true
     firefox_install_passff: true
+  pre_tasks:
+    - name: "Override is_chroot fact for container environment"
+      ansible.builtin.set_fact:
+        ansible_facts: "{{ ansible_facts | combine({'is_chroot': false}) }}"
   roles:
     - role: "locales"
     - role: "timezone"
