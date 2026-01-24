@@ -6,7 +6,8 @@ SCRIPT_NAME="gateway-apply-rules"
 LOG_FACILITY="local0.info"
 
 # Ansible template variables - configured at deployment time
-GATEWAY_SUBNET="{{ gateway_local_ipv4_subnet }}"
+GATEWAY_SUBNET_V4="{{ gateway_local_ipv4_subnet }}"
+GATEWAY_SUBNET_V6="{{ gateway_local_ipv6_subnet }}"
 GATEWAY_INTERFACE="{{ gateway_router_interface }}"
 log_message() {
     echo "[$SCRIPT_NAME] $1" | logger -t "$SCRIPT_NAME" -p "$LOG_FACILITY"
@@ -20,28 +21,47 @@ detect_vpn_interfaces() {
 clear_rules() {
     log_message "Clearing existing gateway rules"
     iptables -F FORWARD 2>/dev/null || true
-    iptables -t nat -D POSTROUTING -s "$GATEWAY_SUBNET" -o wg+ -j MASQUERADE 2>/dev/null || true
-    iptables -t nat -D POSTROUTING -s "$GATEWAY_SUBNET" -o "$GATEWAY_INTERFACE" -j MASQUERADE 2>/dev/null || true
+    iptables -t nat -D POSTROUTING -s "$GATEWAY_SUBNET_V4" -o wg+ -j MASQUERADE 2>/dev/null || true
+    iptables -t nat -D POSTROUTING -s "$GATEWAY_SUBNET_V4" -o "$GATEWAY_INTERFACE" -j MASQUERADE 2>/dev/null || true
     iptables -D OUTPUT -o wg+ -j ACCEPT 2>/dev/null || true
     iptables -D OUTPUT -o "$GATEWAY_INTERFACE" -j ACCEPT 2>/dev/null || true
+    if [ -n "$GATEWAY_SUBNET_V6" ]; then
+        ip6tables -F FORWARD 2>/dev/null || true
+        ip6tables -t nat -D POSTROUTING -s "$GATEWAY_SUBNET_V6" -o wg+ -j MASQUERADE 2>/dev/null || true
+        ip6tables -t nat -D POSTROUTING -s "$GATEWAY_SUBNET_V6" -o "$GATEWAY_INTERFACE" -j MASQUERADE 2>/dev/null || true
+        ip6tables -D OUTPUT -o wg+ -j ACCEPT 2>/dev/null || true
+        ip6tables -D OUTPUT -o "$GATEWAY_INTERFACE" -j ACCEPT 2>/dev/null || true
+    fi
 }
 
 apply_vpn_mode() {
     local vpn_interfaces="$1"
     log_message "Applying VPN mode rules for interfaces: $vpn_interfaces"
-    iptables -t nat -A POSTROUTING -s "$GATEWAY_SUBNET" -o wg+ -j MASQUERADE
+    iptables -t nat -A POSTROUTING -s "$GATEWAY_SUBNET_V4" -o wg+ -j MASQUERADE
     iptables -A OUTPUT -o wg+ -j ACCEPT
-    iptables -A FORWARD -s "$GATEWAY_SUBNET" -o wg+ -j ACCEPT
+    iptables -A FORWARD -s "$GATEWAY_SUBNET_V4" -o wg+ -j ACCEPT
     iptables -A FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+    if [ -n "$GATEWAY_SUBNET_V6" ]; then
+        ip6tables -t nat -A POSTROUTING -s "$GATEWAY_SUBNET_V6" -o wg+ -j MASQUERADE
+        ip6tables -A OUTPUT -o wg+ -j ACCEPT
+        ip6tables -A FORWARD -s "$GATEWAY_SUBNET_V6" -o wg+ -j ACCEPT
+        ip6tables -A FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+    fi
     log_message "VPN mode rules applied - traffic routed through VPN"
 }
 
 apply_direct_rules() {
     log_message "Applying direct mode rules"
-    iptables -t nat -A POSTROUTING -s "$GATEWAY_SUBNET" -o "$GATEWAY_INTERFACE" -j MASQUERADE
+    iptables -t nat -A POSTROUTING -s "$GATEWAY_SUBNET_V4" -o "$GATEWAY_INTERFACE" -j MASQUERADE
     iptables -A OUTPUT -o "$GATEWAY_INTERFACE" -j ACCEPT
-    iptables -A FORWARD -s "$GATEWAY_SUBNET" -o "$GATEWAY_INTERFACE" -j ACCEPT
+    iptables -A FORWARD -s "$GATEWAY_SUBNET_V4" -o "$GATEWAY_INTERFACE" -j ACCEPT
     iptables -A FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+    if [ -n "$GATEWAY_SUBNET_V6" ]; then
+        ip6tables -t nat -A POSTROUTING -s "$GATEWAY_SUBNET_V6" -o "$GATEWAY_INTERFACE" -j MASQUERADE
+        ip6tables -A OUTPUT -o "$GATEWAY_INTERFACE" -j ACCEPT
+        ip6tables -A FORWARD -s "$GATEWAY_SUBNET_V6" -o "$GATEWAY_INTERFACE" -j ACCEPT
+        ip6tables -A FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+    fi
     log_message "Direct mode rules applied - normal routing active"
 }
 
