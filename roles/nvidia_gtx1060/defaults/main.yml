@@ -1,13 +1,13 @@
 ---
-nvidia_packages:
+nvidia_gtx1060_packages:
   - "libva-nvidia-driver"
 
-nvidia_aur_packages:
+nvidia_gtx1060_aur_packages:
   - "nvidia-580xx-dkms"
   - "nvidia-580xx-utils"
   - "nvidia-580xx-settings"
 
-nvidia_modules:
+nvidia_gtx1060_modules:
   - "nvidia"
   - "nvidia_modeset"
   - "nvidia_uvm"
