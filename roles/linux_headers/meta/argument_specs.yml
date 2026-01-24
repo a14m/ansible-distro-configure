@@ -1,0 +1,6 @@
+---
+argument_specs:
+  main:
+    short_description: "Install linux-headers on Linux distribution"
+    description: "Install linux-headers on Linux distribution"
+    options: {}
