@@ -1,5 +1,5 @@
 ---
-- name: "Install NVIDIA packages"
+- name: "Install libva NVIDIA driver"
   become: true
   ansible.builtin.package:
     name: "{{ nvidia_packages }}"
@@ -25,7 +25,7 @@
   become: true
   ansible.builtin.shell: |
     set -euo pipefail
-    grep '^MODULES=' /etc/mkinitcpio.conf | sed 's/MODULES=(\\(.*\\))/\\1/'
+    grep '^MODULES=' /etc/mkinitcpio.conf | sed 's/MODULES=(\(.*\))/\1/'
   # noqa var-naming[no-role-prefix] as it describes the current kernel modules and not the nvidia modules
   register: "current_kernel_modules"
   changed_when: false
