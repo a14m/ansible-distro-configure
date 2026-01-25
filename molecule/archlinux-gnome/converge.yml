@@ -87,4 +87,4 @@
     - role: "pipewire"
     - role: "brightnessctl"
     - role: "wiremix"
-    - role: "nvidia"
+    - role: "nvidia_gtx1060"
