@@ -1,0 +1,12 @@
+---
+- name: "Reload systemd"
+  ansible.builtin.systemd_service:
+    scope: "user"
+    daemon_reload: true
+
+- name: "Restart elephant"
+  ansible.builtin.systemd_service:
+    name: "elephant"
+    enabled: true
+    state: "restarted"
+    scope: "user"

@@ -1,0 +1,6 @@
+---
+argument_specs:
+  main:
+    short_description: "Install elephant on ArchLinux"
+    description: "Install elephant on ArchLinux"
+    options: {}
