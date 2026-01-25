@@ -1,0 +1,17 @@
+launch_prefix = "uwsm-app --"
+show_actions = false
+show_generic = false
+show_actions_without_query = false
+history = false
+history_when_empty = false
+only_search_title = true
+blacklist = [
+  "avahi-*",
+  "bssh",      # Avahi SSH Browser
+  "bvnc",      # Avahi VNC Browser
+  "gscriptor", # GScriptor
+  "qv4l",      # Qt V4L2 Test Utility
+  "qvidcap",   # Qt V4L2 Vidio Test Utility
+  "uuctl",
+  "xgps*"      # gpsd is required by waybar
+]
