@@ -34,6 +34,11 @@
     - role: "firefox"
     - role: "alacritty"
     - role: "nvidia_gtx1060"
+    - role: "btop"
+    - role: "bluetui"
+    - role: "wlctl"
+    - role: "wiremix"
+    - role: "waybar"
     - role: "hyprland"
 
 - name: "Ubuntu configure"
