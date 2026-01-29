@@ -2,14 +2,14 @@
 - name: "Install libva NVIDIA driver"
   become: true
   ansible.builtin.package:
-    name: "{{ nvidia_gtx_1060_packages }}"
+    name: "{{ nvidia_gtx1060_packages }}"
     state: "present"
 
 - name: "Install NVIDIA driver from AUR"
   become: true
   become_user: "aur_builder"
   kewlfft.aur.aur:
-    name: "{{ nvidia_gtx_1060_aur_packages }}"
+    name: "{{ nvidia_gtx1060_aur_packages }}"
     state: "present"
     use: "yay"
 
@@ -33,8 +33,8 @@
 - name: "Add NVIDIA modules to mkinitcpio"
   become: true
   vars:
-    existing_modules: "{{ current_kernel_modules.stdout.split() | reject('in', nvidia_gtx_1060_modules) | list }}"
-    all_modules: "{{ existing_modules + nvidia_gtx_1060_modules }}"
+    existing_modules: "{{ current_kernel_modules.stdout.split() | reject('in', nvidia_gtx1060_modules) | list }}"
+    all_modules: "{{ existing_modules + nvidia_gtx1060_modules }}"
   ansible.builtin.lineinfile:
     path: "/etc/mkinitcpio.conf"
     regexp: "^MODULES=\\(.*\\)"
