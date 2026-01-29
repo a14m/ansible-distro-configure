@@ -28,3 +28,9 @@ wireguard_connections:
 fonts_extra:
   - "ttf-dejavu"
   - "noto-fonts"
+
+hyprland_nvidia: true
+hyprland_monitors: |
+  env = GDK_SCALE,2
+  monitor=HDMI-A-1,3840x2160@60,auto-left,1.6
+  monitor=DP-1,3840x2160@60,auto-right,1.6
