@@ -1,7 +1,0 @@
-hide_from_providerlist = false
-ignored_dirs = ["/"]
-# ignore_previews = { "/"= "root preview not available" }
-# ignore_watching = ["/"]
-search_dirs = []
-watch_dirs = []
-watch = false
