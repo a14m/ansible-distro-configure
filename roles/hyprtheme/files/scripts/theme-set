@@ -19,7 +19,7 @@ fi
 ln -sfn "$THEMES_PATH/$THEME_NAME" "$CURRENT_THEME_PATH.new"
 rm -rf "$CURRENT_THEME_PATH"
 mv "$CURRENT_THEME_PATH.new" "$CURRENT_THEME_PATH"
-./.config/hyprtheme/scripts/theme-bg-next
+~/.config/hyprtheme/scripts/theme-bg-next
 
 pkill -x waybar || true
 setsid uwsm-app -- waybar >/dev/null 2>&1 &
@@ -56,4 +56,3 @@ fi
 # else
   # gsettings set org.gnome.desktop.interface icon-theme "Yaru-blue"
 # fi
-
