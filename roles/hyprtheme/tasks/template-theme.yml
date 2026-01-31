@@ -15,6 +15,7 @@
       - "swayosd.css"
       - "walker.css"
       - "waybar.css"
+      - "clipse.json"
 
 - name: "Template theme files for: {{ hyprtheme_name }}"
   ansible.builtin.template:
