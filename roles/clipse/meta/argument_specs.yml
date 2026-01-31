@@ -1,0 +1,6 @@
+---
+argument_specs:
+  main:
+    short_description: "Install clipse on ArchLinux"
+    description: "Install clipse on ArchLinux"
+    options: {}
