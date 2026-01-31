@@ -1,0 +1,4 @@
+---
+# On archlinux the vim package doesn't have clipboard support
+# The gvim package comes precompiled with the clipboard support
+vim_package_name: "gvim"
