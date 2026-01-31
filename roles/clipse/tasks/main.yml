@@ -13,9 +13,16 @@
     state: "present"
     use: "yay"
 
+- name: "Create system config directory"
+  become: true
+  ansible.builtin.file:
+    path: "/etc/xdg/clipse"
+    state: "directory"
+    mode: "0755"
+
 - name: "Configure system defaults"
   become: true
-  ansible.builtin.template:
+  ansible.builtin.copy:
     src: "config.json"
     dest: "/etc/xdg/clipse/config.json"
     mode: "0644"
