@@ -1,8 +1,11 @@
 ---
+- name: "Include OS-specific variables"
+  ansible.builtin.include_vars: "{{ ansible_facts['os_family'] | lower }}.yml"
+
 - name: "Ensure vim is installed"
   become: true
   ansible.builtin.package:
-    name: "vim"
+    name: "{{ vim_package_name }}"
     state: "present"
 
 - name: "Clone vimrc git repo"
