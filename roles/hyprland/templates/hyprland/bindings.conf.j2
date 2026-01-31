@@ -9,6 +9,11 @@ bindd = SUPER, Q, Quit, killactive,
 bindd = SUPER CONTROL, Q, Lock System, exec, hyprlock
 bindd = SUPER SHIFT, Q, Logout, exit,
 
+# Clipboard managers
+binde = SUPER, C, sendshortcut, CTRL, INSERT,
+binde = SUPER, V, sendshortcut, SHIFT, INSERT,
+bindd = SUPER SHIFT, V, Clipboard Manager, exec, alacritty --class work.kartoffln.clipse -e 'clipse'
+
 # Switch workspaces with ctrl + [0-9] (MacOS-like)
 bind = CONTROL, 1, workspace, 1
 bind = CONTROL, 2, workspace, 2
