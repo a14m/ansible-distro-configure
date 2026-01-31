@@ -1,0 +1,21 @@
+---
+- name: "Ensure wl-clipboard is installed"
+  become: true
+  ansible.builtin.package:
+    name: "wl-clipboard"
+    state: "present"
+
+- name: "Ensure clipse is installed"
+  become: true
+  become_user: "aur_builder"
+  kewlfft.aur.aur:
+    name: "clipse"
+    state: "present"
+    use: "yay"
+
+- name: "Configure system defaults"
+  become: true
+  ansible.builtin.template:
+    src: "config.json"
+    dest: "/etc/xdg/clipse/config.json"
+    mode: "0644"
