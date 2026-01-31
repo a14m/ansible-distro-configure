@@ -1,3 +1,11 @@
 ---
 hyprtheme_default_mono_font: "JetBrainsMono Nerd Font"
 hyprtheme_default_theme: "everforest"
+hyprtheme_themes_to_install:
+  - "catppuccin"
+  - "everforest"
+  - "gruvbox"
+  - "matte-black"
+  - "osaka-jade"
+  - "ristretto"
+  - "tokyo-night"

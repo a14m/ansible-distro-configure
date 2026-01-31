@@ -12,3 +12,14 @@ argument_specs:
         description: "The default theme mono font to be used"
         type: "str"
         default: "JetBrainsMono Nerd Font"
+      hyprtheme_themes_to_install:
+        description: "Themes to install"
+        type: "list"
+        default:
+          - "catppuccin"
+          - "everforest"
+          - "gruvbox"
+          - "matte-black"
+          - "osaka-jade"
+          - "ristretto"
+          - "tokyo-night"

@@ -1,15 +1,4 @@
 ---
-- name: "Set themes fact"
-  ansible.builtin.set_fact:
-    hyprtheme_themes:
-      - "catppuccin"
-      - "everforest"
-      - "gruvbox"
-      - "matte-black"
-      - "osaka-jade"
-      - "ristretto"
-      - "tokyo-night"
-
 - name: "Create current theme directory"
   ansible.builtin.file:
     path: "{{ ansible_facts['env']['HOME'] }}/.config/hyprtheme/current"
@@ -21,7 +10,7 @@
     path: "{{ ansible_facts['env']['HOME'] }}/.config/hyprtheme/themes/{{ item }}"
     state: "directory"
     mode: "0755"
-  loop: "{{ hyprtheme_themes }}"
+  loop: "{{ hyprtheme_themes_to_install }}"
 
 - name: "Create scripts directory"
   ansible.builtin.file:
@@ -33,7 +22,7 @@
   ansible.builtin.include_tasks: "template-theme.yml"
   vars:
     hyprtheme_name: "{{ item }}"
-  loop: "{{ hyprtheme_themes }}"
+  loop: "{{ hyprtheme_themes_to_install }}"
 
 - name: "Copy theme scripts"
   ansible.builtin.copy:
