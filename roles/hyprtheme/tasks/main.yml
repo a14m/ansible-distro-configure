@@ -10,7 +10,7 @@
     path: "{{ ansible_facts['env']['HOME'] }}/.config/hyprtheme/themes/{{ item }}"
     state: "directory"
     mode: "0755"
-  loop: "{{ hyprtheme_themes_to_install }}"
+  loop: "{{ hyprtheme_themes }}"
 
 - name: "Create scripts directory"
   ansible.builtin.file:
@@ -22,7 +22,7 @@
   ansible.builtin.include_tasks: "template-theme.yml"
   vars:
     hyprtheme_name: "{{ item }}"
-  loop: "{{ hyprtheme_themes_to_install }}"
+  loop: "{{ hyprtheme_themes }}"
 
 - name: "Copy theme scripts"
   ansible.builtin.copy:
