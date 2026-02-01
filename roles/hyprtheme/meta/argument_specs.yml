@@ -12,7 +12,7 @@ argument_specs:
         description: "The default theme mono font to be used"
         type: "str"
         default: "JetBrainsMono Nerd Font"
-      hyprtheme_themes_to_install:
+      hyprtheme_themes:
         description: "Themes to install"
         type: "list"
         default:
