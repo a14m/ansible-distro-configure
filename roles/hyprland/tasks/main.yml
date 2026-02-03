@@ -28,12 +28,15 @@
   notify:
     - "Restart greetd"
 
-- name: "Create system config directory"
+- name: "Create config directories"
   become: true
   ansible.builtin.file:
-    path: "/etc/hypr"
+    path: "{{ item }}"
     state: "directory"
     mode: "0755"
+  loop:
+    - "/etc/hypr"
+    - "{{ ansible_facts['env']['HOME'] }}/.config/hypr"
 
 - name: "Configure system defaults"
   become: true
@@ -62,3 +65,27 @@
       dest: "/etc/hypr/hypridle.conf"
     - src: "hyprland/hyprland.conf.j2"
       dest: "/etc/hypr/hyprland.conf"
+
+- name: "Configure user defaults"
+  block:
+    - name: "Configure user hyprland configuration"
+      ansible.builtin.blockinfile:
+        path: "{{ ansible_facts['env']['HOME'] }}/.config/hypr/hyprland.conf"
+        state: "present"
+        prepend_newline: true
+        append_newline: true
+        marker: "# ==== {mark} ANSIBLE HYPRLAND CONFIG"
+        block: |
+          # System defaults
+          source = /etc/hypr/hyprland.conf
+
+    - name: "Configure user hypridle configuration"
+      ansible.builtin.blockinfile:
+        path: "{{ ansible_facts['env']['HOME'] }}/.config/hypr/hypridle.conf"
+        state: "present"
+        prepend_newline: true
+        append_newline: true
+        marker: "# ==== {mark} ANSIBLE HYPRLAND CONFIG"
+        block: |
+          # System defaults
+          source = /etc/hypr/hypridle.conf
