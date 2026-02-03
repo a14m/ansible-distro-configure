@@ -1,0 +1,17 @@
+---
+dependencies: []
+galaxy_info:
+  author: "a14m"
+  description: "Install zoxide"
+  license: "MIT"
+  min_ansible_version: "2.18"
+  platforms:
+    - name: "ArchLinux"
+      versions:
+        - "all"
+    - name: "Ubuntu"
+      versions:
+        - "noble"
+    - name: "Debian"
+      versions:
+        - "bookworm"
