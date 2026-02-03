@@ -9,9 +9,9 @@ dependencies:
   - role: "font"
   - role: "aur_font"
   - role: "waybar"
-  - role: "hyprtheme"
-  - role: "hyprcursor"
   - role: "clipse"
+  - role: "hyprcursor"
+  - role: "hyprtheme"
 galaxy_info:
   author: "a14m"
   description: "Install hyprland"
