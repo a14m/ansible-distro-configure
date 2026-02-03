@@ -16,6 +16,7 @@
       - "walker.css"
       - "waybar.css"
       - "clipse.json"
+      - "tofi.config"
 
 - name: "Template theme files for: {{ hyprtheme_name }}"
   ansible.builtin.template:

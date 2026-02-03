@@ -1,0 +1,38 @@
+---
+- name: "Ensure tofi is installed"
+  become: true
+  become_user: "aur_builder"
+  kewlfft.aur.aur:
+    name: "tofi"
+    state: "present"
+    use: "yay"
+
+- name: "Create config directories"
+  become: true
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: "directory"
+    mode: "0755"
+  loop:
+    - "/etc/xdg/tofi"
+    - "{{ ansible_facts['env']['HOME'] }}/.config/tofi"
+
+- name: "Configure system defaults"
+  become: true
+  ansible.builtin.copy:
+    src: "config"
+    dest: "/etc/xdg/tofi/config"
+    mode: "0644"
+
+- name: "Configure user defaults"
+  ansible.builtin.blockinfile:
+    path: "{{ ansible_facts['env']['HOME'] }}/.config/tofi/config"
+    state: "present"
+    prepend_newline: true
+    append_newline: true
+    marker: "# ==== {mark} ANSIBLE TOFI CONFIG"
+    block: |
+      # System defaults
+      include = /etc/xdg/tofi/config
+      # Load Theme
+      include = ../hyprtheme/current/tofi.config

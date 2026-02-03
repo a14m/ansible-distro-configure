@@ -10,6 +10,7 @@ dependencies:
   - role: "aur_font"
   - role: "waybar"
   - role: "clipse"
+  - role: "tofi"
   - role: "hyprcursor"
   - role: "hyprtheme"
 galaxy_info:
