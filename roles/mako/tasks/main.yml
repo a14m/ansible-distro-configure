@@ -7,12 +7,15 @@
       - "mako"
     state: "present"
 
-- name: "Create system config directory"
+- name: "Create config directories"
   become: true
   ansible.builtin.file:
-    path: "/etc/xdg/mako"
+    path: "{{ item }}"
     state: "directory"
     mode: "0755"
+  loop:
+    - "/etc/xdg/mako"
+    - "{{ ansible_facts['env']['HOME'] }}/.config/mako"
 
 - name: "Configure system defaults"
   become: true
@@ -20,3 +23,14 @@
     src: "mako/config.j2"
     dest: "/etc/xdg/mako/config"
     mode: "0644"
+
+- name: "Configure user defaults"
+  ansible.builtin.blockinfile:
+    path: "{{ ansible_facts['env']['HOME'] }}/.config/mako/config"
+    state: "present"
+    prepend_newline: true
+    append_newline: true
+    marker: "# ==== {mark} ANSIBLE MAKO CONFIG"
+    block: |
+      # System defaults
+      include=/etc/xdg/mako/config
