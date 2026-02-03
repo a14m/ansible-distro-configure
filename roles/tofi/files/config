@@ -1,0 +1,46 @@
+# Default config for tofi
+#
+# To use the following line to ~/.config/tofi/config
+#   include = /etc/xdg/tofi/config
+# A complete reference of available options can be found in `man 5 tofi`.
+# Ref: https://github.com/philj56/tofi/blob/1eb6137572ab6c257ab6ab851d5d742167c18120/doc/config
+
+### Fonts
+font = "monospace"
+font-size = 14
+font-features = ""
+font-variations = ""
+hint-font = true
+
+### Text layout
+prompt-text = "Run: "
+prompt-padding = 0
+placeholder-text = "Application"
+num-results = 0
+result-spacing = 14
+horizontal = false
+min-input-width = 0
+
+### Window positioning
+output = ""
+anchor = center
+exclusive-zone = 0
+margin-top = 0
+margin-bottom = 0
+margin-left = 0
+margin-right = 0
+
+### Behaviour
+hide-cursor = false
+text-cursor = false
+history = false
+# history-file = /path/to/histfile
+matching-algorithm = normal
+require-match = true
+auto-accept-single = false
+hide-input = false
+physical-keybindings = false
+print-index = false
+drun-launch = false
+late-keyboard-init = false
+multi-instance = true
