@@ -1,0 +1,6 @@
+---
+argument_specs:
+  main:
+    short_description: "Install zoxide on Linux distribution"
+    description: "Install zoxide on Linux distribution"
+    options: {}

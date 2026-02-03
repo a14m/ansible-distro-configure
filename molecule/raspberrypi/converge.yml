@@ -69,6 +69,7 @@
     - role: "python"
     - role: "go"
     - role: "rust"
+    - role: "zoxide"
     - role: "wireguard"
     - role: "gateway"
     - role: "nginx"

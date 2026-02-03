@@ -62,6 +62,7 @@
     - role: "python"
     - role: "go"
     - role: "rust"
+    - role: "zoxide"
     - role: "docker"
     - role: "podman"
     - role: "ansible"

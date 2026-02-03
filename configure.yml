@@ -17,6 +17,7 @@
     - role: "jq"
     - role: "ag"
     - role: "tmux"
+    - role: "zoxide"
     - role: "wireguard"
     - role: "go"
     - role: "python"
