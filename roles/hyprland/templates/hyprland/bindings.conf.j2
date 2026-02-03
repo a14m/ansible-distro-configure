@@ -9,9 +9,13 @@ bindd = SUPER, Q, Quit, killactive,
 bindd = SUPER CONTROL, Q, Lock System, exec, hyprlock
 bindd = SUPER SHIFT, Q, Logout, exit,
 
+# Launcher
+bindd = SUPER, SPACE, App Launcher, exec, uwsm app -- $(tofi-drun)
+
 # Clipboard managers
-binde = SUPER, C, sendshortcut, CTRL, INSERT,
-binde = SUPER, V, sendshortcut, SHIFT, INSERT,
+bindd = SUPER, C, MacOS Copy, sendshortcut, CTRL, INSERT,
+bindd = SUPER, V, MacOS Paste, sendshortcut, SHIFT, INSERT,
+bindd = SUPER, X, MacOS Cut, sendshortcut, CTRL, X,
 bindd = SUPER SHIFT, V, Clipboard Manager, exec, alacritty --class work.kartoffln.clipse -e 'clipse'
 
 # Switch workspaces with ctrl + [0-9] (MacOS-like)
