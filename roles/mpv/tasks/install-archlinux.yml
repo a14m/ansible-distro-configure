@@ -1,0 +1,6 @@
+---
+- name: "Ensure mpv is installed"
+  become: true
+  ansible.builtin.package:
+    name: "mpv"
+    state: "present"
