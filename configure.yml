@@ -33,6 +33,7 @@
     - role: "vim"
     - role: "neomutt"
     - role: "firefox"
+    - role: "obsidian"
     - role: "alacritty"
     - role: "mpv"
     - role: "nvidia_gtx1060"
@@ -74,6 +75,7 @@
     - role: "vim"
     - role: "neomutt"
     - role: "firefox"
+    - role: "obsidian"
 
 - name: "Raspberry Pi configure"
   gather_facts: true

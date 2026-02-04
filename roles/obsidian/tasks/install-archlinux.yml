@@ -1,0 +1,6 @@
+---
+- name: "Ensure obsidian is installed"
+  become: true
+  ansible.builtin.package:
+    name: "obsidian"
+    state: "present"
