@@ -1,0 +1,6 @@
+---
+argument_specs:
+  main:
+    short_description: "Install mpv on Linux distribution"
+    description: "Install mpv on Linux distribution"
+    options: {}

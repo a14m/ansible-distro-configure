@@ -81,6 +81,7 @@
     - role: "font"
     - role: "aur_font"
     - role: "alacritty"
+    - role: "mpv"
     - role: "btop"
     - role: "bluetui"
     - role: "wlctl"

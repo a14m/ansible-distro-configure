@@ -1,0 +1,24 @@
+---
+- name: "Include OS-specific tasks"
+  ansible.builtin.include_tasks: "install-{{ ansible_facts['os_family'] | lower }}.yml"
+
+- name: "Create config directories"
+  become: true
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: "directory"
+    mode: "0755"
+  loop:
+    - "/etc/mpv"
+
+- name: "Configure system defaults"
+  become: true
+  ansible.builtin.copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: "0644"
+  loop:
+    - src: "mpv.conf"
+      dest: "/etc/mpv/mpv.conf"
+    - src: "input.conf"
+      dest: "/etc/mpv/input.conf"
