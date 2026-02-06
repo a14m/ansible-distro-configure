@@ -86,6 +86,7 @@
     - role: "password_store"
     - role: "which"
     - role: "firefox"
+    - role: "chromium"
     - role: "font"
     - role: "alacritty"
     - role: "btop"

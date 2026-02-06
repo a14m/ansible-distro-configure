@@ -78,6 +78,7 @@
     - role: "password_store"
     - role: "which"
     - role: "firefox"
+    - role: "chromium"
     - role: "obsidian"
     - role: "font"
     - role: "aur_font"

@@ -33,6 +33,7 @@
     - role: "vim"
     - role: "neomutt"
     - role: "firefox"
+    - role: "chromium"
     - role: "obsidian"
     - role: "claude"
     - role: "alacritty"
