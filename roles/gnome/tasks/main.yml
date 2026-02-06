@@ -9,3 +9,8 @@
   ansible.builtin.command:
     cmd: 'gsettings set org.gnome.desktop.interface font-name "Noto Sans"'
   changed_when: false
+
+- name: "Configure gnome perferred color-scheme"
+  ansible.builtin.command:
+    cmd: 'gsettings set org.gnome.desktop.interface color-scheme "prefer-dark"'
+  changed_when: false
