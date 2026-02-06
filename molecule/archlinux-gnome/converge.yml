@@ -91,3 +91,4 @@
     - role: "brightnessctl"
     - role: "wiremix"
     - role: "nvidia_gtx1060"
+    - role: "claude"

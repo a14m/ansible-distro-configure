@@ -34,6 +34,7 @@
     - role: "neomutt"
     - role: "firefox"
     - role: "obsidian"
+    - role: "claude"
     - role: "alacritty"
     - role: "mpv"
     - role: "nvidia_gtx1060"

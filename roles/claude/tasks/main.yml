@@ -1,0 +1,19 @@
+---
+- name: "Check if claude.code binary exists"
+  ansible.builtin.stat:
+    path: "{{ ansible_facts['env']['HOME'] }}/.local/bin/claude"
+  register: claude_binary
+
+- name: "Download claude.code installer"
+  ansible.builtin.get_url:
+    url: "https://claude.ai/install.sh"
+    dest: "/tmp/install_claude.sh"
+    mode: "0755"
+  when: not claude_binary.stat.exists
+
+- name: "Run claude.code installer"
+  ansible.builtin.command:
+    cmd: "/tmp/install_claude.sh"
+  args:
+    creates: "{{ ansible_facts['env']['HOME'] }}/.local/bin/claude"
+  when: not claude_binary.stat.exists
