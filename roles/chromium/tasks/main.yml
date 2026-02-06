@@ -1,0 +1,6 @@
+---
+- name: "Ensure chromium is installed"
+  become: true
+  ansible.builtin.package:
+    name: "chromium"
+    state: "present"
