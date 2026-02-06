@@ -94,3 +94,4 @@
     - role: "alacritty"
     - role: "btop"
     - role: "pipewire"
+    - role: "claude"
