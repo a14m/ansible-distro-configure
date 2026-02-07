@@ -7,13 +7,9 @@
     hyprtheme_theme_files:
       - "alacritty.toml"
       - "btop.theme"
-      - "ghostty.conf"
       - "hyprland.conf"
       - "hyprlock.conf"
       - "icons.theme"
-      - "kitty.conf"
-      - "swayosd.css"
-      - "walker.css"
       - "waybar.css"
       - "clipse.json"
       - "tofi.config"
