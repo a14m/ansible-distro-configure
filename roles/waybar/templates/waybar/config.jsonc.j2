@@ -17,6 +17,7 @@
     "pulseaudio",
     "backlight",
     "hyprland/language",
+    "keyboard-state",
     "cpu",
     "battery"
   ],
@@ -86,8 +87,17 @@
     "format-icons": ["", ""]
   },
   "hyprland/language": {
-    "format": "{shortDescription}",
+    "format": " {shortDescription}",
     "on-click": "hyprctl switchxkblayout all next"
+  },
+  "keyboard-state": {
+    "numlock": false,
+    "capslock": true,
+    "format": "{icon}",
+    "format-icons": {
+      "locked": "󰘲",
+      "unlocked": ""
+    }
   },
   "cpu": {
     "interval": 5,
