@@ -23,9 +23,8 @@ mv "$CURRENT_THEME_PATH.new" "$CURRENT_THEME_PATH"
 
 pkill -x waybar || true
 setsid uwsm-app -- waybar >/dev/null 2>&1 &
-
-# pkill -x swayosd-server || true
-# setsid uwsm-app -- swayosd-server >/dev/null 2>&1 &
+pkill -x syshud || true
+setsid uwsm-app -- syshud >/dev/null 2>&1 &
 
 hyprctl reload >/dev/null 2>&1
 
