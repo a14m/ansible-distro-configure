@@ -13,6 +13,7 @@
       - "waybar.css"
       - "clipse.json"
       - "tofi.config"
+      - "syshud.css"
 
 - name: "Template theme files for: {{ hyprtheme_name }}"
   ansible.builtin.template:

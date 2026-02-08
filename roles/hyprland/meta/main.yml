@@ -11,6 +11,7 @@ dependencies:
   - role: "waybar"
   - role: "clipse"
   - role: "tofi"
+  - role: "syshud"
   - role: "hyprcursor"
   - role: "hyprtheme"
 galaxy_info:
