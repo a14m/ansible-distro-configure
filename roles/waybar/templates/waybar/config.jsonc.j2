@@ -40,15 +40,15 @@
     }
   },
   "clock": {
-    "format": "{:L%a %b %d - %H:%M}",
-    "format-alt": "{:L%A %d %B %Y (W%V) - %H:%M}",
+    "format": "󰸘 {0:L%a %b %d} -  {0:%H:%M}",
+    "format-alt": "󰸘 {0:L%A %d %B %Y (W%V)} -  {0:%H:%M}",
     "tooltip": false
   },
   "network": {
     "format-icons": ["󰤯", "󰤟", "󰤢", "󰤥", "󰤨"],
     "format": "{icon}",
     "format-wifi": "{icon}",
-    "format-ethernet": "󰀂",
+    "format-ethernet": "󰈀",
     "format-disconnected": "󰤮",
     "tooltip-format-wifi": "{essid} ({frequency} GHz)\n⇣{bandwidthDownBytes}  ⇡{bandwidthUpBytes}",
     "tooltip-format-ethernet": "⇣{bandwidthDownBytes}  ⇡{bandwidthUpBytes}",
@@ -102,7 +102,7 @@
   "cpu": {
     "interval": 5,
     "format": "󰍛",
-    "on-click-right": "/etc/xdg/waybar/scripts/launch-tui btop"
+    "on-click": "/etc/xdg/waybar/scripts/launch-tui btop"
   },
   "battery": {
     "format": "{capacity}% {icon}",
