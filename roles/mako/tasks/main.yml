@@ -32,5 +32,9 @@
     append_newline: true
     marker: "# ==== {mark} ANSIBLE MAKO CONFIG"
     block: |
+      # Include Theme colors (must come first)
+      include={{ ansible_facts['env']['HOME'] }}/.config/hyprtheme/current/mako.ini
       # System defaults
       include=/etc/xdg/mako/config
+  notify:
+    - "Reload mako"
