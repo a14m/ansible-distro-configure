@@ -17,12 +17,13 @@ set_brightness_ddcutil() {
     local display_serial="$1"
     local step="$2"
     local direction="$3"
-    ddcutil \
-        --noconfig \
-        --skip-ddc-checks \
-        --sleep-multiplier=0.1 \
-        --sn="$display_serial" \
-        setvcp 10 $direction "$step"
+    flock -n /tmp/ddcutil-brightness.lock \
+        ddcutil \
+            --noconfig \
+            --skip-ddc-checks \
+            --sleep-multiplier=0.1 \
+            --sn="$display_serial" \
+            setvcp 10 $direction "$step"
 }
 
 set_brightness_brightnessctl() {
@@ -33,13 +34,14 @@ set_brightness_brightnessctl() {
 
 get_brightness_ddcutil() {
     local display_serial="$1"
-    ddcutil \
-        --noconfig \
-        --skip-ddc-checks \
-        --sleep-multiplier=0.1 \
-        --sn="$display_serial" \
-        --terse getvcp 10 \
-        | awk '{print $4}'
+    flock -n /tmp/ddcutil-brightness.lock \
+        ddcutil \
+            --noconfig \
+            --skip-ddc-checks \
+            --sleep-multiplier=0.1 \
+            --sn="$display_serial" \
+            --terse getvcp 10 \
+            | awk '{print $4}'
 }
 
 get_brightness_brightnessctl() {
