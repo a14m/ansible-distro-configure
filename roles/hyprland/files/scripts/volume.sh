@@ -10,9 +10,18 @@ get_volume() {
     volume=$(echo "$volume_status" | cut -d' ' -f2 | awk '{printf "%d\n", $1 * 100}')
 }
 
+get_mic() {
+    local mic_status=$(wpctl get-volume @DEFAULT_AUDIO_SOURCE@)
+    if [[ "$mic_status" == *"MUTED"* ]]; then
+        muted=true
+    else
+        muted=false
+    fi
+    volume=$(echo "$mic_status" | cut -d' ' -f2 | awk '{printf "%d\n", $1 * 100}')
+}
+
 set_volume() {
-    local volume=$1
-    wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ $volume
+    wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ "$1"
 }
 
 mute_volume() {
@@ -24,19 +33,27 @@ mute_mic() {
 }
 
 notify() {
-    value="$1"
+    local label="$1"
+    if [[ "$label" == "Volume" ]]; then
+        local mute_icon=" "
+        local icon=" "
+    elif [[ "$label" == "Mic" ]]; then
+        local mute_icon=" "
+        local icon=""
+    fi
+    local value="$2"
     if $muted; then
         notify-send -e \
             -h string:x-canonical-private-synchronous:volume \
             -u low \
-            "Volume" \
-            " \tmute"
+            "$label" \
+            "$mute_icon\tmute"
     else
         notify-send -e \
             -h string:x-canonical-private-synchronous:volume \
             -u low \
-            "Volume" \
-            " \t$value%"
+            "$label" \
+            "$icon\t${value}%"
     fi
 }
 
@@ -45,32 +62,32 @@ STEP="${2:-1}"
 case "$1" in
     "--get")
         get_volume
-        notify $volume
+        notify "Volume" "$volume"
         ;;
     "--set")
-        set_volume $STEP%
+        set_volume "${STEP}%"
         get_volume
-        notify $volume
+        notify "Volume" "$volume"
         ;;
     "--inc")
-        set_volume $STEP%+
+        set_volume "${STEP}%+"
         get_volume
-        notify $volume
+        notify "Volume" "$volume"
         ;;
     "--dec")
-        set_volume $STEP%-
+        set_volume "${STEP}%-"
         get_volume
-        notify $volume
+        notify "Volume" "$volume"
         ;;
     "--toggle-mute-vol")
         mute_volume
         get_volume
-        notify $volume
+        notify "Volume" "$volume"
         ;;
     "--toggle-mute-mic")
         mute_mic
-        get_volume
-        notify $volume
+        get_mic
+        notify "Mic" "$volume"
         ;;
     *)
         echo -e "Usage:"
