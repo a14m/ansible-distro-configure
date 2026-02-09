@@ -5,14 +5,12 @@
 #  - https://albert.nz/hyprland-brightness
 # ---------------------
 
-# Get focused monitor name
-get_focused_display_name() {
-    hyprctl monitors -j | jq -r '.[] | select(.focused == true) | .name'
-}
-
-# Get focused monitor serial
-get_focused_display_serial() {
-    hyprctl monitors -j | jq -r '.[] | select(.focused == true) | .serial'
+# Get focused monitor name and serial (single hyprctl call)
+get_focused_display() {
+    local monitor=$(hyprctl monitors -j | jq -r '.[] | select(.focused == true)')
+    local name=$(echo "$monitor" | jq -r '.name')
+    local serial=$(echo "$monitor" | jq -r '.serial')
+    echo "$name $serial"
 }
 
 set_brightness_ddcutil() {
@@ -48,15 +46,14 @@ get_brightness_brightnessctl() {
     brightnessctl -m | cut -d, -f4 | sed 's/%//'
 }
 
-
 # Get current brightness for a specific monitor
 get_current_brightness() {
-    local display_name=$(get_focused_display_name)
-    local display_serial=$(get_focused_display_serial)
+    local display_name="$1"
+    local display_serial="$2"
     if [ "$display_name" = "eDP-1" ]; then
-        echo "$(get_brightness_brightnessctl)"
+        get_brightness_brightnessctl
     elif [ -n "$display_serial" ]; then
-        echo "$(get_brightness_ddcutil $display_serial)"
+        get_brightness_ddcutil "$display_serial"
     else
         echo "N/A"
     fi
@@ -66,45 +63,46 @@ get_current_brightness() {
 set_brightness() {
     local step="$1"
     local direction="$2"
-    local display_name=$(get_focused_display_name)
-    local display_serial=$(get_focused_display_serial)
+    read -r display_name display_serial <<< "$(get_focused_display)"
 
     if [ "$display_name" = "eDP-1" ]; then
-        set_brighntess_brightnessctl $step $direction
+        set_brightness_brightnessctl "$step" "$direction"
     elif [ -n "$display_serial" ]; then
-        set_brightness_ddcutil $display_serial $step $direction
+        set_brightness_ddcutil "$display_serial" "$step" "$direction"
     else
         return
     fi
 
-    notify $display_serial $display_name $(get_current_brightness)
+    local value=$(get_current_brightness "$display_name" "$display_serial")
+    notify "$display_serial" "$display_name" "$value"
 }
 
 notify() {
-    serial="$1"
-    name="$2"
-    value="$3"
+    local serial="$1"
+    local name="$2"
+    local value="$3"
     notify-send -e \
-        -h string:x-canonical-private-synchronous:brightness-$serial \
+        -h string:x-canonical-private-synchronous:brightness-"$serial" \
         -u low \
         "Brightness" \
-        "   $name: $value%"
+        "  $name: ${value}%"
 }
 
 STEP="${2:-1}"
 case "$1" in
     "--get")
-        value=$(get_current_brightness)
+        read -r display_name display_serial <<< "$(get_focused_display)"
+        value=$(get_current_brightness "$display_name" "$display_serial")
         echo "${value}%"
         ;;
     "--set")
-        set_brightness $STEP
+        set_brightness "$STEP"
         ;;
     "--inc")
-        set_brightness $STEP +
+        set_brightness "$STEP" +
         ;;
     "--dec")
-        set_brightness $STEP -
+        set_brightness "$STEP" -
         ;;
     *)
         echo -e "Usage:"
