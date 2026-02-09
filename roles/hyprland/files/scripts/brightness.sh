@@ -17,13 +17,12 @@ set_brightness_ddcutil() {
     local display_serial="$1"
     local step="$2"
     local direction="$3"
-    flock -n /tmp/ddcutil-brightness.lock \
-        ddcutil \
-            --noconfig \
-            --skip-ddc-checks \
-            --sleep-multiplier=0.1 \
-            --sn="$display_serial" \
-            setvcp 10 $direction "$step"
+    ddcutil \
+        --noconfig \
+        --skip-ddc-checks \
+        --sleep-multiplier=0.1 \
+        --sn="$display_serial" \
+        setvcp 10 $direction "$step"
 }
 
 set_brightness_brightnessctl() {
@@ -34,14 +33,13 @@ set_brightness_brightnessctl() {
 
 get_brightness_ddcutil() {
     local display_serial="$1"
-    flock -n /tmp/ddcutil-brightness.lock \
-        ddcutil \
-            --noconfig \
-            --skip-ddc-checks \
-            --sleep-multiplier=0.1 \
-            --sn="$display_serial" \
-            --terse getvcp 10 \
-            | awk '{print $4}'
+    ddcutil \
+        --noconfig \
+        --skip-ddc-checks \
+        --sleep-multiplier=0.1 \
+        --sn="$display_serial" \
+        --terse getvcp 10 \
+        | awk '{print $4}'
 }
 
 get_brightness_brightnessctl() {
@@ -69,13 +67,17 @@ set_brightness() {
 
     if [ "$display_name" = "eDP-1" ]; then
         set_brightness_brightnessctl "$step" "$direction"
+        local value=$(get_brightness_brightnessctl)
     elif [ -n "$display_serial" ]; then
+        # Hold a single lock across both set and get to prevent races
+        exec 9>/tmp/ddcutil-brightness.lock
+        flock -n 9 || return
         set_brightness_ddcutil "$display_serial" "$step" "$direction"
+        local value=$(get_brightness_ddcutil "$display_serial")
+        exec 9>&-
     else
         return
     fi
-
-    local value=$(get_current_brightness "$display_name" "$display_serial")
     notify "$display_serial" "$display_name" "$value"
 }
 
