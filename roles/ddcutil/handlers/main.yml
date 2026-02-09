@@ -1,0 +1,12 @@
+---
+- name: "Reload rules"
+  become: true
+  ansible.builtin.command:
+    cmd: "udevadm control --reload-rules"
+  changed_when: true
+
+- name: "Trigger rules"
+  become: true
+  ansible.builtin.command:
+    cmd: "udevadm trigger"
+  changed_when: true
