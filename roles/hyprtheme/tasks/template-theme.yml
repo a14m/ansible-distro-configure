@@ -13,7 +13,7 @@
       - "waybar.css"
       - "clipse.json"
       - "tofi.config"
-      - "syshud.css"
+      - "mako.ini"
 
 - name: "Template theme files for: {{ hyprtheme_name }}"
   ansible.builtin.template:
