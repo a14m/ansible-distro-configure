@@ -100,3 +100,5 @@
   loop:
     - src: "scripts/brightness.sh"
       dest: "/etc/hypr/scripts/brightness.sh"
+    - src: "scripts/volume.sh"
+      dest: "/etc/hypr/scripts/volume.sh"

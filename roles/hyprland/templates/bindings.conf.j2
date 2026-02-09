@@ -65,10 +65,10 @@ binde = SUPER CONTROL, k, resizeactive, 0 -20
 binde = SUPER CONTROL, l, resizeactive, 20 0
 
 # Laptop multimedia keys for volume and LCD brightness
-bindel = ,XF86AudioRaiseVolume, exec, wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 1%+
-bindel = ,XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 1%-
-bindel = ,XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
-bindel = ,XF86AudioMicMute, exec, wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle
+bindel = ,XF86AudioRaiseVolume, exec, /etc/hypr/scripts/volume.sh --inc 1
+bindel = ,XF86AudioLowerVolume, exec, /etc/hypr/scripts/volume.sh --dec 1
+bindel = ,XF86AudioMute, exec, /etc/hypr/scripts/volume.sh --toggle-mute-vol
+bindel = ,XF86AudioMicMute, exec, /etc/hypr/scripts/volume.sh --toggle-mute-mic
 bindel = ,XF86MonBrightnessUp, exec, /etc/hypr/scripts/brightness.sh --inc 5
 bindel = ,XF86MonBrightnessDOWN, exec, /etc/hypr/scripts/brightness.sh --dec 5
 
