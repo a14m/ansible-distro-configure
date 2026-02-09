@@ -1,0 +1,6 @@
+---
+argument_specs:
+  main:
+    short_description: "Install ddcutil on Linux distribution"
+    description: "Install ddcutil on Linux distribution"
+    options: {}

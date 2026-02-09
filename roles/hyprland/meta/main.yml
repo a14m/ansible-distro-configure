@@ -6,6 +6,7 @@ dependencies:
   - role: "mako"
   - role: "pipewire"
   - role: "brightnessctl"
+  - role: "ddcutil"
   - role: "font"
   - role: "aur_font"
   - role: "waybar"

@@ -1,0 +1,38 @@
+---
+- name: "Ensure ddcutil is installed"
+  become: true
+  ansible.builtin.package:
+    name: "ddcutil"
+    state: "present"
+
+- name: "Ensure kernel module is loaded on boot"
+  become: true
+  ansible.builtin.copy:
+    dest: "/etc/modules-load.d/i2c.conf"
+    mode: "0644"
+    content: |
+      i2c-dev
+
+- name: "Ensure i2c group is created"
+  become: true
+  ansible.builtin.group:
+    name: "i2c"
+    state: "present"
+
+- name: "Ensure $USER is added to i2c group"
+  become: true
+  ansible.builtin.user:
+    name: "{{ ansible_facts['env']['USER'] }}"
+    groups: "i2c"
+    append: true
+
+- name: "Create udev rule for i2c device permissions"
+  become: true
+  ansible.builtin.copy:
+    dest: "/etc/udev/rules.d/99-i2c.rules"
+    mode: "0644"
+    content: |
+      KERNEL=="i2c-[0-9]*", GROUP="i2c", MODE="0660"
+  notify:
+    - "Reload rules"
+    - "Trigger rules"
