@@ -36,5 +36,3 @@
       include={{ ansible_facts['env']['HOME'] }}/.config/hyprtheme/current/mako.ini
       # System defaults
       include=/etc/xdg/mako/config
-  notify:
-    - "Reload mako"
