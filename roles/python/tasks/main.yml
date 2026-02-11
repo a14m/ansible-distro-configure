@@ -21,6 +21,13 @@
     creates: "{{ ansible_facts['env']['HOME'] }}/.local/bin/uv"
   when: not python_uv_binary.stat.exists
 
+- name: "Symlink uv to /usr/local/bin"
+  become: true
+  ansible.builtin.file:
+    src: "{{ ansible_facts['env']['HOME'] }}/.local/bin/uv"
+    dest: "/usr/local/bin/uv"
+    state: "link"
+
 - name: "Add uv to shell profile"
   ansible.builtin.blockinfile:
     path: "{{ ansible_facts['env']['HOME'] }}/.bashrc"
