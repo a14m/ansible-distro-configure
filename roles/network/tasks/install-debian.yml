@@ -15,3 +15,8 @@
     state: "absent"
     autoremove: true
     purge: true
+  tags:
+    # NOTE: the gnome-core packages resinstalls the avahi packages
+    # NOTE: the pipewire package reinstalls avahi packages
+    # Disabling the idemopotence test to prevent always reporting changed
+    - molecule-idempotence-notest
