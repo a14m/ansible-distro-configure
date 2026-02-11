@@ -22,7 +22,7 @@
 - name: "Ensure $USER is added to i2c group"
   become: true
   ansible.builtin.user:
-    name: "{{ ansible_facts['env']['USER'] }}"
+    name: "{{ username }}"
     groups: "i2c"
     append: true
 
