@@ -2,8 +2,6 @@
 - name: "Bootstrap"
   hosts: "archlinux-gnome"
   gather_facts: true
-  environment:
-    PATH: "{{ ansible_env.HOME }}/.local/bin:{{ ansible_env.PATH }}"
   vars:
     ansible_become_method: su
     user_public_keys:
@@ -36,8 +34,6 @@
   hosts: "archlinux-gnome"
   gather_facts: true
   remote_user: "{{ username }}"
-  environment:
-    PATH: "{{ ansible_env.HOME }}/.local/bin:{{ ansible_env.PATH }}"
   vars:
     ansible_become_method: sudo
     locales:
