@@ -10,20 +10,6 @@
     # Disabling the idemopotence test to prevent always reporting changed
     - molecule-idempotence-notest
 
-- name: "Remove avahi packages installed by GNOME to prevent conflict with MutlicastDNS"
-  become: true
-  ansible.builtin.apt:
-    name:
-      - "avahi-daemon"
-      - "avahi-utils"
-    state: "absent"
-    autoremove: true
-    purge: true
-  tags:
-    # NOTE: the gnome-core packages resinstalls the avahi packages
-    # Disabling the idemopotence test to prevent always reporting changed
-    - molecule-idempotence-notest
-
 - name: "Enable GDM display manager"
   become: true
   ansible.builtin.systemd_service:
