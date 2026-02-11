@@ -16,6 +16,14 @@
     - role: "user"
     - role: "ssh"
     - role: "password_policy"
+  pre_tasks:
+    - name: "Update package cache"
+      become: true
+      ansible.builtin.package:
+        update_cache: true
+      async: 60
+      poll: 5
+      failed_when: false
   tasks:
     - name: "Configure passwordless sudo for testing"
       ansible.builtin.copy:
