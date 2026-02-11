@@ -9,6 +9,9 @@ RUN pacman -Syu --noconfirm --needed python3 systemd udev dbus \
 # https://gitlab.archlinux.org/archlinux/archlinux-docker/-/issues/59
 RUN cp -r /usr/share/i18n/locales/en_US /usr/share/i18n/locales/de_DE;
 
+# Workaround getting failed ssl issues randomly in local testing
+RUN sed -i '/^\[options\]/a XferCommand = /usr/bin/curl --retry 5 --retry-delay 2 -L -C - -f -o %o %u' /etc/pacman.conf
+
 VOLUME ["/sys/fs/cgroup"]
 
 CMD ["/lib/systemd/systemd"]
