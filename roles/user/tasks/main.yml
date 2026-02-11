@@ -23,7 +23,7 @@
     shell: "/bin/bash"
     state: "present"
     update_password: "on_create"
-  register: created_user
+  register: user
   notify: "{{ [] if user_password is defined else ['Require password change'] }}"
   no_log: true
 
@@ -55,6 +55,6 @@
 - name: "Start user systemd instance"
   become: true
   ansible.builtin.systemd_service:
-    name: "user@{{ created_user.uid }}.service"
+    name: "user@{{ user.uid }}.service"
     state: "started"
   when: not ansible_facts['is_chroot']
