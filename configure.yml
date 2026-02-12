@@ -43,6 +43,14 @@
     - role: "wiremix"
     - role: "waybar"
     - role: "hyprland"
+  post_tasks:
+    - name: "Reboot if required"
+      become: true
+      ansible.builtin.command: "shutdown -r now"
+      async: 1
+      poll: 0
+      changed_when: true
+      when: reboot_required | default(false)
 
 - name: "Ubuntu configure"
   gather_facts: true
@@ -74,6 +82,14 @@
     - role: "neomutt"
     - role: "firefox"
     - role: "obsidian"
+  post_tasks:
+    - name: "Reboot if required"
+      become: true
+      ansible.builtin.command: "shutdown -r now"
+      async: 1
+      poll: 0
+      changed_when: true
+      when: reboot_required | default(false)
 
 - name: "Raspberry Pi configure"
   gather_facts: true
@@ -100,3 +116,11 @@
     - role: "password_store"
     - role: "vim"
     - role: "neomutt"
+  post_tasks:
+    - name: "Reboot if required"
+      become: true
+      ansible.builtin.command: "shutdown -r now"
+      async: 1
+      poll: 0
+      changed_when: true
+      when: reboot_required | default(false)

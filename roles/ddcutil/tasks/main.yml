@@ -12,6 +12,7 @@
     mode: "0644"
     content: |
       i2c-dev
+  notify: "Require reboot"
 
 - name: "Ensure i2c group is created"
   become: true
@@ -35,3 +36,4 @@
       KERNEL=="i2c-[0-9]*", GROUP="i2c", MODE="0660"
   notify:
     - "Reload rules"
+    - "Require reboot"
