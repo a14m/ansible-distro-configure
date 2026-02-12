@@ -43,3 +43,11 @@
       dest: "/etc/xdg/waybar/scripts/toggle-wifi"
     - src: "waybar/scripts/launch-tui"
       dest: "/etc/xdg/waybar/scripts/launch-tui"
+
+# This is requried for the keyboard-stats module to work
+- name: "Ensure USER is added to input group"
+  become: true
+  ansible.builtin.user:
+    name: "{{ username }}"
+    groups: "input"
+    append: true
