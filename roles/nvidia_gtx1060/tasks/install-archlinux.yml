@@ -19,7 +19,9 @@
     src: "nvidia.conf.j2"
     dest: "/etc/modprobe.d/nvidia.conf"
     mode: "0644"
-  notify: "Rebuild initramfs"
+  notify:
+    - "Rebuild initramfs"
+    - "Require reboot"
   tags:
     # Since the /etc/mkinitcpio isn't available on the docker container
     # Ignore this for testing,
@@ -47,7 +49,9 @@
     path: "/etc/mkinitcpio.conf"
     regexp: "^MODULES=\\(.*\\)"
     line: "MODULES=({{ all_modules | join(' ') }})"
-  notify: "Rebuild initramfs"
+  notify:
+    - "Rebuild initramfs"
+    - "Require reboot"
   tags:
     # Since the /etc/mkinitcpio isn't available on the docker container
     # Ignore this for testing,
