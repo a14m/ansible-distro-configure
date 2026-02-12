@@ -102,4 +102,8 @@
     path: "/home/{{ username }}/.ssh/known_hosts"
     state: present
   loop: "{{ ssh_known_hosts }}"
-  when: ssh_known_hosts is defined and ssh_known_hosts | length > 0
+  when:
+    - ssh_known_hosts is defined and ssh_known_hosts | length > 0
+      # To ensure this is only run with user and not as a root
+      # to avoid creating the file with the wrong permissions
+    - not ansible_facts['is_chroot']
