@@ -76,6 +76,7 @@
     - role: "go"
     - role: "rust"
     - role: "zoxide"
+    - role: "usbutils"
     - role: "wireguard"
     - role: "gateway"
     - role: "nginx"

@@ -69,6 +69,7 @@
     - role: "go"
     - role: "rust"
     - role: "zoxide"
+    - role: "usbutils"
     - role: "docker"
     - role: "podman"
     - role: "ansible"

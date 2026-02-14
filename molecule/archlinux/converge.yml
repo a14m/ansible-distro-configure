@@ -64,6 +64,7 @@
     - role: "ag"
     - role: "tmux"
     - role: "yay"
+    - role: "usbutils"
     - role: "wireguard"
     - role: "gateway"
     - role: "python"

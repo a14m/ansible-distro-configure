@@ -1,0 +1,6 @@
+---
+- name: "Ensure usbutils is installed"
+  become: true
+  ansible.builtin.package:
+    name: "usbutils"
+    state: "present"
