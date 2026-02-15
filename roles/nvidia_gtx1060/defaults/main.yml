@@ -6,6 +6,7 @@ nvidia_gtx1060_aur_packages:
   - "nvidia-580xx-dkms"
   - "nvidia-580xx-utils"
   - "nvidia-580xx-settings"
+  - "lib32-nvidia-580xx-utils"
 
 nvidia_gtx1060_modules:
   - "nvidia"
