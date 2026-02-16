@@ -91,6 +91,9 @@
     "on-click": "hyprctl switchxkblayout all next"
   },
   "keyboard-state": {
+{% if waybar_external_kbd_dev_path is defined %}
+    "device-path": "{{ waybar_external_kbd_dev_path }}",
+{% endif %}
     "numlock": false,
     "capslock": true,
     "format": {
