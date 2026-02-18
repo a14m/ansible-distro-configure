@@ -6,6 +6,7 @@ dependencies:
   - role: "bluetui"
   - role: "wlctl"
   - role: "wiremix"
+  - role: "gnome-calendar"
 galaxy_info:
   author: "a14m"
   description: "Install waybar"

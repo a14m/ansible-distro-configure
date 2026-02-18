@@ -33,6 +33,7 @@
     - role: "firefox"
     - role: "chromium"
     - role: "obsidian"
+    - role: "gnome-calendar"
     - role: "claude"
     - role: "alacritty"
     - role: "mpv"
@@ -82,6 +83,7 @@
     - role: "neomutt"
     - role: "firefox"
     - role: "obsidian"
+    - role: "gnome-calendar"
   post_tasks:
     - name: "Reboot if required"
       become: true

@@ -78,6 +78,7 @@
     - role: "prometheus"
     - role: "grafana"
     - role: "gnome"
+    - role: "gnome-calendar"
     - role: "rsync"
     - role: "gpg"
     - role: "dotfiles"

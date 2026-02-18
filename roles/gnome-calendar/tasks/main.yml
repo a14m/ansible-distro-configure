@@ -1,0 +1,6 @@
+---
+- name: "Ensure gnome-calendar is installed"
+  become: true
+  ansible.builtin.package:
+    name: "gnome-calendar"
+    state: "present"
