@@ -16,6 +16,7 @@
   loop:
     - "/etc/xdg/tofi"
     - "{{ ansible_facts['env']['HOME'] }}/.config/tofi"
+    - "/usr/local/share/applications"
 
 - name: "Configure system defaults"
   become: true
@@ -36,3 +37,23 @@
       include = /etc/xdg/tofi/config
       # Load Theme
       include = ../hyprtheme/current/tofi.config
+
+- name: "Configure hidden applications"
+  become: true
+  ansible.builtin.copy:
+    dest: "/usr/local/share/applications/{{ item }}.desktop"
+    mode: "0644"
+    content: |
+      [Desktop Entry]
+      Hidden=true
+  loop:
+    - "avahi-discover"
+    - "bssh"
+    - "bvnc"
+    - "gscriptor"
+    - "gvim"
+    - "qv4l2"
+    - "qvidcap"
+    - "uuctl"
+    - "xgps"
+    - "xgpsspeed"
