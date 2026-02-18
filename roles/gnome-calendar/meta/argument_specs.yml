@@ -1,0 +1,6 @@
+---
+argument_specs:
+  main:
+    short_description: "Install gnome-calendar on Linux distribution"
+    description: "Install gnome-calendar on Linux distribution"
+    options: {}

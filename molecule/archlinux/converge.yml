@@ -100,3 +100,4 @@
     - role: "nvidia_gtx1060"
     - role: "hyprland"
     - role: "claude"
+    - role: "gnome-calendar"
