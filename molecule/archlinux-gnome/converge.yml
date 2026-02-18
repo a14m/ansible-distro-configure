@@ -89,6 +89,7 @@
     - role: "firefox"
     - role: "chromium"
     - role: "obsidian"
+    - role: "steam"
     - role: "font"
     - role: "aur_font"
     - role: "alacritty"

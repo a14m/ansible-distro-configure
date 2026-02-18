@@ -33,6 +33,7 @@
     - role: "firefox"
     - role: "chromium"
     - role: "obsidian"
+    - role: "steam"
     - role: "gnome-calendar"
     - role: "claude"
     - role: "alacritty"
