@@ -1,0 +1,6 @@
+---
+argument_specs:
+  main:
+    short_description: "Enable multilib repo"
+    description: "Enable multilib repo"
+    options: {}
