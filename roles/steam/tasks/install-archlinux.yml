@@ -1,0 +1,10 @@
+---
+- name: "Ensure multilib is enabled"
+  ansible.builtin.include_role:
+    name: "multilib"
+
+- name: "Ensure steam is installed"
+  become: true
+  ansible.builtin.package:
+    name: "steam"
+    state: "present"
