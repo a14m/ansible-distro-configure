@@ -1,0 +1,23 @@
+---
+- name: "Check enabled architectures"
+  ansible.builtin.command: dpkg --print-foreign-architectures
+  changed_when: false
+  register: "steam_dpkg_architectures"
+
+- name: "Enable i386 architecture"
+  become: true
+  ansible.builtin.command: dpkg --add-architecture i386
+  changed_when: true
+  when: "'i386' not in steam_dpkg_architectures.stdout_lines"
+
+- name: "Update apt cache"
+  become: true
+  ansible.builtin.apt:
+    update_cache: true
+  when: "'i386' not in steam_dpkg_architectures.stdout_lines"
+
+- name: "Ensure steam is installed"
+  become: true
+  ansible.builtin.package:
+    name: "{{ steam_pkg }}"
+    state: "present"

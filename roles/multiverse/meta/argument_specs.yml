@@ -1,0 +1,6 @@
+---
+argument_specs:
+  main:
+    short_description: "Enable multiverse repo"
+    description: "Enable multiverse repo"
+    options: {}
