@@ -2,6 +2,9 @@
 dependencies:
   - role: "linux_headers"
   - role: "yay"
+    when: ansible_facts['os_family'] == "Archlinux"
+  - role: "multilib"
+    when: ansible_facts['os_family'] == "Archlinux"
 galaxy_info:
   author: "a14m"
   description: "Install and configure NVIDIA GTX 1060 proprietary drivers"

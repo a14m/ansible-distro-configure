@@ -1,14 +1,4 @@
 ---
-- name: "Ensure multilib is enabled"
-  ansible.builtin.include_role:
-    name: "multilib"
-
-- name: "Install libva NVIDIA driver"
-  become: true
-  ansible.builtin.package:
-    name: "{{ nvidia_gtx1060_packages }}"
-    state: "present"
-
 - name: "Install NVIDIA driver from AUR"
   become: true
   become_user: "aur_builder"
@@ -16,6 +6,12 @@
     name: "{{ nvidia_gtx1060_aur_packages }}"
     state: "present"
     use: "yay"
+
+- name: "Install libva NVIDIA driver"
+  become: true
+  ansible.builtin.package:
+    name: "{{ nvidia_gtx1060_packages }}"
+    state: "present"
 
 - name: "Configure NVIDIA DRM kernel mode setting"
   become: true

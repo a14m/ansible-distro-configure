@@ -1,5 +1,7 @@
 ---
-dependencies: []
+dependencies:
+  - role: "multilib"
+    when: ansible_facts['os_family'] == "Archlinux"
 galaxy_info:
   author: "a14m"
   description: "Install steam"
@@ -9,3 +11,9 @@ galaxy_info:
     - name: "ArchLinux"
       versions:
         - "all"
+    - name: "Ubuntu"
+      versions:
+        - "noble"
+    - name: "Debian"
+      versions:
+        - "bookworm"
