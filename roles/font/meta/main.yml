@@ -1,5 +1,7 @@
 ---
-dependencies: []
+dependencies:
+  - role: "yay"
+    when: ansible_facts['distribution'] == "Archlinux"
 galaxy_info:
   author: "a14m"
   description: "Install fonts on linux distros."

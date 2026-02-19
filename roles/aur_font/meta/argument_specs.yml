@@ -1,6 +1,0 @@
----
-argument_specs:
-  main:
-    short_description: "Install fonts on ArchLinux using AUR"
-    description: "Install fonts on ArchLinux using AUR"
-    options: {}

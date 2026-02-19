@@ -5,6 +5,9 @@ font_packages:
   - "noto-fonts"
   - "noto-fonts-emoji"
 
+font_aur_packages:
+  - "ttf-pt-sans"
+
 font_presets:
   - src: "/usr/share/fontconfig/conf.avail/10-sub-pixel-rgb.conf"
     dest: "/etc/fonts/conf.d/10-sub-pixel-rgb.conf"
