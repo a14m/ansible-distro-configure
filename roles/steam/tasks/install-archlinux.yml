@@ -1,0 +1,6 @@
+---
+- name: "Ensure steam is installed"
+  become: true
+  ansible.builtin.package:
+    name: "{{ steam_pkg }}"
+    state: "present"

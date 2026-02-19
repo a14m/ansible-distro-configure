@@ -1,0 +1,15 @@
+---
+- name: "Enable multiverse repository"
+  become: true
+  ansible.builtin.lineinfile:
+    path: "/etc/apt/sources.list.d/ubuntu.sources"
+    regexp: "^Components:"
+    line: "Components: main restricted universe multiverse"
+  register: "multiverse_enabled"
+
+- name: "Update apt cache"
+  # noqa no-handler as this needs to run immediately for dependent packages
+  become: true
+  ansible.builtin.apt:
+    update_cache: true
+  when: "multiverse_enabled.changed"

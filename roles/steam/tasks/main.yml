@@ -2,8 +2,5 @@
 - name: "Include OS-specific variables"
   ansible.builtin.include_vars: "{{ ansible_facts['os_family'] | lower }}.yml"
 
-- name: "Ensure steam is installed"
-  become: true
-  ansible.builtin.package:
-    name: "{{ steam_pkg }}"
-    state: "present"
+- name: "Include OS-specific tasks"
+  ansible.builtin.include_tasks: "install-{{ ansible_facts['distribution'] | lower }}.yml"
