@@ -8,7 +8,6 @@
     - role: "timezone"
     - role: "yay"
     - role: "font"
-    - role: "aur_font"
     - role: "which"
     - role: "bash"
     - role: "alacritty"

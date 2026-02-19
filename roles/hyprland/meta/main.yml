@@ -8,7 +8,6 @@ dependencies:
   - role: "brightnessctl"
   - role: "ddcutil"
   - role: "font"
-  - role: "aur_font"
   - role: "waybar"
   - role: "clipse"
   - role: "tofi"
