@@ -29,3 +29,9 @@ windowrule = opacity 1.0 override 0.97 override, match:tag firefox-based-browser
 
 # Pinentry windows
 windowrule = match:class (pinentry-)(.*), stay_focused on
+
+# Steam windows
+windowrule = float on, match:class steam
+windowrule = center on, match:class steam, match:title Steam
+windowrule = opacity 1.0 override 1.0 override, match:title Steam
+windowrule = size 460 800, match:class steam, match:title Friends List
