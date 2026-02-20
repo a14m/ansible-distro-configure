@@ -1,11 +1,6 @@
 ---
 dependencies:
   - role: "font"
-  - role: "alacritty"
-  - role: "btop"
-  - role: "bluetui"
-  - role: "wlctl"
-  - role: "wiremix"
   - role: "gnome-calendar"
 galaxy_info:
   author: "a14m"

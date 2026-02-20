@@ -47,6 +47,7 @@
     "on-click-right": "uwsm-app -- gnome-calendar"
   },
   "network": {
+    "tooltip": true,
     "format-icons": ["󰤯", "󰤟", "󰤢", "󰤥", "󰤨"],
     "format": "{icon}",
     "format-wifi": "{icon}",
@@ -57,10 +58,11 @@
     "tooltip-format-disconnected": "Disconnected",
     "interval": 5,
     "spacing": 1,
-    "on-click": "/etc/xdg/waybar/scripts/toggle-wifi",
-    "on-click-right": "/etc/xdg/waybar/scripts/launch-tui wlctl"
+    "on-click": "/etc/hypr/scripts/wifi.sh --toggle",
+    "on-click-right": "/etc/hypr/scripts/launch-tui wlctl"
   },
   "bluetooth": {
+    "tooltip": true,
     "format-on": "󰂯",
     "format-off": "󰂲",
     "format-disabled": "󰂲",
@@ -68,10 +70,11 @@
     "format-no-controller": "",
     "tooltip-format-connected": "Devices connected: {num_connections}\n{device_enumerate}",
     "tooltip-format-enumerate-connected": "- {device_alias}\t{device_battery_percentage}% 󰂁",
-    "on-click": "/etc/xdg/waybar/scripts/toggle-bt",
-    "on-click-right": "/etc/xdg/waybar/scripts/launch-tui bluetui"
+    "on-click": "/etc/hypr/scripts/bluetooth.sh --toggle",
+    "on-click-right": "/etc/hypr/scripts/launch-tui bluetui"
   },
   "pulseaudio": {
+    "tooltip": true,
     "format": "{icon}",
     "tooltip-format": "Volume: {volume}% {icon}",
     "scroll-step": 5,
@@ -79,8 +82,8 @@
     "format-icons": {
       "default": ["", "", ""]
     },
-    "on-click": "pamixer -t",
-    "on-click-right": "/etc/xdg/waybar/scripts/launch-tui wiremix"
+    "on-click": "/etc/hypr/scripts/volume.sh --toggle-mute-vol",
+    "on-click-right": "/etc/hypr/scripts/launch-tui wiremix"
   },
   "backlight": {
     "device": "intel_backlight",
