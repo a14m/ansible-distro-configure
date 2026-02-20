@@ -39,7 +39,6 @@
     - role: "obsidian"
     - role: "nvidia_gtx1060"
     - role: "steam"
-    - role: "waybar"
     - role: "hyprland"
   post_tasks:
     - name: "Reboot if required"

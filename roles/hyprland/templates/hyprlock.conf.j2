@@ -36,11 +36,12 @@ input-field {
     fail_text = <i>$FAIL ($ATTEMPTS)</i>
 
     shadow_passes = 0
-    rounding = 50
+    rounding = 10
     outline_thickness = 2
     inner_color = $inner_color
     outer_color = $outer_color
     check_color = $check_color
+    capslock_color = $capslock_color
 
     size = 20%, 3%
     halign = center
@@ -77,7 +78,7 @@ label {
 label {
     monitor =
     text = $LAYOUT
-    font_size = 12
+    font_size = 16
     font_family = $font
     color = $font_color
 
@@ -85,7 +86,22 @@ label {
 
     halign = left
     valign = top
-    position = 10, -10
+    position = 16, -16
+}
+
+# Capslock indicator
+label {
+    monitor =
+    text = cmd[update:1000] cat /sys/class/leds/*::capslock/brightness |\
+        grep -q 1 && echo "Capslock On" || echo "Capslock Off"
+
+    font_size = 16
+    font_family = $font
+    color = $font_color
+
+    halign = left
+    valign = top
+    position = 16, -48
 }
 
 # Reboot
