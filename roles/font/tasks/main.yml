@@ -45,5 +45,5 @@
     state: "link"
   loop: "{{ font_presets }}"
 
-- name: "Ensure OS-specific tasks installed"
-  ansible.builtin.include_vars: "install-{{ ansible_facts['os_family'] | lower }}.yml"
+- name: "Ensure OS-specific fonts are installed"
+  ansible.builtin.include_tasks: "install-{{ ansible_facts['os_family'] | lower }}.yml"
