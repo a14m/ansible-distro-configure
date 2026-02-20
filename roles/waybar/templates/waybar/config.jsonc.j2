@@ -16,6 +16,7 @@
     "bluetooth",
     "pulseaudio",
     "backlight",
+    "custom/sunset",
     "hyprland/language",
     "keyboard-state",
     "cpu",
@@ -90,6 +91,19 @@
   "hyprland/language": {
     "format": " {shortDescription}",
     "on-click": "hyprctl switchxkblayout all next"
+  },
+  "custom/sunset" : {
+    "interval": "once",
+    "tooltip": true,
+    "return-type": "json",
+    "format": "{icon}",
+    "format-icons": {
+      "on": "",
+      "off": ""
+    },
+    "exec": "/etc/hypr/scripts/sunset.sh --status",
+    "on-click": "/etc/hypr/scripts/sunset.sh --toggle",
+    "signal": 6
   },
   "keyboard-state": {
 {% if waybar_external_kbd_dev_path is defined %}
