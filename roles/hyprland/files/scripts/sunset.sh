@@ -51,8 +51,8 @@ notify() {
     notify-send -e \
         -h string:x-canonical-private-synchronous:sunset \
         -u low \
-        "${icon}  Nightshift ${class}" \
-        "Temprature: ${temp}"
+        "Nightshift ${class}" \
+        "${icon}   Temprature: ${temp}"
 }
 
 TEMP="${2:-$TEMP_ON}"

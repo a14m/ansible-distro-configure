@@ -89,7 +89,7 @@ notify() {
         -h string:x-canonical-private-synchronous:brightness-"$serial" \
         -u low \
         "Brightness" \
-        "  $name: ${value}%"
+        "   $name: ${value}%"
 }
 
 STEP="${2:-1}"

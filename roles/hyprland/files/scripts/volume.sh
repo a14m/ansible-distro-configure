@@ -44,13 +44,13 @@ notify() {
             -h string:x-canonical-private-synchronous:volume \
             -u low \
             "$label" \
-            "$mute_icon\tmute"
+            "$mute_icon  mute"
     else
         notify-send -e \
             -h string:x-canonical-private-synchronous:volume \
             -u low \
             "$label" \
-            "$icon\t${value}%"
+            "$icon  ${value}%"
     fi
 }
 
