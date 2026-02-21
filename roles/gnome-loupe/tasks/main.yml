@@ -1,0 +1,17 @@
+---
+- name: "Ensure gnome-loupe is installed"
+  become: true
+  ansible.builtin.package:
+    name: "loupe"
+    state: "present"
+
+- name: "Configure xdg-mime defaults"
+  ansible.builtin.shell: |
+    set -euo pipefail
+    xdg-mime default org.gnome.Loupe.desktop image/png
+    xdg-mime default org.gnome.Loupe.desktop image/jpeg
+    xdg-mime default org.gnome.Loupe.desktop image/gif
+    xdg-mime default org.gnome.Loupe.desktop image/webp
+    xdg-mime default org.gnome.Loupe.desktop image/bmp
+    xdg-mime default org.gnome.Loupe.desktop image/tiff
+  changed_when: false

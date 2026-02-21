@@ -86,6 +86,8 @@
     - role: "grafana"
     - role: "gnome"
     - role: "gnome-calendar"
+    - role: "gnome-loupe"
+    - role: "rnote"
     - role: "rsync"
     - role: "gpg"
     - role: "dotfiles"

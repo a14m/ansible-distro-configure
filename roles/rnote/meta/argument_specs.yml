@@ -1,0 +1,6 @@
+---
+argument_specs:
+  main:
+    short_description: "Install rnote on Linux distribution"
+    description: "Install rnote on Linux distribution"
+    options: {}

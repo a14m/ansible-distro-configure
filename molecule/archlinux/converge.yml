@@ -78,6 +78,8 @@
     - role: "wireguard"
     - role: "vim"
     - role: "gnome-calendar"
+    - role: "gnome-loupe"
+    - role: "rnote"
     - role: "mpv"
     - role: "neomutt"
     - role: "go"
