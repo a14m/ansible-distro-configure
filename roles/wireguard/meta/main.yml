@@ -1,5 +1,6 @@
 ---
 dependencies:
+  - role: "bash"
   - role: "systemd"
   - role: "sed"
 galaxy_info:

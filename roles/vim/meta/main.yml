@@ -1,5 +1,6 @@
 ---
 dependencies:
+  - role: "bash"
   - role: "git"
   - role: "python"
 galaxy_info:

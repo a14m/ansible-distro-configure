@@ -25,7 +25,6 @@
 
 - name: "Configure xdg-mime defaults"
   ansible.builtin.shell: |
-    set -euo pipefail
     xdg-mime default mpv.desktop video/mp4
     xdg-mime default mpv.desktop video/mpeg
     xdg-mime default mpv.desktop video/ogg

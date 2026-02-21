@@ -35,6 +35,8 @@
   # noqa var-naming[no-role-prefix] as it describes the current kernel modules and not the nvidia modules
   register: "current_kernel_modules"
   changed_when: false
+  args:
+    executable: /bin/bash
   tags:
     # Since the /etc/mkinitcpio isn't available on the docker container
     # Ignore this for testing,

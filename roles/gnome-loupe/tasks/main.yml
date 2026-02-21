@@ -4,7 +4,6 @@
 
 - name: "Configure xdg-mime defaults"
   ansible.builtin.shell: |
-    set -euo pipefail
     xdg-mime default org.gnome.Loupe.desktop image/png
     xdg-mime default org.gnome.Loupe.desktop image/jpeg
     xdg-mime default org.gnome.Loupe.desktop image/gif

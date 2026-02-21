@@ -17,11 +17,8 @@
   failed_when: false
 
 - name: "Install ansible core version {{ ansible_core_version }}"
-  ansible.builtin.shell: |
-    set -euo pipefail
-    uv tool install ansible-core=={{ ansible_core_version }} --force
-  args:
-    executable: /bin/bash
+  ansible.builtin.command:
+    cmd: "uv tool install ansible-core=={{ ansible_core_version }} --force"
   changed_when: true
   when: ansible_core_installed_version.stdout != ansible_core_version
 
@@ -36,11 +33,8 @@
   failed_when: false
 
 - name: "Install molecule version {{ molecule_version }}"
-  ansible.builtin.shell: |
-    set -euo pipefail
-    uv tool install molecule=={{ molecule_version }} --with 'molecule-plugins[docker,podman]' --force
-  args:
-    executable: /bin/bash
+  ansible.builtin.command:
+    cmd: "uv tool install molecule=={{ molecule_version }} --with 'molecule-plugins[docker,podman]' --force"
   changed_when: true
   when: molecule_installed_version.stdout != molecule_version
 
@@ -55,10 +49,7 @@
   failed_when: false
 
 - name: "Install ansible lint version {{ ansible_lint_version }}"
-  ansible.builtin.shell: |
-    set -euo pipefail
-    uv tool install ansible-lint=={{ ansible_lint_version }} --force
-  args:
-    executable: /bin/bash
+  ansible.builtin.command:
+    cmd: "uv tool install ansible-lint=={{ ansible_lint_version }} --force"
   changed_when: true
   when: ansible_lint_installed_version.stdout != ansible_lint_version

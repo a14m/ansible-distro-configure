@@ -1,5 +1,6 @@
 ---
 dependencies:
+  - role: "bash"
   - role: "python"
 galaxy_info:
   author: "a14m"
