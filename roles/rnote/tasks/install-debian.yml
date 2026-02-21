@@ -1,0 +1,5 @@
+---
+- name: "Ensure rnote is installed via flathub"
+  community.general.flatpak:
+    name: "com.github.flxzt.rnote"
+    state: "present"

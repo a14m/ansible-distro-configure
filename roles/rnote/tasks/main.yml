@@ -1,6 +1,3 @@
 ---
-- name: "Ensure rnote is installed"
-  become: true
-  ansible.builtin.package:
-    name: "rnote"
-    state: "present"
+- name: "Include OS-specific tasks"
+  ansible.builtin.include_tasks: "install-{{ ansible_facts['os_family'] | lower }}.yml"
