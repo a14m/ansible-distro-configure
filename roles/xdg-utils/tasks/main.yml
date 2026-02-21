@@ -1,0 +1,6 @@
+---
+- name: "Ensure xdg-utils is installed"
+  become: true
+  ansible.builtin.package:
+    name: "xdg-utils"
+    state: "present"
