@@ -1,0 +1,6 @@
+---
+argument_specs:
+  main:
+    short_description: "Install gnome-loupe on Linux distribution"
+    description: "Install gnome-loupe on Linux distribution"
+    options: {}
