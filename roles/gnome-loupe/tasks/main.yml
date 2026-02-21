@@ -1,9 +1,6 @@
 ---
-- name: "Ensure gnome-loupe is installed"
-  become: true
-  ansible.builtin.package:
-    name: "loupe"
-    state: "present"
+- name: "Include OS-specific tasks"
+  ansible.builtin.include_tasks: "install-{{ ansible_facts['os_family'] | lower }}.yml"
 
 - name: "Configure xdg-mime defaults"
   ansible.builtin.shell: |
