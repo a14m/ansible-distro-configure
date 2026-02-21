@@ -1,22 +1,7 @@
 ---
-- name: "Check obsidian binary"
-  ansible.builtin.stat:
-    path: "{{ ansible_facts['env']['HOME'] }}/.local/bin/obsidian"
-  register: obsidian_binary
-
-- name: "Install obsidian"
-  when: not obsidian_binary.stat.exists
-  block:
-    - name: "Download obsidian"
-      ansible.builtin.get_url:
-        # yamllint disable-line
-        url: "https://github.com/obsidianmd/obsidian-releases/releases/download/v{{ obsidian_version }}/obsidian_{{ obsidian_version }}_amd64.deb"
-        dest: "/tmp/obsidian.deb"
-        mode: "0755"
-
-    - name: "Install deb"
-      become: true
-      ansible.builtin.apt:
-        deb: "/tmp/obsidian.deb"
-        autoremove: true
-        autoclean: true
+- name: "Ensure obsidian is installed via flatpak"
+  community.general.flatpak:
+    name: "md.obsidian.Obsidian"
+    remote: "flathub"
+    state: "present"
+    method: "user"
