@@ -57,6 +57,9 @@ vimrc_setup_script: |
   # NOTE: based on https://stackoverflow.com/a/33734425/1769515
   vim -E -s -u ~/.vimrc +PlugInstall +qall
 
+chromium_is_default: false
+firefox_is_default: true
+
 wireguard_autostart_connection: "vpn0"
 wireguard_connections:
   # All wireguard config files are prefixed with wg-

@@ -4,3 +4,9 @@
   ansible.builtin.package:
     name: "chromium"
     state: "present"
+
+- name: "Set chromium as default"
+  ansible.builtin.command:
+    cmd: "xdg-settings set default-web-browser chromium.desktop"
+  changed_when: false
+  when: chromium_is_default | default(false)
