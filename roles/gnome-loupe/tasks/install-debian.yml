@@ -1,5 +1,7 @@
 ---
 - name: "Ensure gnome loupe is installed via flathub"
   community.general.flatpak:
-    name: "flathub org.gnome.Loupe"
+    name: "org.gnome.Loupe"
+    remote: "flathub"
     state: "present"
+    method: "user"

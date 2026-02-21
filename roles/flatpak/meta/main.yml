@@ -1,11 +1,8 @@
 ---
-dependencies:
-  - role: "xdg-utils"
-  - role: "flatpak"
-    when: ansible_facts['os_family'] == "Debian"
+dependencies: []
 galaxy_info:
   author: "a14m"
-  description: "Install gnome-loupe"
+  description: "Install flatpak"
   license: "MIT"
   min_ansible_version: "2.18"
   platforms:
