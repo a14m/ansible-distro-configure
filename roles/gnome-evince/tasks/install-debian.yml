@@ -1,7 +1,7 @@
 ---
-- name: "Ensure gnome Loupe is installed via flathub"
+- name: "Ensure gnome Evince is installed via flathub"
   community.general.flatpak:
-    name: "org.gnome.Loupe"
+    name: "org.gnome.Evince"
     remote: "flathub"
     state: "present"
     method: "user"

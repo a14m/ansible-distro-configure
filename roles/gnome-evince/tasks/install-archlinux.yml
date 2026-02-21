@@ -1,6 +1,6 @@
 ---
-- name: "Ensure gnome Loupe is installed"
+- name: "Ensure gnome Evince is installed"
   become: true
   ansible.builtin.package:
-    name: "loupe"
+    name: "evince"
     state: "present"
