@@ -1,0 +1,12 @@
+---
+- name: "Ensure gnome-evince is installed"
+  become: true
+  ansible.builtin.package:
+    name: "loupe"
+    state: "present"
+
+- name: "Configure xdg-mime defaults"
+  ansible.builtin.shell: |
+    set -euo pipefail
+    xdg-mime default org.gnome.Evince.desktop application/pdf
+  changed_when: false
