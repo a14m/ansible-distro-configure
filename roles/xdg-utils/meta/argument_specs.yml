@@ -1,0 +1,6 @@
+---
+argument_specs:
+  main:
+    short_description: "Install xdg-utils on Linux distribution"
+    description: "Install xdg-utils on Linux distribution"
+    options: {}

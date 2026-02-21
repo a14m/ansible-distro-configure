@@ -1,5 +1,6 @@
 ---
-dependencies: []
+dependencies:
+  - role: "xdg-utils"
 galaxy_info:
   author: "a14m"
   description: "Install gnome-evince"

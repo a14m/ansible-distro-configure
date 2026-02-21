@@ -1,9 +1,8 @@
 ---
-dependencies:
-  - role: "xdg-utils"
+dependencies: []
 galaxy_info:
   author: "a14m"
-  description: "Configure firefox settings and policies."
+  description: "Install xdg-utils"
   license: "MIT"
   min_ansible_version: "2.18"
   platforms:
