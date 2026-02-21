@@ -79,6 +79,7 @@
     - role: "vim"
     - role: "gnome-calendar"
     - role: "gnome-loupe"
+    - role: "gnome-evince"
     - role: "rnote"
     - role: "mpv"
     - role: "neomutt"
