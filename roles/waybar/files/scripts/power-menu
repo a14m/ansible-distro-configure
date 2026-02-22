@@ -1,3 +1,9 @@
 #!/bin/bash
 
-exec setsid uwsm-app -- /etc/hypr/scripts/power.sh
+# Launch a specific class that is used to dim the background of the power menu
+# This is done via a workaround window rules by creating a window size 1x1 behind the tofi menu
+# and using this fake window to stay focused and dim around it
+# This looks nicer than fiddling with the tofi styling in power.sh
+exec setsid uwsm-app -- alacritty --class="work.kartoffln.power-menu" -e "/etc/hypr/scripts/power.sh"
+# if you prefer you can use the following code, and update the tofi styling inside the script
+# exec setsid uwsm-app -- /etc/hypr/scripts/power.sh

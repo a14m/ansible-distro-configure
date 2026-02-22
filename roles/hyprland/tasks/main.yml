@@ -111,3 +111,5 @@
       dest: "/etc/hypr/scripts/wifi.sh"
     - src: "scripts/bluetooth.sh"
       dest: "/etc/hypr/scripts/bluetooth.sh"
+    - src: "scripts/power.sh"
+      dest: "/etc/hypr/scripts/power.sh"
