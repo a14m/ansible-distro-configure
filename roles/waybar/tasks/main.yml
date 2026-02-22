@@ -43,6 +43,6 @@
     mode: "0755"
   loop:
     - src: "scripts/launch-tui"
-      dest: "/etc/hypr/scripts/launch-tui"
+      dest: "/etc/xdg/waybar/scripts/launch-tui"
     - src: "scripts/power-menu"
       dest: "/etc/xdg/waybar/scripts/power-menu"
