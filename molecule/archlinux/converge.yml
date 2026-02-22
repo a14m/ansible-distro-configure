@@ -71,6 +71,7 @@
     - role: "gpg"
     - role: "btop"
     - role: "zoxide"
+    - role: "gum"
     - role: "git"
     - role: "git-crypt"
     - role: "dotfiles"

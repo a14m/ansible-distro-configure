@@ -77,6 +77,7 @@
     - role: "rust"
     - role: "nodejs"
     - role: "zoxide"
+    - role: "gum"
     - role: "usbutils"
     - role: "wireguard"
     - role: "gateway"

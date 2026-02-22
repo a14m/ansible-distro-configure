@@ -1,0 +1,6 @@
+---
+argument_specs:
+  main:
+    short_description: "Install gum on Linux distributions"
+    description: "Install gum (charmbracelet) via Go on Linux distributions"
+    options: {}
