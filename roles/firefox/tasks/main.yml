@@ -1,15 +1,12 @@
 ---
 - name: "Include OS-specific variables"
-  ansible.builtin.include_vars: "{{ ansible_facts['distribution'] | lower }}.yml"
+  ansible.builtin.include_vars: "{{ ansible_facts['os_family'] | lower }}.yml"
 
-- name: "Ensure firefox is installed"
-  become: true
-  ansible.builtin.package:
-    name: "{{ firefox_package }}"
-    state: "present"
+- name: "Include OS-specific tasks"
+  ansible.builtin.include_tasks: "install-{{ ansible_facts['os_family'] | lower }}.yml"
 
 - name: "Install browserpass extension for Firefox"
-  ansible.builtin.include_tasks: "install_browserpass.yml"
+  ansible.builtin.include_tasks: "install-plugin-browserpass.yml"
   when: firefox_install_browserpass | default(false)
 
 # NOTE: passff extension is using sed/curl during install and python/pass to run
@@ -18,7 +15,7 @@
 # this extension, which isn't enabled by default.
 # Personally I find it has better UI/UX than browserpass, but browserpass is more lightweight.
 - name: "Install passff extension for Firefox"
-  ansible.builtin.include_tasks: "install_passff.yml"
+  ansible.builtin.include_tasks: "install-plugin-passff.yml"
   when: firefox_install_passff | default(false)
 
 - name: "Create policies directory"
@@ -41,11 +38,3 @@
       {
         "policies": {{ firefox_policies | tojson(indent=4) }}
       }
-
-- name: "Set firefox as default"
-  ansible.builtin.command:
-    cmd: "xdg-settings set default-web-browser {{ firefox_desktop_file }}"
-  environment:
-    XDG_DATA_DIRS: "/var/lib/snapd/desktop:{{ ansible_facts['env']['XDG_DATA_DIRS'] }}"
-  changed_when: false
-  when: firefox_is_default | default(false)

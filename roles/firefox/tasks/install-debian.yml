@@ -1,0 +1,20 @@
+---
+- name: "Ensure firefox is installed via flatpak"
+  community.general.flatpak:
+    name: "org.mozilla.firefox"
+    remote: "flathub"
+    state: "present"
+    method: "user"
+
+- name: "Allow Flatpak Firefox to read system policies"
+  ansible.builtin.command:
+    cmd: "flatpak override --user --filesystem=/etc/firefox:ro org.mozilla.firefox"
+  changed_when: false
+
+- name: "Set firefox as default"
+  ansible.builtin.command:
+    cmd: "xdg-settings set default-web-browser org.mozilla.firefox.desktop"
+  environment:
+    XDG_DATA_DIRS: "{{ ansible_facts['env']['HOME'] }}/.local/share/flatpak/exports/share"
+  changed_when: false
+  when: firefox_is_default | default(false)

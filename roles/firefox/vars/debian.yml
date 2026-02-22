@@ -1,7 +1,5 @@
 ---
-firefox_package: "firefox-esr"
-firefox_desktop_file: "firefox-esr.desktop"
-firefox_folder: "{{ ansible_facts['env']['HOME'] }}/.mozilla/firefox"
+firefox_folder: "{{ ansible_facts['env']['HOME'] }}/.var/app/org.mozilla.firefox/.mozilla/firefox"
 
 firefox_browserpass_packages:
   - "webext-browserpass"

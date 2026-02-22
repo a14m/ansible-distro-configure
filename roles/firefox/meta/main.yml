@@ -1,6 +1,8 @@
 ---
 dependencies:
   - role: "xdg-utils"
+  - role: "flatpak"
+    when: ansible_facts['os_family'] == "Debian"
 galaxy_info:
   author: "a14m"
   description: "Configure firefox settings and policies."
