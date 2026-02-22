@@ -45,5 +45,7 @@
 - name: "Set firefox as default"
   ansible.builtin.command:
     cmd: "xdg-settings set default-web-browser {{ firefox_desktop_file }}"
+  environment:
+    XDG_DATA_DIRS: "/var/lib/snapd/desktop:{{ ansible_facts['env']['XDG_DATA_DIRS'] }}"
   changed_when: false
   when: firefox_is_default | default(false)
