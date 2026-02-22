@@ -29,6 +29,7 @@
       if [ -f "$HOME/.nvm/nvm.sh" ]; then
         export NVM_DIR=~/.nvm
         source "$HOME/.nvm/nvm.sh"
+        source "$NVM_DIR/bash_completion"
       fi
 
 - name: "Install nodejs versions"
