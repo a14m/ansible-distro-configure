@@ -33,6 +33,7 @@
     - role: "neomutt"
     - role: "go"
     - role: "python"
+    - role: "nodejs"
     - role: "docker"
     - role: "podman"
     - role: "ansible"
