@@ -85,6 +85,8 @@
     - role: "neomutt"
     - role: "go"
     - role: "python"
+    - role: "rust"
+    - role: "nodejs"
     - role: "docker"
     - role: "podman"
     - role: "ansible"

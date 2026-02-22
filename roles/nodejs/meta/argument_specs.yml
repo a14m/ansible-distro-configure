@@ -1,0 +1,10 @@
+---
+argument_specs:
+  main:
+    description: "Install nvm and nodejs (versions) on Linux distributions"
+    options:
+      python_versions:
+        type: "list"
+        description: "The nvm node versions to install (default to latest lts)"
+        elements: "str"
+        default: ["lts/*"]

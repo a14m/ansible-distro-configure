@@ -75,6 +75,7 @@
     - role: "python"
     - role: "go"
     - role: "rust"
+    - role: "nodejs"
     - role: "zoxide"
     - role: "usbutils"
     - role: "wireguard"
