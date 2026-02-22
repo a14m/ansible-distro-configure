@@ -58,7 +58,7 @@ vimrc_setup_script: |
   vim -E -s -u ~/.vimrc +PlugInstall +qall
 
 chromium_is_default: false
-firefox_is_default: false
+firefox_is_default: true
 
 wireguard_autostart_connection: "vpn0"
 wireguard_connections:

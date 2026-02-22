@@ -1,5 +1,6 @@
 ---
 firefox_package: "firefox-esr"
+firefox_desktop_file: "firefox-esr.desktop"
 firefox_folder: "{{ ansible_facts['env']['HOME'] }}/.mozilla/firefox"
 
 firefox_browserpass_packages:
