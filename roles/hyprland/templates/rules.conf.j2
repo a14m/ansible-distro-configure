@@ -35,3 +35,11 @@ windowrule = float on, match:class steam
 windowrule = center on, match:class steam, match:title Steam
 windowrule = opacity 1.0 override 1.0 override, match:title Steam
 windowrule = size 460 800, match:class steam, match:title Friends List
+
+# Power menu
+# Workaround dimming, by creating a 1x1 behind the tofi menu and configure dimming around that window
+windowrule = float on, match:class work.kartoffln.power\-menu
+windowrule = center on, match:class work.kartoffln.power\-menu
+windowrule = size 1 1, match:class work.kartoffln.power\-menu
+windowrule = stay_focused on, match:class work.kartoffln.power\-menu
+windowrule = dim_around on, match:class work.kartoffln.power\-menu

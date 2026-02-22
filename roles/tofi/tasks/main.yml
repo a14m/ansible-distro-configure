@@ -3,7 +3,7 @@
   become: true
   become_user: "aur_builder"
   kewlfft.aur.aur:
-    name: "tofi"
+    name: "tofi-git"
     state: "present"
     use: "yay"
 
