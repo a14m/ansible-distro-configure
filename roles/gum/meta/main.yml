@@ -1,0 +1,18 @@
+---
+dependencies:
+  - role: "go"
+galaxy_info:
+  author: "a14m"
+  description: "Install gum (charmbracelet) via Go on Linux distributions"
+  license: "MIT"
+  min_ansible_version: "2.18"
+  platforms:
+    - name: "ArchLinux"
+      versions:
+        - "all"
+    - name: "Ubuntu"
+      versions:
+        - "noble"
+    - name: "Debian"
+      versions:
+        - "bookworm"
