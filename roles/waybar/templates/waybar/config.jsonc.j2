@@ -20,7 +20,8 @@
     "hyprland/language",
     "keyboard-state",
     "cpu",
-    "battery"
+    "battery",
+    "custom/power"
   ],
   "hyprland/workspaces": {
     "on-click": "activate",
@@ -59,7 +60,7 @@
     "interval": 5,
     "spacing": 1,
     "on-click": "/etc/hypr/scripts/wifi.sh --toggle",
-    "on-click-right": "/etc/hypr/scripts/launch-tui wlctl"
+    "on-click-right": "/etc/xdg/waybar/scripts/launch-tui wlctl"
   },
   "bluetooth": {
     "tooltip": true,
@@ -71,7 +72,7 @@
     "tooltip-format-connected": "Devices connected: {num_connections}\n{device_enumerate}",
     "tooltip-format-enumerate-connected": "- {device_alias}\t{device_battery_percentage}% 󰂁",
     "on-click": "/etc/hypr/scripts/bluetooth.sh --toggle",
-    "on-click-right": "/etc/hypr/scripts/launch-tui bluetui"
+    "on-click-right": "/etc/xdg/waybar/scripts/launch-tui bluetui"
   },
   "pulseaudio": {
     "tooltip": true,
@@ -83,7 +84,7 @@
       "default": ["", "", ""]
     },
     "on-click": "/etc/hypr/scripts/volume.sh --toggle-mute-vol",
-    "on-click-right": "/etc/hypr/scripts/launch-tui wiremix"
+    "on-click-right": "/etc/xdg/waybar/scripts/launch-tui wiremix"
   },
   "backlight": {
     "device": "intel_backlight",
@@ -144,5 +145,11 @@
       "warning": 20,
       "critical": 10
     }
+  },
+  "custom/power" : {
+    "interval": "once",
+    "tooltip": false,
+    "format": "",
+    "on-click": "/etc/xdg/waybar/scripts/power-menu"
   }
 }
