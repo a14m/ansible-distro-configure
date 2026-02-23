@@ -90,7 +90,7 @@
     - role: "gnome-calendar"
     - role: "gnome-loupe"
     - role: "gnome-evince"
-    - role: "rnote"
+    - role: "gradia"
     - role: "rsync"
     - role: "gpg"
     - role: "dotfiles"

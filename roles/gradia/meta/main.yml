@@ -1,10 +1,12 @@
 ---
 dependencies:
+  - role: "yay"
+    when: ansible_facts['os_family'] == "Archlinux"
   - role: "flatpak"
     when: ansible_facts['os_family'] == "Debian"
 galaxy_info:
   author: "a14m"
-  description: "Install rnote"
+  description: "Install gradia"
   license: "MIT"
   min_ansible_version: "2.18"
   platforms:

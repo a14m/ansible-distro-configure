@@ -1,0 +1,6 @@
+---
+argument_specs:
+  main:
+    short_description: "Install gradia on Linux distribution"
+    description: "Install gradia on Linux distribution"
+    options: {}
