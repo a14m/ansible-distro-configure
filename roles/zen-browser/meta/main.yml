@@ -1,0 +1,12 @@
+---
+dependencies:
+  - role: "xdg-utils"
+galaxy_info:
+  author: "a14m"
+  description: "Install and configure Zen Browser settings and policies."
+  license: "MIT"
+  min_ansible_version: "2.18"
+  platforms:
+    - name: "ArchLinux"
+      versions:
+        - "all"

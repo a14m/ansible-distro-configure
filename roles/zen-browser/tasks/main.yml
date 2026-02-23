@@ -1,0 +1,25 @@
+---
+- name: "Include OS-specific tasks"
+  ansible.builtin.include_tasks: "install-{{ ansible_facts['os_family'] | lower }}.yml"
+
+- name: "Install browserpass extension for Zen Browser"
+  ansible.builtin.include_tasks: "install-plugin-browserpass.yml"
+  when: zen_browser_install_browserpass | default(false)
+
+- name: "Install passff extension for Zen Browser"
+  ansible.builtin.include_tasks: "install-plugin-passff.yml"
+  when: zen_browser_install_passff | default(false)
+
+- name: "Set zen_browser_policies fact"
+  ansible.builtin.set_fact:
+    zen_browser_policies: "{{ zen_browser_default_policies | combine(zen_browser_policies_override) }}"
+
+- name: "Create Zen Browser policies file"
+  become: true
+  ansible.builtin.copy:
+    dest: "/opt/zen-browser-bin/distribution/policies.json"
+    mode: "0644"
+    content: |
+      {
+        "policies": {{ zen_browser_policies | tojson(indent=4) }}
+      }
