@@ -1,7 +1,7 @@
 ---
-- name: "Ensure gnome Evince is installed via flathub"
+- name: "Ensure gnome Papers is installed via flathub"
   community.general.flatpak:
-    name: "org.gnome.Evince"
+    name: "org.gnome.Papers"
     remote: "flathub"
     state: "present"
     method: "user"

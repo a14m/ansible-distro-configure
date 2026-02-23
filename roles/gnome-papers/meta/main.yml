@@ -3,7 +3,7 @@ dependencies:
   - role: "flatpak"
 galaxy_info:
   author: "a14m"
-  description: "Install gnome-evince"
+  description: "Install gnome-papers"
   license: "MIT"
   min_ansible_version: "2.18"
   platforms:

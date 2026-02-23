@@ -1,6 +1,6 @@
 ---
-- name: "Ensure gnome Evince is installed"
+- name: "Ensure gnome Papers is installed"
   become: true
   ansible.builtin.package:
-    name: "evince"
+    name: "papers"
     state: "present"

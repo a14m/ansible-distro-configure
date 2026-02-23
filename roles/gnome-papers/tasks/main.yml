@@ -4,5 +4,5 @@
 
 - name: "Configure xdg-mime defaults"
   ansible.builtin.command:
-    cmd: "xdg-mime default org.gnome.Evince.desktop application/pdf"
+    cmd: "xdg-mime default org.gnome.Papers.desktop application/pdf"
   changed_when: false

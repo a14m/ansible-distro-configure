@@ -92,7 +92,7 @@
     - role: "gnome"
     - role: "gnome-calendar"
     - role: "gnome-loupe"
-    - role: "gnome-evince"
+    - role: "gnome-papers"
     - role: "gradia"
     - role: "rsync"
     - role: "gpg"
