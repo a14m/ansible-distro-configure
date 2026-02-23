@@ -28,7 +28,7 @@
     creates: "/usr/lib/mozilla/native-messaging-hosts/passff.py"
     executable: "/bin/bash"
 
-- name: "Create browserpass native messaging hosts file"
+- name: "Create passff native messaging hosts file"
   become: true
   ansible.builtin.copy:
     dest: "/usr/lib/mozilla/native-messaging-hosts/passff.json"
