@@ -18,7 +18,6 @@ dependencies:
   - role: "tofi"
   - role: "hyprcursor"
   - role: "hyprtheme"
-  - role: "hyprshutdown"
 galaxy_info:
   author: "a14m"
   description: "Install hyprland"
