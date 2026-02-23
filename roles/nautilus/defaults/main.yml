@@ -3,3 +3,16 @@ nautilus_folder_viewer: "list-view"
 nautilus_show_hidden_files: false
 nautilus_sort_order: "name"
 nautilus_always_use_location_entry: false
+nautilus_folders:
+  - name: "DESKTOP"
+    path: "{{ ansible_facts['env']['HOME'] }}/Desktop"
+  - name: "DOCUMENTS"
+    path: "{{ ansible_facts['env']['HOME'] }}/Documents"
+  - name: "DOWNLOAD"
+    path: "{{ ansible_facts['env']['HOME'] }}/Downloads"
+  - name: "MUSIC"
+    path: "{{ ansible_facts['env']['HOME'] }}/Music"
+  - name: "PICTURES"
+    path: "{{ ansible_facts['env']['HOME'] }}/Pictures"
+  - name: "VIDEOS"
+    path: "{{ ansible_facts['env']['HOME'] }}/Videos"

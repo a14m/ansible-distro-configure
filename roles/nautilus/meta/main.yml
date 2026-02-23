@@ -1,6 +1,7 @@
 ---
 dependencies:
   - role: "git"
+  - role: "xdg-utils"
 galaxy_info:
   author: "a14m"
   description: "Install Nautilus file manager on ArchLinux"
