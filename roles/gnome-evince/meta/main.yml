@@ -1,6 +1,6 @@
 ---
 dependencies:
-  - role: "xdg-utils"
+  - role: "flatpak"
 galaxy_info:
   author: "a14m"
   description: "Install gnome-evince"
