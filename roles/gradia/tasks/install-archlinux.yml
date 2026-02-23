@@ -1,0 +1,8 @@
+---
+- name: "Ensure gradia is installed"
+  become: true
+  become_user: "aur_builder"
+  kewlfft.aur.aur:
+    name: "gradia"
+    state: "present"
+    use: "yay"
