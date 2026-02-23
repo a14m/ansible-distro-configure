@@ -1,0 +1,8 @@
+---
+- name: "Ensure microsoft-teams is installed"
+  become: true
+  become_user: "aur_builder"
+  kewlfft.aur.aur:
+    name: "teams-for-linux"
+    state: "present"
+    use: "yay"

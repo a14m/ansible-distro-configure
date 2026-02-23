@@ -104,6 +104,7 @@
     - role: "firefox"
     - role: "chromium"
     - role: "obsidian"
+    - role: "microsoft-teams"
     - role: "font"
     - role: "alacritty"
     - role: "btop"
