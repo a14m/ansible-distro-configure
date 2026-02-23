@@ -1,0 +1,14 @@
+---
+- name: "Ensure Zen Browser is installed"
+  become: true
+  become_user: "aur_builder"
+  kewlfft.aur.aur:
+    name: "zen-browser-bin"
+    state: "present"
+    use: "yay"
+
+- name: "Set Zen Browser as default"
+  ansible.builtin.command:
+    cmd: "xdg-settings set default-web-browser zen-browser-bin.desktop"
+  changed_when: false
+  when: zen_browser_is_default | default(false)

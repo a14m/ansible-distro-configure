@@ -39,6 +39,7 @@
     - role: "ansible"
     - role: "claude"
     - role: "firefox"
+    - role: "zen-browser"
     - role: "chromium"
     - role: "obsidian"
     - role: "microsoft-teams"
