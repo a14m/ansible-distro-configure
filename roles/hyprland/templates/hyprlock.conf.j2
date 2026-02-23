@@ -112,7 +112,7 @@ label {
     font_family = $font
     color = $font_color
 
-    onclick = hyprctl dispatch exec hyprshutdown --no-fork -t "Restarting..." --post-cmd "systemctl reboot"
+    onclick = /etc/hypr/scripts/power.sh --reboot
 
     halign = center
     valign = center
@@ -127,7 +127,7 @@ label {
     font_family = $font
     color = $font_color
 
-    onclick = hyprctl dispatch exec hyprshutdown --no-fork -t "Shutting down..." --post-cmd "systemctl poweroff"
+    onclick = /etc/hypr/scripts/power.sh --shutdown
 
     halign = center
     valign = center
@@ -142,7 +142,7 @@ label {
     font_family = $font
     color = $font_color
 
-    onclick = loginctl lock-session && systemctl suspend
+    onclick = /etc/hypr/scripts/power.sh --hibernate
 
     halign = center
     valign = center
