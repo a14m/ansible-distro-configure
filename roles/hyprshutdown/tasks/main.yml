@@ -1,8 +1,0 @@
----
-- name: "Ensure hyprshutdown is installed"
-  become: true
-  become_user: "aur_builder"
-  kewlfft.aur.aur:
-    name: "hyprshutdown"
-    state: "present"
-    use: "yay"
