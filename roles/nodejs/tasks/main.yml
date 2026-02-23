@@ -34,7 +34,10 @@
 
 - name: "Install nodejs versions"
   ansible.builtin.shell:
-    cmd: "source {{ ansible_facts['env']['HOME'] }}/.nvm/nvm.sh && nvm install {{ item }}"
+    cmd: |
+      export NVM_DIR="{{ ansible_facts['env']['HOME'] }}/.nvm"
+      . "$NVM_DIR/nvm.sh"
+      nvm install {{ item }}
   args:
     executable: /bin/bash
   register: nodejs_nvm_install_result
