@@ -27,12 +27,12 @@ ACTION=$(printf ' Shutdown\n󰑙 Reboot\n󰤄 Suspend' | tofi \
 
 case "$ACTION" in
   *Shutdown*)
-    hyprctl dispatch exec hyprshutdown --no-fork -t "Shutting down..." --post-cmd "systemctl poweroff"
+    hyprshutdown -t "Shutting down..." --post-cmd "systemctl poweroff"
     ;;
   *Reboot*)
-    hyprctl dispatch exec hyprshutdown --no-fork -t "Restarting..." --post-cmd "systemctl reboot"
+    hyprshutdown -t "Restarting..." --post-cmd "systemctl reboot"
     ;;
   *Suspend*)
-    loginctl lock-session && systemctl suspend
+    systemctl suspend
     ;;
 esac
