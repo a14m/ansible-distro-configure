@@ -50,6 +50,8 @@
   loop:
     - "/etc/hypr"
     - "/etc/hypr/scripts"
+    - "/etc/xdg/uwsm"
+    - "/etc/xdg/xdg-desktop-portal"
     - "{{ ansible_facts['env']['HOME'] }}/.config/hypr"
 
 - name: "Configure system defaults"
@@ -67,8 +69,6 @@
       dest: "/etc/hypr/input.conf"
     - src: "bindings.conf.j2"
       dest: "/etc/hypr/bindings.conf"
-    - src: "envs.conf.j2"
-      dest: "/etc/hypr/envs.conf"
     - src: "looknfeel.conf.j2"
       dest: "/etc/hypr/looknfeel.conf"
     - src: "rules.conf.j2"
@@ -79,6 +79,12 @@
       dest: "/etc/hypr/hypridle.conf"
     - src: "hyprland.conf.j2"
       dest: "/etc/hypr/hyprland.conf"
+    - src: "uwsm-env.j2"
+      dest: "/etc/xdg/uwsm/env"
+    - src: "uwsm-env-hyprland.j2"
+      dest: "/etc/xdg/uwsm/env-hyprland"
+    - src: "portals.conf.j2"
+      dest: "/etc/xdg/xdg-desktop-portal/portals.conf"
 
 - name: "Configure user defaults"
   block:
@@ -103,22 +109,6 @@
         block: |
           # System defaults
           source = /etc/hypr/hypridle.conf
-
-- name: "Configure xdg-desktop-portal for Hyprland"
-  block:
-    - name: "Create xdg-desktop-portal config directory"
-      ansible.builtin.file:
-        path: "{{ ansible_facts['env']['HOME'] }}/.config/xdg-desktop-portal"
-        state: "directory"
-        mode: "0755"
-
-    - name: "Configure portal backends"
-      ansible.builtin.copy:
-        dest: "{{ ansible_facts['env']['HOME'] }}/.config/xdg-desktop-portal/portals.conf"
-        mode: "0644"
-        content: |
-          [preferred]
-          default=hyprland;gnome
 
 - name: "Copy hyprland scripts"
   become: true
