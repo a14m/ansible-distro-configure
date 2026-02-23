@@ -95,6 +95,7 @@
     - role: "firefox"
     - role: "chromium"
     - role: "obsidian"
+    - role: "microsoft-teams"
     - role: "nvidia_gtx1060"
     - role: "steam"
     - role: "waybar"
