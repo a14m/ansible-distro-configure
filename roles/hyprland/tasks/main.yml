@@ -12,7 +12,7 @@
     - "hyprsunset"
     - "hyprshot"
     - "hyprland"
-    - "xdg-desktop-portal-gtk"
+    - "xdg-desktop-portal-gnome"
     - "xdg-desktop-portal-hyprland"
 
 - name: "Ensure hyprland AUR packages are installed"
@@ -103,6 +103,22 @@
         block: |
           # System defaults
           source = /etc/hypr/hypridle.conf
+
+- name: "Configure xdg-desktop-portal for Hyprland"
+  block:
+    - name: "Create xdg-desktop-portal config directory"
+      ansible.builtin.file:
+        path: "{{ ansible_facts['env']['HOME'] }}/.config/xdg-desktop-portal"
+        state: "directory"
+        mode: "0755"
+
+    - name: "Configure portal backends"
+      ansible.builtin.copy:
+        dest: "{{ ansible_facts['env']['HOME'] }}/.config/xdg-desktop-portal/portals.conf"
+        mode: "0644"
+        content: |
+          [preferred]
+          default=hyprland;gnome
 
 - name: "Copy hyprland scripts"
   become: true
