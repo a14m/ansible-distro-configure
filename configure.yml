@@ -3,6 +3,7 @@
   gather_facts: true
   hosts:
     - archlinux.local
+    - mac-archlinux.local
   roles:
     - role: "locales"
     - role: "timezone"
@@ -43,9 +44,23 @@
     - role: "chromium"
     - role: "obsidian"
     - role: "microsoft-teams"
-    - role: "nvidia_gtx1060"
     - role: "steam"
     - role: "hyprland"
+  post_tasks:
+    - name: "Reboot if required"
+      become: true
+      ansible.builtin.command: "shutdown -r now"
+      async: 1
+      poll: 0
+      changed_when: true
+      when: reboot_required | default(false)
+
+- name: "nvidia configure"
+  gather_facts: true
+  hosts:
+    - archlinux.local
+  roles:
+    - role: "nvidia_gtx1060"
   post_tasks:
     - name: "Reboot if required"
       become: true
