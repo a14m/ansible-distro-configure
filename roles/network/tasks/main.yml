@@ -55,6 +55,16 @@
   when: ansible_facts['is_chroot']
   # noqa: command-instead-of-module module doesn't work inside chroot
 
+- name: "Compute hex-encoded SSID for iwd filename"
+  # noqa: risky-shell-pipe since this is used early before bash configuration
+  # it is the exception and needed to ensure that iwd is working on Mac machines
+  # that only work with broadcom-wl and iwd
+  ansible.builtin.shell:
+    cmd: "printf '%s' '{{ network_wifi_ssid }}' | xxd -p | tr -d '\\n'"
+  register: network_wifi_hex_ssid
+  changed_when: false
+  when: network_wifi_ssid != ""
+
 - name: "Configure NetworkManager"
   become: true
   notify:
@@ -94,6 +104,24 @@
       ansible.builtin.template:
         src: "wifi-connection.nmconnection.j2"
         dest: "/etc/NetworkManager/system-connections/{{ network_wifi_ssid }}.nmconnection"
+        mode: "0600"
+        owner: "root"
+        group: "root"
+      when: network_wifi_ssid != ""
+
+    - name: "Ensure /var/lib/iwd directory exists"
+      ansible.builtin.file:
+        path: "/var/lib/iwd"
+        state: "directory"
+        mode: "0700"
+        owner: "root"
+        group: "root"
+      when: network_wifi_ssid != ""
+
+    - name: "Configure iwd known network for wifi auto-connect"
+      ansible.builtin.template:
+        src: "iwd-wifi.psk.j2"
+        dest: "/var/lib/iwd/={{ network_wifi_hex_ssid.stdout }}.psk"
         mode: "0600"
         owner: "root"
         group: "root"
