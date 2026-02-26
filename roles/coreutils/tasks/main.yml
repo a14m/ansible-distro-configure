@@ -1,0 +1,6 @@
+---
+- name: "Ensure coreutils is installed"
+  become: true
+  ansible.builtin.package:
+    name: "coreutils"
+    state: "present"

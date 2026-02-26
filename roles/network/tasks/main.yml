@@ -59,8 +59,10 @@
   # noqa: risky-shell-pipe since this is used early before bash configuration
   # it is the exception and needed to ensure that iwd is working on Mac machines
   # that only work with broadcom-wl and iwd
+  # od is part of coreutils which is available by default on Arch/Debian but
+  # added as role dependency for safty
   ansible.builtin.shell:
-    cmd: "printf '%s' '{{ network_wifi_ssid }}' | xxd -p | tr -d '\\n'"
+    cmd: "printf '%s' '{{ network_wifi_ssid }}' | od -A n -t x1 | tr -d ' \\n'"
   register: network_wifi_hex_ssid
   changed_when: false
   when: network_wifi_ssid != ""
