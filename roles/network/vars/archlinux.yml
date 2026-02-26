@@ -2,11 +2,14 @@
 network_packages:
   - "networkmanager"
   - "bind" # provides dig and nslookup
+  - "iwd"
 
 network_enabled_services:
   - "systemd-resolved"
   - "NetworkManager"
+  - "iwd"
 
 network_disabled_services:
   - "systemd-networkd"
   - "systemd-networkd.socket"
+  - "wpa_supplicant"
