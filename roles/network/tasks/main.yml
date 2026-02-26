@@ -113,10 +113,10 @@
       when: network_wifi_ssid != ""
 
     - name: "Configure iwd known network for wifi auto-connect"
-      ansible.builtin.template:
-        src: "iwd-wifi.psk.j2"
-        dest: "/var/lib/iwd/={{ network_wifi_hex_ssid.stdout }}.psk"
+      community.general.ini_file:
+        path: "/var/lib/iwd/={{ network_wifi_hex_ssid.stdout }}.psk"
+        section: "Security"
+        option: "Passphrase"
+        value: "{{ network_wifi_pass }}"
         mode: "0600"
-        owner: "root"
-        group: "root"
       when: network_wifi_ssid != ""
