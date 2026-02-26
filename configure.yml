@@ -55,7 +55,7 @@
       changed_when: true
       when: reboot_required | default(false)
 
-- name: "nvidia configure"
+- name: "Nvidia configure"
   gather_facts: true
   hosts:
     - archlinux.local
