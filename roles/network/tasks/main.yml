@@ -84,14 +84,6 @@
         dest: "/etc/NetworkManager/NetworkManager.conf"
         mode: "0644"
 
-    - name: "Configure NetworkManager Captive Portals"
-      ansible.builtin.get_url:
-        dest: "/etc/NetworkManager/dispatcher.d/90-open_captive_portal"
-        # yamllint disable-line
-        url: "https://raw.githubusercontent.com/Seme4eg/captive-portal-sh/04751034437b6abd92647cab1b22cef586c86f4e/90-open_captive_portal"
-        checksum: "sha1:75f4c827939e7dd433357ab4776c787be02c485b"
-        mode: "0750"
-
     - name: "Configure ethernet connection"
       ansible.builtin.template:
         src: "eth0-connection.nmconnection.j2"
