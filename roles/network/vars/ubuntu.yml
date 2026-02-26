@@ -8,7 +8,6 @@ network_packages:
 network_enabled_services:
   - "systemd-resolved"
   - "NetworkManager"
-  - "iwd"
 
 network_disabled_services:
   - "systemd-networkd"
