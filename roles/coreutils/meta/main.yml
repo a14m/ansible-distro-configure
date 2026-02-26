@@ -1,10 +1,8 @@
 ---
-dependencies:
-  - role: "systemd"
-  - role: "coreutils"
+dependencies: []
 galaxy_info:
   author: "a14m"
-  description: "Configure basic distro networking features"
+  description: "Install coreutils on Linux distributions"
   license: "MIT"
   min_ansible_version: "2.18"
   platforms:
