@@ -1,0 +1,22 @@
+---
+- name: "Ensure gpu-switch is installed"
+  become: true
+  become_user: "aur_builder"
+  kewlfft.aur.aur:
+    name: "gpu-switch"
+    state: "present"
+    use: "yay"
+
+- name: "Configure gpu-switch to use dedicated GPU"
+  become: true
+  ansible.builtin.command:
+    cmd: "gpu-switch -d"
+  changed_when: false
+  when: gpu_switch_dedicated
+
+- name: "Configure gpu-switch to use integrated GPU"
+  become: true
+  ansible.builtin.command:
+    cmd: "gpu-switch -i"
+  changed_when: false
+  when: not gpu_switch_dedicated
