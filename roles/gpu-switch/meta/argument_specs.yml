@@ -1,0 +1,10 @@
+---
+argument_specs:
+  main:
+    short_description: "Install gpu-switch"
+    description: "Install gpu-switch"
+    options:
+      gpu_switch_dedicated:
+        type: "bool"
+        default: false
+        description: "Enable dedicated GPU on machine when true other wise use default iGPU"
