@@ -9,7 +9,6 @@
       - "btop.theme"
       - "hyprland.conf"
       - "hyprlock.conf"
-      - "icons.theme"
       - "waybar.css"
       - "clipse.json"
       - "tofi.config"
