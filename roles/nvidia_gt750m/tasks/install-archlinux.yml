@@ -15,7 +15,7 @@
     mode: "0644"
   notify:
     - "Rebuild initramfs"
-    - "Require reboot"
+    - "Reboot"
   tags:
     - "molecule-notest"
 
@@ -43,6 +43,6 @@
     line: "MODULES=({{ all_modules | join(' ') }})"
   notify:
     - "Rebuild initramfs"
-    - "Require reboot"
+    - "Reboot"
   tags:
     - "molecule-notest"

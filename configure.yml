@@ -45,14 +45,6 @@
     - role: "obsidian"
     - role: "microsoft-teams"
     - role: "hyprland"
-  post_tasks:
-    - name: "Reboot if required"
-      become: true
-      ansible.builtin.command: "shutdown -r now"
-      async: 1
-      poll: 0
-      changed_when: true
-      when: reboot_required | default(false)
 
 - name: "Nvidia configure"
   gather_facts: true
@@ -61,14 +53,6 @@
   roles:
     - role: "nvidia_gtx1060"
     - role: "steam"
-  post_tasks:
-    - name: "Reboot if required"
-      become: true
-      ansible.builtin.command: "shutdown -r now"
-      async: 1
-      poll: 0
-      changed_when: true
-      when: reboot_required | default(false)
 
 - name: "Mac nvidia configure"
   gather_facts: true
@@ -77,14 +61,6 @@
   roles:
     - role: "nvidia_gt750m"
     - role: "steam"
-  post_tasks:
-    - name: "Reboot if required"
-      become: true
-      ansible.builtin.command: "shutdown -r now"
-      async: 1
-      poll: 0
-      changed_when: true
-      when: reboot_required | default(false)
 
 - name: "Ubuntu configure"
   gather_facts: true
@@ -118,14 +94,6 @@
     - role: "obsidian"
     - role: "microsoft-teams"
     - role: "gnome-calendar"
-  post_tasks:
-    - name: "Reboot if required"
-      become: true
-      ansible.builtin.command: "shutdown -r now"
-      async: 1
-      poll: 0
-      changed_when: true
-      when: reboot_required | default(false)
 
 - name: "Raspberry Pi configure"
   gather_facts: true
@@ -153,11 +121,3 @@
     - role: "prometheus"
     - role: "grafana"
     - role: "neomutt"
-  post_tasks:
-    - name: "Reboot if required"
-      become: true
-      ansible.builtin.command: "shutdown -r now"
-      async: 1
-      poll: 0
-      changed_when: true
-      when: reboot_required | default(false)

@@ -4,7 +4,7 @@
   ansible.builtin.package:
     name: "{{ gnome_packages }}"
     state: "present"
-  notify: "Require reboot"
+  notify: "Reboot"
 
 - name: "Enable GDM display manager"
   become: true

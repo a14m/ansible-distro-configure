@@ -1,5 +1,5 @@
 ---
-- name: "Require reboot"
-  ansible.builtin.set_fact:
-    # This flag is used to trigger a post_task of rebooting after the playbook finishes
-    reboot_required: true
+- name: "Reboot"
+  become: true
+  ansible.builtin.reboot:
+    reboot_timeout: 600
