@@ -59,7 +59,7 @@
   hosts:
     - mac.local
   roles:
-    - role: "nvidia_gt750m"
+    - role: "intel_i915"
     - role: "steam"
 
 - name: "Ubuntu configure"
