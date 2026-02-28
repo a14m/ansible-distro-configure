@@ -1,0 +1,7 @@
+---
+intel_i915_packages:
+  - "mesa"
+  - "libva-intel-driver"
+  - "vulkan-intel"
+  - "lib32-mesa"
+  - "lib32-vulkan-intel"

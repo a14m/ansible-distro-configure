@@ -1,0 +1,9 @@
+---
+- name: "Include OS-specific variables"
+  ansible.builtin.include_vars: "{{ ansible_facts['os_family'] | lower }}.yml"
+
+- name: "Install Intel i915 driver packages"
+  become: true
+  ansible.builtin.package:
+    name: "{{ intel_i915_packages }}"
+    state: "present"

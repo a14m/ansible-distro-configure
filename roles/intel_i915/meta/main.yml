@@ -1,9 +1,10 @@
 ---
 dependencies:
-  - role: "yay"
+  - role: "multilib"
+    when: ansible_facts['os_family'] == "Archlinux"
 galaxy_info:
   author: "a14m"
-  description: "Install gpu-switch"
+  description: "Install Intel i915 Mesa drivers"
   license: "MIT"
   min_ansible_version: "2.18"
   platforms:
