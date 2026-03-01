@@ -1,0 +1,8 @@
+---
+- name: "Ensure battop is installed"
+  become: true
+  become_user: "aur_builder"
+  kewlfft.aur.aur:
+    name: "battop"
+    state: "present"
+    use: "yay"
