@@ -97,7 +97,6 @@
     - role: "chromium"
     - role: "obsidian"
     - role: "microsoft-teams"
-    - role: "nvidia_gtx1060"
     - role: "steam"
     - role: "usbutils"
     - role: "nginx"

@@ -1,0 +1,6 @@
+---
+gpu_driver_map:
+  - match: "GeForce GTX 1060"
+    role: "nvidia_gtx1060"
+  - match: "Intel"
+    role: "intel_i915"

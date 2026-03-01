@@ -1,0 +1,12 @@
+---
+- name: "Detect GPU"
+  ansible.builtin.command:
+    cmd: "lspci"
+  register: gpu_driver_lspci
+  changed_when: false
+
+- name: "Include driver role for matched GPU"
+  ansible.builtin.include_role:
+    name: "{{ item.role }}"
+  loop: "{{ gpu_driver_map }}"
+  when: item.match in gpu_driver_lspci.stdout

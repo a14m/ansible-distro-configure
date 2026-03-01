@@ -4,6 +4,7 @@ dependencies:
     when: ansible_facts['distribution'] == "Archlinux"
   - role: "multiverse"
     when: ansible_facts['distribution'] == "Ubuntu"
+  - role: "gpu_driver"
 galaxy_info:
   author: "a14m"
   description: "Install steam"

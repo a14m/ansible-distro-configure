@@ -1,0 +1,6 @@
+---
+- name: "Ensure pciutils is installed"
+  become: true
+  ansible.builtin.package:
+    name: "pciutils"
+    state: "present"
