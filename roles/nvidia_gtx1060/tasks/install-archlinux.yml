@@ -21,7 +21,6 @@
     mode: "0644"
   notify:
     - "Rebuild initramfs"
-    - "Reboot"
   tags:
     # Since the /etc/mkinitcpio isn't available on the docker container
     # Ignore this for testing,
@@ -53,7 +52,6 @@
     line: "MODULES=({{ all_modules | join(' ') }})"
   notify:
     - "Rebuild initramfs"
-    - "Reboot"
   tags:
     # Since the /etc/mkinitcpio isn't available on the docker container
     # Ignore this for testing,

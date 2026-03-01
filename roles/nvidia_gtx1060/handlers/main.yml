@@ -4,8 +4,3 @@
   ansible.builtin.command:
     cmd: "mkinitcpio -P"
   changed_when: true
-
-- name: "Reboot"
-  become: true
-  ansible.builtin.reboot:
-    reboot_timeout: 600
