@@ -86,8 +86,6 @@ tooltip {
 #language:hover,
 #custom-sunset:hover,
 #custom-power:hover,
-#battery:hover,
-#battery.charging:hover, #battery.plugged:hover, #battery.full:hover,
 #cpu:hover,
 #memory:hover,
 #disk:hover,
@@ -103,7 +101,7 @@ tooltip {
 }
 
 #battery.charging, #battery.plugged, #battery.full {
-    color: #32CD32;
+    color: @activeColor;
 }
 
 #battery.warning:not(.charging) {
@@ -111,7 +109,7 @@ tooltip {
 }
 
 #battery.critical:not(.charging) {
-    color: #DC143C;
+    color: #FD0E35;
     animation-name: blink;
     animation-duration: 1s;
     animation-timing-function: steps(2, end);
