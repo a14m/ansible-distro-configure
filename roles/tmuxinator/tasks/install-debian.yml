@@ -1,0 +1,6 @@
+---
+- name: "Ensure tmuxinator is installed"
+  become: true
+  ansible.builtin.package:
+    name: "tmuxinator"
+    state: "present"
