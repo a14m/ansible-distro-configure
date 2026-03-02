@@ -20,10 +20,6 @@ argument_specs:
         description: "Global scrape interval for metrics collection"
         type: "str"
         default: "15s"
-      prometheus_node_exporter_port:
-        description: "Port for node-exporter metrics endpoint"
-        type: "int"
-        default: 9100
       prometheus_targets:
         description: "The list of prometheus targets to scrape"
         type: "list"
@@ -33,4 +29,4 @@ argument_specs:
         description: "The list of node_exporter targets to scrape"
         type: "list"
         elements: "str"
-        default: ["{{ prometheus_host }}:{{ prometheus_node_exporter_port }}"]
+        default: []
