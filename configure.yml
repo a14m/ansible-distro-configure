@@ -47,6 +47,7 @@
     - role: "microsoft-teams"
     - role: "gpu_driver"
     - role: "steam"
+    - role: "prometheus-node-exporter"
 
 - name: "Ubuntu configure"
   gather_facts: true
@@ -80,6 +81,7 @@
     - role: "obsidian"
     - role: "microsoft-teams"
     - role: "gnome-calendar"
+    - role: "prometheus-node-exporter"
 
 - name: "Raspberry Pi configure"
   gather_facts: true
@@ -105,5 +107,6 @@
     - role: "wg_portal"
     - role: "pihole"
     - role: "prometheus"
+    - role: "prometheus-node-exporter"
     - role: "grafana"
     - role: "neomutt"
