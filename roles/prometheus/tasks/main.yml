@@ -29,12 +29,10 @@
     - "/etc/prometheus"
     - "/var/lib/prometheus"
 
-- name: "Install prometheus packages"
+- name: "Install prometheus"
   become: true
   ansible.builtin.package:
-    name:
-      - "prometheus"
-      - "prometheus-node-exporter"
+    name: "prometheus"
     state: "present"
 
 - name: "Create prometheus configuration"
@@ -57,25 +55,9 @@
     mode: "0644"
   notify: "Restart prometheus"
 
-# NOTE: show systemd configurations using: systemctl cat prometheus-node-exporter
-- name: "Configure node-exporter host/port via environment file"
-  become: true
-  ansible.builtin.copy:
-    content: |
-      NODE_EXPORTER_ARGS="
-        --web.listen-address={{ prometheus_host }}:{{ prometheus_node_exporter_port }}
-        --collector.systemd
-      "
-    dest: "{{ prometheus_node_exporter_env_file }}"
-    mode: "0644"
-  notify: "Restart node-exporter"
-
-- name: "Start and enable prometheus services"
+- name: "Start and enable prometheus"
   become: true
   ansible.builtin.systemd_service:
-    name: "{{ item }}"
+    name: "prometheus"
     state: "started"
     enabled: true
-  loop:
-    - "prometheus"
-    - "prometheus-node-exporter"

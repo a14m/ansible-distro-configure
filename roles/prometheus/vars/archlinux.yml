@@ -1,3 +1,2 @@
 ---
 prometheus_env_file: "/etc/conf.d/prometheus"
-prometheus_node_exporter_env_file: "/etc/conf.d/prometheus-node-exporter"
