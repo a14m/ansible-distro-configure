@@ -1,0 +1,2 @@
+---
+node_exporter_env_file: "/etc/default/prometheus-node-exporter"

@@ -102,4 +102,5 @@
     - role: "usbutils"
     - role: "nginx"
     - role: "prometheus"
+    - role: "prometheus-node-exporter"
     - role: "grafana"
