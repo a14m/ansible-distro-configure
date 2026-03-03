@@ -1,0 +1,26 @@
+---
+- name: "Download mise GPG key"
+  become: true
+  ansible.builtin.get_url:
+    url: "https://mise.jdx.dev/gpg-key.pub"
+    dest: "/etc/apt/trusted.gpg.d/mise.asc"
+    mode: "0644"
+
+- name: "Add mise repository"
+  become: true
+  ansible.builtin.apt_repository:
+    repo: "deb [signed-by=/etc/apt/trusted.gpg.d/mise.asc] https://mise.jdx.dev/deb stable main"
+    state: "present"
+    filename: "mise"
+
+- name: "Update package cache"
+  become: true
+  ansible.builtin.apt:
+    update_cache: true
+  changed_when: false
+
+- name: "Ensure mise is installed"
+  become: true
+  ansible.builtin.package:
+    name: "mise"
+    state: "present"

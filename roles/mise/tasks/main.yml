@@ -1,0 +1,15 @@
+---
+- name: "Include OS-specific tasks"
+  ansible.builtin.include_tasks: "install-{{ ansible_facts['os_family'] | lower }}.yml"
+
+- name: "Add mise activation to bash"
+  ansible.builtin.blockinfile:
+    path: "{{ ansible_facts['env']['HOME'] }}/.bashrc"
+    state: "present"
+    prepend_newline: true
+    append_newline: true
+    marker: "# ==== {mark} ANSIBLE MISE CONFIG"
+    block: |
+      if command -v mise 1>/dev/null 2>&1; then
+        eval "$(mise activate bash)"
+      fi
