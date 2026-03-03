@@ -78,6 +78,7 @@
     - role: "password_store"
     - role: "wireguard"
     - role: "vim"
+    - role: "mise"
     - role: "gnome-calendar"
     - role: "gnome-loupe"
     - role: "gnome-papers"

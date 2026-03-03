@@ -99,6 +99,7 @@
     - role: "gpg"
     - role: "dotfiles"
     - role: "vim"
+    - role: "mise"
     - role: "neomutt"
     - role: "password_store"
     - role: "which"
