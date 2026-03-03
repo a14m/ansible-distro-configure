@@ -7,4 +7,4 @@ argument_specs:
       go_version:
         type: "str"
         description: "Default go version to install"
-        default: "1.25.3"
+        default: "latest"

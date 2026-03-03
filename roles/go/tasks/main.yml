@@ -1,33 +1,18 @@
 ---
-- name: "Check installed go versions"
+- name: "Check installed go version"
   ansible.builtin.command:
-    cmd: "/usr/local/go/bin/go version"
-  register: go_installed_version
+    cmd: "mise current go"
+  register: go_current_version
   changed_when: false
   failed_when: false
 
-- name: "Install go"
-  when: go_version not in go_installed_version.stdout
-  block:
-    - name: "Set go facts"
-      ansible.builtin.set_fact:
-        go_arch: "{{ 'amd64' if ansible_facts['architecture'] == 'x86_64' else 'arm64' }}"
-        go_platform: "{{ ansible_facts['system'] | lower }}"
+- name: "Install go {{ go_version }}"
+  ansible.builtin.command:
+    cmd: "mise use --global go@{{ go_version }}"
+  changed_when: true
+  when: go_version not in go_current_version.stdout
 
-    - name: "Download Go"
-      ansible.builtin.get_url:
-        url: "https://dl.google.com/go/go{{ go_version }}.{{ go_platform }}-{{ go_arch }}.tar.gz"
-        dest: "/tmp/go.tar.gz"
-        mode: "0644"
-
-    - name: "Unarchive Go"
-      become: true
-      ansible.builtin.unarchive:
-        src: "/tmp/go.tar.gz"
-        dest: "/usr/local"
-        remote_src: true
-
-- name: "Add Go to shell profile"
+- name: "Add Go bin to shell profile"
   ansible.builtin.blockinfile:
     path: "{{ ansible_facts['env']['HOME'] }}/.bashrc"
     state: "present"
@@ -35,7 +20,6 @@
     append_newline: true
     marker: "# ==== {mark} ANSIBLE GO CONFIG"
     block: |
-      if command -v go 1>/dev/null 2>&1; then
-        export PATH="$PATH:/usr/local/go/bin"
+      if [ -d "$HOME/go/bin" ]; then
         export PATH="$HOME/go/bin:$PATH"
       fi
