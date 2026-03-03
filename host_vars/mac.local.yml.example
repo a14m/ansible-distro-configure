@@ -7,6 +7,15 @@ network_ipv6_address: "fd5c:fd8b:2b8c::200/64"
 network_ipv6_gateway: "fd5c:fd8b:2b8c::254"
 network_ipv6_dns: "fd5c:fd8b:2b8c::254"
 
+go_versions:
+  - "latest"
+  - "1.25.3"
+rust_versions:
+  - "latest"
+  - "1.83.0"
+nodejs_versions:
+  - "lts"
+  - "22.22.0"
 python_versions:
   - "3.13.7"
   - "3.12.11"

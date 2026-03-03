@@ -1,3 +1,4 @@
 ---
-rust_toolchain: "stable"
+rust_versions:
+  - "stable"
 rust_components: []

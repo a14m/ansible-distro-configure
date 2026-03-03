@@ -3,7 +3,7 @@ dependencies:
   - role: "mise"
 galaxy_info:
   author: "a14m"
-  description: "Install Go via mise on Linux distributions"
+  description: "Install Go (versions) via mise on Linux distributions"
   license: "MIT"
   min_ansible_version: "2.18"
   platforms:

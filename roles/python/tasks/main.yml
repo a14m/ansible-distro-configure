@@ -1,49 +1,27 @@
 ---
-- name: "Include OS-specific variables"
-  ansible.builtin.include_vars: "{{ ansible_facts['os_family'] | lower }}.yml"
-
-- name: "Check if uv binary exists"
-  ansible.builtin.stat:
-    path: "{{ ansible_facts['env']['HOME'] }}/.local/bin/uv"
-  register: python_uv_binary
-
-- name: "Download uv installer"
-  ansible.builtin.get_url:
-    url: "https://astral.sh/uv/install.sh"
-    dest: "/tmp/install_uv.sh"
-    mode: "0755"
-  when: not python_uv_binary.stat.exists
-
-- name: "Run uv installer"
+- name: "Check installed python versions"
   ansible.builtin.command:
-    cmd: "/tmp/install_uv.sh"
-  args:
-    creates: "{{ ansible_facts['env']['HOME'] }}/.local/bin/uv"
-  when: not python_uv_binary.stat.exists
+    cmd: "mise ls python"
+  register: python_installed_versions
+  changed_when: false
+  failed_when: false
 
-- name: "Symlink uv to /usr/local/bin"
-  become: true
-  ansible.builtin.file:
-    src: "{{ ansible_facts['env']['HOME'] }}/.local/bin/uv"
-    dest: "/usr/local/bin/uv"
-    state: "link"
-
-- name: "Add uv to shell profile"
-  ansible.builtin.blockinfile:
-    path: "{{ ansible_facts['env']['HOME'] }}/.bashrc"
-    state: "present"
-    prepend_newline: true
-    append_newline: true
-    marker: "# ==== {mark} ANSIBLE PATH CONFIG"
-    block: |
-      if [ -d "$HOME/.local/bin" ]; then
-        export PATH="$HOME/.local/bin:$PATH"
-      fi
-
-- name: "Install python versions"
+- name: "Install python {{ item }}"
   ansible.builtin.command:
-    cmd: "uv python install {{ item }}"
-  register: python_install_result
-  changed_when: "'already installed' not in python_install_result.stderr"
+    cmd: "mise use --global python@{{ item }}"
+  changed_when: true
+  when: item not in python_installed_versions.stdout
   loop: "{{ python_versions }}"
-  when: python_versions | length > 0
+
+- name: "Check installed uv version"
+  ansible.builtin.command:
+    cmd: "mise ls uv"
+  register: python_uv_installed_version
+  changed_when: false
+  failed_when: false
+
+- name: "Install uv {{ python_uv_version }}"
+  ansible.builtin.command:
+    cmd: "mise use --global uv@{{ python_uv_version }}"
+  changed_when: true
+  when: uv_version not in python_uv_installed_version.stdout

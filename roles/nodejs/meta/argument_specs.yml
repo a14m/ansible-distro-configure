@@ -1,7 +1,6 @@
 ---
 argument_specs:
   main:
-    description: "Install nodejs versions via mise on Linux distributions"
     options:
       nodejs_versions:
         type: "list"

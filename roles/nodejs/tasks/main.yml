@@ -2,7 +2,7 @@
 - name: "Check installed node versions"
   ansible.builtin.command:
     cmd: "mise ls node"
-  register: node_installed_versions
+  register: nodejs_installed_versions
   changed_when: false
   failed_when: false
 
@@ -10,5 +10,5 @@
   ansible.builtin.command:
     cmd: "mise use --global node@{{ item }}"
   changed_when: true
-  when: item not in node_installed_versions.stdout
+  when: item not in nodejs_installed_versions.stdout
   loop: "{{ nodejs_versions }}"
