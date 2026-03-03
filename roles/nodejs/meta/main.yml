@@ -1,10 +1,9 @@
 ---
 dependencies:
-  - role: "bash"
-  - role: "curl"
+  - role: "mise"
 galaxy_info:
   author: "a14m"
-  description: "Install nvm and nodejs (versions) on Linux distributions"
+  description: "Install nodejs (versions) via mise on Linux distributions"
   license: "MIT"
   min_ansible_version: "2.18"
   platforms:

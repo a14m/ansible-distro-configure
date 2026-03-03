@@ -1,16 +1,17 @@
 ---
-- name: "Check installed rust version"
+- name: "Check installed rust versions"
   ansible.builtin.command:
-    cmd: "mise current rust"
-  register: rust_current_version
+    cmd: "mise ls rust"
+  register: rust_installed_versions
   changed_when: false
   failed_when: false
 
-- name: "Install rust {{ rust_toolchain }}"
+- name: "Install rust {{ item }}"
   ansible.builtin.command:
-    cmd: "mise use --global rust@{{ rust_toolchain }}"
+    cmd: "mise use --global rust@{{ item }}"
   changed_when: true
-  when: rust_toolchain not in rust_current_version.stdout
+  when: item not in rust_installed_versions.stdout
+  loop: "{{ rust_versions }}"
 
 - name: "Install rust components"
   ansible.builtin.command:

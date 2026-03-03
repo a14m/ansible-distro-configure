@@ -1,2 +1,4 @@
 ---
-python_versions: []
+python_versions:
+  - "latest"
+python_uv_version: "latest"

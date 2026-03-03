@@ -1,15 +1,14 @@
 ---
 argument_specs:
   main:
-    short_description: "Install Rust via rustup on Linux distributions"
-    description: "Install Rust via rustup on Linux distributions"
     options:
-      rust_toolchain:
-        type: "str"
-        description: "The Rust toolchain to install (stable, beta, nightly)"
-        default: "stable"
+      rust_versions:
+        type: "list"
+        description: "Rust versions to install via mise (e.g. 'stable', 'nightly')"
+        elements: "str"
+        default: ["stable"]
       rust_components:
         type: "list"
-        description: "Additional rustup components to install"
+        description: "Rust components to install via rustup (applied to the active toolchain)"
         elements: "str"
         default: []

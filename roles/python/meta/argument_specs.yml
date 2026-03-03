@@ -1,11 +1,15 @@
 ---
 argument_specs:
   main:
-    short_description: "Install uv, pipx and python (versions) on Linux distributions"
-    description: "Install uv, pipx and python (versions) on Linux distributions"
+    short_description: "Install Python versions on Linux distributions"
+    description: "Install Python versions on Linux distributions"
     options:
       python_versions:
         type: "list"
-        description: "The extra python versions to install (system is used by default when available)"
+        description: "Python versions to install via mise (e.g. 'latest', '3.13')"
         elements: "str"
-        default: []
+        default: ["latest"]
+      python_uv_version:
+        type: "str"
+        description: "uv version to install via mise"
+        default: "latest"
