@@ -1,27 +1,23 @@
 ---
-- name: "Check if cargo binary exists"
-  ansible.builtin.stat:
-    path: "{{ ansible_facts['env']['HOME'] }}/.cargo/bin/cargo"
-  register: rust_cargo_binary
-
-- name: "Download rustup installer"
-  ansible.builtin.get_url:
-    url: "https://sh.rustup.rs"
-    dest: "/tmp/install_rustup.sh"
-    mode: "0755"
-  when: not rust_cargo_binary.stat.exists
-
-- name: "Run rustup installer"
+- name: "Check installed rust version"
   ansible.builtin.command:
-    cmd: "/tmp/install_rustup.sh -y --default-toolchain {{ rust_toolchain }} --profile minimal"
-  args:
-    creates: "{{ ansible_facts['env']['HOME'] }}/.cargo/bin/cargo"
-  when: not rust_cargo_binary.stat.exists
-
-- name: "Ensure default toolchain is set"
-  ansible.builtin.command:
-    cmd: "{{ ansible_facts['env']['HOME'] }}/.cargo/bin/rustup default {{ rust_toolchain }}"
+    cmd: "mise current rust"
+  register: rust_current_version
   changed_when: false
+  failed_when: false
+
+- name: "Install rust {{ rust_toolchain }}"
+  ansible.builtin.command:
+    cmd: "mise use --global rust@{{ rust_toolchain }}"
+  changed_when: true
+  when: rust_toolchain not in rust_current_version.stdout
+
+- name: "Install rust components"
+  ansible.builtin.command:
+    cmd: "mise exec rust -- rustup component add {{ item }}"
+  register: rust_component_result
+  changed_when: "'is up to date' not in rust_component_result.stdout"
+  loop: "{{ rust_components }}"
 
 - name: "Remove cargo default shell profile modification"
   ansible.builtin.lineinfile:
@@ -29,7 +25,7 @@
     line: '. "$HOME/.cargo/env"'
     state: "absent"
 
-- name: "Add cargo to shell profile"
+- name: "Add cargo bin to shell profile"
   ansible.builtin.blockinfile:
     path: "{{ ansible_facts['env']['HOME'] }}/.bashrc"
     state: "present"
@@ -37,13 +33,6 @@
     append_newline: true
     marker: "# ==== {mark} ANSIBLE RUST CONFIG"
     block: |
-      if [ -f "$HOME/.cargo/env" ]; then
-        source "$HOME/.cargo/env"
+      if [ -d "$HOME/.cargo/bin" ]; then
+        export PATH="$HOME/.cargo/bin:$PATH"
       fi
-
-- name: "Install rust components"
-  ansible.builtin.command:
-    cmd: "{{ ansible_facts['env']['HOME'] }}/.cargo/bin/rustup component add {{ item }}"
-  register: rust_component_result
-  changed_when: "'is up to date' not in rust_component_result.stdout"
-  loop: "{{ rust_components }}"
