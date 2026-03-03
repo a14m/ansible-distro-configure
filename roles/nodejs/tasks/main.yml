@@ -1,45 +1,14 @@
 ---
-- name: "Check if nvm binary exists"
-  ansible.builtin.stat:
-    path: "{{ ansible_facts['env']['HOME'] }}/.nvm/nvm.sh"
-  register: nodejs_nvm_binary
-
-- name: "Download nvm installer"
-  ansible.builtin.get_url:
-    url: "https://raw.githubusercontent.com/nvm-sh/nvm/v{{ nodejs_nvm_version }}/install.sh"
-    dest: "/tmp/install_nvm.sh"
-    mode: "0755"
-  when: not nodejs_nvm_binary.stat.exists
-
-- name: "Install nvm"
+- name: "Check installed node versions"
   ansible.builtin.command:
-    cmd: "/tmp/install_nvm.sh"
-  args:
-    creates: "{{ ansible_facts['env']['HOME'] }}/.nvm/nvm.sh"
-  when: not nodejs_nvm_binary.stat.exists
+    cmd: "mise ls node"
+  register: node_installed_versions
+  changed_when: false
+  failed_when: false
 
-- name: "Add nvm to shell profile"
-  ansible.builtin.blockinfile:
-    path: "{{ ansible_facts['env']['HOME'] }}/.bashrc"
-    state: "present"
-    prepend_newline: true
-    append_newline: true
-    marker: "# ==== {mark} ANSIBLE NVM CONFIG"
-    block: |
-      if [ -f "$HOME/.nvm/nvm.sh" ]; then
-        export NVM_DIR=~/.nvm
-        source "$HOME/.nvm/nvm.sh"
-        source "$NVM_DIR/bash_completion"
-      fi
-
-- name: "Install nodejs versions"
-  ansible.builtin.shell:
-    cmd: |
-      export NVM_DIR="{{ ansible_facts['env']['HOME'] }}/.nvm"
-      . "$NVM_DIR/nvm.sh"
-      nvm install {{ item }}
-  args:
-    executable: /bin/bash
-  register: nodejs_nvm_install_result
-  changed_when: "'already installed' not in nodejs_nvm_install_result.stderr"
+- name: "Install node {{ item }}"
+  ansible.builtin.command:
+    cmd: "mise use --global node@{{ item }}"
+  changed_when: true
+  when: item not in node_installed_versions.stdout
   loop: "{{ nodejs_versions }}"

@@ -1,10 +1,10 @@
 ---
 argument_specs:
   main:
-    description: "Install nvm and nodejs (versions) on Linux distributions"
+    description: "Install nodejs versions via mise on Linux distributions"
     options:
-      python_versions:
+      nodejs_versions:
         type: "list"
-        description: "The nvm node versions to install (default to latest lts)"
+        description: "Node versions to install via mise (e.g. 'lts', 'latest', '22')"
         elements: "str"
-        default: ["lts/*"]
+        default: ["lts"]
