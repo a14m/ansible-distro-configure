@@ -1,4 +1,3 @@
 ---
-nodejs_nvm_version: "0.40.4"
 nodejs_versions:
-  - "lts/*"
+  - "lts"
