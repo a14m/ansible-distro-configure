@@ -1,11 +1,12 @@
 ---
 - name: "Check if gum is installed"
-  ansible.builtin.stat:
-    path: "{{ ansible_facts['env']['HOME'] }}/go/bin/gum"
-  register: gum_binary
-
-- name: "Install gum via go"
   ansible.builtin.command:
-    cmd: "mise exec go -- go install github.com/charmbracelet/gum@latest"
-  when: not gum_binary.stat.exists
+    cmd: "mise ls gum"
+  register: gum_installed
+  changed_when: false
+
+- name: "Install gum"
+  ansible.builtin.command:
+    cmd: "mise use --global gum@latest"
   changed_when: true
+  when: gum_installed.stdout == ''
