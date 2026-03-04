@@ -6,6 +6,6 @@
 
 - name: "Install gum via go"
   ansible.builtin.command:
-    cmd: "/usr/local/go/bin/go install github.com/charmbracelet/gum@latest"
+    cmd: "mise exec go -- go install github.com/charmbracelet/gum@latest"
   when: not gum_binary.stat.exists
   changed_when: true
