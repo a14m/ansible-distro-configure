@@ -6,7 +6,7 @@
   changed_when: false
   failed_when: false
 
-- name: "Install node {{ item }}"
+- name: "Install node versions"
   ansible.builtin.command:
     cmd: "mise use --global node@{{ item }}"
   changed_when: true
