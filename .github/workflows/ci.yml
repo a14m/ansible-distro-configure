@@ -60,6 +60,7 @@ jobs:
         env:
           PY_COLORS: 1
           ANSIBLE_FORCE_COLOR: 1
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: >-
           molecule --version &&
           ansible --version &&
