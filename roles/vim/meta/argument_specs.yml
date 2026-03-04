@@ -1,8 +1,6 @@
 ---
 argument_specs:
   main:
-    short_description: "Install and configure vim"
-    description: "Install and configure vim"
     options:
       vimrc_repo_url:
         type: "str"

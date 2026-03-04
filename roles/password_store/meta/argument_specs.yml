@@ -1,8 +1,6 @@
 ---
 argument_specs:
   main:
-    short_description: "Configure pass for unix (password store)"
-    description: "Configure pass for unix (password store)"
     options:
       password_store_repo_url:
         type: "str"

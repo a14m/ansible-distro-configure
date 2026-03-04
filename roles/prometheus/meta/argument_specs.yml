@@ -1,8 +1,6 @@
 ---
 argument_specs:
   main:
-    short_description: "Install and configure Prometheus monitoring with node exporter"
-    description: "Install and configure Prometheus monitoring with node exporter"
     options:
       prometheus_host:
         description: "host for Prometheus web interface"

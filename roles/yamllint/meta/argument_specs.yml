@@ -1,8 +1,6 @@
 ---
 argument_specs:
   main:
-    short_description: "Install yamllint on Linux distributions"
-    description: "Install yamllint on Linux distributions"
     options:
       yamllint_version:
         type: "str"
