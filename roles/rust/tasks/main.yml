@@ -20,12 +20,6 @@
   changed_when: "'is up to date' not in rust_component_result.stdout"
   loop: "{{ rust_components }}"
 
-- name: "Remove cargo default shell profile modification"
-  ansible.builtin.lineinfile:
-    path: "{{ ansible_facts['env']['HOME'] }}/.bashrc"
-    line: '. "$HOME/.cargo/env"'
-    state: "absent"
-
 - name: "Add cargo bin to shell profile"
   ansible.builtin.blockinfile:
     path: "{{ ansible_facts['env']['HOME'] }}/.bashrc"
