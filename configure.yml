@@ -3,7 +3,7 @@
   gather_facts: true
   hosts:
     - archlinux.local
-    - mac.local
+    - marchlinux.local
   roles:
     - role: "locales"
     - role: "timezone"
