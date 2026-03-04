@@ -1,6 +1,4 @@
 ---
 argument_specs:
   main:
-    short_description: "Install uwsm on ArchLinux"
-    description: "Install uwsm on ArchLinux"
     options: {}

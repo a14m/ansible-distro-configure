@@ -1,8 +1,6 @@
 ---
 argument_specs:
   main:
-    short_description: "Install Nautilus file manager on ArchLinux"
-    description: "Install Nautilus file manager on ArchLinux"
     options:
       nautilus_folder_viewer:
         type: "str"

@@ -1,8 +1,6 @@
 ---
 argument_specs:
   main:
-    author: "a14m"
-    description: "Configure system as intelligent network gateway with dynamic VPN routing"
     options:
       gateway_enabled:
         description: "Enable gateway functionality"

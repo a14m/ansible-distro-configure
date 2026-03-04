@@ -5,8 +5,6 @@
 # But also you can change these defaults directly.
 argument_specs:
   main:
-    short_description: "Configure firefox settings and policies"
-    description: "Configure firefox settings and policies"
     options:
       firefox_policies_override:
         type: "dict"

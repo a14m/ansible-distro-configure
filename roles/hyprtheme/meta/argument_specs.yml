@@ -1,8 +1,6 @@
 ---
 argument_specs:
   main:
-    short_description: "Install hyprland themes on ArchLinux"
-    description: "Install hyprland themes on ArchLinux"
     options:
       hyprtheme_default_theme:
         description: "The initial default theme to be used"

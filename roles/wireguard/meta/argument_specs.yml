@@ -1,12 +1,6 @@
 ---
 argument_specs:
   main:
-    short_description: "Install and configure WireGuard VPN connections"
-    description:
-      - "Installs WireGuard package and tools"
-      - "Deploys WireGuard configuration files from dictionary"
-      - "Optionally auto-starts a specific connection on boot"
-    author: "a14m"
     options:
       wireguard_connections:
         description: "Dictionary of WireGuard connection configurations"

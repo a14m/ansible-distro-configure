@@ -1,6 +1,4 @@
 ---
 argument_specs:
   main:
-    short_description: "Install Intel i915 Mesa drivers"
-    description: "Install Intel i915 Mesa drivers"
     options: {}

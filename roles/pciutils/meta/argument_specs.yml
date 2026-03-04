@@ -1,6 +1,4 @@
 ---
 argument_specs:
   main:
-    short_description: "Install pciutils on Linux distribution"
-    description: "Install pciutils on Linux distribution"
     options: {}
