@@ -3,7 +3,7 @@
   gather_facts: true
   tags: ["required_for_boot"]
   hosts:
-    - mac.local
+    - marchlinux.local
     - archlinux.local
     - ubuntu.local
     - rpi5.local
