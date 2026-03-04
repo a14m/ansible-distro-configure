@@ -6,7 +6,7 @@
   changed_when: false
   failed_when: false
 
-- name: "Install go {{ item }}"
+- name: "Install go versions"
   ansible.builtin.command:
     cmd: "mise use --global go@{{ item }}"
   changed_when: true

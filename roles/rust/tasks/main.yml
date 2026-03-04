@@ -6,7 +6,7 @@
   changed_when: false
   failed_when: false
 
-- name: "Install rust {{ item }}"
+- name: "Install rust versions"
   ansible.builtin.command:
     cmd: "mise use --global rust@{{ item }}"
   changed_when: true
