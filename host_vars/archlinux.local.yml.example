@@ -45,3 +45,8 @@ hyprland_monitors: |
   env = GDK_SCALE,2
   monitor=HDMI-A-1,3840x2160@60,auto-left,1.6
   monitor=DP-1,3840x2160@60,auto-right,1.6
+
+zen_browser_install_browserpass: true
+zen_browser_install_passff: false
+firefox_install_browserpass: false
+firefox_install_passff: true
