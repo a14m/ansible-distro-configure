@@ -1,6 +1,22 @@
 ---
 - name: "Bootstrap"
-  ansible.builtin.import_playbook: "bootstrap.yml"
+  gather_facts: true
+  tags: ["required_for_boot"]
+  hosts: all
+  roles:
+    - role: "hostname"
+    - role: "network"
+    - role: "user"
+    - role: "ssh"
+    - role: "password_policy"
+  pre_tasks:
+    - name: "Update package cache"
+      become: true
+      ansible.builtin.package:
+        update_cache: true
+      async: 60
+      poll: 5
+      failed_when: false
 
 - name: "Configure"
   ansible.builtin.import_playbook: "configure.yml"
