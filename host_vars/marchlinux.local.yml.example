@@ -39,3 +39,17 @@ wireguard_connections:
 fonts_extra:
   - "ttf-dejavu"
   - "noto-fonts"
+
+zen_browser_install_browserpass: false
+zen_browser_install_passff: false
+zen_browser_extra_extensions:
+  "tabby@whatsyouridea.com":
+    installation_mode: "force_installed"
+    install_url: "https://addons.mozilla.org/firefox/downloads/latest/tabby-window-tab-manager/latest.xpi"
+
+firefox_install_browserpass: false
+firefox_install_passff: false
+firefox_extra_extensions:
+  "tabby@whatsyouridea.com":
+    installation_mode: "force_installed"
+    install_url: "https://addons.mozilla.org/firefox/downloads/latest/tabby-window-tab-manager/latest.xpi"
