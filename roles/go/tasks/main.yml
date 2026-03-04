@@ -4,7 +4,6 @@
     cmd: "mise ls go"
   register: go_installed_versions
   changed_when: false
-  failed_when: false
 
 - name: "Install go versions"
   ansible.builtin.command:

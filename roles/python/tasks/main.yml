@@ -4,7 +4,6 @@
     cmd: "mise ls python"
   register: python_installed_versions
   changed_when: false
-  failed_when: false
 
 - name: "Install python versions"
   ansible.builtin.command:
@@ -18,7 +17,6 @@
     cmd: "mise ls uv"
   register: python_uv_installed_version
   changed_when: false
-  failed_when: false
 
 - name: "Install uv {{ python_uv_version }}"
   ansible.builtin.command:

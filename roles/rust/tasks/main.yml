@@ -4,7 +4,6 @@
     cmd: "mise ls rust"
   register: rust_installed_versions
   changed_when: false
-  failed_when: false
 
 - name: "Install rust versions"
   ansible.builtin.command:
