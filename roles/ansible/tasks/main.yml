@@ -9,7 +9,7 @@
 - name: "Check ansible-core version {{ ansible_core_version }}"
   ansible.builtin.shell: |
     set -euo pipefail
-    mise exec uv -- tool list | grep "^ansible-core " | awk '{print $2}' | sed 's/^v//'
+    mise exec uv -- uv tool list | grep "^ansible-core " | awk '{print $2}' | sed 's/^v//'
   args:
     executable: /bin/bash
   register: ansible_core_installed_version
@@ -18,14 +18,14 @@
 
 - name: "Install ansible-core {{ ansible_core_version }}"
   ansible.builtin.command:
-    cmd: "mise exec uv -- tool install ansible-core=={{ ansible_core_version }} --force"
+    cmd: "mise exec uv -- uv tool install ansible-core=={{ ansible_core_version }} --force"
   changed_when: true
   when: ansible_core_installed_version.stdout != ansible_core_version
 
 - name: "Check molecule version {{ molecule_version }}"
   ansible.builtin.shell: |
     set -euo pipefail
-    mise exec uv -- tool list | grep "^molecule " | awk '{print $2}' | sed 's/^v//'
+    mise exec uv -- uv tool list | grep "^molecule " | awk '{print $2}' | sed 's/^v//'
   args:
     executable: /bin/bash
   register: molecule_installed_version
@@ -39,6 +39,7 @@
       - "exec"
       - "uv"
       - "--"
+      - "uv"
       - "tool"
       - "install"
       - "molecule=={{ molecule_version }}"
@@ -51,7 +52,7 @@
 - name: "Check ansible-lint version {{ ansible_lint_version }}"
   ansible.builtin.shell: |
     set -euo pipefail
-    mise exec uv -- tool list | grep "^ansible-lint " | awk '{print $2}' | sed 's/^v//'
+    mise exec uv -- uv tool list | grep "^ansible-lint " | awk '{print $2}' | sed 's/^v//'
   args:
     executable: /bin/bash
   register: ansible_lint_installed_version
@@ -60,6 +61,6 @@
 
 - name: "Install ansible-lint {{ ansible_lint_version }}"
   ansible.builtin.command:
-    cmd: "mise exec uv -- tool install ansible-lint=={{ ansible_lint_version }} --force"
+    cmd: "mise exec uv -- uv tool install ansible-lint=={{ ansible_lint_version }} --force"
   changed_when: true
   when: ansible_lint_installed_version.stdout != ansible_lint_version

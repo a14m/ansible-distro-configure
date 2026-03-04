@@ -2,7 +2,7 @@
 - name: "Check yamllint version {{ yamllint_version }}"
   ansible.builtin.shell: |
     set -euo pipefail
-    mise exec uv -- tool list | grep "^yamllint " | awk '{print $2}' | sed 's/^v//'
+    mise exec uv -- uv tool list | grep "^yamllint " | awk '{print $2}' | sed 's/^v//'
   args:
     executable: /bin/bash
   register: yamllint_installed_version
@@ -11,6 +11,6 @@
 
 - name: "Install yamllint {{ yamllint_version }}"
   ansible.builtin.command:
-    cmd: "mise exec uv -- tool install yamllint=={{ yamllint_version }} --force"
+    cmd: "mise exec uv -- uv tool install yamllint=={{ yamllint_version }} --force"
   changed_when: true
   when: yamllint_installed_version.stdout != yamllint_version
