@@ -83,6 +83,7 @@
     - role: "gnome-calendar"
     - role: "gnome-loupe"
     - role: "gnome-papers"
+    - role: "gnome-planify"
     - role: "gradia"
     - role: "mpv"
     - role: "neomutt"
