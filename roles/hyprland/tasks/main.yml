@@ -2,18 +2,17 @@
 - name: "Ensure hyprland packages are installed"
   become: true
   ansible.builtin.package:
-    name: "{{ item }}"
+    name:
+      - "swaybg"
+      - "hyprlock"
+      - "hypridle"
+      - "hyprpicker"
+      - "hyprsunset"
+      - "hyprshot"
+      - "hyprland"
+      - "xdg-desktop-portal-gnome"
+      - "xdg-desktop-portal-hyprland"
     state: "present"
-  loop:
-    - "swaybg"
-    - "hyprlock"
-    - "hypridle"
-    - "hyprpicker"
-    - "hyprsunset"
-    - "hyprshot"
-    - "hyprland"
-    - "xdg-desktop-portal-gnome"
-    - "xdg-desktop-portal-hyprland"
 
 - name: "Ensure hyprland AUR packages are installed"
   become: true
