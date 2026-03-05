@@ -1,0 +1,7 @@
+---
+- name: "Ensure gnome-planify is installed via flathub"
+  community.general.flatpak:
+    name: "io.github.alainm23.planify"
+    remote: "flathub"
+    state: "present"
+    method: "user"

@@ -1,0 +1,8 @@
+---
+- name: "Ensure gnome-planify is installed"
+  become: true
+  become_user: "aur_builder"
+  kewlfft.aur.aur:
+    name: "planify"
+    state: "present"
+    use: "yay"
