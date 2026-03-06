@@ -1,0 +1,6 @@
+---
+- name: "Restart xdg-desktop-portal-hyprland"
+  ansible.builtin.systemd_service:
+    name: "xdg-desktop-portal-hyprland"
+    state: "restarted"
+    scope: "user"

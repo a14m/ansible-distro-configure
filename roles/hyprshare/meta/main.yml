@@ -1,5 +1,6 @@
 ---
-dependencies: []
+dependencies:
+  - role: "xdg-desktop-portal"
 galaxy_info:
   author: "a14m"
   description: "Install Hyprland screensharing dependencies"

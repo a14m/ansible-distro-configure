@@ -14,6 +14,7 @@
     name: "hyprland-preview-share-picker"
     state: "present"
     use: "yay"
+  when: hyprshare_install_preview
 
 # This is a workaround the installation failing
 # because the log file is created with aur_builder as an owner
@@ -22,4 +23,11 @@
   ansible.builtin.file:
     path: "/tmp/hyprland-preview-share-picker.log"
     state: "absent"
+  when: hyprshare_install_preview
 
+- name: "Template user share picker configuration"
+  ansible.builtin.template:
+    src: "xdph.conf.j2"
+    dest: "{{ ansible_facts['env']['HOME'] }}/.config/hypr/xdph.conf"
+    mode: "0644"
+  notify: "Restart xdg-desktop-portal-hyprland"
