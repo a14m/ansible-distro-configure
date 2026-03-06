@@ -1,0 +1,8 @@
+---
+- name: "Ensure xdg-desktop-portal packages are installed"
+  become: true
+  ansible.builtin.package:
+    name:
+      - "xdg-desktop-portal-gnome"
+      - "xdg-desktop-portal-hyprland"
+    state: "present"

@@ -17,6 +17,7 @@ dependencies:
   - role: "waybar"
   - role: "clipse"
   - role: "tofi"
+  - role: "xdg-desktop-portal"
   - role: "hyprcursor"
   - role: "hyprtheme"
   - role: "hyprshare"
