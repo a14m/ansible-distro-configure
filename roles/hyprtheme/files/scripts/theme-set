@@ -45,11 +45,3 @@ else
   gsettings set org.gnome.desktop.interface gtk-theme "Adwaita-dark"
   gsettings set org.gnome.desktop.interface font-name "Noto Sans"
 fi
-
-# # Change gnome icon theme color
-# GNOME_ICONS_THEME=~/.config/hyprtheme/current/icons.theme
-# if [[ -f $GNOME_ICONS_THEME ]]; then
-  # gsettings set org.gnome.desktop.interface icon-theme "$(<$GNOME_ICONS_THEME)"
-# else
-  # gsettings set org.gnome.desktop.interface icon-theme "Yaru-blue"
-# fi
