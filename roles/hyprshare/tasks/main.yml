@@ -1,0 +1,25 @@
+---
+- name: "Ensure hyprshare dependencies is installed"
+  become: true
+  ansible.builtin.package:
+    name:
+      - "slurp"
+      - "grim"
+    state: "present"
+
+- name: "Ensure hyprland-preview-share-picker AUR packages is installed"
+  become: true
+  become_user: "aur_builder"
+  kewlfft.aur.aur:
+    name: "hyprland-preview-share-picker"
+    state: "present"
+    use: "yay"
+
+# This is a workaround the installation failing
+# because the log file is created with aur_builder as an owner
+- name: "Ensure tmp log is removed"
+  become: true
+  ansible.builtin.file:
+    path: "/tmp/hyprland-preview-share-picker.log"
+    state: "absent"
+

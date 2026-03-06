@@ -76,6 +76,8 @@
       dest: "/etc/hypr/hyprlock.conf"
     - src: "hypr/hypridle.conf.j2"
       dest: "/etc/hypr/hypridle.conf"
+    - src: "hypr/xdph.conf.j2"
+      dest: "/etc/hypr/xdph.conf"
     - src: "hypr/hyprland.conf.j2"
       dest: "/etc/hypr/hyprland.conf"
     - src: "uwsm/env.j2"
@@ -108,6 +110,17 @@
         block: |
           # System defaults
           source = /etc/hypr/hypridle.conf
+
+    - name: "Configure user xdg-desktop-portal-hyprland"
+      ansible.builtin.blockinfile:
+        path: "{{ ansible_facts['env']['HOME'] }}/.config/hypr/xdph.conf"
+        state: "present"
+        prepend_newline: true
+        append_newline: true
+        marker: "# ==== {mark} ANSIBLE HYPRSHARE CONFIG"
+        block: |
+          # System defaults
+          source = /etc/hypr/xdph.conf
 
 - name: "Copy hyprland scripts"
   become: true
