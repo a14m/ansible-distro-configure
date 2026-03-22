@@ -25,6 +25,8 @@ show_wallpapers() {
 }
 
 select_wallpaper() {
+  local wallpaper_link="$HOME/.config/hyprtheme/current/wallpaper"
+
   local selected_wallpaper="$1"
   if [[ ! -f "$selected_wallpaper" ]]; then
     notify-send -e \
@@ -37,8 +39,9 @@ select_wallpaper() {
     exit 0
   fi
 
+  ln -nsf "$selected_wallpaper" "$wallpaper_link"
   pkill -x swaybg
-  setsid uwsm-app -- swaybg -i "$selected_wallpaper" -m fill >/dev/null 2>&1 &
+  setsid uwsm-app -- swaybg -i "$wallpaper_link" -m fill >/dev/null 2>&1 &
 }
 
 if [[ -z "$1" ]]; then
