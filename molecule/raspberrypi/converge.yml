@@ -107,3 +107,4 @@
     - role: "btop"
     - role: "pipewire"
     - role: "claude"
+    - role: "localsend"

@@ -1,0 +1,7 @@
+---
+- name: "Ensure localsend is installed via flathub"
+  community.general.flatpak:
+    name: "org.localsend.localsend_app"
+    remote: "flathub"
+    state: "present"
+    method: "user"

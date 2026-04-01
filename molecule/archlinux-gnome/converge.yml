@@ -110,3 +110,4 @@
     - role: "pipewire"
     - role: "brightnessctl"
     - role: "wiremix"
+    - role: "localsend"
