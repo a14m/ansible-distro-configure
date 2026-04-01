@@ -103,3 +103,4 @@
     - role: "pipewire"
     - role: "claude"
     - role: "steam"
+    - role: "localsend"

@@ -1,0 +1,8 @@
+---
+- name: "Ensure localsend is installed"
+  become: true
+  become_user: "aur_builder"
+  kewlfft.aur.aur:
+    name: "localsend-bin"
+    state: "present"
+    use: "yay"
