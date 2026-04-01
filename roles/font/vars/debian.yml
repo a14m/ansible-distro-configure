@@ -8,7 +8,7 @@ font_packages:
   - "fonts-noto-color-emoji"
   - "fonts-noto-extra"
 
-font_google_fonts: []
+font_google_font_families: []
 
 font_presets:
   - src: "/usr/share/fontconfig/conf.avail/10-sub-pixel-rgb.conf"

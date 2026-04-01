@@ -5,15 +5,8 @@ font_packages:
   - "noto-fonts"
   - "noto-fonts-emoji"
 
-font_google_fonts:
-  - url: "https://fonts.gstatic.com/s/ptsans/v18/jizaRExUiTo99u79P0WOxOGMMDQ.ttf"
-    dest: "PTSans-Regular.ttf"
-  - url: "https://fonts.gstatic.com/s/ptsans/v18/jizYRExUiTo99u79D0eEwMOJIDQA-g.ttf"
-    dest: "PTSans-Italic.ttf"
-  - url: "https://fonts.gstatic.com/s/ptsans/v18/jizfRExUiTo99u79B_mh4OmnLD0Z4zM.ttf"
-    dest: "PTSans-Bold.ttf"
-  - url: "https://fonts.gstatic.com/s/ptsans/v18/jizdRExUiTo99u79D0e8fOytKB8c8zMrig.ttf"
-    dest: "PTSans-BoldItalic.ttf"
+font_google_font_families:
+  - "PT Sans"
 
 font_presets:
   - src: "/usr/share/fontconfig/conf.avail/10-sub-pixel-rgb.conf"
