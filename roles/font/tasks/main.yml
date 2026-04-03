@@ -61,6 +61,7 @@
         return_content: true
       register: font_google_fonts_metadata
       loop: "{{ font_google_font_families }}"
+      no_log: "{{ ansible_verbosity == 0 }}"
 
     - name: "Parse Google Fonts file references"
       vars:
@@ -69,6 +70,7 @@
       ansible.builtin.set_fact:
         font_google_font_files: "{{ font_google_font_files | default([]) + font_file_refs }}"
       loop: "{{ font_google_fonts_metadata.results }}"
+      no_log: "{{ ansible_verbosity == 0 }}"
 
     - name: "Install Google Fonts"
       become: true
