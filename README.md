@@ -14,7 +14,7 @@ If you are using `git-crypt`, setup your key, and override the encrypted files (
 with your own version.
 
 If you are not using `git-crypt`, delete the `.gitattributes` file and override the encrypted files
-with your own version.
+with your own version.<br>
 Ex. `rm .gitattributes && cp host_vars/ubuntuiso.local.yml.example host_vars/ubuntuiso.local.yml`
 
 ## Playbook: distro-install
@@ -45,7 +45,7 @@ cp /opt/distro-configure/host_vars/${DISTRO}.local.yml.example /opt/distro-confi
 cd /opt/distro-configure
 ansible-galaxy install -r requirements.yml
 
-ansible-playbook site.yml --ask-become-pass
+ansible-playbook site.yml --ask-become-pass --limit ${HOST}
 ```
 
 ## Special Thanks to
