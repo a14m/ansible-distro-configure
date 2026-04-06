@@ -3,5 +3,5 @@ argument_specs:
   main:
     description: >
       Detects the GPU present on the machine using PCI device information and
-      includes the matching driver role (intel_i915 or nvidia_gtx1060).
+      includes the matching driver role (intel_i915, nvidia_gtx1060, or nvidia_gt750m).
     options: {}

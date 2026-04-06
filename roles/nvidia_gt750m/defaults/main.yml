@@ -1,0 +1,12 @@
+---
+nvidia_gt750m_aur_packages:
+  - "nvidia-470xx-dkms"
+  - "nvidia-470xx-utils"
+  - "nvidia-470xx-settings"
+  - "lib32-nvidia-470xx-utils"
+
+nvidia_gt750m_modules:
+  - "nvidia"
+  - "nvidia_modeset"
+  - "nvidia_uvm"
+  - "nvidia_drm"
