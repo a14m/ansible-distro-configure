@@ -83,6 +83,7 @@
     - role: "gnome-loupe"
     - role: "gnome-papers"
     - role: "gnome-planify"
+    - role: "gnome-disk-utility"
     - role: "gradia"
     - role: "mpv"
     - role: "neomutt"

@@ -1,0 +1,6 @@
+---
+- name: "Ensure gnome-disk-utility is installed"
+  become: true
+  ansible.builtin.package:
+    name: "gnome-disk-utility"
+    state: "present"
