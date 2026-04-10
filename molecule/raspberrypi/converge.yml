@@ -92,6 +92,7 @@
     - role: "gnome-loupe"
     - role: "gnome-papers"
     - role: "gnome-disk-utility"
+    - role: "gnome-newsflash"
     - role: "gradia"
     - role: "rsync"
     - role: "gpg"

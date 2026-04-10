@@ -1,0 +1,7 @@
+---
+- name: "Ensure newsflash is installed via flathub"
+  community.general.flatpak:
+    name: "io.gitlab.news_flash.NewsFlash"
+    remote: "flathub"
+    state: "present"
+    method: "user"
