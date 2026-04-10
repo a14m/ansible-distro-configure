@@ -78,5 +78,5 @@ bindl = , XF86AudioPlay, exec, playerctl play-pause
 bindl = , XF86AudioPrev, exec, playerctl previous
 
 # Screenshot
-bindd = SUPER SHIFT, 3, Screenshot window, exec, hyprshot -m window
-bindd = SUPER SHIFT, 4, Screenshot region, exec, hyprshot -m region
+bindd = SUPER SHIFT, 3, Screenshot window, exec, /etc/hypr/scripts/screenshot.sh --window
+bindd = SUPER SHIFT, 4, Screenshot region, exec, /etc/hypr/scripts/screenshot.sh --region
