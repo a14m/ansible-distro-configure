@@ -9,6 +9,7 @@
       - "hyprpicker"
       - "hyprsunset"
       - "hyprshot"
+      - "satty"
       - "hyprland"
     state: "present"
 
@@ -126,3 +127,5 @@
       dest: "/etc/hypr/scripts/bluetooth.sh"
     - src: "scripts/power.sh"
       dest: "/etc/hypr/scripts/power.sh"
+    - src: "scripts/screenshot.sh"
+      dest: "/etc/hypr/scripts/screenshot.sh"

@@ -6,6 +6,7 @@
     state: "present"
   loop:
     - "nautilus"
+    - "xdg-user-dirs"
 
 - name: "Set nautilus as default file manager"
   ansible.builtin.command:
