@@ -1,0 +1,6 @@
+---
+- name: "Ensure newsflash is installed"
+  become: true
+  ansible.builtin.package:
+    name: "newsflash"
+    state: "present"

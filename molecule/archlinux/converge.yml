@@ -84,6 +84,7 @@
     - role: "gnome-papers"
     - role: "gnome-planify"
     - role: "gnome-disk-utility"
+    - role: "gnome-newsflash"
     - role: "gradia"
     - role: "mpv"
     - role: "neomutt"

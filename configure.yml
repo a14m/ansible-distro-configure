@@ -32,6 +32,7 @@
     - role: "gnome-papers"
     - role: "gnome-planify"
     - role: "gnome-disk-utility"
+    - role: "gnome-newsflash"
     - role: "gradia"
     - role: "mpv"
     - role: "neomutt"
@@ -88,6 +89,7 @@
     - role: "localsend"
     - role: "microsoft-teams"
     - role: "gnome-calendar"
+    - role: "gnome-newsflash"
     - role: "prometheus-node-exporter"
 
 - name: "Raspberry Pi configure"
