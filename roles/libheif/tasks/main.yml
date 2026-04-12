@@ -1,0 +1,9 @@
+---
+- name: "Include OS-specific variables"
+  ansible.builtin.include_vars: "{{ ansible_facts['os_family'] | lower }}.yml"
+
+- name: "Ensure the heif-convert is installed"
+  become: true
+  ansible.builtin.package:
+    name: "{{ libheif_package }}"
+    state: "present"

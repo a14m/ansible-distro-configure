@@ -73,6 +73,7 @@
     - role: "man"
     - role: "jq"
     - role: "ag"
+    - role: "libheif"
     - role: "tmuxinator"
     - role: "wireguard"
     - role: "gateway"

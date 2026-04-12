@@ -71,6 +71,7 @@
     - role: "man"
     - role: "jq"
     - role: "ag"
+    - role: "libheif"
     - role: "tmux"
     - role: "python"
     - role: "go"
