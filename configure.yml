@@ -58,6 +58,7 @@
   gather_facts: true
   hosts:
     - ubuntu.local
+    - mubuntu.local
   roles:
     - role: "locales"
     - role: "timezone"
