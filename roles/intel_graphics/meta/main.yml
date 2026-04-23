@@ -4,10 +4,16 @@ dependencies:
     when: ansible_facts['os_family'] == "Archlinux"
 galaxy_info:
   author: "a14m"
-  description: "Install Intel i915 Mesa drivers"
+  description: "Install Intel graphics Mesa drivers"
   license: "MIT"
   min_ansible_version: "2.18"
   platforms:
     - name: "ArchLinux"
+      versions:
+        - "all"
+    - name: "Ubuntu"
+      versions:
+        - "noble"
+    - name: "Debian"
       versions:
         - "all"

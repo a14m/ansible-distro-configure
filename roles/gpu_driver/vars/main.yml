@@ -5,4 +5,4 @@ gpu_driver_map:
   - match: "GeForce GT 750M"
     role: "nvidia_gt750m"
   - match: "VGA compatible controller: Intel"
-    role: "intel_i915"
+    role: "intel_graphics"
