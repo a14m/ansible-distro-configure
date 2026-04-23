@@ -1,0 +1,19 @@
+---
+- name: "Ensure Nerd Fonts directory exists"
+  become: true
+  ansible.builtin.file:
+    path: "/usr/share/fonts/nerd-fonts/{{ item.name }}"
+    state: "directory"
+    mode: "0755"
+  loop: "{{ font_nerd_fonts }}"
+
+- name: "Download and extract Nerd Fonts"
+  become: true
+  ansible.builtin.unarchive:
+    src: "https://github.com/ryanoasis/nerd-fonts/releases/download/v{{ item.version }}/{{ item.name }}.tar.xz"
+    dest: "/usr/share/fonts/nerd-fonts/{{ item.name }}"
+    remote_src: true
+    creates: "/usr/share/fonts/nerd-fonts/{{ item.name }}/{{ item.name }}NerdFont-Regular.ttf"
+  loop: "{{ font_nerd_fonts }}"
+  notify:
+    - "Update font-cache"
