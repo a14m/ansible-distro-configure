@@ -14,7 +14,7 @@
     dest: "/etc/modprobe.d/nvidia.conf"
     mode: "0644"
   notify:
-    - "Rebuild initramfs"
+    - "Run mkinitcpio"
   tags:
     - "molecule-notest"
 
@@ -25,7 +25,7 @@
     regexp: "(HOOKS=\\([^)]*) kms"
     replace: '\1'
   notify:
-    - "Rebuild initramfs"
+    - "Run mkinitcpio"
   tags:
     - "molecule-notest"
 
@@ -52,6 +52,6 @@
     regexp: "^MODULES=\\(.*\\)"
     line: "MODULES=({{ all_modules | join(' ') }})"
   notify:
-    - "Rebuild initramfs"
+    - "Run mkinitcpio"
   tags:
     - "molecule-notest"
