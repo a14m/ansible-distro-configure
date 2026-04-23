@@ -1,0 +1,17 @@
+---
+- name: "Install NVIDIA 470 legacy driver"
+  become: true
+  ansible.builtin.package:
+    name: "nvidia-driver-470"
+    state: "present"
+
+- name: "Configure NVIDIA DRM kernel mode setting"
+  become: true
+  ansible.builtin.template:
+    src: "nvidia.conf.j2"
+    dest: "/etc/modprobe.d/nvidia.conf"
+    mode: "0644"
+  notify:
+    - "Run update-initramfs"
+  tags:
+    - "molecule-notest"
