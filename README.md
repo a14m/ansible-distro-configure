@@ -15,7 +15,7 @@ with your own version.
 
 If you are not using `git-crypt`, delete the `.gitattributes` file and override the encrypted files
 with your own version.<br>
-Ex. `rm .gitattributes && cp host_vars/ubuntuiso.local.yml.example host_vars/ubuntuiso.local.yml`
+Ex. `rm .gitattributes && cp host_vars/laptop.local.yml.example host_vars/laptop.local.yml`
 
 ## Playbook: distro-install
 
