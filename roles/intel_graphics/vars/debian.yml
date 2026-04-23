@@ -1,0 +1,4 @@
+---
+intel_graphics_packages:
+  - "mesa-vulkan-drivers"
+  - "intel-media-va-driver"

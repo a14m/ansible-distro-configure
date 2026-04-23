@@ -51,6 +51,7 @@
         - "gnome-papers"
         - "gnome-disk-utility"
         - "prometheus-node-exporter"
+        - "gpu_driver"
 
     - name: "Archlinux"
       when: ansible_distribution == 'Archlinux'
@@ -62,7 +63,6 @@
         - "hyprland"
         - "zen-browser"
         - "chromium"
-        - "gpu_driver"
         - "steam"
 
     - name: "Ubuntu"

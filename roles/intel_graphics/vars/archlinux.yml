@@ -1,5 +1,5 @@
 ---
-intel_i915_packages:
+intel_graphics_packages:
   - "mesa"
   - "libva-intel-driver"
   - "vulkan-intel"
