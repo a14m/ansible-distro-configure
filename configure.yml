@@ -8,7 +8,9 @@
   tasks:
     - name: "Common"
       ansible.builtin.include_role:
-        name: "{{ item }}"
+        name: "{{ role }}"
+      loop_control:
+        loop_var: "role"
       loop:
         - "locales"
         - "timezone"
@@ -56,7 +58,9 @@
     - name: "Archlinux"
       when: ansible_distribution == 'Archlinux'
       ansible.builtin.include_role:
-        name: "{{ item }}"
+        name: "{{ role }}"
+      loop_control:
+        loop_var: "role"
       loop:
         - "yay"
         - "mpv"
@@ -68,7 +72,9 @@
     - name: "Ubuntu"
       when: ansible_distribution == 'Ubuntu'
       ansible.builtin.include_role:
-        name: "{{ item }}"
+        name: "{{ role }}"
+      loop_control:
+        loop_var: "role"
       loop:
         - "gnome"
 
