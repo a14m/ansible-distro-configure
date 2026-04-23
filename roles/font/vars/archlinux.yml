@@ -5,6 +5,8 @@ font_packages:
   - "noto-fonts"
   - "noto-fonts-emoji"
 
+font_nerd_fonts: []
+
 font_google_font_families:
   - "PT Sans"
 

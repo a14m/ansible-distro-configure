@@ -10,6 +10,10 @@ font_packages:
 
 font_google_font_families: []
 
+font_nerd_fonts:
+  - name: "JetBrainsMono"
+    version: "3.2.1"
+
 font_presets:
   - src: "/usr/share/fontconfig/conf.avail/10-sub-pixel-rgb.conf"
     dest: "/etc/fonts/conf.d/10-sub-pixel-rgb.conf"

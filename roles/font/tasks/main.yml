@@ -45,39 +45,10 @@
     state: "link"
   loop: "{{ font_presets }}"
 
-- name: "Ensure Google Fonts directory exists"
-  become: true
-  ansible.builtin.file:
-    path: "/usr/share/fonts/google-fonts"
-    state: "directory"
-    mode: "0755"
+- name: "Install Nerd Fonts"
+  when: "font_nerd_fonts | default([]) | length > 0"
+  ansible.builtin.include_tasks: "install-nerd-fonts.yml"
 
-- name: "Install Google fonts"
-  when: "font_google_font_families | length > 0"
-  block:
-    - name: "Fetch Google Fonts file references"
-      ansible.builtin.uri:
-        url: "https://fonts.google.com/download/list?family={{ item | urlencode }}"
-        return_content: true
-      register: font_google_fonts_metadata
-      loop: "{{ font_google_font_families }}"
-      no_log: "{{ ansible_verbosity == 0 }}"
-
-    - name: "Parse Google Fonts file references"
-      vars:
-        font_response_json: "{{ item.content | regex_replace('^[^{]+', '') | from_json }}"
-        font_file_refs: "{{ font_response_json.manifest.fileRefs | default([]) }}"
-      ansible.builtin.set_fact:
-        font_google_font_files: "{{ font_google_font_files | default([]) + font_file_refs }}"
-      loop: "{{ font_google_fonts_metadata.results }}"
-      no_log: "{{ ansible_verbosity == 0 }}"
-
-    - name: "Install Google Fonts"
-      become: true
-      ansible.builtin.get_url:
-        url: "{{ item.url }}"
-        dest: "/usr/share/fonts/google-fonts/{{ item.filename }}"
-        mode: "0644"
-      loop: "{{ font_google_font_files | default([]) }}"
-      notify:
-        - "Update font-cache"
+- name: "Install Google Fonts"
+  when: "font_google_font_families | default([]) | length > 0"
+  ansible.builtin.include_tasks: "install-google-fonts.yml"
