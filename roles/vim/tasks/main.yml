@@ -5,7 +5,7 @@
 - name: "Ensure vim is installed"
   become: true
   ansible.builtin.package:
-    name: "{{ vim_package_name }}"
+    name: "{{ vim_pkg }}"
     state: "present"
 
 - name: "Clone vimrc git repo"
