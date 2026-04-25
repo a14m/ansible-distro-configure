@@ -2,7 +2,7 @@
 gpu_driver_map:
   - match: "GeForce GTX 1060"
     role: "nvidia_gtx1060"
-  - match: "GeForce GT 750M"
-    role: "nvidia_gt750m"
+  # - match: "GeForce GT 750M"
+    # role: "nvidia_gt750m"
   - match: "VGA compatible controller: Intel"
     role: "intel_graphics"
