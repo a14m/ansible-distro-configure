@@ -1,0 +1,7 @@
+---
+network_ipv4_address: "10.0.0.253"
+network_ipv4_gateway: "10.0.0.254"
+network_ipv4_dns: "10.0.0.254"
+network_ipv6_address: "fd5c:fd8b:2b8c::253/64"
+network_ipv6_gateway: "fd5c:fd8b:2b8c::254"
+network_ipv6_dns: "fd5c:fd8b:2b8c::254"
