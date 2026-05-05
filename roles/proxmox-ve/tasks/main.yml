@@ -1,9 +1,16 @@
 ---
+- name: "Install proxmox-ve"
+  become: true
+  ansible.builtin.apt:
+    name: "proxmox-ve"
+    state: "present"
+    update_cache: true
+
 - name: "Configure Proxmox repos"
   become: true
   when: proxmox_ve_repo == "no-subscription"
   block:
-    - name: "Configure no-subuscription repos"
+    - name: "Configure no-subscription repos"
       ansible.builtin.apt_repository:
         repo: "deb http://download.proxmox.com/debian/pve bookworm pve-no-subscription"
         state: "present"
@@ -14,13 +21,6 @@
       ansible.builtin.file:
         path: "/etc/apt/sources.list.d/pve-enterprise.list"
         state: "absent"
-
-- name: "Install proxmox-ve"
-  become: true
-  ansible.builtin.apt:
-    name: "proxmox-ve"
-    state: "present"
-    update_cache: true
 
 - name: "Disable IPv6 on wlan0 (prevents PVE cert generation failures with zone IDs)"
   become: true
