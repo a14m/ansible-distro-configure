@@ -5,6 +5,9 @@
     name: "proxmox-ve"
     state: "present"
     update_cache: true
+  tags:
+    # Since proxmox-ve package setups network and configure grub/kernel hooks which doesn't work in containers
+    - "molecule-notest"
 
 - name: "Configure Proxmox repos"
   become: true
@@ -22,14 +25,17 @@
         path: "/etc/apt/sources.list.d/pve-enterprise.list"
         state: "absent"
 
-- name: "Disable IPv6 on wlan0 (prevents PVE cert generation failures with zone IDs)"
+- name: "Set management IP in /etc/hosts for PVE cert generation"
   become: true
-  ansible.posix.sysctl:
-    name: "net.ipv6.conf.wlan0.disable_ipv6"
-    value: "1"
-    state: "present"
-    sysctl_set: true
-    reload: true
+  ansible.builtin.lineinfile:
+    path: "/etc/hosts"
+    regexp: "^{{ network_ipv4_address }}"
+    line: "{{ network_ipv4_address }}  {{ hostname }}"
+    state: present
+  notify: "Restart pveproxy"
+  tags:
+    # Since container doesn't have network ip address, skipping this test
+    - "molecule-notest"
 
 - name: "Enable and start Proxmox VE services"
   become: true
@@ -42,3 +48,6 @@
     - "pvedaemon"
     - "pveproxy"
     - "pvestatd"
+  tags:
+    # Since proxmox-ve package was ignored from testing, we need to ignore this too
+    - "molecule-notest"
