@@ -13,6 +13,9 @@
 - name: "Initialize proxmox-boot-tool"
   become: true
   when: not proxmox_boot_tool_uuids.stat.exists
+  tags:
+    # Since there is no EFI partition on container environment, ignoring this block
+    - "molecule-notest"
   block:
     - name: "Get EFI partition device"
       ansible.builtin.command:
