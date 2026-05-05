@@ -1,0 +1,52 @@
+---
+role_name_check: 1
+dependency:
+  name: galaxy
+  options:
+    requirements-file: ../../requirements.yml
+    ignore-errors: true
+driver:
+  name: podman
+platforms:
+  - name: proxmox
+    image: debian
+    dockerfile: Dockerfile.j2
+    platform: "linux/amd64"
+    pre_build_image: false
+    privileged: true
+    command: ${MOLECULE_COMMAND:-"/lib/systemd/systemd"}
+    tmpfs:
+      "/tmp": "rw"
+      "/run": "rw,exec"
+    volumes:
+      - "/sys/fs/cgroup:/sys/fs/cgroup:rw"
+    cgroupns_mode: host
+
+provisioner:
+  name: ansible
+  inventory:
+    links:
+      host_vars: "../../host_vars/"
+      group_vars: "../../group_vars/"
+  env:
+    ANSIBLE_ROLES_PATH: "../../roles"
+    GITHUB_TOKEN: "{{ lookup('env', 'GITHUB_TOKEN') }}"
+  config_options:
+    defaults:
+      callback_result_format: yaml
+      interpreter_python: /usr/bin/python3
+    ssh_connection:
+      pipelining: true
+  playbooks:
+    converge: converge.yml
+verifier:
+  name: ansible
+
+scenario:
+  test_sequence:
+    - destroy
+    - syntax
+    - create
+    - converge
+    - idempotence
+    - destroy

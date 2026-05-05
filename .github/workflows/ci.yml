@@ -38,6 +38,8 @@ jobs:
             runs_on: "ubuntu-latest"
           - name: debian
             runs_on: "ubuntu-latest"
+          - name: proxmox
+            runs_on: "ubuntu-latest"
           - name: raspberrypi
             runs_on: "ubuntu-24.04-arm"
     runs-on: ${{ matrix.molecule_distro.runs_on }}
