@@ -1,0 +1,64 @@
+---
+- name: "Bootstrap"
+  hosts: "proxmox"
+  gather_facts: true
+  vars:
+    ansible_become_method: su
+    user_public_keys:
+      - "ssh-ed25519 AAAA...fMo"
+      - "ssh-rsa AAAA...4I3"
+    user_groups: ["wheel", "test_group"]
+  roles:
+    - role: "hostname"
+    - role: "network"
+    - role: "user"
+    - role: "ssh"
+    - role: "password_policy"
+  pre_tasks:
+    - name: "Update package cache"
+      become: true
+      ansible.builtin.package:
+        update_cache: true
+      async: 60
+      poll: 5
+      failed_when: false
+      tags:
+        - molecule-idempotence-notest
+  tasks:
+    - name: "Configure passwordless sudo for testing"
+      ansible.builtin.copy:
+        content: "%test_group ALL=(ALL) NOPASSWD: ALL\n"
+        dest: "/etc/sudoers.d/test_group"
+        mode: "0440"
+        validate: 'visudo -cf %s'
+
+- name: "Configure"
+  hosts: "proxmox"
+  gather_facts: true
+  remote_user: "{{ username }}"
+  vars:
+    ansible_become_method: sudo
+    locales:
+      - "en_US.UTF-8 UTF-8"
+    timezone: "GMT"
+    vimrc_repo_url: "https://git.sr.ht/~a14m/.vim"
+    password_store_repo_url: "https://github.com/octocat/Spoon-Knife"
+  pre_tasks:
+    - name: "Override is_chroot fact for container environment"
+      ansible.builtin.set_fact:
+        ansible_facts: "{{ ansible_facts | combine({'is_chroot': false}) }}"
+  roles:
+    - role: "proxmox-ve"
+    - role: "locales"
+    - role: "timezone"
+    - role: "bash"
+    - role: "man"
+    - role: "jq"
+    - role: "ag"
+    - role: "btop"
+    - role: "gpg"
+    - role: "git"
+    - role: "git-crypt"
+    - role: "dotfiles"
+    - role: "password_store"
+    - role: "vim"
