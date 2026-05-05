@@ -1,0 +1,44 @@
+---
+- name: "Configure Proxmox repos"
+  become: true
+  when: proxmox_ve_repo == "no-subscription"
+  block:
+    - name: "Configure no-subuscription repos"
+      ansible.builtin.apt_repository:
+        repo: "deb http://download.proxmox.com/debian/pve bookworm pve-no-subscription"
+        state: "present"
+        filename: "pve-no-subscription"
+
+    - name: "Remove Proxmox enterprise repo"
+      become: true
+      ansible.builtin.file:
+        path: "/etc/apt/sources.list.d/pve-enterprise.list"
+        state: "absent"
+
+- name: "Install proxmox-ve"
+  become: true
+  ansible.builtin.apt:
+    name: "proxmox-ve"
+    state: "present"
+    update_cache: true
+
+- name: "Disable IPv6 on wlan0 (prevents PVE cert generation failures with zone IDs)"
+  become: true
+  ansible.posix.sysctl:
+    name: "net.ipv6.conf.wlan0.disable_ipv6"
+    value: "1"
+    state: "present"
+    sysctl_set: true
+    reload: true
+
+- name: "Enable and start Proxmox VE services"
+  become: true
+  ansible.builtin.systemd_service:
+    name: "{{ item }}"
+    enabled: true
+    state: "started"
+  loop:
+    - "pve-cluster"
+    - "pvedaemon"
+    - "pveproxy"
+    - "pvestatd"

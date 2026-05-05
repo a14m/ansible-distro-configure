@@ -105,3 +105,23 @@
     - role: "prometheus-node-exporter"
     - role: "grafana"
     - role: "neomutt"
+
+- name: "Proxmox VE configure"
+  gather_facts: true
+  hosts:
+    - pve.local
+  roles:
+    - role: "proxmox-ve"
+    - role: "locales"
+    - role: "timezone"
+    - role: "bash"
+    - role: "man"
+    - role: "jq"
+    - role: "ag"
+    - role: "btop"
+    - role: "gpg"
+    - role: "git"
+    - role: "git-crypt"
+    - role: "dotfiles"
+    - role: "password_store"
+    - role: "vim"

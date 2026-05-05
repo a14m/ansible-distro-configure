@@ -1,0 +1,11 @@
+---
+argument_specs:
+  main:
+    options:
+      proxmox_ve_repo:
+        type: "str"
+        description: "Proxmox VE apt repository type (no-subscription or enterprise)"
+        default: "no-subscription"
+        choices:
+          - "no-subscription"
+          - "enterprise"
