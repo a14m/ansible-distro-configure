@@ -1,4 +1,10 @@
 ---
+# Since pve needs to disable ipv6 to install the proxy for some reason
+# SSH connection over ipv6 drops causing the playbook to fail
+# even though pve.local is still accessible on ipv4
+# This configuration ensures that proxmox ssh uses ipv4
+ansible_ssh_extra_args: "-4"
+
 network_ipv4_address: "10.0.0.253"
 network_ipv4_gateway: "10.0.0.254"
 network_ipv4_dns: "10.0.0.254"
