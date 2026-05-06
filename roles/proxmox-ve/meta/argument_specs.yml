@@ -9,3 +9,11 @@ argument_specs:
         choices:
           - "no-subscription"
           - "enterprise"
+      proxmox_ve_admin_user:
+        type: "str"
+        description: "PVE realm admin username"
+        default: "admin"
+      proxmox_ve_admin_password:
+        type: "str"
+        description: "PVE realm admin password"
+        default: "changeme"
