@@ -74,10 +74,19 @@
     - "Restart NetworkManager"
     - "Restart systemd-resolved"
   block:
+    - name: "Ensure /etc/systemd/resolved.conf.d exists"
+      ansible.builtin.file:
+        path: "/etc/systemd/resolved.conf.d"
+        state: directory
+        mode: "0755"
+
     - name: "Configure systemd-resolved"
       ansible.builtin.template:
         src: "resolved.conf.j2"
-        dest: "/etc/systemd/resolved.conf"
+        # NOTE: drop-in needed to override vendor drop-ins (e.g. Ubuntu 26.04 ships
+        # /usr/lib/systemd/resolved.conf.d/ with MulticastDNS=no) which take precedence
+        # over /etc/systemd/resolved.conf
+        dest: "/etc/systemd/resolved.conf.d/99-custom.conf"
         mode: "0644"
 
     - name: "Configure NetworkManager"
