@@ -136,6 +136,20 @@
         state: "link"
         force: true
 
+- name: "Flush handlers before restarting pihole-FTL"
+  # systemd-resolved must release port 53 before pihole-FTL binds it.
+  # flush_handlers here makes that ordering a structural guarantee rather than
+  # relying on handler definition order.
+  ansible.builtin.meta: flush_handlers
+
+- name: "Restart pihole-FTL"
+  become: true
+  ansible.builtin.systemd_service:
+    name: "pihole-FTL"
+    state: "restarted"
+  tags:
+    - molecule-idempotence-notest
+
 - name: "Create pihole nginx configurations"
   become: true
   when: pihole_by_nginx is defined and pihole_by_nginx != ""
