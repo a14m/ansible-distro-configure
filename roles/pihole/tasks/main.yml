@@ -114,7 +114,9 @@
 
     - name: "Configure systemd-resolved for Pi-hole"
       ansible.builtin.copy:
-        dest: "/etc/systemd/resolved.conf"
+        # NOTE: overwrites the network role's drop-in so DNSStubListener=no wins
+        # (drop-ins beat /etc/systemd/resolved.conf, so writing here is required)
+        dest: "/etc/systemd/resolved.conf.d/99-custom.conf"
         owner: "root"
         group: "root"
         mode: "0644"
@@ -122,6 +124,10 @@
           [Resolve]
           DNS=127.0.0.1#53
           DNSStubListener=no
+          MulticastDNS=yes
+          LLMNR=no
+          Cache=yes
+          ReadEtcHosts=yes
 
     - name: "Configure system DNS"
       ansible.builtin.file:
