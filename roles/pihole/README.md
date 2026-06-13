@@ -19,10 +19,16 @@ This role configure the [pihole](https://github.com/pi-hole/pi-hole) DNS Sinkhol
 Update the following
 
 - Home Network > Network > Network Settings > Change Advanced Network Settings >
+  - IPv4 > DHCP > Enable DHCP server > Disabled
   - IPv6 > DNSv6 Server in the Home Network > Router advertisement enable in the LAN > Disabled
   - IPv6 > DNSv6 Server in the Home Network > Disable DHCPv6 server in the FRITZ!Box >
     - There are no other DHCPv6 servers in the home network.
-  - IPv4 > DHCP > Enable DHCP server > Disabled
+- Internet > Filter > Lists > Network Applications > Add Network Application >
+  - Name: DNS, Protocol: UDP, Source Port: Any, Destination Port: 53
+  - Name: DNS, Protocol: TCP, Source Port: Any, Destination Port: 53
+- Internet > Prioritization > Real-Time Applications > Create New Rule
+  - Device: {{ pihole_device_name }}, Application: DNS
+- Internet > Account Information > IPv6 > IPv6 Support > Disabled
 - Internet > Account Information > DNS Server > DNSv4 Server >
   - Use Other DNSv4 Servers > {{ pihole_ipv4 }}
   - Use Other DNSv6 Servers > {{ pihole_ipv6 }}
