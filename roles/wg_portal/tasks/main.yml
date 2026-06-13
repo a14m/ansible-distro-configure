@@ -87,9 +87,16 @@
   notify: "Restart wg-portal"
   no_log: true
 
+- name: "Start and enable wg-portal"
+  become: true
+  ansible.builtin.systemd_service:
+    name: "wg-portal"
+    state: "started"
+    enabled: true
+
 - name: "Create wg-portal nginx configurations"
   become: true
-  when: wg_portal_by_nginx is defined and wg_portal_by_nginx != ""
+  when: wg_portal_by_nginx is defined and wg_portal_by_nginx | bool
   ansible.builtin.copy:
     content: |
       location / {
