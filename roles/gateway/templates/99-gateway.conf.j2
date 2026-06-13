@@ -1,0 +1,7 @@
+{% if gateway_enabled %}
+net.ipv4.ip_forward=1
+net.ipv6.conf.all.forwarding=1
+{% else %}
+net.ipv4.ip_forward=0
+net.ipv6.conf.all.forwarding=0
+{% endif %}

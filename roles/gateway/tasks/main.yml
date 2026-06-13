@@ -10,17 +10,12 @@
 
 - name: "Configure IP forwarding"
   become: true
-  ansible.builtin.blockinfile:
-    path: "/etc/sysctl.conf"
-    state: "{{ 'present' if gateway_enabled else 'absent' }}"
-    prepend_newline: true
-    append_newline: true
-    marker: "# ==== {mark} ANSIBLE GATEWAY CONFIG"
-    create: true
+  ansible.builtin.template:
+    src: "99-gateway.conf.j2"
+    dest: "/etc/sysctl.d/99-gateway.conf"
+    owner: "root"
+    group: "root"
     mode: "0644"
-    block: |
-      net.ipv4.ip_forward=1
-      net.ipv6.conf.all.forwarding=1
   notify: "Reload sysctl"
 
 - name: "Deploy gateway apply rules script"
