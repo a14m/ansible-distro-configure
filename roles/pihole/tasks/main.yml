@@ -151,7 +151,7 @@
 
 - name: "Create pihole nginx configurations"
   become: true
-  when: pihole_by_nginx is defined and pihole_by_nginx != ""
+  when: pihole_by_nginx is defined and pihole_by_nginx | bool
   ansible.builtin.copy:
     content: |
       location /admin/ {
