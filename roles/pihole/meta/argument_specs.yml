@@ -63,7 +63,12 @@ argument_specs:
         type: "str"
         description: "The port to serve pihole on, when empty use pihole default 80,433"
         default: "8081"
-      pihole_by_nginx:
-        description: "Serve pihole behind nginx reverse proxy"
-        type: "bool"
-        default: false
+      pihole_hostname:
+        type: "str"
+        description: "FQDN for the pihole nginx vhost (e.g. 'dns.home.arpa')."
+        default: "dns.home.arpa"
+      pihole_dns_hosts:
+        type: "list"
+        description: "Custom DNS A records written to pihole.toml [dns] hosts (format: 'IP HOSTNAME')"
+        elements: "str"
+        default: []

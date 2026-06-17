@@ -1,0 +1,17 @@
+server {
+    listen 80;
+    listen [::]:80;
+
+    server_name {{ pihole_hostname }};
+
+    location = / {
+        return 301 /admin/;
+    }
+
+    location /admin/ {
+        proxy_pass http://127.0.0.1:{{ pihole_port }}/admin/;
+    }
+    location /api/ {
+        proxy_pass http://127.0.0.1:{{ pihole_port }}/api/;
+    }
+}

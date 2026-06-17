@@ -11,3 +11,4 @@ grafana_datasources:
     default: true
 
 grafana_dashboards: []
+grafana_hostname: "monitor.home.arpa"

@@ -48,6 +48,10 @@ argument_specs:
             description: "Whether this is the default datasource"
             type: "bool"
             default: false
+      grafana_hostname:
+        type: "str"
+        description: "FQDN for the grafana nginx vhost (e.g. 'monitor.home.arpa')."
+        default: "monitor.home.arpa"
       grafana_dashboards:
         description: "List of community dashboards to download and provision"
         type: "list"

@@ -1,6 +1,8 @@
 [server]
 http_port = {{ grafana_port }}
-root_url = http://localhost:{{ grafana_port }}/
+{% if grafana_hostname | length > 0 %}
+root_url = http://{{ grafana_hostname }}/
+{% endif %}
 
 [database]
 type = {{ grafana_database_type }}

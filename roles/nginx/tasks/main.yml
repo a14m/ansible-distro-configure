@@ -21,6 +21,15 @@
     - "/etc/nginx/modules-enabled"
     - "/var/log/nginx"
 
+- name: "Ensure nginx vhosts.d directory exists"
+  become: true
+  ansible.builtin.file:
+    path: "/etc/nginx/vhosts.d"
+    state: "directory"
+    owner: "root"
+    group: "root"
+    mode: "0755"
+
 - name: "Check if SSL certificate exists"
   become: true
   ansible.builtin.stat:

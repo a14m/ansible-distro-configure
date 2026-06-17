@@ -48,6 +48,21 @@ ansible-galaxy install -r requirements.yml
 ansible-playbook site.yml --ask-become-pass --limit ${HOSTNAME}
 ```
 
+## Raspberry Pi Services
+
+Services deployed on `rpi5.local` and their default FQDNs (resolved via Pi-hole DNS):
+
+| Service | Default FQDN | Description |
+|---|---|---|
+| Pi-hole | `dns.home.arpa` | DNS filtering and ad blocking |
+| WireGuard Portal | `vpn.home.arpa` | WireGuard VPN management UI |
+| Grafana | `monitor.home.arpa` | Metrics dashboards |
+| Prometheus | `metrics.home.arpa` | Metrics collection |
+
+DNS records are managed via `pihole_dns_hosts` in `host_vars/rpi5.local.yml`.
+Override the default FQDN per service using `pihole_hostname`, `wg_portal_hostname`,
+`grafana_hostname`, or `prometheus_hostname`.
+
 ## Special Thanks to
 
 - [Jeff Geerling](https://www.jeffgeerling.com/), who I learned a **LOT** from his open-source work.
