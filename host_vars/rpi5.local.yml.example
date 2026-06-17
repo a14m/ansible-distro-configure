@@ -5,6 +5,11 @@ network_ipv4_gateway: "10.0.0.1"
 network_ipv6_address: "fd5c:fd8b:2b8c::254/64"
 network_ipv6_gateway: "fd5c:fd8b:2b8c::1"
 
+pihole_hostname: "dns.home.arpa"
+wg_portal_hostname: "vpn.home.arpa"
+grafana_hostname: "monitor.home.arpa"
+prometheus_hostname: "metrics.home.arpa"
+
 # TOTP generator: `openssl rand -base64 32 | head -c "20" | base32`
 pihole_totp_secret: "CHANGEME"
 pihole_password: "{{ ('changeme' | hash('sha256') | hash('sha256'))[:64] }}"
@@ -16,6 +21,11 @@ pihole_dhcp_router: "{{ network_ipv4_address }}"
 pihole_dhcp_hosts:
   - "ff:ff:ff:ff:ff:fe, 10.0.0.252,TV"
   - "ff:ff:ff:ff:ff:ff, 10.0.0.253,Printer"
+pihole_dns_hosts:
+  - "{{ network_ipv4_address }} {{ pihole_hostname }}"
+  - "{{ network_ipv4_address }} {{ wg_portal_hostname }}"
+  - "{{ network_ipv4_address }} {{ grafana_hostname }}"
+  - "{{ network_ipv4_address }} {{ prometheus_hostname }}"
 
 wireguard_autostart_connection: "vpn2"
 wireguard_connections:

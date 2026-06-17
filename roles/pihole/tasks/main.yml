@@ -149,25 +149,17 @@
   tags:
     - molecule-idempotence-notest
 
-- name: "Create pihole nginx configurations"
+- name: "Create pihole nginx vhost configuration"
   become: true
-  when: pihole_by_nginx is defined and pihole_by_nginx | bool
-  ansible.builtin.copy:
-    content: |
-      location /admin/ {
-        proxy_pass http://127.0.0.1:{{ pihole_port }}/admin/;
-      }
-      location /api/ {
-        proxy_pass http://127.0.0.1:{{ pihole_port }}/api/;
-      }
-    dest: "/etc/nginx/conf.d/pihole.conf"
+  when: pihole_hostname | length > 0
+  ansible.builtin.template:
+    src: "pihole.nginx.conf.j2"
+    dest: "/etc/nginx/vhosts.d/pihole.conf"
     owner: "root"
     group: "root"
     mode: "0644"
     backup: true
-    # workaround issue: https://github.com/ansible/ansible/issues/9112
-    # ref: https://serverfault.com/a/811520
     validate: >
-      bash -c 'echo "events { worker_connections 2; } http { server { include %s; } }" > /tmp/nginx.conf;
-        sudo nginx -T -c /tmp/nginx.conf; ec=$?; rm -f /tmp/nginx.conf; exit $ec'
+      bash -c 'echo "events { worker_connections 64; } http { include %s; }" > /tmp/nginx-vhost.conf;
+        sudo nginx -T -c /tmp/nginx-vhost.conf; ec=$?; rm -f /tmp/nginx-vhost.conf; exit $ec'
   notify: "Restart nginx"

@@ -61,3 +61,18 @@
     name: "prometheus"
     state: "started"
     enabled: true
+
+- name: "Create prometheus nginx vhost configuration"
+  become: true
+  when: prometheus_hostname | length > 0
+  ansible.builtin.template:
+    src: "prometheus.nginx.conf.j2"
+    dest: "/etc/nginx/vhosts.d/prometheus.conf"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+    backup: true
+    validate: >
+      bash -c 'echo "events { worker_connections 64; } http { include %s; }" > /tmp/nginx-vhost.conf;
+        sudo nginx -T -c /tmp/nginx-vhost.conf; ec=$?; rm -f /tmp/nginx-vhost.conf; exit $ec'
+  notify: "Restart nginx"

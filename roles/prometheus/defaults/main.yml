@@ -8,3 +8,4 @@ prometheus_targets:
   - "{{ prometheus_host }}:{{ prometheus_port }}"
 
 prometheus_node_exporter_targets: []
+prometheus_hostname: "metrics.home.arpa"

@@ -28,3 +28,7 @@ argument_specs:
         type: "list"
         elements: "str"
         default: []
+      prometheus_hostname:
+        type: "str"
+        description: "FQDN for the prometheus nginx vhost (e.g. 'metrics.home.arpa')."
+        default: "metrics.home.arpa"
