@@ -2,6 +2,14 @@
 - name: "Include OS-specific variables"
   ansible.builtin.include_vars: "{{ ansible_facts['os_family'] | lower }}.yml"
 
+- name: "Stop and disable caddy"
+  become: true
+  ansible.builtin.systemd_service:
+    name: "caddy"
+    state: "stopped"
+    enabled: false
+  failed_when: false
+
 - name: "Ensure nginx is installed"
   become: true
   ansible.builtin.package:
