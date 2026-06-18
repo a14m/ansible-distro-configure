@@ -31,6 +31,8 @@
       ansible.builtin.file:
         path: "/etc/apt/sources.list"
         mode: "0644"
+      tags:
+        - molecule-notest
 
 - name: "Set management IP in /etc/hosts for PVE cert generation"
   become: true
