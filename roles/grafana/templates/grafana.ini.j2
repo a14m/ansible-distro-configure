@@ -1,7 +1,13 @@
 [server]
 http_port = {{ grafana_port }}
 {% if grafana_hostname | length > 0 %}
+    {% if proxy_type == "caddy" %}
+root_url = https://{{ grafana_hostname }}/
+    {% elif proxy_type == "nginx" %}
 root_url = http://{{ grafana_hostname }}/
+    {% else %}
+root_url = http://localhost:{{ grafana_port }}/
+    {% endif %}
 {% endif %}
 
 [database]
