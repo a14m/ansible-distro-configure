@@ -2,7 +2,7 @@
 - name: "Reload sysctl"
   become: true
   ansible.builtin.command:
-    cmd: "sysctl --system"
+    cmd: "sysctl -p /etc/sysctl.d/99-gateway.conf"
   changed_when: false
 
 - name: "Reload systemd"
