@@ -98,7 +98,7 @@
     - role: "vim"
     - role: "wireguard"
     - role: "gateway"
-    - role: "nginx"
+    - role: "proxy"
     - role: "wg_portal"
     - role: "pihole"
     - role: "prometheus"

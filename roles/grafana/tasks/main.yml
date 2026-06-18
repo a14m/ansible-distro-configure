@@ -89,7 +89,7 @@
 
 - name: "Create grafana nginx vhost configuration"
   become: true
-  when: grafana_hostname | length > 0
+  when: proxy_type == "nginx" and grafana_hostname | length > 0
   ansible.builtin.template:
     src: "grafana.nginx.conf.j2"
     dest: "/etc/nginx/vhosts.d/grafana.conf"
@@ -100,4 +100,15 @@
     validate: >
       bash -c 'echo "events { worker_connections 64; } http { include %s; }" > /tmp/nginx-vhost.conf;
         sudo nginx -T -c /tmp/nginx-vhost.conf; ec=$?; rm -f /tmp/nginx-vhost.conf; exit $ec'
-  notify: "Restart nginx"
+  notify: "Restart proxy"
+
+- name: "Create grafana caddy configuration"
+  become: true
+  when: proxy_type == "caddy" and grafana_hostname | length > 0
+  ansible.builtin.template:
+    src: "grafana.caddy.j2"
+    dest: "/etc/caddy/sites/grafana.caddy"
+    owner: "root"
+    group: "caddy"
+    mode: "0640"
+  notify: "Restart proxy"

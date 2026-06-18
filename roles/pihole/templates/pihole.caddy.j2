@@ -1,0 +1,5 @@
+{{ pihole_hostname }} {
+	redir / /admin/ permanent
+	reverse_proxy /admin/* localhost:{{ pihole_port }}
+	reverse_proxy /api/* localhost:{{ pihole_port }}
+}

@@ -1,0 +1,8 @@
+---
+argument_specs:
+  main:
+    options:
+      proxy_type:
+        type: "str"
+        description: "Reverse proxy to use: 'nginx' or 'caddy'"
+        default: "nginx"
