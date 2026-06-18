@@ -47,6 +47,7 @@
     pihole_password: "{{ ('changeme' | hash('sha256') | hash('sha256'))[:64] }}"
     pihole_dhcp_enabled: false
     wireguard_autostart_connection: ""
+    proxy_type: "nginx"
     gateway_enabled: true
     gateway_local_ipv4_subnet: "10.0.0.0/24"
     grafana_dashboards:
@@ -82,7 +83,7 @@
     - role: "usbutils"
     - role: "wireguard"
     - role: "gateway"
-    - role: "nginx"
+    - role: "proxy"
     - role: "wg_portal"
     - role: "pihole"
     - role: "prometheus"

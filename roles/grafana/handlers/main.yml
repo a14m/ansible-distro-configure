@@ -6,7 +6,17 @@
     state: "restarted"
 
 - name: "Restart nginx"
+  listen: "Restart proxy"
   become: true
   ansible.builtin.systemd_service:
     name: "nginx"
     state: "restarted"
+  when: proxy_type == "nginx"
+
+- name: "Restart caddy"
+  listen: "Restart proxy"
+  become: true
+  ansible.builtin.systemd_service:
+    name: "caddy"
+    state: "restarted"
+  when: proxy_type == "caddy"

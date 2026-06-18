@@ -1,0 +1,4 @@
+---
+- name: "Setup proxy"
+  ansible.builtin.include_role:
+    name: "{{ proxy_type }}"

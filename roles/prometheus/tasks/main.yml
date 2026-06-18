@@ -64,7 +64,7 @@
 
 - name: "Create prometheus nginx vhost configuration"
   become: true
-  when: prometheus_hostname | length > 0
+  when: proxy_type == "nginx" and prometheus_hostname | length > 0
   ansible.builtin.template:
     src: "prometheus.nginx.conf.j2"
     dest: "/etc/nginx/vhosts.d/prometheus.conf"
@@ -75,4 +75,15 @@
     validate: >
       bash -c 'echo "events { worker_connections 64; } http { include %s; }" > /tmp/nginx-vhost.conf;
         sudo nginx -T -c /tmp/nginx-vhost.conf; ec=$?; rm -f /tmp/nginx-vhost.conf; exit $ec'
-  notify: "Restart nginx"
+  notify: "Restart proxy"
+
+- name: "Create prometheus caddy configuration"
+  become: true
+  when: proxy_type == "caddy" and prometheus_hostname | length > 0
+  ansible.builtin.template:
+    src: "prometheus.caddy.j2"
+    dest: "/etc/caddy/sites/prometheus.caddy"
+    owner: "root"
+    group: "caddy"
+    mode: "0640"
+  notify: "Restart proxy"

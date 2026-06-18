@@ -96,7 +96,7 @@
 
 - name: "Create wg-portal nginx vhost configuration"
   become: true
-  when: wg_portal_hostname | length > 0
+  when: proxy_type == "nginx" and wg_portal_hostname | length > 0
   ansible.builtin.template:
     src: "wg_portal.nginx.conf.j2"
     dest: "/etc/nginx/vhosts.d/wg-portal.conf"
@@ -107,4 +107,15 @@
     validate: >
       bash -c 'echo "events { worker_connections 64; } http { include %s; }" > /tmp/nginx-vhost.conf;
         sudo nginx -T -c /tmp/nginx-vhost.conf; ec=$?; rm -f /tmp/nginx-vhost.conf; exit $ec'
-  notify: "Restart nginx"
+  notify: "Restart proxy"
+
+- name: "Create wg-portal caddy configuration"
+  become: true
+  when: proxy_type == "caddy" and wg_portal_hostname | length > 0
+  ansible.builtin.template:
+    src: "wg_portal.caddy.j2"
+    dest: "/etc/caddy/sites/wg-portal.caddy"
+    owner: "root"
+    group: "caddy"
+    mode: "0640"
+  notify: "Restart proxy"
