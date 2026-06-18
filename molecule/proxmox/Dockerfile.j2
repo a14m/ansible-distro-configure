@@ -16,7 +16,8 @@ RUN apt-get update \
     && rm -Rf /var/lib/apt/lists/* \
     && rm -Rf /usr/share/doc \
     && rm -Rf /usr/share/man \
-    && apt-get clean
+    && apt-get clean \
+    && touch /etc/apt/sources.list
 
 RUN rm -f /lib/systemd/system/multi-user.target.wants/getty.target
 
