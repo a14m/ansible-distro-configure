@@ -1,0 +1,20 @@
+---
+argument_specs:
+  main:
+    options:
+      backup_device:
+        type: "str"
+        description: "Block device to mount (e.g. /dev/sda1)"
+        required: true
+      backup_mount_point:
+        type: "str"
+        description: "Mount point for the backup drive"
+        default: "/mnt/backup"
+      backup_fstype:
+        type: "str"
+        description: "Filesystem type of the backup device"
+        default: "ext4"
+      backup_mount_options:
+        type: "str"
+        description: "Mount options for the backup device"
+        default: "defaults,noatime"

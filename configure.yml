@@ -105,6 +105,7 @@
     - role: "prometheus-node-exporter"
     - role: "grafana"
     - role: "neomutt"
+    - role: "backup"
 
 - name: "Proxmox VE configure"
   gather_facts: true
