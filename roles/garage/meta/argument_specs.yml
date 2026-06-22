@@ -1,0 +1,48 @@
+---
+argument_specs:
+  main:
+    options:
+      garage_version:
+        type: "str"
+        description: "Garage release version to install"
+        default: "2.3.0"
+      garage_data_dir:
+        type: "str"
+        description: "Directory for Garage object data"
+        default: "/mnt/backup/garage/data"
+      garage_meta_dir:
+        type: "str"
+        description: "Directory for Garage metadata"
+        default: "/mnt/backup/garage/meta"
+      garage_rpc_secret:
+        type: "str"
+        description: "32-byte hex RPC secret shared across nodes"
+        required: true
+      garage_s3_port:
+        type: "str"
+        description: "Port for S3 API"
+        default: "3900"
+      garage_admin_port:
+        type: "str"
+        description: "Port for admin API"
+        default: "3903"
+      garage_rpc_bind_addr:
+        type: "str"
+        description: "RPC bind address"
+        default: "127.0.0.1:3901"
+      garage_capacity:
+        type: "str"
+        description: "Storage capacity for this node (e.g. 100G, 200G)"
+        default: "100G"
+      garage_bucket:
+        type: "str"
+        description: "Bucket name to create for restic backups"
+        default: "restic"
+      garage_access_key_id:
+        type: "str"
+        description: "S3 access key ID"
+        required: true
+      garage_secret_access_key:
+        type: "str"
+        description: "S3 secret access key"
+        required: true

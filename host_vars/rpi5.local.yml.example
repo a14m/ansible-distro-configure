@@ -75,4 +75,8 @@ grafana_dashboards:
       - key: "${DS__VICTORIAMETRICS}"
         value: "prometheus"
 
-backup_device: "UUID=your_backup_device_uuid_here"
+backup_device: "UUID=changeme"
+
+garage_rpc_secret: "changeme"
+garage_access_key_id: "GK_changeme"
+garage_secret_access_key: "changeme"

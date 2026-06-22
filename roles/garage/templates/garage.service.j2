@@ -1,0 +1,15 @@
+[Unit]
+Description=Garage S3-compatible object store
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/garage -c /etc/garage/garage.toml server
+User=garage
+Group=garage
+Restart=on-failure
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
