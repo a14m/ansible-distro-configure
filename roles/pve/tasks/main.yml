@@ -50,9 +50,9 @@
   become: true
   ansible.builtin.command:
     cmd: "pveum user add {{ pve_admin_user }}@pve"
-  register: pveum_user_add
-  changed_when: pveum_user_add.rc == 0
-  failed_when: pveum_user_add.rc != 0 and 'already exists' not in pveum_user_add.stderr
+  register: pve_user_add
+  changed_when: pve_user_add.rc == 0
+  failed_when: pve_user_add.rc != 0 and 'already exists' not in pve_user_add.stderr
   tags:
     - "molecule-notest"
 
