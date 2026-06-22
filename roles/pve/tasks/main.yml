@@ -11,7 +11,7 @@
 
 - name: "Configure Proxmox repos"
   become: true
-  when: proxmox_ve_repo == "no-subscription"
+  when: pve_repo == "no-subscription"
   block:
     - name: "Configure no-subscription repos"
       ansible.builtin.apt_repository:
@@ -49,7 +49,7 @@
 - name: "Create PVE admin user"
   become: true
   ansible.builtin.command:
-    cmd: "pveum user add {{ proxmox_ve_admin_user }}@pve"
+    cmd: "pveum user add {{ pve_admin_user }}@pve"
   register: pveum_user_add
   changed_when: pveum_user_add.rc == 0
   failed_when: pveum_user_add.rc != 0 and 'already exists' not in pveum_user_add.stderr
@@ -60,7 +60,7 @@
   become: true
   no_log: true
   ansible.builtin.command:
-    cmd: "pveum passwd {{ proxmox_ve_admin_user }}@pve --password {{ proxmox_ve_admin_password }}"
+    cmd: "pveum passwd {{ pve_admin_user }}@pve --password {{ pve_admin_password }}"
   changed_when: true
   tags:
     - "molecule-notest"
@@ -68,7 +68,7 @@
 - name: "Grant PVE Administrator role"
   become: true
   ansible.builtin.command:
-    cmd: "pveum acl modify / --roles Administrator --users {{ proxmox_ve_admin_user }}@pve"
+    cmd: "pveum acl modify / --roles Administrator --users {{ pve_admin_user }}@pve"
   changed_when: true
   tags:
     - "molecule-notest"

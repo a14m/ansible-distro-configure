@@ -111,7 +111,7 @@
   hosts:
     - pve.local
   roles:
-    - role: "proxmox-ve"
+    - role: "pve"
     - role: "locales"
     - role: "timezone"
     - role: "bash"
