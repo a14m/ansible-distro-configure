@@ -4,7 +4,7 @@ argument_specs:
     options:
       backup_device:
         type: "str"
-        description: "Block device to mount (e.g. /dev/sda1)"
+        description: "Device to mount (e.g. PARTLABEL=backup)"
         required: true
       backup_mount_point:
         type: "str"
