@@ -1,4 +1,20 @@
 ---
+- name: "Discover test devices"
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: "Find loop device for vdd.img"
+      become: true
+      ansible.builtin.command:
+        cmd: "losetup -j /opt/vdd.img"
+      register: losetup_output
+      changed_when: false
+
+    - name: "Inject backup_device into raspberrypi host vars"
+      ansible.builtin.add_host:
+        name: "raspberrypi"
+        backup_device: "{{ losetup_output.stdout.split(':')[0] }}"
+
 - name: "Bootstrap"
   hosts: "raspberrypi"
   gather_facts: true
@@ -61,12 +77,10 @@
     password_store_repo_url: "https://github.com/octocat/Spoon-Knife"
     firefox_install_browserpass: true
     firefox_install_passff: true
-    backup_device: "{{ test_device }}"
   pre_tasks:
     - name: "Override is_chroot fact for container environment"
       ansible.builtin.set_fact:
         ansible_facts: "{{ ansible_facts | combine({'is_chroot': false}) }}"
-        test_device: "{{ hostvars['localhost']['test_device'] }}"
   roles:
     - role: "locales"
     - role: "timezone"
