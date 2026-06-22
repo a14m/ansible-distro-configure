@@ -2,18 +2,18 @@
 argument_specs:
   main:
     options:
-      proxmox_ve_repo:
+      pve_repo:
         type: "str"
         description: "Proxmox VE apt repository type (no-subscription or enterprise)"
         default: "no-subscription"
         choices:
           - "no-subscription"
           - "enterprise"
-      proxmox_ve_admin_user:
+      pve_admin_user:
         type: "str"
         description: "PVE realm admin username"
         default: "admin"
-      proxmox_ve_admin_password:
+      pve_admin_password:
         type: "str"
         description: "PVE realm admin password"
         default: "changeme"

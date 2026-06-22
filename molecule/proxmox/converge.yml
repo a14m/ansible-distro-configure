@@ -48,7 +48,7 @@
       ansible.builtin.set_fact:
         ansible_facts: "{{ ansible_facts | combine({'is_chroot': false}) }}"
   roles:
-    - role: "proxmox-ve"
+    - role: "pve"
     - role: "locales"
     - role: "timezone"
     - role: "bash"

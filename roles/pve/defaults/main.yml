@@ -1,0 +1,4 @@
+---
+pve_repo: "no-subscription"
+pve_admin_user: "admin"
+pve_admin_password: "changeme"
