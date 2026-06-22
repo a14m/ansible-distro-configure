@@ -53,21 +53,17 @@ argument_specs:
         description: "FQDN for the grafana nginx vhost (e.g. 'monitor.home.arpa')."
         default: "monitor.home.arpa"
       grafana_dashboards:
-        description: "List of community dashboards to download and provision"
+        description: "List of dashboards to download and provision"
         type: "list"
         elements: "dict"
         default: []
         options:
-          id:
-            description: "Grafana.com dashboard ID"
-            type: "int"
-            required: true
-          revision:
-            description: "Dashboard revision number"
-            type: "int"
-            required: true
           name:
             description: "Local name for the dashboard file"
+            type: "str"
+            required: true
+          url:
+            description: "URL to download the dashboard JSON from"
             type: "str"
             required: true
           datasource_mappings:

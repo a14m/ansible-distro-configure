@@ -9,3 +9,4 @@ prometheus_targets:
 
 prometheus_node_exporter_targets: []
 prometheus_hostname: "metrics.home.arpa"
+prometheus_extra_scrape_configs: []
