@@ -15,3 +15,11 @@ scrape_configs:
       - targets: {{ prometheus_node_exporter_targets | to_yaml }}
     scrape_interval: {{ prometheus_scrape_interval }}
     metrics_path: /metrics
+{% for job in prometheus_extra_scrape_configs %}
+
+  - job_name: '{{ job.name }}'
+    static_configs:
+      - targets: {{ job.targets | to_yaml }}
+    scrape_interval: {{ job.scrape_interval | default(prometheus_scrape_interval) }}
+    metrics_path: {{ job.metrics_path | default('/metrics') }}
+{% endfor %}

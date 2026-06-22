@@ -53,7 +53,7 @@
   notify: "Restart grafana"
   no_log: true
 
-- name: "Provision Grafana community dashboards"
+- name: "Provision Grafana dashboards"
   notify: "Restart grafana"
   # grafana downloaded dashboards are being rewritten after successful download
   # this is to correct the datasource mapping in the downloaded files
@@ -61,10 +61,10 @@
   tags:
     - molecule-idempotence-notest
   block:
-    - name: "Download Grafana community dashboards"
+    - name: "Download Grafana dashboards"
       become: true
       ansible.builtin.get_url:
-        url: "https://grafana.com/api/dashboards/{{ item.id }}/revisions/{{ item.revision }}/download"
+        url: "{{ item.url }}"
         dest: "/etc/grafana/provisioning/dashboards/{{ item.name }}.json"
         owner: "grafana"
         group: "grafana"
