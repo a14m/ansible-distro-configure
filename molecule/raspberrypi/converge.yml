@@ -61,10 +61,12 @@
     password_store_repo_url: "https://github.com/octocat/Spoon-Knife"
     firefox_install_browserpass: true
     firefox_install_passff: true
+    backup_device: "{{ test_device }}"
   pre_tasks:
     - name: "Override is_chroot fact for container environment"
       ansible.builtin.set_fact:
         ansible_facts: "{{ ansible_facts | combine({'is_chroot': false}) }}"
+        test_device: "{{ hostvars['localhost']['test_device'] }}"
   roles:
     - role: "locales"
     - role: "timezone"
@@ -112,3 +114,4 @@
     - role: "pipewire"
     - role: "claude"
     - role: "localsend"
+    - role: "backup"
