@@ -129,3 +129,4 @@
     - role: "claude"
     - role: "localsend"
     - role: "backup"
+    - role: "garage"

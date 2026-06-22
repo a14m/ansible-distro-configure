@@ -1,0 +1,15 @@
+metadata_dir = "{{ garage_meta_dir }}"
+data_dir = "{{ garage_data_dir }}"
+db_engine = "sqlite"
+
+replication_factor = 1
+
+rpc_bind_addr = "{{ garage_rpc_bind_addr }}"
+rpc_secret = "{{ garage_rpc_secret }}"
+
+[s3_api]
+s3_region = "garage"
+api_bind_addr = "0.0.0.0:{{ garage_s3_port }}"
+
+[admin]
+api_bind_addr = "127.0.0.1:{{ garage_admin_port }}"

@@ -1,0 +1,20 @@
+#!/bin/bash
+set -e
+
+GARAGE="garage -c /etc/garage/garage.toml"
+
+if ! $GARAGE layout show 2>/dev/null | grep -q "Current cluster layout"; then
+    NODE_ID=$($GARAGE node id -q | cut -d@ -f1)
+    $GARAGE layout assign --zone dc1 --capacity {{ garage_capacity }} "$NODE_ID"
+    $GARAGE layout apply --version 1
+fi
+
+if ! $GARAGE bucket list | grep -q "{{ garage_bucket }}"; then
+    $GARAGE bucket create {{ garage_bucket }}
+fi
+
+if ! $GARAGE key list | grep -q "restic"; then
+    $GARAGE key import --yes -n restic {{ garage_access_key_id }} {{ garage_secret_access_key }}
+fi
+
+$GARAGE bucket allow --read --write --owner --key {{ garage_access_key_id }} {{ garage_bucket }}

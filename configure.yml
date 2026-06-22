@@ -106,6 +106,7 @@
     - role: "grafana"
     - role: "neomutt"
     - role: "backup"
+    - role: "garage"
 
 - name: "Proxmox VE configure"
   gather_facts: true
