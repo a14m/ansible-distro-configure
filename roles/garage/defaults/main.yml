@@ -1,8 +1,8 @@
 ---
 garage_version: "2.3.0"
 garage_capacity: "100G"
-garage_data_dir: "/mnt/backup/garage/data"
-garage_meta_dir: "/mnt/backup/garage/meta"
+garage_data_dir: "/backup/garage/data"
+garage_meta_dir: "/backup/garage/meta"
 garage_rpc_secret: "changeme"
 garage_s3_port: "3900"
 garage_admin_port: "3903"
