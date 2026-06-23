@@ -22,7 +22,6 @@ platforms:
       - "/sys/fs/cgroup:/sys/fs/cgroup:rw"
       - "/dev:/dev:rw"
     cgroupns_mode: host
-
 provisioner:
   name: ansible
   inventory:

@@ -14,5 +14,7 @@
 
 - name: "Update timezone"
   become: true
-  community.general.timezone:
-    name: "{{ timezone }}"
+  ansible.builtin.copy:
+    content: "{{ timezone }}\n"
+    dest: "/etc/timezone"
+    mode: "0644"
