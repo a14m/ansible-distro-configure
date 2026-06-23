@@ -8,21 +8,6 @@
     name: "{{ ssh_package }}"
     state: "present"
 
-- name: "Ensure ssh service is enabled"
-  become: true
-  ansible.builtin.service:
-    name: "{{ ssh_service }}"
-    state: "started"
-    enabled: true
-  when: not ansible_facts['is_chroot']
-
-- name: "(chroot): Ensure ssh service is enabled"
-  # noqa: command-instead-of-module intentional isnide chroot
-  ansible.builtin.command:
-    cmd: "systemctl enable {{ ssh_service }}"
-  when: ansible_facts['is_chroot']
-  changed_when: true
-
 - name: "Generate /etc/ssh/ RSA host key"
   become: true
   ansible.builtin.command:
@@ -40,6 +25,21 @@
   ansible.builtin.command:
     cmd: "ssh-keygen -q -t ed25519 -f /etc/ssh/ssh_host_ed25519_key -C '' -N ''"
     creates: "/etc/ssh/ssh_host_ed25519_key"
+
+- name: "Ensure ssh service is enabled"
+  become: true
+  ansible.builtin.service:
+    name: "{{ ssh_service }}"
+    state: "started"
+    enabled: true
+  when: not ansible_facts['is_chroot']
+
+- name: "(chroot): Ensure ssh service is enabled"
+  # noqa: command-instead-of-module intentional isnide chroot
+  ansible.builtin.command:
+    cmd: "systemctl enable {{ ssh_service }}"
+  when: ansible_facts['is_chroot']
+  changed_when: true
 
 - name: "Configure sshd_config"
   become: true
