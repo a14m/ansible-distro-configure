@@ -52,9 +52,8 @@
     prometheus_node_exporter_port: 9100
     grafana_port: 3000
     grafana_dashboards:
-      - id: 1860
-        revision: 37
-        name: "node-exporter-full"
+      - name: "node-exporter-full"
+        url: "https://grafana.com/api/dashboards/1860/revisions/45/download"
         datasource_mappings:
           - key: "000000001"
             value: "prometheus"
