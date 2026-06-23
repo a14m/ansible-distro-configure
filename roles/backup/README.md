@@ -17,7 +17,7 @@ backup_device: "PARTLABEL=backup"  # no default — must set in host_vars
 ### Optional Variables
 
 ```yaml
-backup_mount_point: "/mnt/backup"
+backup_mount_point: "/backup"
 backup_fstype: "ext4"
 backup_mount_options: "defaults,noatime"
 ```

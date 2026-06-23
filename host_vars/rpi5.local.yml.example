@@ -81,7 +81,7 @@ grafana_dashboards:
       - key: "${DS_prometheus}"
         value: "prometheus"
 
-backup_device: "UUID=changeme"
+backup_device: "PARTLABEL=backup"
 
 garage_rpc_secret: "changeme"
 garage_access_key_id: "GK_changeme"
