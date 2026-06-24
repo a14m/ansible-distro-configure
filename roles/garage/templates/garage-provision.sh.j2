@@ -3,10 +3,11 @@ set -e
 
 GARAGE="garage -c /etc/garage/garage.toml"
 
-if ! $GARAGE layout show 2>/dev/null | grep -q "Current cluster layout"; then
-    NODE_ID=$($GARAGE node id -q | cut -d@ -f1)
+NODE_ID=$($GARAGE node id -q | cut -d@ -f1)
+if ! $GARAGE layout show 2>/dev/null | grep -q "$NODE_ID"; then
     $GARAGE layout assign --zone dc1 --capacity {{ garage_capacity }} "$NODE_ID"
     $GARAGE layout apply --version 1
+    curl -sf --retry 30 --retry-delay 1 --retry-all-errors http://127.0.0.1:{{ garage_admin_port }}/health
 fi
 
 if ! $GARAGE bucket list | grep -q "{{ garage_bucket }}"; then
