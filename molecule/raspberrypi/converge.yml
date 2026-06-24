@@ -1,20 +1,4 @@
 ---
-- name: "Discover test devices"
-  hosts: localhost
-  gather_facts: false
-  tasks:
-    - name: "Find loop device for vdd.img"
-      become: true
-      ansible.builtin.command:
-        cmd: "losetup -j /opt/vdd.img"
-      register: losetup_output
-      changed_when: false
-
-    - name: "Inject backup_device into raspberrypi host vars"
-      ansible.builtin.add_host:
-        name: "raspberrypi"
-        backup_device: "{{ losetup_output.stdout.split(':')[0] }}"
-
 - name: "Bootstrap"
   hosts: "raspberrypi"
   gather_facts: true
@@ -77,6 +61,9 @@
     firefox_install_browserpass: true
     firefox_install_passff: true
     backup_mount_point: "/mnt/backup"
+    backup_device: "tmpfs"
+    backup_fstype: "tmpfs"
+    backup_mount_options: "defaults"
   pre_tasks:
     - name: "Override is_chroot fact for container environment"
       ansible.builtin.set_fact:
