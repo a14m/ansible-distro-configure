@@ -63,7 +63,7 @@
     backup_mount_point: "/mnt/backup"
     backup_device: "tmpfs"
     backup_fstype: "tmpfs"
-    backup_mount_options: "defaults"
+    backup_mount_options: "defaults,mode=0755"
   pre_tasks:
     - name: "Override is_chroot fact for container environment"
       ansible.builtin.set_fact:
