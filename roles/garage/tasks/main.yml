@@ -35,30 +35,35 @@
         shell: "/usr/sbin/nologin"
         create_home: false
 
-    - name: "Create garage directories"
+    - name: "Create garage data and meta directories"
       ansible.builtin.file:
-        path: "{{ item.path }}"
+        path: "{{ item }}"
         state: "directory"
-        owner: "{{ item.owner }}"
+        owner: "garage"
         group: "garage"
         mode: "0750"
       loop:
-        - { path: "/etc/garage", owner: "root" }
-        - { path: "{{ garage_data_dir }}", owner: "garage" }
-        - { path: "{{ garage_meta_dir }}", owner: "garage" }
+        - "{{ garage_data_dir }}"
+        - "{{ garage_meta_dir }}"
 
-    - name: "Configure garage"
+    - name: "Deploy garage configuration"
       ansible.builtin.template:
-        src: "{{ item.src }}"
-        dest: "{{ item.dest }}"
+        src: "garage.toml.j2"
+        dest: "/etc/garage.toml"
         owner: "root"
-        group: "{{ item.group }}"
-        mode: "{{ item.mode }}"
-        no_log: true
-        notify: "Restart garage"
-      loop:
-        - { src: "grage.toml.j2", dest: "/etc/garage/garage.toml", group: "garage", mode: "0640" }
-        - { src: "garage.service.j2", dest: "/etc/systemd/system/garage.service", group: "root", mode: "0644" }
+        group: "garage"
+        mode: "0640"
+      no_log: true
+      notify: "Restart garage"
+
+    - name: "Deploy garage systemd service"
+      ansible.builtin.template:
+        src: "garage.service.j2"
+        dest: "/etc/systemd/system/garage.service"
+        owner: "root"
+        group: "root"
+        mode: "0644"
+      notify: "Restart garage"
 
     - name: "Start and enable garage"
       ansible.builtin.systemd_service:
@@ -67,22 +72,66 @@
         enabled: true
         daemon_reload: true
 
+- name: "Check layout readiness"
+  become: true
+  ansible.builtin.uri:
+    url: "http://127.0.0.1:{{ garage_admin_port }}/health"
+    status_code: [200, 503]
+  register: garage_health
+  changed_when: false
+
+- name: "Provision garage cluster layout"
+  become: true
+  when: garage_health.status != 200
+  block:
+    - name: "Get node id"
+      ansible.builtin.command:
+        cmd: "garage node id -q"
+      register: garage_node_id
+      changed_when: false
+
+    - name: "Assign node to layout"
+      ansible.builtin.command:
+        cmd: >-
+          garage layout assign
+          --zone local --capacity {{ garage_capacity }}
+          {{ garage_node_id.stdout.split('@')[0] }}
+      changed_when: true
+
+    - name: "Apply layout"
+      ansible.builtin.command:
+        cmd: "garage layout apply --version 1"
+      changed_when: true
+
+    - name: "Wait for layout to be ready"
+      ansible.builtin.uri:
+        url: "http://127.0.0.1:{{ garage_admin_port }}/health"
+        status_code: 200
+      register: garage_health_wait
+      until: garage_health_wait.status == 200
+      retries: 30
+      delay: 1
+
 - name: "Provision garage bucket and key"
   become: true
   block:
-    - name: "Deploy provision script"
-      ansible.builtin.template:
-        src: "garage-provision.sh.j2"
-        dest: "/etc/garage/provision.sh"
-        owner: "root"
-        group: "garage"
-        mode: "0750"
+    - name: "Create bucket"
+      ansible.builtin.command:
+        cmd: "garage bucket create {{ garage_bucket }}"
+      register: garage_bucket_create
+      changed_when: garage_bucket_create.rc == 0
+      failed_when: garage_bucket_create.rc != 0 and 'already exists' not in garage_bucket_create.stderr
+
+    - name: "Import key"
+      ansible.builtin.command:
+        cmd: "garage key import --yes -n {{ garage_bucket }} {{ garage_access_key_id }} {{ garage_secret_access_key }}"
+      register: garage_key_import
+      changed_when: garage_key_import.rc == 0
+      failed_when: garage_key_import.rc != 0 and 'already exists' not in garage_key_import.stderr
       no_log: true
 
-    # Script is idempotent via internal state checks but always reports changed
-    - name: "Run provision script"
+    - name: "Allow key on bucket"
       ansible.builtin.command:
-        cmd: "/etc/garage/provision.sh"
-      changed_when: true
-      tags:
-        - molecule-idempotence-notest
+        cmd: "garage bucket allow --read --write --owner --key {{ garage_access_key_id }} {{ garage_bucket }}"
+      changed_when: false
+      no_log: true
