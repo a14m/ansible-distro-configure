@@ -35,48 +35,30 @@
         shell: "/usr/sbin/nologin"
         create_home: false
 
-    - name: "Create garage config directory"
+    - name: "Create garage directories"
       ansible.builtin.file:
-        path: "/etc/garage"
+        path: "{{ item.path }}"
         state: "directory"
-        owner: "root"
+        owner: "{{ item.owner }}"
         group: "garage"
         mode: "0750"
+      loop:
+        - { path: "/etc/garage", owner: "root" }
+        - { path: "{{ garage_data_dir }}", owner: "garage" }
+        - { path: "{{ garage_meta_dir }}", owner: "garage" }
 
-    - name: "Create garage data directory"
-      ansible.builtin.file:
-        path: "{{ garage_data_dir }}"
-        state: "directory"
-        owner: "garage"
-        group: "garage"
-        mode: "0750"
-
-    - name: "Create garage meta directory"
-      ansible.builtin.file:
-        path: "{{ garage_meta_dir }}"
-        state: "directory"
-        owner: "garage"
-        group: "garage"
-        mode: "0750"
-
-    - name: "Create garage configuration file"
+    - name: "Configure garage"
       ansible.builtin.template:
-        src: "garage.toml.j2"
-        dest: "/etc/garage/garage.toml"
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
         owner: "root"
-        group: "garage"
-        mode: "0640"
-      no_log: true
-      notify: "Restart garage"
-
-    - name: "Create garage systemd service"
-      ansible.builtin.template:
-        src: "garage.service.j2"
-        dest: "/etc/systemd/system/garage.service"
-        owner: "root"
-        group: "root"
-        mode: "0644"
-      notify: "Restart garage"
+        group: "{{ item.group }}"
+        mode: "{{ item.mode }}"
+        no_log: true
+        notify: "Restart garage"
+      loop:
+        - { src: "grage.toml.j2", dest: "/etc/garage/garage.toml", group: "garage", mode: "0640" }
+        - { src: "garage.service.j2", dest: "/etc/systemd/system/garage.service", group: "root", mode: "0644" }
 
     - name: "Start and enable garage"
       ansible.builtin.systemd_service:
