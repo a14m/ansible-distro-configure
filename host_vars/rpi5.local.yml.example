@@ -76,13 +76,16 @@ grafana_dashboards:
       - key: "${DS__VICTORIAMETRICS}"
         value: "prometheus"
   - name: "garage"
+    # yamllint disable-line rule:line-length
     url: "https://git.deuxfleurs.fr/Deuxfleurs/garage/raw/branch/main/script/telemetry/grafana-garage-dashboard-prometheus.json"
     datasource_mappings:
       - key: "${DS_prometheus}"
         value: "prometheus"
 
 backup_device: "PARTLABEL=backup"
-
 garage_rpc_secret: "changeme"
 garage_access_key_id: "GK_changeme"
 garage_secret_access_key: "changeme"
+garage_bucket: "restic"
+garage_data_dir: "/backup/garage/data"
+garage_meta_dir: "/backup/garage/meta"
