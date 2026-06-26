@@ -107,3 +107,4 @@
     - role: "claude"
     - role: "steam"
     - role: "localsend"
+    - role: "restic"

@@ -1,0 +1,12 @@
+---
+- name: "Check installed restic versions"
+  ansible.builtin.command:
+    cmd: "mise ls restic"
+  register: restic_installed_versions
+  changed_when: false
+
+- name: "Install restic"
+  ansible.builtin.command:
+    cmd: "mise use --global restic@{{ restic_version }}"
+  changed_when: true
+  when: restic_version not in restic_installed_versions.stdout

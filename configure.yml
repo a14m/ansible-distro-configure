@@ -127,3 +127,4 @@
     - role: "dotfiles"
     - role: "password_store"
     - role: "vim"
+    - role: "restic"
