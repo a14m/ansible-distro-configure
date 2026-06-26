@@ -116,3 +116,4 @@
     - role: "pipewire"
     - role: "claude"
     - role: "localsend"
+    - role: "restic"

@@ -1,0 +1,8 @@
+---
+argument_specs:
+  main:
+    options:
+      restic_version:
+        type: "str"
+        description: "Restic version to install via mise (e.g. 'latest', '0.17.3')"
+        default: "latest"
