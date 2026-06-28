@@ -1,0 +1,78 @@
+---
+username: "test_user"
+user_public_keys:
+  - "ssh-ed25519 AAAA...fMo"
+  - "ssh-rsa AAAA...4I3"
+network_wifi_ssid: "TEST_WIFI_SSID"
+network_wifi_pass: "TEST_WIFI_PASS"
+ssh_port: 39901
+gpg_public_keys:
+  # gpg --export --armor keyID
+  - |
+    -----BEGIN PGP PUBLIC KEY BLOCK-----
+
+    mDMEaQ/mwBYJKwYBBAHaRw8BAQdAf/q5SPlxG6QAKcTIo+TMsCabKM0Huy/is6fL
+    07BHVo20HFRlc3QgVXNlciA8dGVzdEBleGFtcGxlLmNvbT6IkwQTFgoAOxYhBHVA
+    jj+TfMUsAFfUMtGYo0VqlTV1BQJpD+bAAhsDBQsJCAcCAiICBhUKCQgLAgQWAgMB
+    Ah4HAheAAAoJENGYo0VqlTV1ajQBALZLAy0YmyGxVZg67ClzDMgyGfc44eHXclPT
+    1HJC52u1AP4slgW0KiTgCU/aHQDwZcrFOqMFP+yzr3RGlrkzc9K0BQ==
+    =u+nG
+    -----END PGP PUBLIC KEY BLOCK-----
+
+timezone: "UTC"
+
+locales:
+  - "en_US.UTF-8 UTF-8"
+  - "de_DE.UTF-8 UTF-8"
+locales_lang: "en_US.UTF-8"
+locales_language: "en_US.UTF-8"
+locales_lc_time: "de_DE.UTF-8"
+locales_time_style: "iso"
+locales_lc_collate: "C.UTF-8"
+
+password_policy_enabled: true
+password_policy_minlen: 8
+password_policy_dcredit: 1
+password_policy_ucredit: 1
+password_policy_ocredit: 1
+password_policy_lcredit: 1
+password_policy_minclass: 4
+password_policy_maxrepeat: 3
+password_policy_maxclassrepeat: 0
+password_policy_gecoscheck: 0
+
+dotfiles_repo_url: "https://git.sr.ht/~a14m/.rc"
+dotfiles_setup_script: |
+  set -e
+
+  rm -f ~/.bash_profile ~/.bashrc
+  cd ~/.rc
+  stow --no-folding --adopt .
+  git restore .
+  git remote set-url origin git@git.sr.ht:~a14m/.rc
+
+password_store_repo_url: "git@github.com:a14m/.pass"
+vimrc_repo_url: "git@git.sr.ht:~a14m/.vim"
+vimrc_setup_script: |
+  # NOTE: based on https://stackoverflow.com/a/33734425/1769515
+  vim -E -s -u ~/.vimrc +PlugInstall +qall
+
+chromium_is_default: false
+firefox_is_default: true
+
+proxy_type: "nginx"
+
+wireguard_autostart_connection: "vpn0"
+wireguard_connections:
+  # All wireguard config files are prefixed with wg-
+  # The following connection will be named wg-vpn0
+  vpn0: |
+    [Interface]
+    PrivateKey = your_private_key_here
+    Address = 10.2.0.2/32
+    DNS = 10.2.0.1
+
+    [Peer]
+    PublicKey = server_public_key
+    AllowedIPs = 0.0.0.0/0
+    Endpoint = vpn.com:51820
