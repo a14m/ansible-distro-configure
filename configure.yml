@@ -1,5 +1,5 @@
 ---
-- name: "Dev configure"
+- name: "Development machine configure"
   gather_facts: true
   hosts:
     - desktop.local
@@ -55,7 +55,7 @@
         - "prometheus-node-exporter"
         - "gpu_driver"
 
-    - name: "Archlinux"
+    - name: "Archlinux configure"
       when: ansible_distribution == 'Archlinux'
       ansible.builtin.include_role:
         name: "{{ role }}"
@@ -69,7 +69,7 @@
         - "chromium"
         - "steam"
 
-    - name: "Ubuntu"
+    - name: "Ubuntu configure"
       when: ansible_distribution == 'Ubuntu'
       ansible.builtin.include_role:
         name: "{{ role }}"
