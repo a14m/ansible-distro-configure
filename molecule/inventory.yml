@@ -1,0 +1,9 @@
+---
+homelab:
+  hosts:
+    archlinux: {}
+    archlinux-gnome: {}
+    debian: {}
+    proxmox: {}
+    raspberrypi: {}
+    ubuntu: {}
