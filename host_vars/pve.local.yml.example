@@ -13,3 +13,6 @@ network_ipv6_gateway: "fd5c:fd8b:2b8c::254"
 network_ipv6_dns: "fd5c:fd8b:2b8c::254"
 
 restic_version: "0.19.0"
+
+pve_admin_user: "admin"
+pve_admin_password: "changeme"
