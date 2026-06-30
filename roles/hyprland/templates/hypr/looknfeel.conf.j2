@@ -13,7 +13,7 @@ source = ~/.config/hyprtheme/current/hyprland.conf
 $activeBorderColor = $active
 $inactiveBorderColor = $inactive
 
-# https://wiki.hyprland.org/Configuring/Variables/#general
+# https://wiki.hypr.land/Configuring/Basics/Variables/#general
 general {
     gaps_in = 2
     gaps_out = 5
@@ -27,13 +27,13 @@ general {
     # Set to true enable resizing windows by clicking and dragging on borders and gaps
     resize_on_border = false
 
-    # Please see https://wiki.hyprland.org/Configuring/Tearing/ before you turn this on
+    # Please see https://wiki.hypr.land/Configuring/Advanced-and-Cool/Tearing/ before you turn this on
     allow_tearing = false
 
     layout = dwindle
 }
 
-# https://wiki.hyprland.org/Configuring/Variables/#decoration
+# https://wiki.hypr.land/Configuring/Basics/Variables/#decoration
 decoration {
     rounding = 5
 
@@ -48,7 +48,7 @@ decoration {
     active_opacity = 1.0
     inactive_opacity = 0.85
 
-    # https://wiki.hyprland.org/Configuring/Variables/#blur
+    # https://wiki.hypr.land/Configuring/Basics/Variables/#blur
     blur {
         enabled = true
         size = 2
@@ -59,12 +59,12 @@ decoration {
     }
 }
 
-# https://wiki.hypr.land/Configuring/Variables/#group
+# https://wiki.hypr.land/Configuring/Basics/Variables/#group
 group {
     col.border_active = $activeBorderColor
     col.border_inactive = $inactiveBorderColor
-    col.border_locked_active = -1
-    col.border_locked_inactive = -1
+    col.border_locked_active = $activeBorderColor
+    col.border_locked_inactive = $inactiveBorderColor
 
     groupbar {
         font_size = 12
@@ -90,11 +90,11 @@ group {
 }
 
 
-# https://wiki.hyprland.org/Configuring/Variables/#animations
+# https://wiki.hypr.land/Configuring/Basics/Variables/#animations
 animations {
     enabled = yes, please :)
 
-    # Default animations, see https://wiki.hyprland.org/Configuring/Animations/ for more
+    # Default animations, see https://wiki.hypr.land/Configuring/Advanced-and-Cool/Animations/ for more
 
     bezier = easeOutQuint,0.23,1,0.32,1
     bezier = easeInOutCubic,0.65,0.05,0.36,1
@@ -118,33 +118,38 @@ animations {
     animation = workspaces, 0, 0, ease
 }
 
-# See https://wiki.hyprland.org/Configuring/Dwindle-Layout/ for more
+# See https://wiki.hypr.land/Configuring/Layouts/Dwindle-Layout/ for more
 dwindle {
-    pseudotile = true # Master switch for pseudotiling. Enabling is bound to mainMod + P in the keybinds section below
     preserve_split = true # You probably want this
     force_split = 2 # Always split on the right
 }
 
-# See https://wiki.hyprland.org/Configuring/Master-Layout/ for more
+scrolling {
+    column_width = 0.49
+}
+
+# See https://wiki.hypr.land/Configuring/Layouts/Master-Layout/ for more
 master {
     new_status = master
 }
 
-# https://wiki.hyprland.org/Configuring/Variables/#misc
+# https://wiki.hypr.land/Configuring/Basics/Variables/#misc
 misc {
     disable_hyprland_logo = true
     disable_splash_rendering  = true
+    disable_scale_notification = true
     focus_on_activate = true
     anr_missed_pings = 3
     on_focus_under_fullscreen = 1
 }
 
-# https://wiki.hypr.land/Configuring/Variables/#cursor
+# https://wiki.hypr.land/Configuring/Basics/Variables/#cursor
 cursor {
     hide_on_key_press = true
     sync_gsettings_theme = true
     no_hardware_cursors = 1
     inactive_timeout = 5
+    warp_on_change_workspace = 1
 }
 
 xwayland {
