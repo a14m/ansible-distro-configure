@@ -2,8 +2,6 @@
 network_interface: "eth0"
 network_ipv4_address: "10.0.0.254"
 network_ipv4_gateway: "10.0.0.1"
-network_ipv6_address: "fd5c:fd8b:2b8c::254/64"
-network_ipv6_gateway: "fd5c:fd8b:2b8c::1"
 
 pihole_hostname: "dns.home.arpa"
 wg_portal_hostname: "vpn.home.arpa"
