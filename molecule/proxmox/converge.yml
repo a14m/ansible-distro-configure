@@ -63,3 +63,4 @@
     - role: "password_store"
     - role: "vim"
     - role: "restic"
+    - role: "proxmoxer"

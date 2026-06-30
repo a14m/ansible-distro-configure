@@ -1,0 +1,8 @@
+---
+- name: "Install proxmoxer"
+  become: true
+  ansible.builtin.package:
+    name:
+      - "python3-proxmoxer"
+      - "python3-requests"
+    state: present
