@@ -5,78 +5,67 @@
     - desktop.local
     - macbook.local
     - laptop.local
+  roles:
+    - role: "locales"
+    - role: "timezone"
+    - role: "font"
+    - role: "bash"
+    - role: "man"
+    - role: "which"
+    - role: "jq"
+    - role: "ag"
+    - role: "libheif"
+    - role: "tmuxinator"
+    - role: "rsync"
+    - role: "gpg"
+    - role: "git"
+    - role: "git-crypt"
+    - role: "zoxide"
+    - role: "dotfiles"
+    - role: "password_store"
+    - role: "wireguard"
+    - role: "vim"
+    - role: "mise"
+    - role: "neomutt"
+    - role: "go"
+    - role: "python"
+    - role: "nodejs"
+    - role: "docker"
+    - role: "podman"
+    - role: "ansible"
+    - role: "alacritty"
+    - role: "btop"
+    - role: "claude"
+    - role: "firefox"
+    - role: "obsidian"
+    - role: "localsend"
+    - role: "microsoft-teams"
+    - role: "gnome-calendar"
+    - role: "gnome-newsflash"
+    - role: "gnome-planify"
+    - role: "gnome-loupe"
+    - role: "gnome-papers"
+    - role: "gnome-disk-utility"
+    - role: "prometheus-node-exporter"
+    - role: "gpu_driver"
   tasks:
-    - name: "Common"
+    - name: "Configure distro roles"
+      when: ansible_distribution == role.distro
+      tags: always
       ansible.builtin.include_role:
-        name: "{{ role }}"
+        name: "{{ role.name }}"
+        apply:
+          tags: "{{ role.tags | default([]) }}"
+      loop:
+        - { name: "yay", distro: "Archlinux" }
+        - { name: "mpv", distro: "Archlinux" }
+        - { name: "hyprland", distro: "Archlinux" }
+        - { name: "zen-browser", distro: "Archlinux" }
+        - { name: "chromium", distro: "Archlinux" }
+        - { name: "steam", distro: "Archlinux" }
+        - { name: "gnome", distro: "Ubuntu" }
       loop_control:
         loop_var: "role"
-      loop:
-        - "locales"
-        - "timezone"
-        - "font"
-        - "bash"
-        - "man"
-        - "which"
-        - "jq"
-        - "ag"
-        - "libheif"
-        - "tmuxinator"
-        - "rsync"
-        - "gpg"
-        - "git"
-        - "git-crypt"
-        - "zoxide"
-        - "dotfiles"
-        - "password_store"
-        - "wireguard"
-        - "vim"
-        - "mise"
-        - "neomutt"
-        - "go"
-        - "python"
-        - "nodejs"
-        - "docker"
-        - "podman"
-        - "ansible"
-        - "alacritty"
-        - "btop"
-        - "claude"
-        - "firefox"
-        - "obsidian"
-        - "localsend"
-        - "microsoft-teams"
-        - "gnome-calendar"
-        - "gnome-newsflash"
-        - "gnome-planify"
-        - "gnome-loupe"
-        - "gnome-papers"
-        - "gnome-disk-utility"
-        - "prometheus-node-exporter"
-        - "gpu_driver"
-
-    - name: "Archlinux configure"
-      when: ansible_distribution == 'Archlinux'
-      ansible.builtin.include_role:
-        name: "{{ role }}"
-      loop_control:
-        loop_var: "role"
-      loop:
-        - "yay"
-        - "mpv"
-        - "hyprland"
-        - "zen-browser"
-        - "chromium"
-        - "steam"
-
-    - name: "Ubuntu configure"
-      when: ansible_distribution == 'Ubuntu'
-      ansible.builtin.include_role:
-        name: "{{ role }}"
-      loop_control:
-        loop_var: "role"
-      loop:
-        - "gnome"
 
 - name: "Raspberry Pi configure"
   gather_facts: true
