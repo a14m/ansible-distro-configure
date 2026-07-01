@@ -116,4 +116,5 @@
     - role: "dotfiles"
     - role: "password_store"
     - role: "vim"
+    - role: "prometheus-node-exporter"
     - role: "restic"
