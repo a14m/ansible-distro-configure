@@ -17,6 +17,23 @@ gateway_local_ipv4_subnet: "192.168.1.0/24"
 gateway_router_interface: "end0"
 ```
 
+### IPv6 Support (Optional)
+
+IPv6 gateway is enabled by setting both `network_ipv6_address` and `gateway_local_ipv6_subnet`:
+
+```yaml
+network_ipv6_address: "2a02:xxxx:xxxx:xxxx::254/64"   # Pi's IPv6 address
+gateway_local_ipv6_subnet: "2a02:xxxx:xxxx:xxxx::/64" # LAN IPv6 subnet
+```
+
+To disable IPv6 entirely, remove both variables from `host_vars`. The role will:
+- Omit `accept_ra` sysctl (no IPv6 interface key written)
+- Skip IPv6 iptables masquerade rules (`gateway_local_ipv6_subnet` defaults to `""`)
+- Leave `net.ipv6.conf.all.forwarding=0`
+
+**Note:** `accept_ra` is set per-interface (`gateway_router_interface`) only when IPv6 is enabled.
+This prevents rogue RA acceptance on WireGuard and LAN interfaces.
+
 ## Network Architecture
 
 ```txt
