@@ -118,3 +118,4 @@
     - role: "vim"
     - role: "prometheus-node-exporter"
     - role: "restic"
+    - role: "ethtool"
