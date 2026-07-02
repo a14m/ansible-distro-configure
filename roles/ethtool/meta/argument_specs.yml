@@ -1,0 +1,8 @@
+---
+argument_specs:
+  main:
+    options:
+      ethtool_wol_interface:
+        type: "str"
+        description: "Network interface to enable Wake-on-LAN on"
+        default: "eth0"
