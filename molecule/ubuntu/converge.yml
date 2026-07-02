@@ -108,3 +108,4 @@
     - role: "steam"
     - role: "localsend"
     - role: "restic"
+    - role: "ethtool"

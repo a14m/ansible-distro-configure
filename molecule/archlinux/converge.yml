@@ -111,3 +111,4 @@
     - role: "grafana"
     - role: "localsend"
     - role: "restic"
+    - role: "ethtool"

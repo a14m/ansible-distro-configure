@@ -115,3 +115,4 @@
     - role: "wiremix"
     - role: "localsend"
     - role: "restic"
+    - role: "ethtool"
