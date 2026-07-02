@@ -117,3 +117,4 @@
     - role: "claude"
     - role: "localsend"
     - role: "restic"
+    - role: "ethtool"

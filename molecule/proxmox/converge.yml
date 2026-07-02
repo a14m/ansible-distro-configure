@@ -64,3 +64,4 @@
     - role: "vim"
     - role: "restic"
     - role: "proxmoxer"
+    - role: "ethtool"
