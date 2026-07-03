@@ -34,18 +34,6 @@
       tags:
         - molecule-notest
 
-- name: "Set management IP in /etc/hosts for PVE cert generation"
-  become: true
-  ansible.builtin.lineinfile:
-    path: "/etc/hosts"
-    regexp: "^{{ network_ipv4_address }}"
-    line: "{{ network_ipv4_address }}  {{ ansible_facts['hostname'] }}"
-    state: present
-  notify: "Restart pveproxy"
-  tags:
-    # Since container doesn't have network ip address, skipping this test
-    - "molecule-notest"
-
 - name: "Create PVE admin user"
   become: true
   ansible.builtin.command:
@@ -70,6 +58,14 @@
   ansible.builtin.command:
     cmd: "pveum acl modify / --roles Administrator --users {{ pve_admin_user }}@pve"
   changed_when: true
+  tags:
+    - "molecule-notest"
+
+- name: "Create LVM volume group for PVE storage"
+  become: true
+  ansible.builtin.command:
+    cmd: "vgcreate {{ pve_lvm_vg_name }} {{ pve_lvm_device }}"
+    creates: "/dev/{{ pve_lvm_vg_name }}"
   tags:
     - "molecule-notest"
 
