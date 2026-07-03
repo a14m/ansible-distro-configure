@@ -23,16 +23,27 @@ IPv6 gateway is enabled by setting both `network_ipv6_address` and `gateway_loca
 
 ```yaml
 network_ipv6_address: "2a02:xxxx:xxxx:xxxx::254/64"   # Pi's IPv6 address
-gateway_local_ipv6_subnet: "2a02:xxxx:xxxx:xxxx::/64" # LAN IPv6 subnet
+gateway_local_ipv6_subnet: "2a02:xxxx:xxxx:xxxx::/64" # LAN IPv6 subnet (advertised via radvd)
 ```
 
-To disable IPv6 entirely, remove both variables from `host_vars`. The role will:
-- Omit `accept_ra` sysctl (no IPv6 interface key written)
-- Skip IPv6 iptables masquerade rules (`gateway_local_ipv6_subnet` defaults to `""`)
+When `network_ipv6_address` is defined, the role:
+- Enables IPv6 forwarding (`net.ipv6.conf.all.forwarding=1`)
+- Sets `accept_ra=2` on `gateway_router_interface` so Pi keeps receiving RAs from the router while forwarding
+- Configures and starts `radvd` — Pi sends Router Advertisements to the LAN advertising itself as the IPv6 default gateway with `AdvDefaultPreference high`
+- Announces Pi-hole (Pi's IPv6) as RDNSS so all devices use it for DNS over IPv6
+
+This mirrors the IPv4 setup: all LAN devices (including phones) auto-configure Pi as their IPv6 gateway via SLAAC. No static configuration needed on clients.
+
+To disable IPv6 entirely, remove `network_ipv6_address` and `gateway_local_ipv6_subnet` from `host_vars`. The role will:
+- Omit `accept_ra` sysctl
+- Skip IPv6 iptables masquerade rules
+- Stop and disable radvd, remove its config
 - Leave `net.ipv6.conf.all.forwarding=0`
 
 **Note:** `accept_ra` is set per-interface (`gateway_router_interface`) only when IPv6 is enabled.
 This prevents rogue RA acceptance on WireGuard and LAN interfaces.
+
+**FritzBox:** Set RA priority to **Low** (Home Network → Network → IPv6 → Router advertisement → priority) so Pi's `high` priority RA wins. Pi becomes the sole IPv6 default gateway for all LAN devices.
 
 ## Network Architecture
 
@@ -70,7 +81,7 @@ Client Devices (192.168.1.0/24)
 ## Requirements
 
 - **WireGuard Interfaces**: Must follow `wg*` naming pattern (`wg0`, `wg-us1`, etc.)
-- **Client Configuration**: Devices must use Pi as default gateway (192.168.1.254)
+- **Client Configuration**: IPv4 devices use Pi as gateway via Pi-hole DHCP; IPv6 devices auto-configure via radvd RAs
 - **IP Forwarding**: Kernel IP forwarding must be enabled (`net.ipv4.ip_forward=1`)
 - **WireGuard Config**: Use default routing (`Table=auto` or unset, NOT `Table=off`)
 

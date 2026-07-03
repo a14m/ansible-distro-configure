@@ -15,3 +15,9 @@
   ansible.builtin.command:
     cmd: "udevadm control --reload-rules"
   changed_when: false
+
+- name: "Restart radvd"
+  become: true
+  ansible.builtin.systemd_service:
+    name: "radvd.service"
+    state: "restarted"

@@ -17,7 +17,7 @@ This role configure the [pihole](https://github.com/pi-hole/pi-hole) DNS Sinkhol
 ### [FRITZ!Box](https://docs.pi-hole.net/routers/fritzbox/)
 
 - Home Network > Network > Network Settings > Change Advanced Network Settings > IPv4 >
-  - Home network > 
+  - Home network >
     - IPv4 address > {{ router_ipv4 }}
     - Subnet mask > {{ router_subnet_mask }}
   - DHCP > Enable DHCP server > ❌
@@ -48,11 +48,7 @@ This role configure the [pihole](https://github.com/pi-hole/pi-hole) DNS Sinkhol
 #### With IPv6 Support
 
 - Home Network > Network > Network Settings > Change Advanced Network Settings > IPv6 >
-  - Router advertisement enable in the LAN > ✅
-    - Always assign unique local addresses (ULA) > ❌
-    - Allow IPv6 prefixes announced by other IPv6 routers in the home network > ❌
-    - This FRITZ!Box provides the standard internet connection > ✅
-    - Set the priority of the router advertisement > High
+  - Router advertisement enable in the LAN > ❌
   - DNSv6 Server in the Home Network >
     - Also announce DNSv6 server via router advertisement (RFC5006) > ✅
     - Local DNSv6 server > {{ pihole_ipv6 }}
