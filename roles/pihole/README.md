@@ -37,7 +37,7 @@ This role configure the [pihole](https://github.com/pi-hole/pi-hole) DNS Sinkhol
 
 - Internet > Account Information > DNS Server > DNSv4 Server > Use Other DNSv4 Servers > {{ pihole_ipv4 }}
 
-#### No IPv6 Support
+#### No IPv6 Support (default)
 
 - Home Network > Network > Network Settings > Change Advanced Network Settings > IPv6 >
   - Router advertisement enable in the LAN > ❌
@@ -46,6 +46,10 @@ This role configure the [pihole](https://github.com/pi-hole/pi-hole) DNS Sinkhol
 - Internet > Account Information > IPv6 > IPv6 Support > ❌
 
 #### With IPv6 Support
+
+> **Note:** Full IPv6 gateway support (all devices including WiFi) requires FritzBox to be the IPv6 border
+> router. Pi can only act as IPv6 gateway for wired hosts with static `network_ipv6_gateway` config.
+> radvd is deployed by the `gateway` role when `network_ipv6_address` is defined on the Pi.
 
 - Home Network > Network > Network Settings > Change Advanced Network Settings > IPv6 >
   - Router advertisement enable in the LAN > ❌
