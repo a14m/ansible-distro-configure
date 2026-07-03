@@ -17,11 +17,3 @@ argument_specs:
         type: "str"
         description: "PVE realm admin password"
         default: "changeme"
-      pve_lvm_device:
-        type: "str"
-        description: "Block device for PVE LVM volume group (e.g. /dev/sda4)"
-        default: "/dev/sda4"
-      pve_lvm_vg_name:
-        type: "str"
-        description: "LVM volume group name — PVE auto-detects VG named 'pve' as local-lvm storage"
-        default: "pve"

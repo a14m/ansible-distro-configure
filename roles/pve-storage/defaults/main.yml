@@ -1,0 +1,4 @@
+---
+pve_storage_device: "/dev/sda4"
+pve_storage_name: "pve"
+pve_storage_pool: "data"

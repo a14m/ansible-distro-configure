@@ -1,0 +1,31 @@
+---
+- name: "Create LVM volume group for PVE storage"
+  become: true
+  community.general.lvg:
+    vg: "{{ pve_storage_name }}"
+    pvs: "{{ pve_storage_device }}"
+    state: present
+  tags:
+    - "molecule-notest"
+
+- name: "Create LVM thin pool for PVE storage"
+  become: true
+  community.general.lvol:
+    vg: "{{ pve_storage_name }}"
+    lv: "{{ pve_storage_pool }}"
+    size: "100%FREE"
+    opts: "--type thin-pool"
+    shrink: false
+    state: present
+  tags:
+    - "molecule-notest"
+
+- name: "Register local-lvm storage in PVE"
+  become: true
+  ansible.builtin.command:
+    cmd: "pvesm add lvmthin local-lvm --vgname {{ pve_storage_name }} --thinpool {{ pve_storage_pool }}"
+  register: pve_pvesm_add
+  changed_when: pve_pvesm_add.rc == 0
+  failed_when: pve_pvesm_add.rc != 0 and 'already defined' not in pve_pvesm_add.stderr
+  tags:
+    - "molecule-notest"

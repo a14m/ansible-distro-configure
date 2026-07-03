@@ -61,14 +61,6 @@
   tags:
     - "molecule-notest"
 
-- name: "Create LVM volume group for PVE storage"
-  become: true
-  ansible.builtin.command:
-    cmd: "vgcreate {{ pve_lvm_vg_name }} {{ pve_lvm_device }}"
-    creates: "/dev/{{ pve_lvm_vg_name }}"
-  tags:
-    - "molecule-notest"
-
 - name: "Enable and start Proxmox VE services"
   become: true
   ansible.builtin.systemd_service:
