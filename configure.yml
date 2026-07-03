@@ -103,6 +103,7 @@
     - pve.local
   roles:
     - role: "pve"
+    - role: "pve-network"
     - role: "locales"
     - role: "timezone"
     - role: "bash"

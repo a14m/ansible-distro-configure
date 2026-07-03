@@ -1,0 +1,16 @@
+[connection]
+id={{ pve_network_interface }}-bridge-port
+type=ethernet
+interface-name={{ pve_network_interface }}
+autoconnect=true
+controller=vmbr0
+port-type=bridge
+
+[ethernet]
+cloned-mac-address=permanent
+
+[ipv4]
+method=disabled
+
+[ipv6]
+method=disabled

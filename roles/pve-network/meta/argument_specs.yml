@@ -1,0 +1,32 @@
+---
+argument_specs:
+  main:
+    options:
+      pve_network_interface:
+        type: "str"
+        description: "Physical ethernet interface to add as bridge port"
+        default: "enp0s25"
+      network_ipv4_address:
+        type: "str"
+        description: "Static IPv4 address for vmbr0"
+        required: true
+      network_ipv4_prefix:
+        type: "int"
+        description: "IPv4 prefix length"
+        default: 24
+      network_ipv4_gateway:
+        type: "str"
+        description: "IPv4 default gateway"
+        required: true
+      network_ipv4_dns:
+        type: "str"
+        description: "IPv4 DNS server"
+      network_ipv6_address:
+        type: "str"
+        description: "Static IPv6 address for vmbr0 (optional)"
+      network_ipv6_gateway:
+        type: "str"
+        description: "IPv6 default gateway (required if network_ipv6_address is set)"
+      network_ipv6_dns:
+        type: "str"
+        description: "IPv6 DNS server"

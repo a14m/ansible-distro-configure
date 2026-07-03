@@ -49,6 +49,7 @@
         ansible_facts: "{{ ansible_facts | combine({'is_chroot': false}) }}"
   roles:
     - role: "pve"
+    - role: "pve-network"
     - role: "locales"
     - role: "timezone"
     - role: "bash"

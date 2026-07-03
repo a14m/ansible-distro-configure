@@ -9,10 +9,14 @@ network_ipv4_address: "10.0.0.253"
 network_ipv4_gateway: "10.0.0.254"
 network_ipv4_dns: "10.0.0.254"
 
-restic_version: "0.19.0"
+pve_network_interface: "enp0s25"
 
 pve_admin_user: "admin"
 pve_admin_password: "changeme"
+pve_lvm_device: "/dev/sda4"
+pve_lvm_vg_name: "pve"
 
-ethtool_wol_interface: "eth0"
+restic_version: "0.19.0"
+
+ethtool_wol_interface: "enp0s25"
 ethtool_lid_ac_action: "ignore"
