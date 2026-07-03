@@ -2,5 +2,3 @@
 pve_repo: "no-subscription"
 pve_admin_user: "admin"
 pve_admin_password: "changeme"
-pve_lvm_device: "/dev/sda4"
-pve_lvm_vg_name: "pve"

@@ -1,0 +1,16 @@
+---
+argument_specs:
+  main:
+    options:
+      pve_storage_device:
+        type: "str"
+        description: "Block device for LVM physical volume (e.g. /dev/sda4)"
+        default: "/dev/sda4"
+      pve_storage_name:
+        type: "str"
+        description: "LVM volume group name"
+        default: "pve"
+      pve_storage_pool:
+        type: "str"
+        description: "LVM thin pool name within the volume group"
+        default: "data"
