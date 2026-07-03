@@ -16,3 +16,6 @@ restic_version: "0.19.0"
 
 pve_admin_user: "admin"
 pve_admin_password: "changeme"
+
+ethtool_wol_interface: "eth0"
+ethtool_lid_ac_action: "ignore"

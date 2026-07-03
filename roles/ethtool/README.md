@@ -5,7 +5,8 @@ Installs ethtool and configures Wake-on-LAN (WoL) via a systemd service.
 ## Variables
 
 ```yaml
-ethtool_wol_interface: "eth0"  # Network interface to enable WoL on
+ethtool_wol_interface: "eth0"      # Network interface to enable WoL on
+ethtool_lid_ac_action: "suspend"   # HandleLidSwitchExternalPower (ignore/suspend/hibernate/lock/poweroff)
 ```
 
 ## Usage
@@ -38,7 +39,11 @@ Enables WoL on the NIC via ethtool on every boot. Add to your play with the corr
 ethtool_wol_interface: "enp0s25"
 ```
 
-### 3. Suspend the host
+### 3. Lid behavior (laptops)
+
+Role configures `HandleLidSwitchExternalPower` via `ethtool_lid_ac_action` (default: `suspend`). Set to `ignore` for WoL use case — lid close on AC won't re-suspend after wake. No effect on desktops.
+
+### 4. Suspend the host
 
 WoL is most reliable from suspend (S3). Shutdown (S5) requires BIOS "WoL from S5" support.
 
