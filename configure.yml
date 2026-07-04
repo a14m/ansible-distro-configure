@@ -104,6 +104,7 @@
   roles:
     - role: "pve"
     - role: "pve-network"
+    - role: "pve-storage"
     - role: "locales"
     - role: "timezone"
     - role: "bash"
@@ -120,3 +121,22 @@
     - role: "prometheus-node-exporter"
     - role: "restic"
     - role: "ethtool"
+  tasks:
+    - name: "Provision LXC containers"
+      tags: ["pve-lxc"]
+      ansible.builtin.include_role:
+        name: "pve-lxc"
+      vars:
+        pve_lxc_id: "{{ hostvars[service_host].pve_lxc_id }}"
+        pve_lxc_hostname: "{{ hostvars[service_host].pve_lxc_hostname }}"
+        pve_lxc_template: "{{ hostvars[service_host].pve_lxc_template }}"
+        pve_lxc_disk: "{{ hostvars[service_host].pve_lxc_disk }}"
+        pve_lxc_cores: "{{ hostvars[service_host].pve_lxc_cores }}"
+        pve_lxc_memory: "{{ hostvars[service_host].pve_lxc_memory }}"
+        pve_lxc_password: "{{ hostvars[service_host].pve_lxc_password }}"
+        pve_lxc_ip: "{{ hostvars[service_host].pve_lxc_ip }}"
+        pve_lxc_gateway: "{{ hostvars[service_host].pve_lxc_gateway }}"
+        pve_lxc_dns: "{{ hostvars[service_host].pve_lxc_dns }}"
+      loop: "{{ groups['services'] }}"
+      loop_control:
+        loop_var: "service_host"
