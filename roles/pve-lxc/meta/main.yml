@@ -1,0 +1,14 @@
+---
+dependencies:
+  - role: "proxmoxer"
+  - role: "pve"
+  - role: "pve-network"
+galaxy_info:
+  author: "a14m"
+  description: "Provision an LXC container on Proxmox VE"
+  license: "MIT"
+  min_ansible_version: "2.18"
+  platforms:
+    - name: "Debian"
+      versions:
+        - "bookworm"
