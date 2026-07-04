@@ -22,6 +22,9 @@
     enabled: true
     state: "started"
     daemon_reload: true
+  tags:
+    # WoL service fails in containers — ethtool_wol_interface does not exist
+    - "molecule-notest"
 
 - name: "Ensure /etc/systemd/logind.conf.d exists"
   become: true
