@@ -1,0 +1,40 @@
+---
+argument_specs:
+  main:
+    options:
+      pve_lxc_id:
+        type: "int"
+        description: "Unique VM/CT ID in PVE"
+        required: true
+      pve_lxc_hostname:
+        type: "str"
+        description: "Container hostname"
+        required: true
+      pve_lxc_template:
+        type: "str"
+        description: "OS template filename fetched from PVE appliance repo into local storage"
+        required: true
+      pve_lxc_disk:
+        type: "str"
+        description: "Root disk in <storage>:<size> format (e.g. local-lvm:4)"
+        default: "local-lvm:4"
+      pve_lxc_cores:
+        type: "int"
+        description: "Number of vCPU cores"
+        default: 1
+      pve_lxc_memory:
+        type: "int"
+        description: "RAM in MB"
+        default: 512
+      pve_lxc_ip:
+        type: "str"
+        description: "Container IP in CIDR notation (e.g. 10.0.0.100/24)"
+        default: "10.0.0.100/24"
+      pve_lxc_gateway:
+        type: "str"
+        description: "Container default gateway"
+        default: "10.0.0.1"
+      pve_lxc_dns:
+        type: "str"
+        description: "Container DNS server"
+        default: "10.0.0.1"
