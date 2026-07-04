@@ -8,6 +8,7 @@
     state: present
   notify: "Restart pveproxy"
   tags:
+    # pveproxy not available in containers — requires proxmox-ve package
     - "molecule-notest"
 
 - name: "Deploy bridge master connection"
