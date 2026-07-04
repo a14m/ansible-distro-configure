@@ -6,7 +6,7 @@
     state: "present"
     update_cache: true
   tags:
-    # Since proxmox-ve package setups network and configure grub/kernel hooks which doesn't work in containers
+    # proxmox-ve package configures grub/kernel hooks which fail inside containers
     - "molecule-notest"
 
 - name: "Configure Proxmox repos"
@@ -32,6 +32,7 @@
         path: "/etc/apt/sources.list"
         mode: "0644"
       tags:
+        # proxmox-ve package was skipped so apt sources are not modified in testing
         - molecule-notest
 
 - name: "Create PVE admin user"
@@ -42,6 +43,7 @@
   changed_when: pve_user_add.rc == 0
   failed_when: pve_user_add.rc != 0 and 'already exists' not in pve_user_add.stderr
   tags:
+    # pveum binary not available in containers — requires proxmox-ve package
     - "molecule-notest"
 
 - name: "Set PVE admin user password"
@@ -51,6 +53,7 @@
     cmd: "pveum passwd {{ pve_admin_user }}@pve --password {{ pve_admin_password }}"
   changed_when: true
   tags:
+    # pveum binary not available in containers — requires proxmox-ve package
     - "molecule-notest"
 
 - name: "Grant PVE Administrator role"
@@ -59,6 +62,7 @@
     cmd: "pveum acl modify / --roles Administrator --users {{ pve_admin_user }}@pve"
   changed_when: true
   tags:
+    # pveum binary not available in containers — requires proxmox-ve package
     - "molecule-notest"
 
 - name: "Enable and start Proxmox VE services"
@@ -73,5 +77,5 @@
     - "pveproxy"
     - "pvestatd"
   tags:
-    # Since proxmox-ve package was ignored from testing, we need to ignore this too
+    # PVE services not available in containers — proxmox-ve package was skipped
     - "molecule-notest"

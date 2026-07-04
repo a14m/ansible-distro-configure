@@ -6,6 +6,7 @@
     pvs: "{{ pve_storage_device }}"
     state: present
   tags:
+    # No block devices available in containers
     - "molecule-notest"
 
 - name: "Create LVM thin pool for PVE storage"
@@ -18,6 +19,7 @@
     shrink: false
     state: present
   tags:
+    # No block devices available in containers
     - "molecule-notest"
 
 - name: "Register local-lvm storage in PVE"
@@ -28,4 +30,5 @@
   changed_when: pve_pvesm_add.rc == 0
   failed_when: pve_pvesm_add.rc != 0 and 'already defined' not in pve_pvesm_add.stderr
   tags:
+    # pvesm binary not available in containers — requires proxmox-ve package
     - "molecule-notest"
