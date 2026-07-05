@@ -1,4 +1,16 @@
 ---
+- name: "Set management IP in /etc/hosts for PVE cert generation"
+  become: true
+  ansible.builtin.template:
+    src: "hosts.j2"
+    dest: "/etc/hosts"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+  tags:
+    # pveproxy not available in containers — requires proxmox-ve package
+    - "molecule-notest"
+
 - name: "Install proxmox-ve"
   become: true
   ansible.builtin.apt:
