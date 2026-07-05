@@ -103,6 +103,15 @@
         owner: "root"
         group: "root"
 
+    - name: "Configure bridge connection"
+      ansible.builtin.template:
+        src: "bridge.nmconnection.j2"
+        dest: "/etc/NetworkManager/system-connections/{{ network_bridge }}.nmconnection"
+        mode: "0600"
+        owner: "root"
+        group: "root"
+      when: network_bridge is defined
+
     - name: "Configure wifi connection"
       ansible.builtin.template:
         src: "wifi-connection.nmconnection.j2"

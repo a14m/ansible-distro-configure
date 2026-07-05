@@ -45,14 +45,13 @@
     password_store_repo_url: "https://github.com/octocat/Spoon-Knife"
     network_ipv4_address: "10.0.0.253"
     network_ipv4_gateway: "10.0.0.1"
-    pve_network_interface: "eth0"
+    network_bridge: "vmbr0"
   pre_tasks:
     - name: "Override is_chroot fact for container environment"
       ansible.builtin.set_fact:
         ansible_facts: "{{ ansible_facts | combine({'is_chroot': false}) }}"
   roles:
     - role: "pve"
-    - role: "pve-network"
     - role: "pve-storage"
     - role: "locales"
     - role: "timezone"
