@@ -9,7 +9,7 @@ argument_specs:
       pve_storage_name:
         type: "str"
         description: "LVM volume group name"
-        default: "pve"
+        default: "vmdata"
       pve_storage_pool:
         type: "str"
         description: "LVM thin pool name within the volume group"
