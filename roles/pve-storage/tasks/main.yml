@@ -15,7 +15,7 @@
     vg: "{{ pve_storage_name }}"
     lv: "{{ pve_storage_pool }}"
     size: "100%FREE"
-    opts: "--type thin-pool"
+    opts: "--type thin-pool --poolmetadatasize 1G"
     shrink: false
     state: present
   tags:
