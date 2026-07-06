@@ -132,7 +132,6 @@
         pve_lxc_disk: "{{ hostvars[service_host].pve_lxc_disk }}"
         pve_lxc_cores: "{{ hostvars[service_host].pve_lxc_cores }}"
         pve_lxc_memory: "{{ hostvars[service_host].pve_lxc_memory }}"
-        pve_lxc_password: "{{ hostvars[service_host].pve_lxc_password }}"
         pve_lxc_ip: "{{ hostvars[service_host].pve_lxc_ip }}"
         pve_lxc_gateway: "{{ hostvars[service_host].pve_lxc_gateway }}"
         pve_lxc_dns: "{{ hostvars[service_host].pve_lxc_dns }}"

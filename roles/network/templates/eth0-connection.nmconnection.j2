@@ -2,16 +2,18 @@
 id=ethernet
 type=ethernet
 autoconnect=true
-{% if network_bridge is defined %}
-controller={{ network_bridge }}
-port-type=bridge
+{% if network_bridge_interface is defined %}
+interface-name={{ network_bridge_interface }}
+# NOTE: master/slave-type keyfile keys deprecated in NM 1.46, replaced by controller/port-type
+master=vmbr0
+slave-type=bridge
 {% endif %}
 
 [ethernet]
 cloned-mac-address=permanent
 
 [ipv4]
-{% if network_bridge is defined %}
+{% if network_bridge_interface is defined %}
 method=disabled
 {% elif network_ipv4_address is defined %}
 method=manual
@@ -26,7 +28,7 @@ method=auto
 
 [ipv6]
 addr-gen-mode=default
-{% if network_bridge is defined %}
+{% if network_bridge_interface is defined %}
 method=disabled
 {% elif network_ipv6_address is defined %}
 method=manual
