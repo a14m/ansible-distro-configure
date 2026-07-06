@@ -42,6 +42,7 @@
     api_host: "{{ ansible_facts['hostname'] }}"
     api_user: "{{ pve_admin_user }}@pve"
     api_password: "{{ pve_admin_password }}"
+    node: "{{ ansible_facts['hostname'] }}"
     vmid: "{{ pve_lxc_id }}"
     state: started
   no_log: true
