@@ -78,7 +78,6 @@
       PermitRootLogin no
       PermitEmptyPasswords no
       ChallengeResponseAuthentication no
-      GSSAPIAuthentication no
       X11Forwarding no
       StreamLocalBindUnlink yes
   notify:
