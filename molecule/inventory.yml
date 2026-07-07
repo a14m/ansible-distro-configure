@@ -7,3 +7,8 @@ homelab:
     proxmox: {}
     raspberrypi: {}
     ubuntu: {}
+
+containers:
+  hosts:
+    git.local:
+      ansible_host: git

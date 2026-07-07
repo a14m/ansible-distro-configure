@@ -1,0 +1,32 @@
+---
+argument_specs:
+  main:
+    options:
+      cgit_hostname:
+        type: "str"
+        description: "Public hostname for cgit (e.g. git.example.com)"
+        default: "git.example.com"
+      cgit_port:
+        type: "int"
+        description: "Port nginx listens on"
+        default: 80
+      cgit_repos_dir:
+        type: "str"
+        description: "Directory containing bare git repositories"
+        default: "/srv/git"
+      cgit_title:
+        type: "str"
+        description: "cgit index page title"
+        default: "git"
+      cgit_description:
+        type: "str"
+        description: "cgit index page description"
+        default: "personal git repositories"
+      cgit_clone_prefix:
+        type: "str"
+        description: "Clone URL prefix shown in cgit UI"
+        default: "https://{{ cgit_hostname }}"
+      cgit_ssh_user:
+        type: "str"
+        description: "System user for SSH git push access"
+        default: "git"
