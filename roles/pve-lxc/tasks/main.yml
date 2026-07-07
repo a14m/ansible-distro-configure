@@ -10,7 +10,6 @@
     content_type: "vztmpl"
     template: "{{ pve_lxc_template }}"
     state: present
-  no_log: true
   tags:
     # PVE API not available in containers — requires proxmox-ve package
     - "molecule-notest"
@@ -34,6 +33,7 @@
     nameserver: "{{ pve_lxc_dns }}"
     onboot: true
     unprivileged: true
+    cmode: "shell"
     state: present
   tags:
     # PVE API not available in containers — requires proxmox-ve package
@@ -48,7 +48,6 @@
     node: "{{ ansible_facts['hostname'] }}"
     vmid: "{{ pve_lxc_id }}"
     state: started
-  no_log: true
   tags:
     # PVE API not available in containers — requires proxmox-ve package
     - "molecule-notest"

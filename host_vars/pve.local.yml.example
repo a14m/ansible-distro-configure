@@ -2,7 +2,7 @@
 network_ipv4_address: "10.0.0.253"
 network_ipv4_gateway: "10.0.0.254"
 network_ipv4_dns: "10.0.0.254"
-network_bridge_interface: "enp0s25"
+network_bridge_interface: "eth0"
 
 pve_admin_user: "admin"
 pve_admin_password: "changeme"
@@ -10,5 +10,5 @@ pve_storage_device: "/dev/sda4"
 
 restic_version: "0.19.0"
 
-ethtool_wol_interface: "enp0s25"
+ethtool_wol_interface: "eth0"
 ethtool_lid_ac_action: "ignore"

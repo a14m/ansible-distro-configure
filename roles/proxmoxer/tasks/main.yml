@@ -1,8 +1,15 @@
 ---
-- name: "Install proxmoxer"
+- name: "Install pip"
   become: true
   ansible.builtin.package:
-    name:
-      - "python3-proxmoxer"
-      - "python3-requests"
+    name: "python3-pip"
     state: present
+
+- name: "Install proxmoxer"
+  become: true
+  ansible.builtin.pip:
+    name:
+      - "proxmoxer>=2.3.0"
+      - "requests"
+    state: present
+    extra_args: "--break-system-packages"
