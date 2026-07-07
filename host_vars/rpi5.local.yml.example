@@ -2,6 +2,8 @@
 network_interface: "eth0"
 network_ipv4_address: "10.0.0.254"
 network_ipv4_gateway: "10.0.0.1"
+network_ipv6_address: "2a02:0000:0000:0000::254/64"
+network_ipv6_gateway: "fe00::0000:0000:0000:0001"
 
 pihole_hostname: "dns.home.arpa"
 wg_portal_hostname: "vpn.home.arpa"
@@ -43,6 +45,7 @@ wireguard_connections:
 gateway_enabled: true
 gateway_router_interface: "{{ network_interface }}"
 gateway_local_ipv4_subnet: "10.0.0.0/24"
+gateway_local_ipv6_subnet: "2a02:0000:0000:0000::/64"
 
 prometheus_host: "localhost"
 prometheus_port: 9090

@@ -51,18 +51,17 @@ This role configure the [pihole](https://github.com/pi-hole/pi-hole) DNS Sinkhol
 > router. Pi can only act as IPv6 gateway for wired hosts with static `network_ipv6_gateway` config.
 > radvd is deployed by the `gateway` role when `network_ipv6_address` is defined on the Pi.
 
+- Internet > Account Information >
+  - IPv6 > IPv6 Support > ✅
+  - IPv6 > IPv6 Connectivity > Native IPv4 connection > Use IPv6 via landline connection oor Mobile network > ✅
+  - IPv6 > Connection Settings > Use DHCPv6 Rapid Commit > ❌
+  - IPv6 > Connection Settings > Require certain length of the LAN prefix > ❌
+  - DNS Server > DNSv6 Server > Use Other DNSv6 Servers > {{ pihole_ipv6 }}
+
 - Home Network > Network > Network Settings > Change Advanced Network Settings > IPv6 >
   - Router advertisement enable in the LAN > ❌
   - DNSv6 Server in the Home Network >
-    - Also announce DNSv6 server via router advertisement (RFC5006) > ✅
-    - Local DNSv6 server > {{ pihole_ipv6 }}
+    - Also announce DNSv6 server via router advertisement (RFC5006) > ❌
   - DHCPv6 Server in the home network >
-    - Enable DHCPv6 server in the FRITZ!Box for the home network > ✅
-      - Only assign DNS server > ✅
-
-- Internet > Account Information >
-  - IPv6 > IPv6 Support > ✅
-  - IPv6 > IPv6 Connectivity > Native IPv6 connection
-  - IPv6 > Connection Settings > Automatically negotiate a global address
-  - IPv6 > Connection Settings > Use DHCPv6 Rapid Commit > ✅
-  - DNS Server > DNSv6 Server > Use Other DNSv6 Servers > {{ pihole_ipv6 }}
+    - Disable DHCPv6 server in the FRITZ!Box for the home network > ✅
+      - There are no other DHCPv6 servers in the home network. > ✅
