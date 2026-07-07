@@ -14,9 +14,7 @@ jobs:
         with:
           python-version: "3.13"
       - name: Install dependencies
-        run: pip3 install yamllint==1.37.1 ansible-lint==25.9.2 ansible-core==2.20.1
-      - name: Install collections
-        run: ansible-galaxy install -r requirements.yml
+        run: pip3 install yamllint==1.37.1 ansible-lint==25.9.2
       - name: Copy example files
         run: |
           # Use example files for testing instead of encrypted files
