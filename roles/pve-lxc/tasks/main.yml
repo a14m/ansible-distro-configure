@@ -1,9 +1,10 @@
 ---
 - name: "Download LXC template"
-  community.general.proxmox_template:
+  community.proxmox.proxmox_template:
     api_host: "{{ ansible_facts['hostname'] }}"
     api_user: "{{ pve_admin_user }}@pve"
     api_password: "{{ pve_admin_password }}"
+    validate_certs: false
     node: "{{ ansible_facts['hostname'] }}"
     storage: "local"
     content_type: "vztmpl"
@@ -15,10 +16,11 @@
     - "molecule-notest"
 
 - name: "Provision LXC container"
-  community.general.proxmox:
+  community.proxmox.proxmox:
     api_host: "{{ ansible_facts['hostname'] }}"
     api_user: "{{ pve_admin_user }}@pve"
     api_password: "{{ pve_admin_password }}"
+    validate_certs: false
     node: "{{ ansible_facts['hostname'] }}"
     vmid: "{{ pve_lxc_id }}"
     hostname: "{{ pve_lxc_hostname }}"
@@ -38,10 +40,11 @@
     - "molecule-notest"
 
 - name: "Start LXC container"
-  community.general.proxmox:
+  community.proxmox.proxmox:
     api_host: "{{ ansible_facts['hostname'] }}"
     api_user: "{{ pve_admin_user }}@pve"
     api_password: "{{ pve_admin_password }}"
+    validate_certs: false
     node: "{{ ansible_facts['hostname'] }}"
     vmid: "{{ pve_lxc_id }}"
     state: started
