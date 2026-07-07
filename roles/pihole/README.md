@@ -47,21 +47,29 @@ This role configure the [pihole](https://github.com/pi-hole/pi-hole) DNS Sinkhol
 
 #### With IPv6 Support
 
-> **Note:** Full IPv6 gateway support (all devices including WiFi) requires FritzBox to be the IPv6 border
-> router. Pi can only act as IPv6 gateway for wired hosts with static `network_ipv6_gateway` config.
-> radvd is deployed by the `gateway` role when `network_ipv6_address` is defined on the Pi.
+> **Note:** IPv6 support is currently disabled due to ISP compatibility issues. The steps below are kept
+> for future reference. IPv6 on the network template defaults to `method=disabled`.
+> To enable: set `method=auto` in `roles/network/templates/eth0-connection.nmconnection.j2` and follow
+> the steps below to obtain a stable ULA address via SLAAC.
+> Use the `mngtmpaddr` address from `ip address | grep "inet6 fd"` as `{{ pihole_ipv6 }}` — not the `temporary` one.
 
 - Internet > Account Information >
   - IPv6 > IPv6 Support > ✅
-  - IPv6 > IPv6 Connectivity > Native IPv4 connection > Use IPv6 via landline connection oor Mobile network > ✅
+  - IPv6 > IPv6 Connectivity > Native IPv4 connection > Use IPv6 via landline connection or Mobile network > ✅
   - IPv6 > Connection Settings > Use DHCPv6 Rapid Commit > ❌
   - IPv6 > Connection Settings > Require certain length of the LAN prefix > ❌
-  - DNS Server > DNSv6 Server > Use Other DNSv6 Servers > {{ pihole_ipv6 }}
 
 - Home Network > Network > Network Settings > Change Advanced Network Settings > IPv6 >
-  - Router advertisement enable in the LAN > ❌
+  - Router advertisement enable in the LAN > ✅
+    - Always assign ULA addresses > ✅
+    - Set ULA prefix > https://www.unique-local-ipv6.com/ example: `fd00:1234:5678::` > ✅
+    - Restart the Pi to obtain a new ULA address
+      (or run `sudo ip link set {{ network_interface }} down && sudo ip link set {{ network_interface }} up`)
+    - Run `ip address | grep "inet6 fd"` on the Pi to obtain the new IPv6 address
   - DNSv6 Server in the Home Network >
-    - Also announce DNSv6 server via router advertisement (RFC5006) > ❌
+    - Also announce DNSv6 server via router advertisement (RFC5006) > ✅
+    - Local DNSv6 Server > {{ pihole_ipv6 }}
   - DHCPv6 Server in the home network >
     - Disable DHCPv6 server in the FRITZ!Box for the home network > ✅
       - There are no other DHCPv6 servers in the home network. > ✅
+- Internet > Account Information > Internet DNS Server > DNSv6 Server > Use Other DNSv6 Servers > {{ pihole_ipv6 }}
