@@ -6,7 +6,6 @@
       - "iptables"
       - "iproute2"
       - "udev"
-      - "radvd"
     state: "present"
 
 - name: "Configure IP forwarding"
@@ -68,38 +67,3 @@
     name: "gateway-init.service"
     enabled: "{{ gateway_enabled }}"
     daemon_reload: true
-
-- name: "Configure radvd for IPv6 gateway"
-  become: true
-  when: network_ipv6_address is defined
-  block:
-    - name: "Configure radvd"
-      ansible.builtin.template:
-        src: "radvd.conf.j2"
-        dest: "/etc/radvd.conf"
-        owner: "root"
-        group: "root"
-        mode: "0644"
-      notify: "Restart radvd"
-
-    - name: "Enable radvd service"
-      ansible.builtin.systemd_service:
-        name: "radvd.service"
-        enabled: true
-        state: "started"
-        daemon_reload: true
-
-- name: "Disable radvd (no IPv6)"
-  become: true
-  when: network_ipv6_address is not defined
-  block:
-    - name: "Disable radvd service"
-      ansible.builtin.systemd_service:
-        name: "radvd.service"
-        enabled: false
-        state: "stopped"
-
-    - name: "Remove radvd config"
-      ansible.builtin.file:
-        path: "/etc/radvd.conf"
-        state: "absent"
