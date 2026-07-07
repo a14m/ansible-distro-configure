@@ -1,0 +1,21 @@
+---
+ansible_host: "10.0.0.100"
+
+network_ipv4_address: "10.0.0.100"
+network_ipv4_gateway: "10.0.0.254"
+network_ipv4_dns: "10.0.0.254"
+
+pve_lxc_id: 100
+pve_lxc_hostname: "git"
+pve_lxc_template: "alpine-3.23-default_20260116_amd64.tar.xz"
+pve_lxc_disk: "local-lvm:4"
+pve_lxc_cores: 1
+pve_lxc_memory: 256
+pve_lxc_ip: "10.0.0.100/24"
+pve_lxc_gateway: "10.0.0.254"
+pve_lxc_dns: "10.0.0.254"
+
+cgit_hostname: "git.home.arpa"
+cgit_title: "git.a14m.dev"
+cgit_description: "a14m git repositories"
+cgit_ssh_user: "git"
