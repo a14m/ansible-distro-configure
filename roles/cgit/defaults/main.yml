@@ -1,0 +1,8 @@
+---
+cgit_hostname: "git.example.com"
+cgit_port: 80
+cgit_repos_dir: "/srv/git"
+cgit_title: "git"
+cgit_description: "personal git repositories"
+cgit_clone_prefix: "https://{{ cgit_hostname }}"
+cgit_ssh_user: "git"

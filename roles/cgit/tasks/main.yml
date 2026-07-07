@@ -1,0 +1,58 @@
+---
+- name: "Install packages"
+  become: true
+  ansible.builtin.package:
+    name:
+      - cgit
+      - nginx
+      - fcgiwrap
+      - openssh
+    state: present
+
+- name: "Create git user"
+  become: true
+  ansible.builtin.user:
+    name: "{{ cgit_ssh_user }}"
+    shell: "/usr/bin/git-shell"
+    home: "{{ cgit_repos_dir }}"
+    create_home: true
+    system: true
+
+- name: "Create repos directory"
+  become: true
+  ansible.builtin.file:
+    path: "{{ cgit_repos_dir }}"
+    state: directory
+    owner: "{{ cgit_ssh_user }}"
+    group: "{{ cgit_ssh_user }}"
+    mode: "0755"
+
+- name: "Deploy cgitrc"
+  become: true
+  ansible.builtin.template:
+    src: "cgitrc.j2"
+    dest: "/etc/cgitrc"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+
+- name: "Deploy nginx config"
+  become: true
+  ansible.builtin.template:
+    src: "cgit.nginx.conf.j2"
+    dest: "/etc/nginx/http.d/cgit.conf"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+  notify: "Restart nginx"
+
+- name: "Enable and start services"
+  become: true
+  ansible.builtin.service:
+    name: "{{ item }}"
+    enabled: true
+    state: started
+  loop:
+    - nginx
+    - fcgiwrap
+    - sshd
