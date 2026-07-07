@@ -1,6 +1,24 @@
 ---
-- name: "Include OS-specific tasks"
-  ansible.builtin.include_tasks: "install-{{ ansible_facts['os_family'] | lower }}.yml"
+- name: "Set mise arch"
+  ansible.builtin.set_fact:
+    mise_arch: "{{ 'arm64' if ansible_architecture == 'aarch64' else 'x64' }}"
+
+- name: "Set mise URL (latest)"
+  ansible.builtin.set_fact:
+    mise_url: "https://mise.jdx.dev/mise-latest-linux-{{ mise_arch }}-musl"
+  when: mise_version == 'latest'
+
+- name: "Set mise URL (versioned)"
+  ansible.builtin.set_fact:
+    mise_url: "https://github.com/jdx/mise/releases/download/v{{ mise_version }}/mise-v{{ mise_version }}-linux-{{ mise_arch }}-musl"
+  when: mise_version != 'latest'
+
+- name: "Download mise binary"
+  become: true
+  ansible.builtin.get_url:
+    url: "{{ mise_url }}"
+    dest: "/usr/local/bin/mise"
+    mode: "0755"
 
 - name: "Add mise activation to bash"
   ansible.builtin.blockinfile:
