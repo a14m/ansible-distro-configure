@@ -18,5 +18,8 @@
       poll: 5
       failed_when: false
 
-- name: "Configure"
+- name: "Host Configure"
   ansible.builtin.import_playbook: "configure.yml"
+
+- name: "Service Configure"
+  ansible.builtin.import_playbook: "service.yml"

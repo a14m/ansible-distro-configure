@@ -1,0 +1,7 @@
+---
+- name: "Git configure"
+  gather_facts: true
+  hosts:
+    - git.local
+  roles:
+    - role: "cgit"
