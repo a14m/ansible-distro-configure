@@ -32,6 +32,9 @@ addr-gen-mode=default
 method=disabled
 {% else %}
 method=auto
+{% if network_ipv6_gateway is defined %}
+routes=::/0,{{ network_ipv6_gateway }},100
+{% endif %}
 {% endif %}
 
 [proxy]

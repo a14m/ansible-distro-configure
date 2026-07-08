@@ -17,4 +17,7 @@ dns={{ network_ipv4_dns }}
 
 [ipv6]
 addr-gen-mode=default
-method=disabled
+method=auto
+{% if network_ipv6_gateway is defined %}
+routes=::/0,{{ network_ipv6_gateway }},100
+{% endif %}

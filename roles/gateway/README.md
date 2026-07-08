@@ -19,20 +19,22 @@ gateway_router_interface: "end0"
 
 ### IPv6 Support (Optional)
 
-IPv6 gateway is enabled by setting both `network_ipv6_address` and `gateway_local_ipv6_subnet`:
+IPv6 gateway is enabled by setting `gateway_local_ipv6_subnet` to the ULA prefix advertised by radvd:
 
 ```yaml
-network_ipv6_address: "2a02:xxxx:xxxx:xxxx::254/64"   # Pi's IPv6 address
-gateway_local_ipv6_subnet: "2a02:xxxx:xxxx:xxxx::/64" # LAN IPv6 subnet
+gateway_local_ipv6_subnet: "fd00:xxxx:xxxx:xxxx::/64"  # ULA prefix (stable, router-independent)
 ```
 
-To disable IPv6 entirely, remove both variables from `host_vars`. The role will:
-- Omit `accept_ra` sysctl (no IPv6 interface key written)
-- Skip IPv6 iptables masquerade rules (`gateway_local_ipv6_subnet` defaults to `""`)
-- Leave `net.ipv6.conf.all.forwarding=0`
+When set, this role:
+- Enables `net.ipv6.conf.all.forwarding=1` and `accept_ra=2` on `gateway_router_interface`
+- Deploys radvd advertising the ULA prefix with `AdvDefaultPreference high` — Pi wins as IPv6 default router
+- Adds ip6tables MASQUERADE/FORWARD rules matching by interface (not subnet) so all source addresses are handled
 
-**Note:** `accept_ra` is set per-interface (`gateway_router_interface`) only when IPv6 is enabled.
-This prevents rogue RA acceptance on WireGuard and LAN interfaces.
+**Prerequisite:** Disable the router's RA (FritzBox: Home Network > IPv6 > Router advertisement > ❌) after
+setting `network_ipv6_gateway` in `host_vars` so Pi keeps its static IPv6 default route to the router.
+See `roles/pihole/README.md` for the full two-step setup.
+
+To disable IPv6, leave `gateway_local_ipv6_subnet: ""` (default). The role skips all ip6tables rules and disables radvd.
 
 ## Network Architecture
 
@@ -63,9 +65,9 @@ Client Devices (192.168.1.0/24)
 
 **Direct Mode Characteristics:**
 
-- All traffic NAT'd through router interface (`end0`)
-- Direct IPv4/IPv6 routing to ISP
-- Standard internet routing
+- IPv4 traffic NAT'd through router interface (`end0`)
+- IPv6 forwarded without NAT (globally routable addresses, native routing)
+- Standard internet routing via ISP
 
 ## Requirements
 
