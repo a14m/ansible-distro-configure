@@ -27,8 +27,8 @@ clear_rules() {
     iptables -D OUTPUT -o "$GATEWAY_INTERFACE" -j ACCEPT 2>/dev/null || true
     if [ -n "$GATEWAY_SUBNET_V6" ]; then
         ip6tables -F FORWARD 2>/dev/null || true
-        ip6tables -t nat -D POSTROUTING -s "$GATEWAY_SUBNET_V6" -o wg+ -j MASQUERADE 2>/dev/null || true
-        ip6tables -t nat -D POSTROUTING -s "$GATEWAY_SUBNET_V6" -o "$GATEWAY_INTERFACE" -j MASQUERADE 2>/dev/null || true
+        ip6tables -t nat -D POSTROUTING -o wg+ -j MASQUERADE 2>/dev/null || true
+        ip6tables -t nat -D POSTROUTING -o "$GATEWAY_INTERFACE" -j MASQUERADE 2>/dev/null || true
         ip6tables -D OUTPUT -o wg+ -j ACCEPT 2>/dev/null || true
         ip6tables -D OUTPUT -o "$GATEWAY_INTERFACE" -j ACCEPT 2>/dev/null || true
     fi
@@ -45,7 +45,7 @@ apply_vpn_mode() {
         ip6tables -t nat -A POSTROUTING -o wg+ -j MASQUERADE
         ip6tables -A OUTPUT -o wg+ -j ACCEPT
         ip6tables -A FORWARD -i "$GATEWAY_INTERFACE" -o wg+ -j ACCEPT
-        ip6tables -A FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+        ip6tables -A FORWARD -i wg+ -o "$GATEWAY_INTERFACE" -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
     fi
     log_message "VPN mode rules applied - traffic routed through VPN"
 }
@@ -57,10 +57,9 @@ apply_direct_rules() {
     iptables -A FORWARD -s "$GATEWAY_SUBNET_V4" -o "$GATEWAY_INTERFACE" -j ACCEPT
     iptables -A FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
     if [ -n "$GATEWAY_SUBNET_V6" ]; then
-        # No MASQUERADE for IPv6: LAN devices have public SLAAC addresses, native routing applies
+        ip6tables -t nat -A POSTROUTING -o "$GATEWAY_INTERFACE" -j MASQUERADE
         ip6tables -A OUTPUT -o "$GATEWAY_INTERFACE" -j ACCEPT
-        ip6tables -A FORWARD -i "$GATEWAY_INTERFACE" -o "$GATEWAY_INTERFACE" -j ACCEPT
-        ip6tables -A FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+        ip6tables -A FORWARD -i "$GATEWAY_INTERFACE" -o "$GATEWAY_INTERFACE" -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
     fi
     log_message "Direct mode rules applied - normal routing active"
 }

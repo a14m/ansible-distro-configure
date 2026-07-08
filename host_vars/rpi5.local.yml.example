@@ -2,6 +2,8 @@
 network_interface: "eth0"
 network_ipv4_address: "10.0.0.254"
 network_ipv4_gateway: "10.0.0.1"
+# Discover network_ipv6_gateway with: ip -6 route show default | grep ra (run on any device before disabling router RA)
+# network_ipv6_gateway: "fe80::0000:1111:2222:3333"
 
 pihole_hostname: "dns.home.arpa"
 wg_portal_hostname: "vpn.home.arpa"

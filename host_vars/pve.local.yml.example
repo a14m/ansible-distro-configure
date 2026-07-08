@@ -1,8 +1,13 @@
 ---
+# Disable wifi connection on PVE, it's connected with LAN
+network_wifi_ssid: ""
+network_wifi_pass: ""
 network_ipv4_address: "10.0.0.253"
 network_ipv4_gateway: "10.0.0.254"
 network_ipv4_dns: "10.0.0.254"
 network_bridge_interface: "eth0"
+# Discover network_ipv6_gateway with: ip -6 route show default | grep ra (run on any device before disabling router RA)
+# network_ipv6_gateway: "fe80::0000:1111:2222:3333"
 
 pve_admin_user: "admin"
 pve_admin_password: "changeme"

@@ -47,11 +47,10 @@ This role configure the [pihole](https://github.com/pi-hole/pi-hole) DNS Sinkhol
 
 #### With IPv6 Support
 
-> **Note:** IPv6 support is currently disabled due to ISP compatibility issues. The steps below are kept
-> for future reference. IPv6 on the network template defaults to `method=disabled`.
-> To enable: set `method=auto` in `roles/network/templates/eth0-connection.nmconnection.j2` and follow
-> the steps below to obtain a stable ULA address via SLAAC.
-> Use the `mngtmpaddr` address from `ip address | grep "inet6 fd"` as `{{ pihole_ipv6 }}` — not the `temporary` one.
+Setup is a two-step process: first enable FritzBox RA to get the Pi's stable ULA address,
+then disable FritzBox RA so Pi becomes the sole IPv6 default router.
+
+**Step 1 — Enable FritzBox RA temporarily to get Pi's ULA address:**
 
 - Internet > Account Information >
   - IPv6 > IPv6 Support > ✅
@@ -70,4 +69,22 @@ This role configure the [pihole](https://github.com/pi-hole/pi-hole) DNS Sinkhol
   - DHCPv6 Server in the home network >
     - Disable DHCPv6 server in the FRITZ!Box for the home network > ✅
       - There are no other DHCPv6 servers in the home network. > ✅
+
 - Internet > Account Information > Internet DNS Server > DNSv6 Server > Use Other DNSv6 Servers > {{ pihole_ipv6 }}
+
+On the Pi, get the ULA address and the FritzBox link-local default route:
+```bash
+ip address | grep "inet6 fd"         # use the mngtmpaddr address as pihole_ipv6
+ip -6 route show default | grep ra   # use the nexthop as network_ipv6_gateway in rpi5 host_vars
+```
+
+Set `network_ipv6_gateway` in `host_vars/rpi5.local.yml` and run the playbook to deploy the static IPv6 route on Pi.
+
+**Step 2 — Disable FritzBox RA so Pi becomes sole IPv6 default router:**
+
+- Home Network > Network > Network Settings > Change Advanced Network Settings > IPv6 >
+  - Router advertisement enable in the LAN > ❌
+
+NOTE: Pi's radvd (deployed by the `gateway` role) takes over sending RAs with `AdvDefaultPreference high`.
+All LAN devices use Pi as their IPv6 default router → traffic routes VPN or direct mode.
+Pi keeps IPv6 connectivity via the static route to FritzBox set in Step 1.
