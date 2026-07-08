@@ -63,12 +63,10 @@ This role configure the [pihole](https://github.com/pi-hole/pi-hole) DNS Sinkhol
   - Router advertisement enable in the LAN > ✅
     - Always assign ULA addresses > ✅
     - Set ULA prefix > https://www.unique-local-ipv6.com/ example: `fd00:1234:5678::` > ✅
-    - Restart the Pi to obtain a new ULA address
-      (or run `sudo ip link set {{ network_interface }} down && sudo ip link set {{ network_interface }} up`)
-    - Run `ip address | grep "inet6 fd"` on the Pi to obtain the new IPv6 address
+    - This FRITZ!Box provides the standard internet connection > Low
   - DNSv6 Server in the Home Network >
     - Also announce DNSv6 server via router advertisement (RFC5006) > ✅
-    - Local DNSv6 Server > {{ pihole_ipv6 }}
+    - Local DNSv6 Server > {{ pihole_ipv6 `ip address | grep "inet6 fd"`}}
   - DHCPv6 Server in the home network >
     - Disable DHCPv6 server in the FRITZ!Box for the home network > ✅
       - There are no other DHCPv6 servers in the home network. > ✅

@@ -13,14 +13,6 @@
     fail_msg: "network_ipv4_address and network_ipv4_gateway are required together"
   when: network_ipv4_address is defined or network_ipv4_gateway is defined
 
-- name: "Validate network_ipv6_* params"
-  ansible.builtin.assert:
-    that:
-      - network_ipv6_address is defined
-      - network_ipv6_gateway is defined
-    fail_msg: "network_ipv6_address and network_ipv6_gateway are required together"
-  when: network_ipv6_address is defined or network_ipv6_gateway is defined
-
 - name: "Ensure network enabled services are enabled"
   become: true
   ansible.builtin.systemd_service:
