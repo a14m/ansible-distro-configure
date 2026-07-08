@@ -30,13 +30,6 @@ method=auto
 addr-gen-mode=default
 {% if network_bridge_interface is defined %}
 method=disabled
-{% elif network_ipv6_address is defined %}
-method=manual
-addresses={{ network_ipv6_address }}
-gateway={{ network_ipv6_gateway }}
-{% if network_ipv6_dns is defined %}
-dns={{ network_ipv6_dns }}
-{% endif %}
 {% else %}
 method=auto
 {% endif %}

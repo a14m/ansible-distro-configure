@@ -1,10 +1,8 @@
 {% if gateway_enabled %}
 net.ipv4.ip_forward=1
 net.ipv6.conf.all.forwarding=1
+net.ipv6.conf.{{ gateway_router_interface }}.accept_ra=2
 {% else %}
 net.ipv4.ip_forward=0
 net.ipv6.conf.all.forwarding=0
-{% endif %}
-{% if network_ipv6_address is defined %}
-net.ipv6.conf.{{ gateway_router_interface }}.accept_ra={{ 2 if gateway_enabled else 1 }}
 {% endif %}

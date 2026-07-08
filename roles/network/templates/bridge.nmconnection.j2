@@ -17,13 +17,4 @@ dns={{ network_ipv4_dns }}
 
 [ipv6]
 addr-gen-mode=default
-{% if network_ipv6_address is defined %}
-method=manual
-addresses={{ network_ipv6_address }}
-gateway={{ network_ipv6_gateway }}
-{% if network_ipv6_dns is defined %}
-dns={{ network_ipv6_dns }}
-{% endif %}
-{% else %}
-method=disabled
-{% endif %}
+method=auto
