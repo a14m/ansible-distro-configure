@@ -27,9 +27,8 @@ clear_rules() {
     iptables -D OUTPUT -o "$GATEWAY_INTERFACE" -j ACCEPT 2>/dev/null || true
     if [ -n "$GATEWAY_SUBNET_V6" ]; then
         ip6tables -F FORWARD 2>/dev/null || true
+        ip6tables -F OUTPUT 2>/dev/null || true
         ip6tables -t nat -F POSTROUTING 2>/dev/null || true
-        ip6tables -D OUTPUT -o wg+ -j ACCEPT 2>/dev/null || true
-        ip6tables -D OUTPUT -o "$GATEWAY_INTERFACE" -j ACCEPT 2>/dev/null || true
     fi
 }
 
@@ -42,6 +41,7 @@ apply_vpn_mode() {
     iptables -A FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
     if [ -n "$GATEWAY_SUBNET_V6" ]; then
         ip6tables -t nat -A POSTROUTING -o wg+ -j MASQUERADE
+        ip6tables -I OUTPUT 1 -p ipv6-icmp --icmpv6-type redirect -j DROP
         ip6tables -A OUTPUT -o wg+ -j ACCEPT
         ip6tables -A FORWARD -i "$GATEWAY_INTERFACE" -o wg+ -j ACCEPT
         ip6tables -A FORWARD -i wg+ -o "$GATEWAY_INTERFACE" -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
@@ -57,6 +57,7 @@ apply_direct_rules() {
     iptables -A FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
     if [ -n "$GATEWAY_SUBNET_V6" ]; then
         ip6tables -t nat -A POSTROUTING -o "$GATEWAY_INTERFACE" -j MASQUERADE
+        ip6tables -I OUTPUT 1 -p ipv6-icmp --icmpv6-type redirect -j DROP
         ip6tables -A OUTPUT -o "$GATEWAY_INTERFACE" -j ACCEPT
         ip6tables -A FORWARD -s "$GATEWAY_SUBNET_V6" -i "$GATEWAY_INTERFACE" -o "$GATEWAY_INTERFACE" -j ACCEPT
         ip6tables -A FORWARD -i "$GATEWAY_INTERFACE" -o "$GATEWAY_INTERFACE" -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
