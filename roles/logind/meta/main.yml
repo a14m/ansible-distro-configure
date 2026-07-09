@@ -1,9 +1,9 @@
 ---
 dependencies:
-  - role: "logind"
+  - role: "systemd"
 galaxy_info:
   author: "a14m"
-  description: "Install ethtool and enable Wake-on-LAN via systemd service"
+  description: "Configure systemd-logind lid switch and idle behavior"
   license: "MIT"
   min_ansible_version: "2.18"
   platforms:

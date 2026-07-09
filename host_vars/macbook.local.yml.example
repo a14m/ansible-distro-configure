@@ -52,3 +52,5 @@ firefox_extra_extensions:
   "tabby@whatsyouridea.com":
     installation_mode: "force_installed"
     install_url: "https://addons.mozilla.org/firefox/downloads/latest/tabby-window-tab-manager/latest.xpi"
+
+logind_lid_ac_action: "ignore"

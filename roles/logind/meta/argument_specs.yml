@@ -1,0 +1,44 @@
+---
+argument_specs:
+  main:
+    options:
+      logind_lid_battery_action:
+        type: "str"
+        description: "HandleLidSwitch — action when lid closed on battery"
+        default: "suspend"
+        choices:
+          - "ignore"
+          - "suspend"
+          - "hibernate"
+          - "hybrid-sleep"
+          - "suspend-then-hibernate"
+          - "lock"
+          - "poweroff"
+      logind_lid_ac_action:
+        type: "str"
+        description: "HandleLidSwitchExternalPower — action when lid closed on AC power"
+        default: "suspend"
+        choices:
+          - "ignore"
+          - "suspend"
+          - "hibernate"
+          - "hybrid-sleep"
+          - "suspend-then-hibernate"
+          - "lock"
+          - "poweroff"
+      logind_idle_action:
+        type: "str"
+        description: "IdleAction — action after idle timeout"
+        default: "suspend"
+        choices:
+          - "ignore"
+          - "suspend"
+          - "hibernate"
+          - "hybrid-sleep"
+          - "suspend-then-hibernate"
+          - "lock"
+          - "poweroff"
+      logind_idle_delay:
+        type: "int"
+        description: "IdleActionSec in seconds (0 disables idle action)"
+        default: 0

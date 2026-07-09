@@ -38,3 +38,5 @@ firefox_policies_override:
 fonts_extra:
   - "fonts-font-awesome"
   - "fonts-google-fira"
+
+logind_lid_ac_action: "ignore"

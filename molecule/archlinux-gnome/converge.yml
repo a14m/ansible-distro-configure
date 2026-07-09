@@ -61,6 +61,7 @@
     - role: "yay"
     - role: "font"
     - role: "which"
+    - role: "logind"
     - role: "bash"
     - role: "alacritty"
     - role: "man"

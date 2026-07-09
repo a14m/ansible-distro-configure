@@ -1,0 +1,5 @@
+---
+logind_lid_ac_action: "suspend"
+logind_lid_battery_action: "suspend"
+logind_idle_action: "suspend"
+logind_idle_delay: 0

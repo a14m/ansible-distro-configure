@@ -1,3 +1,2 @@
 ---
 ethtool_wol_interface: "eth0"
-ethtool_lid_ac_action: "suspend"
