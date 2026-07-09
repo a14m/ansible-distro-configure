@@ -10,7 +10,8 @@
 
 - name: "Set mise URL (versioned)"
   ansible.builtin.set_fact:
-    mise_url: "https://github.com/jdx/mise/releases/download/v{{ mise_version }}/mise-v{{ mise_version }}-linux-{{ mise_arch }}-musl"
+    mise_url: "https://github.com/jdx/mise/releases/download/v{{ mise_version }}/\
+      mise-v{{ mise_version }}-linux-{{ mise_arch }}-musl"
   when: mise_version != 'latest'
 
 - name: "Download mise binary"

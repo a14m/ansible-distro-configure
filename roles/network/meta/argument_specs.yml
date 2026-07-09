@@ -23,7 +23,7 @@ argument_specs:
         description: "The network IP(4) gateway to configure when provided"
       network_ipv6_gateway:
         type: "str"
-        description: "Static IPv6 default route via router link-local (e.g. fe80::1/end0) — set when router RA is disabled"
+        description: "Static IPv6 default route via router link-local — set when router RA is disabled"
         required: false
       network_bridge_interface:
         type: "str"
