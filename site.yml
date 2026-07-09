@@ -17,6 +17,7 @@
       async: 60
       poll: 5
       failed_when: false
+      changed_when: false
 
 - name: "Host Configure"
   ansible.builtin.import_playbook: "configure.yml"
