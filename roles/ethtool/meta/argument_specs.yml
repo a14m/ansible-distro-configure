@@ -6,15 +6,3 @@ argument_specs:
         type: "str"
         description: "Network interface to enable Wake-on-LAN on"
         default: "eth0"
-      ethtool_lid_ac_action:
-        type: "str"
-        description: "HandleLidSwitchExternalPower value"
-        default: "suspend"
-        choices:
-          - "ignore"
-          - "suspend"
-          - "hibernate"
-          - "hybrid-sleep"
-          - "suspend-then-hibernate"
-          - "lock"
-          - "poweroff"

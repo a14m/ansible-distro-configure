@@ -26,17 +26,3 @@
     # WoL service fails in containers — ethtool_wol_interface does not exist
     - "molecule-notest"
 
-- name: "Ensure /etc/systemd/logind.conf.d exists"
-  become: true
-  ansible.builtin.file:
-    path: "/etc/systemd/logind.conf.d"
-    state: "directory"
-    mode: "0755"
-
-- name: "Configure lid switch on AC power"
-  become: true
-  ansible.builtin.template:
-    src: "logind.conf.j2"
-    dest: "/etc/systemd/logind.conf.d/wol.conf"
-    mode: "0644"
-  notify: "Reload systemd-logind"

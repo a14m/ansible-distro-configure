@@ -1,0 +1,17 @@
+---
+- name: "Ensure /etc/systemd/logind.conf.d exists"
+  become: true
+  ansible.builtin.file:
+    path: "/etc/systemd/logind.conf.d"
+    state: "directory"
+    mode: "0755"
+
+- name: "Configure systemd-logind"
+  become: true
+  ansible.builtin.template:
+    src: "logind.conf.j2"
+    dest: "/etc/systemd/logind.conf.d/override.conf"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+  notify: "Reload systemd-logind"

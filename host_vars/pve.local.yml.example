@@ -16,4 +16,4 @@ pve_storage_device: "/dev/sda4"
 restic_version: "0.19.0"
 
 ethtool_wol_interface: "eth0"
-ethtool_lid_ac_action: "ignore"
+logind_lid_ac_action: "ignore"

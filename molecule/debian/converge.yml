@@ -68,6 +68,7 @@
   roles:
     - role: "locales"
     - role: "timezone"
+    - role: "logind"
     - role: "bash"
     - role: "man"
     - role: "jq"
