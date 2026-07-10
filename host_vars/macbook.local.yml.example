@@ -3,6 +3,7 @@
 network_ipv4_address: "10.0.0.203"
 network_ipv4_gateway: "10.0.0.254"
 network_ipv4_dns: "10.0.0.254"
+network_prefer_ipv4: true
 # Discover network_ipv6_gateway with: ip -6 route show default | grep ra (run on any device before disabling router RA)
 # network_ipv6_gateway: "fe80::0000:1111:2222:3333"
 

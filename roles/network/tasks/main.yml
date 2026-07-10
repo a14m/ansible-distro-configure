@@ -59,6 +59,15 @@
   changed_when: false
   when: network_wifi_ssid != ""
 
+- name: "Configure address family preference"
+  become: true
+  ansible.builtin.template:
+    src: "gai.conf.j2"
+    dest: "/etc/gai.conf"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+
 - name: "Configure NetworkManager"
   become: true
   notify:

@@ -1,3 +1,4 @@
 ---
 network_wifi_ssid: ""
 network_wifi_pass: ""
+network_prefer_ipv4: false
