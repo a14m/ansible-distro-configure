@@ -11,6 +11,7 @@
       - "hyprshot"
       - "satty"
       - "hyprland"
+      - "kanshi"
     state: "present"
 
 - name: "Ensure hyprland AUR packages are installed"
@@ -50,7 +51,9 @@
     - "/etc/hypr/scripts"
     - "/etc/xdg/uwsm"
     - "/etc/xdg/xdg-desktop-portal"
+    - "/etc/xdg/kanshi"
     - "{{ ansible_facts['env']['HOME'] }}/.config/hypr"
+    - "{{ ansible_facts['env']['HOME'] }}/.config/kanshi"
 
 - name: "Configure system defaults"
   become: true
@@ -77,6 +80,8 @@
       dest: "/etc/hypr/hypridle.conf"
     - src: "hypr/hyprland.conf.j2"
       dest: "/etc/hypr/hyprland.conf"
+    - src: "hypr/kanshi.conf.j2"
+      dest: "/etc/xdg/kanshi/config"
     - src: "uwsm/env.j2"
       dest: "/etc/xdg/uwsm/env"
     - src: "uwsm/env-hyprland.j2"
@@ -107,6 +112,17 @@
         block: |
           # System defaults
           source = /etc/hypr/hypridle.conf
+
+    - name: "Configure user kanshi configuration"
+      ansible.builtin.blockinfile:
+        path: "{{ ansible_facts['env']['HOME'] }}/.config/kanshi/config"
+        state: "present"
+        prepend_newline: true
+        append_newline: true
+        marker: "# ==== {mark} ANSIBLE KANSHI CONFIG"
+        block: |
+          # System defaults
+          include /etc/xdg/kanshi/config
 
 - name: "Copy hyprland scripts"
   become: true

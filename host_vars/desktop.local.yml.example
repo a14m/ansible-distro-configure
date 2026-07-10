@@ -41,10 +41,12 @@ fonts_extra:
   - "noto-fonts"
 
 hyprland_nvidia: true
-hyprland_monitors: |
-  env = GDK_SCALE,2
-  monitor=HDMI-A-1,3840x2160@60,auto-left,1.6
-  monitor=DP-1,3840x2160@60,auto-right,1.6
+hyprland_gdk_scale: 2
+hyprland_kanshi_profiles: |
+  profile home {
+      output "Left Monitor" mode 3840x2160@60Hz position 0,0 scale 1.6
+      output "Right Monitor" mode 3840x2160@60Hz position 2400,0 scale 1.6
+  }
 
 zen_browser_install_browserpass: true
 zen_browser_install_passff: false
