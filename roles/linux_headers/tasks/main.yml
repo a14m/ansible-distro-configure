@@ -6,4 +6,4 @@
   become: true
   ansible.builtin.package:
     name: "{{ linux_headers_pkg }}"
-    state: "present"
+    state: "{{ linux_headers_state }}"
