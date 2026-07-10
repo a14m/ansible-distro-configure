@@ -1,2 +1,3 @@
 ---
 linux_headers_pkg: "linux-headers-{{ ansible_kernel }}"
+linux_headers_state: "present"
