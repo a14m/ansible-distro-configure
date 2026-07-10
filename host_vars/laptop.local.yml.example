@@ -39,4 +39,11 @@ fonts_extra:
   - "fonts-font-awesome"
   - "fonts-google-fira"
 
+hyprland_nvidia: false
+hyprland_gdk_scale: 2
+hyprland_kanshi_profiles: |
+  profile default {
+      output * mode preferred position 0,0 scale 1.6
+  }
+
 logind_lid_ac_action: "ignore"

@@ -6,3 +6,12 @@ argument_specs:
         type: "bool"
         default: false
         description: "Enable NVIDIA-specific environment variables for Wayland"
+      hyprland_gdk_scale:
+        type: "int"
+        default: 1
+        description: "GDK_SCALE value exported via uwsm env; use 2 for HiDPI/4K displays with fractional scaling"
+      hyprland_kanshi_profiles:
+        type: "str"
+        description: >-
+          Raw kanshi profile config deployed to ~/.config/kanshi/config;
+          falls back to a generic single-monitor profile when unset

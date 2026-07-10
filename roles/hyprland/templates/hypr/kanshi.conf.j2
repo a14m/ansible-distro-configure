@@ -1,0 +1,7 @@
+{% if hyprland_kanshi_profiles is defined %}
+{{ hyprland_kanshi_profiles }}
+{% else %}
+profile default {
+    output * mode preferred position 0,0 scale 1
+}
+{% endif %}

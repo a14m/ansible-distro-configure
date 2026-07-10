@@ -53,4 +53,19 @@ firefox_extra_extensions:
     installation_mode: "force_installed"
     install_url: "https://addons.mozilla.org/firefox/downloads/latest/tabby-window-tab-manager/latest.xpi"
 
+hyprland_nvidia: false
+# Output criteria must be the full "make model serial" string reported by
+# `hyprctl monitors` (use "Unknown" for any missing field), not just the
+# model name — otherwise the profile silently never matches and kanshi
+# does nothing.
+hyprland_kanshi_profiles: |
+  profile docked {
+      output "Apple Computer Inc Built-in Display Unknown" disable
+      output "Some Company LEFT-MODEL 1234ABCD" mode 2560x1440@59.95Hz position 0,0 scale 1.0
+      output "Some Company RIGHT-MODEL 5678EFGH" mode 2560x1440@59.95Hz position 2560,0 scale 1.0
+  }
+  profile standalone {
+      output "Apple Computer Inc Built-in Display Unknown" mode 2880x1800@60Hz position 0,0 scale 2.0
+  }
+
 logind_lid_ac_action: "ignore"
