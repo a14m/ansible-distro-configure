@@ -1,4 +1,9 @@
 blacklist nouveau
 
+# modeset stays on: this GPU drives the external monitors when docked
+# (direct HDMI + a Thunderbolt/MDP->HDMI adapter), so nvidia_drm needs
+# real KMS capability. Do NOT set fbdev=1 here: that makes nvidia_drm
+# pre-claim a small, boot-console-sized (BOOTFB) framebuffer, which
+# then collides with the real external-monitor resolution once Hyprland
+# asks nvidia_drm for an actual framebuffer, crashing the driver.
 options nvidia_drm modeset=1
-options nvidia_drm fbdev=1
