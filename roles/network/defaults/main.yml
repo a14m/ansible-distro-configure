@@ -2,3 +2,4 @@
 network_wifi_ssid: ""
 network_wifi_pass: ""
 network_prefer_ipv4: false
+network_ipv6_disabled: false
