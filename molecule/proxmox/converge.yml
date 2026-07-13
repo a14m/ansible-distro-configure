@@ -60,6 +60,7 @@
     - role: "man"
     - role: "jq"
     - role: "ag"
+    - role: "tcpdump"
     - role: "btop"
     - role: "gpg"
     - role: "git"

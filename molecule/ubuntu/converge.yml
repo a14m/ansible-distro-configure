@@ -63,6 +63,7 @@
     - role: "man"
     - role: "jq"
     - role: "ag"
+    - role: "tcpdump"
     - role: "libheif"
     - role: "tmuxinator"
     - role: "wireguard"

@@ -75,6 +75,7 @@
     - role: "man"
     - role: "jq"
     - role: "ag"
+    - role: "tcpdump"
     - role: "libheif"
     - role: "tmux"
     - role: "python"
