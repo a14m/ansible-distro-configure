@@ -14,18 +14,7 @@
     dest: "/etc/modprobe.d/nvidia.conf"
     mode: "0644"
   notify:
-    - "Run mkinitcpio"
-  tags:
-    - "molecule-notest"
-
-- name: "Remove kms hook from mkinitcpio"
-  become: true
-  ansible.builtin.replace:
-    path: "/etc/mkinitcpio.conf"
-    regexp: "(HOOKS=\\([^)]*) kms"
-    replace: '\1'
-  notify:
-    - "Run mkinitcpio"
+    - "Rebuild initramfs"
   tags:
     - "molecule-notest"
 
@@ -52,6 +41,6 @@
     regexp: "^MODULES=\\(.*\\)"
     line: "MODULES=({{ all_modules | join(' ') }})"
   notify:
-    - "Run mkinitcpio"
+    - "Rebuild initramfs"
   tags:
     - "molecule-notest"
