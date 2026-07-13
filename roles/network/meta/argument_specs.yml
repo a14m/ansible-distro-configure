@@ -25,6 +25,16 @@ argument_specs:
         type: "str"
         description: "Static IPv6 default route via router link-local — set when router RA is disabled"
         required: false
+      network_prefer_ipv4:
+        type: "bool"
+        description: "Prefer IPv4 over IPv6 for address resolution"
+        required: false
+        default: false
+      network_ipv6_disabled:
+        type: "bool"
+        description: "Disable IPv6 on all network connections"
+        required: false
+        default: false
       network_bridge_interface:
         type: "str"
         description: "Physical NIC to enslave as vmbr0 bridge port"

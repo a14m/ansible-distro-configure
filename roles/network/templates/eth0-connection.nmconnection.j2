@@ -28,13 +28,13 @@ method=auto
 
 [ipv6]
 addr-gen-mode=default
-{% if network_bridge_interface is defined %}
+{% if network_bridge_interface is defined or network_ipv6_disabled %}
 method=disabled
+{% elif network_ipv6_gateway is defined %}
+method=auto
+routes=::/0,{{ network_ipv6_gateway }},100
 {% else %}
 method=auto
-{% if network_ipv6_gateway is defined %}
-routes=::/0,{{ network_ipv6_gateway }},100
-{% endif %}
 {% endif %}
 
 [proxy]
