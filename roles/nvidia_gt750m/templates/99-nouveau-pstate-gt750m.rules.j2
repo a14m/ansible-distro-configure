@@ -1,0 +1,14 @@
+# Force nouveau GPU performance state to maximum on GT 750M Mac Edition.
+#
+# Nouveau does not reclock Kepler GPUs automatically — the card boots at minimum
+# frequency (~405 MHz core / 680 MHz memory) and stays there, causing severe lag
+# under Wayland compositors. This rule forces pstate 0f (925 MHz core / 5016 MHz
+# memory) the moment nouveau initializes the DRM device.
+#
+# Match is on PCI vendor/device ID (10de:0fe9 = GT 750M Mac Edition) rather than
+# card number, which is not stable across reboots.
+#
+# %k expands to the kernel DRM name (e.g. card0) at rule execution time.
+# The write is deferred via sleep because the sysfs debug interface is not
+# immediately available at the ADD udev event.
+ACTION=="add", SUBSYSTEM=="drm", KERNEL=="card*", ATTR{device/vendor}=="0x10de", ATTR{device/device}=="0x0fe9", RUN+="/bin/sh -c 'sleep 2 && echo 0f > /sys/kernel/debug/dri/%k/pstate'"
