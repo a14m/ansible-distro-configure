@@ -2,10 +2,6 @@
 argument_specs:
   main:
     options:
-      hyprland_nvidia:
-        type: "bool"
-        default: false
-        description: "Enable NVIDIA-specific environment variables for Wayland"
       hyprland_gdk_scale:
         type: "int"
         default: 1

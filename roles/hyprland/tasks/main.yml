@@ -1,4 +1,11 @@
 ---
+- name: "Detect NVIDIA driver"
+  ansible.builtin.command:
+    cmd: "modinfo nvidia"
+  register: "hyprland_nvidia_detected"
+  changed_when: false
+  failed_when: false
+
 - name: "Ensure hyprland packages are installed"
   become: true
   ansible.builtin.package:
