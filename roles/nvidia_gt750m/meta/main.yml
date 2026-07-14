@@ -1,0 +1,14 @@
+---
+dependencies: []
+galaxy_info:
+  author: "a14m"
+  description: "Configure NVIDIA GT 750M Mac Edition for optimal performance under nouveau"
+  license: "MIT"
+  min_ansible_version: "2.18"
+  platforms:
+    - name: "ArchLinux"
+      versions:
+        - "all"
+    - name: "Debian"
+      versions:
+        - "all"

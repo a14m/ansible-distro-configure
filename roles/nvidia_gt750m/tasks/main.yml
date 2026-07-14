@@ -1,0 +1,22 @@
+---
+# The GT 750M (GK107M, Kepler) runs under the nouveau open-source driver on Linux.
+# Nouveau does not perform automatic GPU reclocking on Kepler — it boots at the
+# lowest power state (AC: ~405 MHz core / ~680 MHz memory) and stays there.
+# This causes severe lag under Wayland compositors (Hyprland) even on simple
+# tasks like switching windows, because the GPU is starved of bandwidth.
+#
+# The fix is to force the highest performance state (0f: 925 MHz core / 5016 MHz
+# memory) via the nouveau DRM pstate sysfs interface. We do this with a udev rule
+# that fires the moment nouveau initializes the GPU's DRM device.
+#
+# We intentionally do NOT install the proprietary nvidia-470xx-dkms driver because:
+# - nvidia-470xx + Wayland/Hyprland on Kepler has documented upstream instability
+# - External monitors are wired to NVIDIA outputs; without a working Wayland stack
+#   the setup is unusable
+# - nouveau with forced pstate provides acceptable performance for desktop use
+- name: "Force nouveau pstate to maximum on GT 750M"
+  become: true
+  ansible.builtin.template:
+    src: "99-nouveau-pstate-gt750m.rules.j2"
+    dest: "/etc/udev/rules.d/99-nouveau-pstate-gt750m.rules"
+    mode: "0644"
