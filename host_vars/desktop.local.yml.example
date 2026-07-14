@@ -41,7 +41,6 @@ fonts_extra:
   - "ttf-dejavu"
   - "noto-fonts"
 
-hyprland_nvidia: true
 hyprland_gdk_scale: 2
 hyprland_kanshi_profiles: |
   profile home {
