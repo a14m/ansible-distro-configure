@@ -9,10 +9,17 @@
       - openssh
     state: present
 
+- name: "Create git group"
+  become: true
+  ansible.builtin.group:
+    name: "{{ cgit_ssh_user }}"
+    system: true
+
 - name: "Create git user"
   become: true
   ansible.builtin.user:
     name: "{{ cgit_ssh_user }}"
+    group: "{{ cgit_ssh_user }}"
     shell: "/usr/bin/git-shell"
     home: "{{ cgit_repos_dir }}"
     create_home: true
