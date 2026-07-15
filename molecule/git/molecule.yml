@@ -8,7 +8,7 @@ dependency:
 driver:
   name: podman
 platforms:
-  - name: git
+  - name: git.home.arpa
     image: git
     dockerfile: Dockerfile.j2
     platform: "linux/amd64"

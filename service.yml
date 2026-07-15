@@ -2,6 +2,6 @@
 - name: "Git configure"
   gather_facts: true
   hosts:
-    - git.local
+    - git.home.arpa
   roles:
     - role: "cgit"

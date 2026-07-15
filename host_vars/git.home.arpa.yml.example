@@ -1,6 +1,4 @@
 ---
-ansible_host: "10.0.0.100"
-
 network_ipv4_address: "10.0.0.100"
 network_ipv4_gateway: "10.0.0.254"
 network_ipv4_dns: "10.0.0.254"

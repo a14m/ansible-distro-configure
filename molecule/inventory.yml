@@ -10,5 +10,4 @@ homelab:
 
 containers:
   hosts:
-    git.local:
-      ansible_host: git
+    git.home.arpa: {}
