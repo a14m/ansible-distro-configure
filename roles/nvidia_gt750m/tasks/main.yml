@@ -1,19 +1,51 @@
 ---
-# The GT 750M (GK107M, Kepler) runs under the nouveau open-source driver on Linux.
-# Nouveau does not perform automatic GPU reclocking on Kepler — it boots at the
-# lowest power state (AC: ~405 MHz core / ~680 MHz memory) and stays there.
-# This causes severe lag under Wayland compositors (Hyprland) even on simple
-# tasks like switching windows, because the GPU is starved of bandwidth.
+# The GT 750M (GK107M, Kepler architecture) runs under the nouveau open-source
+# driver on Linux. Nouveau does not perform automatic GPU reclocking on Kepler —
+# it boots at the lowest power state (AC: ~405 MHz core / ~680 MHz memory) and
+# stays there. This causes severe lag under Wayland compositors (Hyprland) even
+# on simple tasks like switching windows, because the GPU is starved of bandwidth.
 #
 # The fix is to force the highest performance state (0f: 925 MHz core / 5016 MHz
 # memory) via the nouveau DRM pstate sysfs interface. We do this with a udev rule
 # that fires the moment nouveau initializes the GPU's DRM device.
 #
-# We intentionally do NOT install the proprietary nvidia-470xx-dkms driver because:
-# - nvidia-470xx + Wayland/Hyprland on Kepler has documented upstream instability
-# - External monitors are wired to NVIDIA outputs; without a working Wayland stack
-#   the setup is unusable
-# - nouveau with forced pstate provides acceptable performance for desktop use
+# WHY NOT nvidia-470xx-dkms (proprietary driver):
+#
+# Using the proprietary NVIDIA driver with Hyprland/Wayland on this GPU is
+# architecturally impossible — not a configuration problem, but a fundamental
+# driver limitation:
+#
+# - Wayland compositors (Hyprland, sway/wlroots) use GBM (Generic Buffer
+#   Management) — the standard Linux/Mesa buffer allocation mechanism — to
+#   allocate GPU framebuffers for display.
+#
+# - The nvidia-470xx driver only supports EGL Streams, NVIDIA's proprietary
+#   alternative to GBM. NVIDIA added GBM support starting with driver 510+
+#   (released 2022), but only for Pascal (GTX 10xx) and newer GPUs.
+#
+# - The 470xx branch is a legacy/frozen branch for Kepler (GT 6xx/7xx). It
+#   predates the GBM work and will never receive it — NVIDIA officially
+#   classified Kepler as legacy and ceased feature development.
+#
+# - wlroots (the compositor library Hyprland is built on) evaluated adding
+#   EGL Streams support (PR #2769) but abandoned it because NVIDIA was the
+#   only vendor requiring it. It will never be implemented.
+#
+# - Consequence: Hyprland asks for GBM, nvidia-470xx only speaks EGL Streams.
+#   The compositor crashes at EGL initialization with errors like:
+#   "does not support GL_EXT_read_format_bgra" and
+#   "does not support explicit sync via EGL_ANDROID_native_fence_sync".
+#   (Confirmed: joanbm/nvidia-470xx-linux-mainline issue #11, June 2026;
+#   Hyprland issue #1302; omarchy discussion #4122, January 2026)
+#
+# - nvidia and nouveau cannot coexist on the same device — they are mutually
+#   exclusive kernel modules. There is no hybrid mode possible.
+#
+# - nvidia-470xx reached End of Life. No further feature development.
+#   Only security/kernel compatibility patches are backported.
+#
+# CONCLUSION: nouveau is the only viable driver for Hyprland on this GPU.
+# The pstate fix below is the correct and only approach to improve performance.
 - name: "Force nouveau pstate to maximum on GT 750M"
   become: true
   ansible.builtin.template:
