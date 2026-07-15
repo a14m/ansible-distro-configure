@@ -27,6 +27,7 @@ pihole_dns_hosts:
   - "{{ network_ipv4_address }} {{ wg_portal_hostname }}"
   - "{{ network_ipv4_address }} {{ grafana_hostname }}"
   - "{{ network_ipv4_address }} {{ prometheus_hostname }}"
+  - "{{ hostvars['git.home.arpa'].network_ipv4_address }} {{ hostvars['git.home.arpa'].cgit_hostname }}"
 
 wireguard_autostart_connection: "vpn2"
 wireguard_connections:
