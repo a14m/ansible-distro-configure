@@ -2,11 +2,10 @@
 - name: "Ensure greetd is installed"
   become: true
   ansible.builtin.package:
-    name: "{{ item }}"
+    name:
+      - "greetd"
+      - "greetd-tuigreet"
     state: "present"
-  loop:
-    - "greetd"
-    - "greetd-tuigreet"
   notify:
     - "Enable greetd"
 
