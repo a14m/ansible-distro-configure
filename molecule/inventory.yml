@@ -11,3 +11,4 @@ homelab:
 containers:
   hosts:
     git.home.arpa: {}
+    proxy.home.arpa: {}
