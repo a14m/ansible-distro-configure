@@ -2,6 +2,9 @@ FROM docker.io/library/alpine:3.23
 
 RUN apk add --no-cache python3 openrc \
     && mkdir -p /run/openrc \
-    && touch /run/openrc/softlevel
+    && touch /run/openrc/softlevel \
+    && mkdir -p /etc/network \
+    && printf 'auto lo\niface lo inet loopback\n' > /etc/network/interfaces \
+    && rc-update add networking boot
 
 CMD ["/sbin/init"]
