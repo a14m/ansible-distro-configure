@@ -12,6 +12,7 @@ pve_lxc_memory: 256
 pve_lxc_ip: "10.0.0.102/24"
 pve_lxc_gateway: "10.0.0.254"
 pve_lxc_dns: "10.0.0.254"
+pve_lxc_ssh_port: 2222
 
 cgit_hostname: "git.home.arpa"
 cgit_title: "git.a14m.dev"

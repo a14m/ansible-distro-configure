@@ -1,0 +1,12 @@
+---
+argument_specs:
+  main:
+    options:
+      pve_lxc_id:
+        type: "int"
+        required: true
+        description: "PVE LXC container ID"
+      pve_lxc_ssh_port:
+        type: "int"
+        default: 2222
+        description: "SSH port to configure inside the container"
