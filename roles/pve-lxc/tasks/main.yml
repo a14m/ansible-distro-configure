@@ -51,3 +51,20 @@
   tags:
     # PVE API not available in containers — requires proxmox-ve package
     - "molecule-notest"
+
+- name: "Bootstrap python3 for ansible"
+  become: true
+  ansible.builtin.command:
+    cmd: >
+      pct exec {{ pve_lxc_id }} -- sh -c
+      'which python3 > /dev/null 2>&1 && exit 0;
+      . /etc/os-release;
+      case $ID in
+        alpine) apk add --no-cache python3 ;;
+        debian|ubuntu) apt-get install -y python3 ;;
+        *) echo "Unsupported distro: $ID" && exit 1 ;;
+      esac'
+  changed_when: false
+  tags:
+    # PVE API not available in containers — requires proxmox-ve package
+    - "molecule-notest"
