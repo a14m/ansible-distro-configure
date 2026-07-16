@@ -1,0 +1,13 @@
+Port {{ pve_lxc_ssh_port }}
+PermitRootLogin prohibit-password
+PasswordAuthentication no
+AuthenticationMethods publickey
+PermitEmptyPasswords no
+KbdInteractiveAuthentication no
+ChallengeResponseAuthentication no
+UsePAM no
+X11Forwarding no
+PrintMotd yes
+AuthorizedKeysFile .ssh/authorized_keys
+HostKey /etc/ssh/ssh_host_ed25519_key
+Subsystem sftp /usr/lib/ssh/sftp-server

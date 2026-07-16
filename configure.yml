@@ -142,3 +142,14 @@
       loop: "{{ groups['containers'] }}"
       loop_control:
         loop_var: "service_host"
+
+    - name: "Configure SSH on LXC containers"
+      tags: ["pve-lxc"]
+      ansible.builtin.include_role:
+        name: "pve-lxc-ssh"
+      vars:
+        pve_lxc_id: "{{ hostvars[service_host].pve_lxc_id }}"
+        pve_lxc_ssh_port: "{{ hostvars[service_host].pve_lxc_ssh_port }}"
+      loop: "{{ groups['containers'] }}"
+      loop_control:
+        loop_var: "service_host"

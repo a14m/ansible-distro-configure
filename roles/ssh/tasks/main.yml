@@ -8,18 +8,6 @@
     name: "{{ ssh_package }}"
     state: "present"
 
-- name: "Generate /etc/ssh/ RSA host key"
-  become: true
-  ansible.builtin.command:
-    cmd: "ssh-keygen -q -t rsa -b 4096 -f /etc/ssh/ssh_host_rsa_key -C '' -N ''"
-    creates: "/etc/ssh/ssh_host_rsa_key"
-
-- name: "Generate /etc/ssh/ ECDSA host key"
-  become: true
-  ansible.builtin.command:
-    cmd: "ssh-keygen -q -t ecdsa -b 521 -f /etc/ssh/ssh_host_ecdsa_key -C '' -N ''"
-    creates: "/etc/ssh/ssh_host_ecdsa_key"
-
 - name: "Generate /etc/ssh/ Ed25519 host key"
   become: true
   ansible.builtin.command:
@@ -52,9 +40,6 @@
       UsePAM no                         # default installation is yes
       PrintMotd yes                     # default installation is no
 
-      # Host key configurations
-      HostKey /etc/ssh/ssh_host_rsa_key
-      HostKey /etc/ssh/ssh_host_ecdsa_key
       HostKey /etc/ssh/ssh_host_ed25519_key
 
       # Default sshd_config
