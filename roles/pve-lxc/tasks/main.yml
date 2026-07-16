@@ -63,8 +63,10 @@
         alpine) apk add --no-cache python3 ;;
         debian|ubuntu) apt-get install -y python3 ;;
         *) echo "Unsupported distro: $ID" && exit 1 ;;
-      esac'
-  changed_when: false
+      esac;
+      echo "python3 installed"'
+  register: cgit_python_bootstrap
+  changed_when: "'python3 installed' in cgit_python_bootstrap.stdout"
   tags:
     # PVE API not available in containers — requires proxmox-ve package
     - "molecule-notest"

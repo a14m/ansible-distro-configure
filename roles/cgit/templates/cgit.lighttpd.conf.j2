@@ -1,0 +1,24 @@
+server.port = {{ cgit_port }}
+server.bind = "{{ network_ipv4_address }}"
+server.modules = ("mod_cgi", "mod_rewrite")
+
+server.document-root = "/usr/share/webapps/cgit"
+server.pid-file = "/run/lighttpd.pid"
+
+mimetype.assign = (
+    ".css"  => "text/css",
+    ".png"  => "image/png",
+    ".ico"  => "image/x-icon",
+    ".txt"  => "text/plain",
+    ".html" => "text/html",
+)
+
+cgi.assign = (".cgi" => "")
+
+url.rewrite-once = (
+    "^/cgit\.css$"     => "/cgit.css",
+    "^/cgit\.png$"     => "/cgit.png",
+    "^/favicon\.ico$"  => "/favicon.ico",
+    "^/robots\.txt$"   => "/robots.txt",
+    "^(/.*)?$"         => "/cgit.cgi$1",
+)

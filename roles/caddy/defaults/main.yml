@@ -1,2 +1,1 @@
 ---
-caddy_server_name: "{{ ansible_facts['hostname'] }}.local"

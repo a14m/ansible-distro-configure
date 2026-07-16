@@ -1,7 +1,7 @@
 ---
 - name: "Stop and disable nginx"
   become: true
-  ansible.builtin.systemd_service:
+  ansible.builtin.service:
     name: "nginx"
     state: "stopped"
     enabled: false
@@ -34,7 +34,7 @@
 
 - name: "Start and enable caddy"
   become: true
-  ansible.builtin.systemd_service:
+  ansible.builtin.service:
     name: "caddy"
     state: "started"
     enabled: true
