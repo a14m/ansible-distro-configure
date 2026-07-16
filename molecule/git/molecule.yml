@@ -47,7 +47,7 @@ provisioner:
     ssh_connection:
       pipelining: true
   playbooks:
-    converge: ../../service.yml
+    converge: converge.yml
 verifier:
   name: ansible
 
