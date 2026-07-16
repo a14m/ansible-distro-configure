@@ -34,3 +34,7 @@ argument_specs:
         type: "str"
         description: "Inventory hostname of the proxy container to deploy vhost on"
         default: "proxy.home.arpa"
+      cgit_public_hostname:
+        type: "str"
+        description: "Optional public hostname for cgit (e.g. git.a14m.dev); enables public vhost block with TLS"
+        required: false

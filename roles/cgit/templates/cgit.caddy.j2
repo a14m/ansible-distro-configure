@@ -1,3 +1,10 @@
 {{ cgit_hostname }} {
+	tls internal
 	reverse_proxy {{ network_ipv4_address }}:{{ cgit_port }}
 }
+{% if cgit_public_hostname is defined %}
+
+{{ cgit_public_hostname }} {
+	reverse_proxy {{ network_ipv4_address }}:{{ cgit_port }}
+}
+{% endif %}
