@@ -1,6 +1,5 @@
 ---
 dependencies:
-  - role: "systemd"
   - role: "openssl"
   - role: "logrotate"
 galaxy_info:
@@ -18,3 +17,6 @@ galaxy_info:
     - name: "Debian"
       versions:
         - "bookworm"
+    - name: "Alpine"
+      versions:
+        - "all"

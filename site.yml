@@ -2,7 +2,7 @@
 - name: "Bootstrap"
   gather_facts: true
   tags: ["required_for_boot"]
-  hosts: all
+  hosts: homelab
   roles:
     - role: "hostname"
     - role: "network"

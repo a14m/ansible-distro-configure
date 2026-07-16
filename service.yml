@@ -1,4 +1,11 @@
 ---
+- name: "Proxy configure"
+  gather_facts: true
+  hosts:
+    - proxy.home.arpa
+  roles:
+    - role: "proxy"
+
 - name: "Git configure"
   gather_facts: true
   hosts:

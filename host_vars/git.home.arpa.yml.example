@@ -1,15 +1,15 @@
 ---
-network_ipv4_address: "10.0.0.100"
+network_ipv4_address: "10.0.0.102"
 network_ipv4_gateway: "10.0.0.254"
 network_ipv4_dns: "10.0.0.254"
 
-pve_lxc_id: 100
+pve_lxc_id: 102
 pve_lxc_hostname: "git"
 pve_lxc_template: "alpine-3.23-default_20260116_amd64.tar.xz"
-pve_lxc_disk: "local-lvm:4"
+pve_lxc_disk: "local-lvm:4" # storage:sizeGB
 pve_lxc_cores: 1
 pve_lxc_memory: 256
-pve_lxc_ip: "10.0.0.100/24"
+pve_lxc_ip: "10.0.0.102/24"
 pve_lxc_gateway: "10.0.0.254"
 pve_lxc_dns: "10.0.0.254"
 

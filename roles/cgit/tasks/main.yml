@@ -4,8 +4,7 @@
   ansible.builtin.package:
     name:
       - cgit
-      - nginx
-      - fcgiwrap
+      - lighttpd
       - openssh
     state: present
 
@@ -43,15 +42,61 @@
     group: "root"
     mode: "0644"
 
-- name: "Deploy nginx config"
+- name: "Deploy lighttpd config"
   become: true
   ansible.builtin.template:
-    src: "cgit.nginx.conf.j2"
-    dest: "/etc/nginx/http.d/cgit.conf"
+    src: "cgit.lighttpd.conf.j2"
+    dest: "/etc/lighttpd/lighttpd.conf"
     owner: "root"
     group: "root"
     mode: "0644"
-  notify: "Restart nginx"
+  notify: "Restart lighttpd"
+
+- name: "Deploy caddy vhost on proxy"
+  when: hostvars[cgit_proxy_host]['proxy_type'] == "caddy"
+  delegate_to: "{{ cgit_proxy_host }}"
+  block:
+    - name: "Ensure caddy sites directory exists"
+      become: true
+      ansible.builtin.file:
+        path: "/etc/caddy/sites"
+        state: directory
+        owner: "root"
+        group: "caddy"
+        mode: "0750"
+
+    - name: "Deploy caddy vhost"
+      become: true
+      ansible.builtin.template:
+        src: "cgit.caddy.j2"
+        dest: "/etc/caddy/sites/{{ cgit_hostname }}.caddy"
+        owner: "root"
+        group: "caddy"
+        mode: "0640"
+      notify: "Restart caddy"
+
+- name: "Deploy nginx vhost on proxy"
+  when: hostvars[cgit_proxy_host]['proxy_type'] == "nginx"
+  delegate_to: "{{ cgit_proxy_host }}"
+  block:
+    - name: "Ensure nginx vhosts directory exists"
+      become: true
+      ansible.builtin.file:
+        path: "/etc/nginx/vhosts.d"
+        state: directory
+        owner: "root"
+        group: "root"
+        mode: "0755"
+
+    - name: "Deploy nginx vhost"
+      become: true
+      ansible.builtin.template:
+        src: "cgit.nginx.conf.j2"
+        dest: "/etc/nginx/vhosts.d/{{ cgit_hostname }}.conf"
+        owner: "root"
+        group: "root"
+        mode: "0644"
+      notify: "Restart nginx"
 
 - name: "Enable and start services"
   become: true
@@ -60,6 +105,5 @@
     enabled: true
     state: started
   loop:
-    - nginx
-    - fcgiwrap
+    - lighttpd
     - sshd

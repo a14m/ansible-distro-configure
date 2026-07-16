@@ -1,0 +1,16 @@
+---
+network_ipv4_address: "10.0.0.101"
+network_ipv4_gateway: "10.0.0.254"
+network_ipv4_dns: "10.0.0.254"
+
+pve_lxc_id: 101
+pve_lxc_hostname: "proxy"
+pve_lxc_template: "alpine-3.23-default_20260116_amd64.tar.xz"
+pve_lxc_disk: "local-lvm:2" # storage:sizeGB
+pve_lxc_cores: 1
+pve_lxc_memory: 128
+pve_lxc_ip: "10.0.0.101/24"
+pve_lxc_gateway: "10.0.0.254"
+pve_lxc_dns: "10.0.0.254"
+
+proxy_type: "caddy"

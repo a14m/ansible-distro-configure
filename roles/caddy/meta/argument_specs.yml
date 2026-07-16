@@ -1,8 +1,4 @@
 ---
 argument_specs:
   main:
-    options:
-      caddy_server_name:
-        type: "str"
-        description: "The server name for caddy configuration"
-        default: "{{ ansible_facts['hostname'] }}.local"
+    options: {}

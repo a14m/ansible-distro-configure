@@ -8,8 +8,8 @@ argument_specs:
         default: "git.example.com"
       cgit_port:
         type: "int"
-        description: "Port nginx listens on"
-        default: 80
+        description: "Port lighttpd listens on internally"
+        default: 3000
       cgit_repos_dir:
         type: "str"
         description: "Directory containing bare git repositories"
@@ -25,8 +25,12 @@ argument_specs:
       cgit_clone_prefix:
         type: "str"
         description: "Clone URL prefix shown in cgit UI"
-        default: "https://{{ cgit_hostname }}"
+        default: "ssh://{{ cgit_ssh_user }}@{{ cgit_hostname }}"
       cgit_ssh_user:
         type: "str"
         description: "System user for SSH git push access"
         default: "git"
+      cgit_proxy_host:
+        type: "str"
+        description: "Inventory hostname of the proxy container to deploy vhost on"
+        default: "proxy.home.arpa"
