@@ -5,6 +5,7 @@
     - proxy.home.arpa
   roles:
     - role: "caddy"
+    - role: "cloudflared"
 
 - name: "Git configure"
   gather_facts: true

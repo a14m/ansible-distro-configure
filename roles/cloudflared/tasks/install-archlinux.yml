@@ -1,0 +1,23 @@
+---
+- name: "Install cloudflared"
+  become: true
+  ansible.builtin.package:
+    name: "cloudflared"
+    state: "present"
+
+- name: "Deploy cloudflared systemd service"
+  become: true
+  ansible.builtin.template:
+    src: "cloudflared.service.j2"
+    dest: "/etc/systemd/system/cloudflared.service"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+  notify: "Restart cloudflared"
+
+- name: "Start and enable cloudflared"
+  become: true
+  ansible.builtin.service:
+    name: "cloudflared"
+    state: "started"
+    enabled: true

@@ -1,0 +1,7 @@
+---
+- name: "Skip if tunnel token not defined"
+  when: cloudflared_tunnel_token is not defined
+  ansible.builtin.meta: end_role
+
+- name: "Include OS-specific installation tasks"
+  ansible.builtin.include_tasks: "install-{{ ansible_facts['os_family'] | lower }}.yml"

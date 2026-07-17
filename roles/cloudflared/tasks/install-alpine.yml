@@ -1,0 +1,32 @@
+---
+- name: "Check if cloudflared binary exists"
+  ansible.builtin.stat:
+    path: "/usr/local/bin/cloudflared"
+  register: cloudflared_binary
+
+- name: "Download cloudflared binary"
+  become: true
+  ansible.builtin.get_url:
+    url: "https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64"
+    dest: "/usr/local/bin/cloudflared"
+    mode: "0755"
+    owner: "root"
+    group: "root"
+  when: not cloudflared_binary.stat.exists
+
+- name: "Deploy cloudflared OpenRC service"
+  become: true
+  ansible.builtin.template:
+    src: "cloudflared.initd.j2"
+    dest: "/etc/init.d/cloudflared"
+    owner: "root"
+    group: "root"
+    mode: "0755"
+  notify: "Restart cloudflared"
+
+- name: "Start and enable cloudflared"
+  become: true
+  ansible.builtin.service:
+    name: "cloudflared"
+    state: "started"
+    enabled: true
