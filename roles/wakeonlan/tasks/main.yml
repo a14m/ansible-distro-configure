@@ -1,0 +1,6 @@
+---
+- name: "Install wakeonlan"
+  become: true
+  ansible.builtin.package:
+    name: "wakeonlan"
+    state: "present"
