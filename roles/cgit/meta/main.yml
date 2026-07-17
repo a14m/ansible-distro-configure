@@ -1,5 +1,6 @@
 ---
-dependencies: []
+dependencies:
+  - role: "git"
 galaxy_info:
   author: "a14m"
   description: "Install and configure cgit git web viewer"

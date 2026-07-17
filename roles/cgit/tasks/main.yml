@@ -23,6 +23,24 @@
     home: "{{ cgit_repos_dir }}"
     create_home: true
     system: true
+    password: "*"
+
+- name: "Create git user .ssh directory"
+  become: true
+  ansible.builtin.file:
+    path: "{{ cgit_repos_dir }}/.ssh"
+    state: directory
+    owner: "{{ cgit_ssh_user }}"
+    group: "{{ cgit_ssh_user }}"
+    mode: "0700"
+
+- name: "Deploy authorized_keys"
+  become: true
+  ansible.builtin.authorized_key:
+    user: "{{ cgit_ssh_user }}"
+    key: "{{ item }}"
+    state: present
+  loop: "{{ user_public_keys }}"
 
 - name: "Create repos directory"
   become: true
