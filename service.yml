@@ -4,7 +4,7 @@
   hosts:
     - proxy.home.arpa
   roles:
-    - role: "proxy"
+    - role: "caddy"
 
 - name: "Git configure"
   gather_facts: true

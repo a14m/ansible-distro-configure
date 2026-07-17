@@ -8,17 +8,6 @@ dependency:
 driver:
   name: podman
 platforms:
-  - name: proxy.home.arpa
-    image: proxy
-    dockerfile: Dockerfile.j2
-    platform: "linux/amd64"
-    pre_build_image: false
-    privileged: true
-    command: ${MOLECULE_COMMAND:-"/sbin/init"}
-    tmpfs:
-      "/tmp": "rw"
-      "/run": "rw,exec"
-    cgroupns_mode: host
   - name: git.home.arpa
     image: git
     dockerfile: Dockerfile.j2
