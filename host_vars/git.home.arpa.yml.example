@@ -15,6 +15,6 @@ pve_lxc_dns: "10.0.0.254"
 pve_lxc_ssh_port: 2222
 
 cgit_hostname: "git.home.arpa"
-cgit_title: "git.a14m.dev"
-cgit_description: "a14m git repositories"
+cgit_title: "git.example.com"
+cgit_description: "git repositories"
 cgit_ssh_user: "git"
