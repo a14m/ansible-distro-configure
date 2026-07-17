@@ -1,0 +1,9 @@
+---
+argument_specs:
+  main:
+    options:
+      cloudflared_tunnel_token:
+        type: "str"
+        description: "Cloudflare tunnel token from Zero Trust dashboard"
+        required: false
+        no_log: true
