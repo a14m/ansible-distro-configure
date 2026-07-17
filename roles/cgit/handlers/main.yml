@@ -4,17 +4,3 @@
   ansible.builtin.service:
     name: lighttpd
     state: restarted
-
-- name: "Restart caddy"
-  become: true
-  delegate_to: "{{ cgit_proxy_host }}"
-  ansible.builtin.service:
-    name: caddy
-    state: restarted
-
-- name: "Restart nginx"
-  become: true
-  delegate_to: "{{ cgit_proxy_host }}"
-  ansible.builtin.service:
-    name: nginx
-    state: restarted

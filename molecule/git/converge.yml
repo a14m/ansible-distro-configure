@@ -1,20 +1,9 @@
 ---
-- name: "Proxy configure"
-  gather_facts: true
-  hosts:
-    - proxy.home.arpa
-  vars:
-    network_ipv4_address: "{{ ansible_facts['default_ipv4']['address'] }}"
-    proxy_type: "caddy"
-  roles:
-    - role: "proxy"
-
 - name: "Git configure"
   gather_facts: true
   hosts:
     - git.home.arpa
   vars:
     network_ipv4_address: "{{ ansible_facts['default_ipv4']['address'] }}"
-    cgit_proxy_host: "proxy.home.arpa"
   roles:
     - role: "cgit"

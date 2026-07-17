@@ -90,7 +90,7 @@
     - role: "vim"
     - role: "wireguard"
     - role: "gateway"
-    - role: "proxy"
+    - role: "caddy"
     - role: "wg_portal"
     - role: "pihole"
     - role: "prometheus"
