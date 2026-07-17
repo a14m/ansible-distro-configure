@@ -10,6 +10,8 @@ pihole_hostname: "dns.home.arpa"
 wg_portal_hostname: "vpn.home.arpa"
 grafana_hostname: "monitor.home.arpa"
 prometheus_hostname: "metrics.home.arpa"
+proxy_hostname: "proxy.home.arpa"
+git_hostname: "git.home.arpa"
 
 # TOTP generator: `openssl rand -base64 32 | head -c "20" | base32`
 pihole_totp_secret: "CHANGEME"
@@ -27,7 +29,8 @@ pihole_dns_hosts:
   - "{{ network_ipv4_address }} {{ wg_portal_hostname }}"
   - "{{ network_ipv4_address }} {{ grafana_hostname }}"
   - "{{ network_ipv4_address }} {{ prometheus_hostname }}"
-  - "{{ hostvars['git.home.arpa'].network_ipv4_address }} {{ hostvars['git.home.arpa'].cgit_hostname }}"
+  - "{{ hostvars['proxy.home.arpa'].network_ipv4_address }} {{ proxy_hostname }}"
+  - "{{ hostvars['git.home.arpa'].network_ipv4_address }} {{ git_hostname }}"
 
 wireguard_autostart_connection: "vpn2"
 wireguard_connections:
