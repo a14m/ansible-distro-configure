@@ -99,6 +99,7 @@
     - role: "neomutt"
     - role: "backup"
     - role: "garage"
+    - role: "wakeonlan"
 
 - name: "Proxmox VE configure"
   gather_facts: true
