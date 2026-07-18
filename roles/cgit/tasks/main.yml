@@ -36,7 +36,7 @@
 
 - name: "Deploy authorized_keys"
   become: true
-  ansible.builtin.authorized_key:
+  ansible.posix.authorized_key:
     user: "{{ cgit_ssh_user }}"
     key: "{{ item }}"
     state: present
@@ -49,7 +49,7 @@
     state: directory
     owner: "{{ cgit_ssh_user }}"
     group: "{{ cgit_ssh_user }}"
-    mode: "0755"
+    mode: "2755"
 
 - name: "Deploy cgitrc"
   become: true
