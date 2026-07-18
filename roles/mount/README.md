@@ -1,25 +1,25 @@
-# Backup Role
+# Mount Role
 
-Mounts a dedicated backup drive on the target host.
+Mounts a drive on the target host.
 
 ## Overview
 
-Prepares a dedicated storage device as the local backup destination S3-compatible object store (ex. Garage).
+Prepares a storage device as a mount point (e.g. local backup destination for S3-compatible object store like Garage).
 
 ## Configuration
 
 ### Required Variables
 
 ```yaml
-backup_device: "PARTLABEL=backup"  # no default — must set in host_vars
+mount_device: "PARTLABEL=backup"  # no default — must set in host_vars
 ```
 
 ### Optional Variables
 
 ```yaml
-backup_mount_point: "/backup"
-backup_fstype: "ext4"
-backup_mount_options: "defaults,noatime"
+mount_point: "/backup"
+mount_fstype: "ext4"
+mount_options: "defaults,noatime"
 ```
 
 ## Preparing the Drive
@@ -63,7 +63,7 @@ ls /dev/disk/by-partlabel/
 In `host_vars/rpi5.local.yml`:
 
 ```yaml
-backup_device: "PARTLABEL=backup"
+mount_device: "PARTLABEL=backup"
 ```
 
 `PARTLABEL` is stable across reboots regardless of device enumeration order (`/dev/sda` vs `/dev/sdb`).

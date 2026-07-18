@@ -1,4 +1,0 @@
----
-backup_mount_point: "/backup"
-backup_fstype: "ext4"
-backup_mount_options: "defaults,noatime"

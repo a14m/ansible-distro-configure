@@ -2,19 +2,19 @@
 argument_specs:
   main:
     options:
-      backup_device:
+      mount_device:
         type: "str"
         description: "Device to mount (e.g. PARTLABEL=backup)"
         required: true
-      backup_mount_point:
+      mount_point:
         type: "str"
-        description: "Mount point for the backup drive"
+        description: "Mount point for the drive"
         default: "/mnt/backup"
-      backup_fstype:
+      mount_fstype:
         type: "str"
-        description: "Filesystem type of the backup device"
+        description: "Filesystem type of the device"
         default: "ext4"
-      backup_mount_options:
+      mount_options:
         type: "str"
-        description: "Mount options for the backup device"
+        description: "Mount options for the device"
         default: "defaults,noatime"
