@@ -97,7 +97,7 @@
     - role: "prometheus-node-exporter"
     - role: "grafana"
     - role: "neomutt"
-    - role: "backup"
+    - role: "mount"
     - role: "garage"
     - role: "wakeonlan"
 

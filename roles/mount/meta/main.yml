@@ -2,7 +2,7 @@
 dependencies: []
 galaxy_info:
   author: "a14m"
-  description: "Mount a dedicated backup drive"
+  description: "Mount a drive"
   license: "MIT"
   min_ansible_version: "2.18"
   platforms:

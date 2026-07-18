@@ -1,0 +1,18 @@
+---
+- name: "Create mount point"
+  become: true
+  ansible.builtin.file:
+    path: "{{ mount_point }}"
+    state: "directory"
+    owner: "root"
+    group: "root"
+    mode: "0755"
+
+- name: "Mount drive"
+  become: true
+  ansible.posix.mount:
+    path: "{{ mount_point }}"
+    src: "{{ mount_device }}"
+    fstype: "{{ mount_fstype }}"
+    opts: "{{ mount_options }}"
+    state: "mounted"
