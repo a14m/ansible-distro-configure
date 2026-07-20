@@ -10,11 +10,8 @@
     enabled: false
   failed_when: false
 
-- name: "Ensure nginx is installed"
-  become: true
-  ansible.builtin.package:
-    name: "nginx"
-    state: "present"
+- name: "Include OS-specific installation tasks"
+  ansible.builtin.include_tasks: "install-{{ ansible_facts['os_family'] | lower }}.yml"
 
 - name: "Ensure nginx directories exist"
   become: true
