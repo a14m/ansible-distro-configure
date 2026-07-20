@@ -1,26 +1,22 @@
 ---
-- name: "Add Cloudflare APK repo key"
+- name: "Set cloudflared arch"
+  ansible.builtin.set_fact:
+    cloudflared_arch: "{{ 'arm64' if ansible_facts['architecture'] == 'aarch64' else 'amd64' }}"
+
+- name: "Check if cloudflared binary exists"
+  ansible.builtin.stat:
+    path: "/usr/local/bin/cloudflared"
+  register: cloudflared_binary
+
+- name: "Download cloudflared binary"
   become: true
   ansible.builtin.get_url:
-    url: "https://pkg.cloudflare.com/cloudflare-main.pub"
-    dest: "/etc/apk/keys/cloudflare-main.pub"
-    mode: "0644"
+    url: "https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-{{ cloudflared_arch }}"
+    dest: "/usr/local/bin/cloudflared"
+    mode: "0755"
     owner: "root"
     group: "root"
-
-- name: "Add Cloudflare APK repository"
-  become: true
-  ansible.builtin.lineinfile:
-    path: "/etc/apk/repositories"
-    line: "https://pkg.cloudflare.com/cloudflared/apk"
-    state: present
-
-- name: "Install cloudflared"
-  become: true
-  ansible.builtin.package:
-    name: "cloudflared"
-    state: present
-    update_cache: true
+  when: not cloudflared_binary.stat.exists
 
 - name: "Deploy cloudflared OpenRC service"
   become: true
