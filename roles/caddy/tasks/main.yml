@@ -7,11 +7,8 @@
     enabled: false
   failed_when: false
 
-- name: "Install caddy"
-  become: true
-  ansible.builtin.package:
-    name: "caddy"
-    state: "present"
+- name: "Include OS-specific installation tasks"
+  ansible.builtin.include_tasks: "install-{{ ansible_facts['os_family'] | lower }}.yml"
 
 - name: "Ensure caddy sites directory exists"
   become: true
