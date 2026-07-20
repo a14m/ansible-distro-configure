@@ -1,0 +1,24 @@
+---
+- name: "Download nginx GPG key"
+  become: true
+  ansible.builtin.get_url:
+    url: "https://nginx.org/keys/nginx_signing.key"
+    dest: "/etc/apt/trusted.gpg.d/nginx.asc"
+    mode: "0644"
+    owner: "root"
+    group: "root"
+
+- name: "Add nginx APT repository"
+  become: true
+  ansible.builtin.apt_repository:
+    # yamllint disable-line rule:line-length
+    repo: "deb [signed-by=/etc/apt/trusted.gpg.d/nginx.asc] https://nginx.org/packages/debian {{ ansible_facts['distribution_release'] }} nginx"
+    state: "present"
+    filename: "nginx"
+
+- name: "Install nginx"
+  become: true
+  ansible.builtin.package:
+    name: "nginx"
+    state: "present"
+    update_cache: true
