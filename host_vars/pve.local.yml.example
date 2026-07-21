@@ -2,7 +2,7 @@
 # Disable wifi connection on PVE, it's connected with LAN
 network_wifi_ssid: ""
 network_wifi_pass: ""
-network_ipv4_address: "10.0.0.253"
+network_ipv4_address: "10.0.0.250"
 network_ipv4_gateway: "10.0.0.254"
 network_ipv4_dns: "10.0.0.254"
 network_prefer_ipv4: true
