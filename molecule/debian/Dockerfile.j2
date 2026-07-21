@@ -20,6 +20,12 @@ RUN rm -f /lib/systemd/system/multi-user.target.wants/getty.target
 RUN systemctl enable avahi-daemon \
     && touch /etc/locale.gen
 
+# dhcpcd never gets a real lease on podman's virtual network (no DHCP
+# server to answer it) and clobbers /etc/resolv.conf with an empty file,
+# breaking DNS for later apt-get tasks. Mask it here; the network role
+# still purges the dhcpcd package itself later as part of its real logic.
+RUN systemctl mask dhcpcd.service
+
 VOLUME ["/sys/fs/cgroup", "/tmp", "/run", "/opt"]
 
 CMD ["/lib/systemd/systemd"]
