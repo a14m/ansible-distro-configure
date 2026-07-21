@@ -51,6 +51,10 @@
     password_store_repo_url: "https://github.com/octocat/Spoon-Knife"
     firefox_install_browserpass: true
     firefox_install_passff: true
+    awscli_profile_name: "example"
+    awscli_region: "eu-central-1"
+    awscli_access_key_id: "CHANGEME"
+    awscli_secret_access_key: "CHANGEME"
   pre_tasks:
     - name: "Override is_chroot fact for container environment"
       ansible.builtin.set_fact:
@@ -107,6 +111,7 @@
     - role: "btop"
     - role: "pipewire"
     - role: "claude"
+    - role: "awscli"
     - role: "steam"
     - role: "localsend"
     - role: "restic"

@@ -1,0 +1,54 @@
+---
+- name: "Check installed aws-cli versions"
+  ansible.builtin.command:
+    cmd: "mise ls aws-cli"
+  register: awscli_installed_versions
+  changed_when: false
+
+- name: "Install aws-cli"
+  ansible.builtin.command:
+    cmd: "mise use --global aws-cli@{{ awscli_version }}"
+  changed_when: true
+  when: awscli_version not in awscli_installed_versions.stdout
+
+- name: "Ensure .aws directory exists"
+  ansible.builtin.file:
+    path: "{{ ansible_facts['env']['HOME'] }}/.aws"
+    state: "directory"
+    mode: "0700"
+
+# AWS CLI's config file uses "[default]" for the default profile but
+# "[profile <name>]" for every other named profile - credentials file has
+# no such special case, it's always "[<name>]".
+- name: "Determine aws-cli config section name"
+  ansible.builtin.set_fact:
+    awscli_config_section: "{{ 'default' if awscli_profile_name == 'default' else 'profile ' + awscli_profile_name }}"
+
+- name: "Configure aws-cli credentials"
+  community.general.ini_file:
+    path: "{{ ansible_facts['env']['HOME'] }}/.aws/credentials"
+    section: "{{ awscli_profile_name }}"
+    option: "{{ item.key }}"
+    value: "{{ item.value }}"
+    mode: "0600"
+  loop:
+    - { key: "aws_access_key_id", value: "{{ awscli_access_key_id }}" }
+    - { key: "aws_secret_access_key", value: "{{ awscli_secret_access_key }}" }
+  no_log: true
+
+- name: "Configure aws-cli profile region"
+  community.general.ini_file:
+    path: "{{ ansible_facts['env']['HOME'] }}/.aws/config"
+    section: "{{ awscli_config_section }}"
+    option: "region"
+    value: "{{ awscli_region }}"
+    mode: "0600"
+
+- name: "Configure aws-cli profile endpoint URL"
+  community.general.ini_file:
+    path: "{{ ansible_facts['env']['HOME'] }}/.aws/config"
+    section: "{{ awscli_config_section }}"
+    option: "endpoint_url"
+    value: "{{ awscli_endpoint_url }}"
+    mode: "0600"
+  when: awscli_endpoint_url is defined
