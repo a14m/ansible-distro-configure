@@ -1,0 +1,32 @@
+---
+argument_specs:
+  main:
+    options:
+      awscli_version:
+        type: "str"
+        description: "aws-cli version to install via mise (e.g. 'latest', '2.19.0')"
+        default: "latest"
+      awscli_profile_name:
+        type: "str"
+        description: >-
+          AWS CLI profile name to configure. Use "default" to make it the
+          profile used when --profile is omitted
+        required: true
+      awscli_access_key_id:
+        type: "str"
+        description: "Access key ID for this profile"
+        required: true
+      awscli_secret_access_key:
+        type: "str"
+        description: "Secret access key for this profile"
+        required: true
+      awscli_region:
+        type: "str"
+        description: "Region for this profile (e.g. garage's configured s3_region for a garage profile)"
+        required: true
+      awscli_endpoint_url:
+        type: "str"
+        description: >-
+          Custom S3 endpoint URL for this profile, Omit for real AWS
+          (e.g. http://127.0.0.1:3900 for garage).
+        required: false

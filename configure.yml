@@ -99,6 +99,7 @@
     - role: "neomutt"
     - role: "mount"
     - role: "garage"
+    - role: "awscli"
     - role: "wakeonlan"
 
 - name: "Proxmox VE configure"

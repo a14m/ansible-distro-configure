@@ -64,6 +64,10 @@
     mount_device: "tmpfs"
     mount_fstype: "tmpfs"
     mount_options: "defaults,mode=0755"
+    awscli_profile_name: "example"
+    awscli_region: "eu-central-1"
+    awscli_access_key_id: "CHANGEME"
+    awscli_secret_access_key: "CHANGEME"
   pre_tasks:
     - name: "Override is_chroot fact for container environment"
       ansible.builtin.set_fact:
@@ -95,6 +99,7 @@
     - role: "grafana"
     - role: "mount"
     - role: "garage"
+    - role: "awscli"
     - role: "gnome"
     - role: "gnome-calendar"
     - role: "gnome-loupe"
