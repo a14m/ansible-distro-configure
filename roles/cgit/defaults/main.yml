@@ -4,5 +4,5 @@ cgit_port: 3000
 cgit_repos_dir: "/srv/git"
 cgit_title: "git"
 cgit_description: "personal git repositories"
-cgit_clone_prefix: "ssh://{{ cgit_ssh_user }}@{{ cgit_hostname }}"
+cgit_clone_prefix: "ssh://{{ cgit_ssh_user }}@{{ cgit_hostname }}:{{ ssh_port }}/~"
 cgit_ssh_user: "git"
