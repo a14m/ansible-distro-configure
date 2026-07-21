@@ -2,6 +2,14 @@ FROM docker.io/library/archlinux
 
 ENV container docker
 
+# pacman's syscall sandbox (alpm) doesn't work under QEMU user-mode
+# emulation (e.g. building amd64 images on an arm64 host): the sandbox's
+# seccomp filter needs syscalls QEMU doesn't emulate, so pacman fails
+# with "error restricting syscalls via seccomp" before ever reaching the
+# network. Disabling it only affects local cross-arch testing; native
+# CI runners aren't emulated and are unaffected either way.
+RUN sed -i '/^\[options\]/a DisableSandbox' /etc/pacman.conf
+
 RUN pacman -Syu --noconfirm --needed python3 systemd udev dbus \
     && pacman -Scc --noconfirm
 
