@@ -1,0 +1,22 @@
+---
+dependencies:
+  - role: "bash"
+  - role: "restic"
+galaxy_info:
+  author: "a14m"
+  description: "Backup a directory to S3 using restic"
+  license: "MIT"
+  min_ansible_version: "2.18"
+  platforms:
+    - name: "ArchLinux"
+      versions:
+        - "all"
+    - name: "Ubuntu"
+      versions:
+        - "noble"
+    - name: "Debian"
+      versions:
+        - "bookworm"
+    - name: "Alpine"
+      versions:
+        - "all"

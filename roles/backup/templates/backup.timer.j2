@@ -1,0 +1,9 @@
+[Unit]
+Description=Backup {{ backup_name }} timer
+
+[Timer]
+OnCalendar={{ backup_systemd_schedule }}
+Persistent=true
+
+[Install]
+WantedBy=timers.target

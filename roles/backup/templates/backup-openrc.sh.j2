@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# shellcheck source=/dev/null
+source "/etc/credstore/{{ backup_name }}-backup.env"
+
+export RESTIC_REPOSITORY="${BACKUP_REPO}"
+export RESTIC_PASSWORD="${BACKUP_PASSWORD}"
+export AWS_ACCESS_KEY_ID="${BACKUP_ACCESS_KEY_ID}"
+export AWS_SECRET_ACCESS_KEY="${BACKUP_SECRET_ACCESS_KEY}"
+export CACHE_DIR="/var/cache/{{ backup_name }}-backup"
+
+# -p (--preserve-environment) -s (--shell): busybox su has no long-form flags
+exec su -p -s /bin/sh {{ backup_user }} <<'BACKUP_SU_EOF'
+restic --cache-dir "$CACHE_DIR" snapshots &>/dev/null || restic --cache-dir "$CACHE_DIR" init
+
+restic --cache-dir "$CACHE_DIR" backup {{ backup_paths | map('quote') | join(' ') }}
+
+restic --cache-dir "$CACHE_DIR" forget \
+  --keep-daily {{ backup_retention_daily }} \
+  --keep-weekly {{ backup_retention_weekly }} \
+  --keep-monthly {{ backup_retention_monthly }} \
+  --prune
+BACKUP_SU_EOF

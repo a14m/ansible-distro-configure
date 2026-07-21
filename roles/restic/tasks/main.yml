@@ -10,3 +10,23 @@
     cmd: "mise use --global restic@{{ restic_version }}"
   changed_when: true
   when: restic_version not in restic_installed_versions.stdout
+
+# mise installs restic under whichever user ran this task's own home. When
+# that's root (e.g. containers connected to as root), the binary ends up
+# under /root, unreachable by other accounts (ex. backup user)
+# This copies the binary to a system-wide location so that any user can use it.
+- name: "Resolve installed restic path"
+  ansible.builtin.command:
+    cmd: "mise which restic"
+  register: restic_bin_path
+  changed_when: false
+
+- name: "Expose restic system-wide"
+  become: true
+  ansible.builtin.copy:
+    remote_src: true
+    src: "{{ restic_bin_path.stdout }}"
+    dest: "/usr/local/bin/restic"
+    mode: "0755"
+    owner: "root"
+    group: "root"

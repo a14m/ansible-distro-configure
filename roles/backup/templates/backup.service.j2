@@ -1,0 +1,13 @@
+[Unit]
+Description=Backup {{ backup_name }}
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/{{ backup_name }}-backup
+User={{ backup_user }}
+Group={{ backup_group }}
+StandardOutput=journal
+StandardError=journal
+LoadCredential={{ backup_name }}-backup.env:/etc/credstore/{{ backup_name }}-backup.env

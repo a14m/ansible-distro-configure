@@ -1,0 +1,57 @@
+---
+argument_specs:
+  main:
+    options:
+      backup_name:
+        type: "str"
+        description: "Unique name for this backup job — used for systemd unit and script names"
+        default: "backup"
+      backup_paths:
+        type: "list"
+        elements: "str"
+        description: "List of paths to back up"
+        required: true
+      backup_systemd_schedule:
+        type: "str"
+        description: "systemd OnCalendar schedule (e.g. daily, weekly, *-*-* 02:00) — used on systemd hosts"
+        default: "daily"
+      backup_cron_schedule:
+        type: "str"
+        description: "cron schedule (e.g. 0 0 * * *) — used on OpenRC hosts"
+        default: "0 0 * * *"
+      backup_retention_daily:
+        type: "int"
+        description: "Number of daily snapshots to keep"
+        default: 7
+      backup_retention_weekly:
+        type: "int"
+        description: "Number of weekly snapshots to keep"
+        default: 4
+      backup_retention_monthly:
+        type: "int"
+        description: "Number of monthly snapshots to keep"
+        default: 6
+      backup_repo:
+        type: "str"
+        description: "Restic repository URL (e.g. s3:http://machine.local:3900/backups)"
+        required: true
+      backup_access_key_id:
+        type: "str"
+        description: "S3 access key ID"
+        required: true
+      backup_secret_access_key:
+        type: "str"
+        description: "S3 secret access key"
+        required: true
+      backup_password:
+        type: "str"
+        description: "Restic repository encryption password"
+        required: true
+      backup_user:
+        type: "str"
+        description: "System user to run the backup as"
+        default: "backup"
+      backup_group:
+        type: "str"
+        description: "System group for the backup user"
+        default: "backup"

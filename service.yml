@@ -13,3 +13,4 @@
     - git.home.arpa
   roles:
     - role: "cgit"
+    - role: "backup"

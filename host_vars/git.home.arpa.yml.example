@@ -18,3 +18,12 @@ cgit_hostname: "git.home.arpa"
 cgit_title: "git.example.com"
 cgit_description: "git repositories"
 cgit_ssh_user: "git"
+
+backup_name: "git"
+backup_paths:
+  - "/srv/git"
+backup_cron_schedule: "0 0 * * 0"
+backup_repo: "s3:http://{{ hostvars['rpi5.local'].network_ipv4_address }}:3900/backups"
+backup_access_key_id: "{{ hostvars['rpi5.local'].garage_access_key_id }}"
+backup_secret_access_key: "{{ hostvars['rpi5.local'].garage_secret_access_key }}"
+backup_password: "changeme"
