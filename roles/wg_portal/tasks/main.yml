@@ -99,7 +99,7 @@
   when: proxy_type == "nginx" and wg_portal_hostname | length > 0
   ansible.builtin.template:
     src: "wg_portal.nginx.conf.j2"
-    dest: "/etc/nginx/vhosts.d/wg-portal.conf"
+    dest: "/etc/nginx/conf.d/wg-portal.conf"
     owner: "root"
     group: "root"
     mode: "0644"

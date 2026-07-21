@@ -4,6 +4,9 @@ server {
 
     server_name {{ pihole_hostname }};
 
+    access_log /var/log/nginx/access.log;
+    error_log /var/log/nginx/error.log;
+
     location = / {
         return 301 /admin/;
     }

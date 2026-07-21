@@ -67,7 +67,7 @@
   when: proxy_type == "nginx" and prometheus_hostname | length > 0
   ansible.builtin.template:
     src: "prometheus.nginx.conf.j2"
-    dest: "/etc/nginx/vhosts.d/prometheus.conf"
+    dest: "/etc/nginx/conf.d/prometheus.conf"
     owner: "root"
     group: "root"
     mode: "0644"

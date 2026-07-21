@@ -26,14 +26,11 @@
     - "/etc/nginx/modules-enabled"
     - "/var/log/nginx"
 
-- name: "Ensure nginx vhosts.d directory exists"
+- name: "Remove default nginx server block shipped by package"
   become: true
   ansible.builtin.file:
-    path: "/etc/nginx/vhosts.d"
-    state: "directory"
-    owner: "root"
-    group: "root"
-    mode: "0755"
+    path: "/etc/nginx/conf.d/default.conf"
+    state: "absent"
 
 - name: "Check if SSL certificate exists"
   become: true
