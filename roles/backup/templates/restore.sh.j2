@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# shellcheck source=/dev/null
+source "/etc/credstore/{{ backup_name }}-backup.env"
+
+export RESTIC_REPOSITORY="${BACKUP_REPO}"
+export RESTIC_PASSWORD="${BACKUP_PASSWORD}"
+export AWS_ACCESS_KEY_ID="${BACKUP_ACCESS_KEY_ID}"
+export AWS_SECRET_ACCESS_KEY="${BACKUP_SECRET_ACCESS_KEY}"
+
+# Runs as root (unlike backup, which drops to an unprivileged user): restore
+# writes into paths owned by other service accounts and needs to set their
+# original ownership/permissions, which requires root.
+#
+# --delete prunes files under the backed-up paths that aren't in the restored
+# snapshot (e.g. things added since), so the target ends up matching the
+# snapshot exactly rather than just being overlaid with it. restic requires an
+# explicit --include/--exclude filter whenever --delete is combined with
+# --target /, as a guardrail against unbounded deletion, so scope it to
+# exactly the paths this job backs up.
+restic restore "{{ backup_restore_id }}" \
+  --cache-dir "/var/cache/{{ backup_name }}-backup" \
+  --target "{{ restore_target }}" \
+  --delete \
+  --include {{ backup_paths | map('quote') | join(' --include ') }}
