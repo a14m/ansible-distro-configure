@@ -154,7 +154,7 @@
   when: proxy_type == "nginx" and pihole_hostname | length > 0
   ansible.builtin.template:
     src: "pihole.nginx.conf.j2"
-    dest: "/etc/nginx/vhosts.d/pihole.conf"
+    dest: "/etc/nginx/conf.d/pihole.conf"
     owner: "root"
     group: "root"
     mode: "0644"

@@ -4,6 +4,9 @@ server {
 
     server_name {{ grafana_hostname }};
 
+    access_log /var/log/nginx/access.log;
+    error_log /var/log/nginx/error.log;
+
     location / {
         proxy_pass http://127.0.0.1:{{ grafana_port }}/;
     }
