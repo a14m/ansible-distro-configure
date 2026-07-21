@@ -2,13 +2,14 @@ FROM docker.io/library/archlinux
 
 ENV container docker
 
-# pacman's syscall sandbox (alpm) doesn't work under QEMU user-mode
-# emulation (e.g. building amd64 images on an arm64 host): the sandbox's
-# seccomp filter needs syscalls QEMU doesn't emulate, so pacman fails
-# with "error restricting syscalls via seccomp" before ever reaching the
-# network. Disabling it only affects local cross-arch testing; native
-# CI runners aren't emulated and are unaffected either way.
-RUN sed -i '/^\[options\]/a DisableSandbox' /etc/pacman.conf
+# pacman's syscall sandbox doesn't work under QEMU user-mode emulation
+# (e.g. building amd64 images on an arm64 host): its seccomp filter needs
+# syscalls QEMU doesn't emulate, so pacman fails with "error restricting
+# syscalls via seccomp" before ever reaching the network. Only the syscall
+# sandbox is disabled here, not the whole sandbox (DisableSandbox), which
+# is unnecessarily broad. Native (non-emulated) CI runners never hit the
+# syscall sandbox failure and are unaffected by this either way.
+RUN sed -i '/^\[options\]/a DisableSandboxSyscalls' /etc/pacman.conf
 
 RUN pacman -Syu --noconfirm --needed python3 systemd udev dbus \
     && pacman -Scc --noconfirm
@@ -16,9 +17,6 @@ RUN pacman -Syu --noconfirm --needed python3 systemd udev dbus \
 # Workaround archlinux not including any non-indo-european locales
 # https://gitlab.archlinux.org/archlinux/archlinux-docker/-/issues/59
 RUN cp -r /usr/share/i18n/locales/en_US /usr/share/i18n/locales/de_DE;
-
-# Workaround getting failed ssl issues randomly in local testing
-RUN sed -i '/^\[options\]/a XferCommand = /usr/bin/curl --retry 5 --retry-delay 2 -L -C - -f -o %o %u' /etc/pacman.conf
 
 VOLUME ["/sys/fs/cgroup"]
 
