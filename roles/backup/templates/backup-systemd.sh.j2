@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# shellcheck source=/dev/null
+source "${CREDENTIALS_DIRECTORY}/{{ backup_name }}-backup.env"
+
+export RESTIC_REPOSITORY="${BACKUP_REPO}"
+export RESTIC_PASSWORD="${BACKUP_PASSWORD}"
+export AWS_ACCESS_KEY_ID="${BACKUP_ACCESS_KEY_ID}"
+export AWS_SECRET_ACCESS_KEY="${BACKUP_SECRET_ACCESS_KEY}"
+
+CACHE_DIR="/var/cache/{{ backup_name }}-backup"
+
+restic --cache-dir "$CACHE_DIR" snapshots &>/dev/null || restic --cache-dir "$CACHE_DIR" init
+
+restic --cache-dir "$CACHE_DIR" backup {{ backup_paths | map('quote') | join(' ') }}
+
+restic --cache-dir "$CACHE_DIR" forget \
+  --keep-daily {{ backup_retention_daily }} \
+  --keep-weekly {{ backup_retention_weekly }} \
+  --keep-monthly {{ backup_retention_monthly }} \
+  --prune

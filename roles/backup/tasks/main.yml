@@ -1,0 +1,51 @@
+---
+- name: "Create backup group"
+  become: true
+  ansible.builtin.group:
+    name: "{{ backup_group }}"
+    system: true
+
+- name: "Create backup user"
+  become: true
+  ansible.builtin.user:
+    name: "{{ backup_user }}"
+    group: "{{ backup_group }}"
+    system: true
+    shell: "/sbin/nologin"
+    create_home: false
+
+- name: "Create restic cache directory"
+  become: true
+  ansible.builtin.file:
+    path: "/var/cache/{{ backup_name }}-backup"
+    state: "directory"
+    owner: "{{ backup_user }}"
+    group: "{{ backup_group }}"
+    mode: "0700"
+
+- name: "Create credential store directory"
+  become: true
+  ansible.builtin.file:
+    path: "/etc/credstore"
+    state: "directory"
+    owner: "root"
+    group: "root"
+    mode: "0700"
+
+- name: "Deploy backup credentials"
+  become: true
+  ansible.builtin.template:
+    src: "backup.env.j2"
+    dest: "/etc/credstore/{{ backup_name }}-backup.env"
+    owner: "root"
+    group: "root"
+    mode: "0600"
+  no_log: true
+
+- name: "Schedule backup via systemd"
+  ansible.builtin.include_tasks: "systemd.yml"
+  when: ansible_facts['service_mgr'] == "systemd"
+
+- name: "Schedule backup via cron"
+  ansible.builtin.include_tasks: "openrc.yml"
+  when: ansible_facts['service_mgr'] == "openrc"

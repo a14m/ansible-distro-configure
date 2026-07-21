@@ -1,0 +1,27 @@
+---
+- name: "Deploy backup script"
+  become: true
+  ansible.builtin.template:
+    src: "backup-openrc.sh.j2"
+    dest: "/usr/local/bin/{{ backup_name }}-backup"
+    owner: "root"
+    group: "root"
+    mode: "0755"
+
+- name: "Deploy backup crontab entry"
+  become: true
+  ansible.builtin.blockinfile:
+    path: "/etc/crontabs/root"
+    marker: "# {mark} ANSIBLE BACKUP {{ backup_name }} CRON"
+    block: "{{ backup_cron_schedule }} /usr/local/bin/{{ backup_name }}-backup"
+    create: true
+    owner: "root"
+    group: "root"
+    mode: "0600"
+
+- name: "Enable and start crond"
+  become: true
+  ansible.builtin.service:
+    name: "crond"
+    enabled: true
+    state: "started"

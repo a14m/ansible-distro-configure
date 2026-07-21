@@ -1,0 +1,14 @@
+---
+backup_name: "backup"
+backup_paths: []
+backup_systemd_schedule: "daily"
+backup_cron_schedule: "0 0 * * *"
+backup_retention_daily: 7
+backup_retention_weekly: 4
+backup_retention_monthly: 6
+backup_repo: ""
+backup_access_key_id: ""
+backup_secret_access_key: ""
+backup_password: ""
+backup_user: "backup"
+backup_group: "backup"
