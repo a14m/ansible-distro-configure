@@ -24,8 +24,12 @@ argument_specs:
         default: "personal git repositories"
       cgit_clone_prefix:
         type: "str"
-        description: "Clone URL prefix shown in cgit UI"
-        default: "ssh://{{ cgit_ssh_user }}@{{ cgit_hostname }}"
+        description: >-
+          Clone URL prefix shown in cgit UI. Uses /~ (home-relative, resolves
+          against cgit_ssh_user's home / cgit_repos_dir) instead of the literal
+          cgit_repos_dir path, so the server's filesystem layout isn't exposed
+          in URLs shown to anyone browsing the web UI
+        default: "ssh://{{ cgit_ssh_user }}@{{ cgit_hostname }}:{{ ssh_port }}/~"
       cgit_ssh_user:
         type: "str"
         description: "System user for SSH git push access"
