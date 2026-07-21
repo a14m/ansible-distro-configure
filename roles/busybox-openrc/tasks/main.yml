@@ -1,0 +1,6 @@
+---
+- name: "Ensure busybox-openrc is installed"
+  become: true
+  ansible.builtin.package:
+    name: "busybox-openrc"
+    state: "present"
