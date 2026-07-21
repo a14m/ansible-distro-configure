@@ -1,7 +1,7 @@
 ---
 - name: "Set mise arch"
   ansible.builtin.set_fact:
-    mise_arch: "{{ 'arm64' if ansible_architecture == 'aarch64' else 'x64' }}"
+    mise_arch: "{{ 'arm64' if ansible_facts['architecture'] == 'aarch64' else 'x64' }}"
 
 - name: "Set mise URL (latest)"
   ansible.builtin.set_fact:
