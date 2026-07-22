@@ -25,6 +25,13 @@
     system: true
     password: "*"
 
+- name: "Set default branch name for new repos"
+  become: true
+  community.general.git_config:
+    name: init.defaultBranch
+    scope: system
+    value: main
+
 - name: "Create git user .ssh directory"
   become: true
   ansible.builtin.file:
