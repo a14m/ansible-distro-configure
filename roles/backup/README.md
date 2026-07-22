@@ -75,6 +75,31 @@ and can restore a snapshot back on demand.
   run), `restic backup <paths>`, then `restic forget --prune` using the configured
   retention.
 
+## Manual Backup
+
+The scheduled timer/cron just calls the same script deployed to
+`/usr/local/bin/{{ backup_name }}-backup` — run it directly to back up on demand:
+
+```bash
+sudo /usr/local/bin/{{ backup_name }}-backup
+```
+
+To verify the snapshot landed, via restic:
+
+```bash
+source /etc/credstore/{{ backup_name }}-backup.env
+export RESTIC_REPOSITORY="$BACKUP_REPO" RESTIC_PASSWORD="$BACKUP_PASSWORD" \
+       AWS_ACCESS_KEY_ID="$BACKUP_ACCESS_KEY_ID" AWS_SECRET_ACCESS_KEY="$BACKUP_SECRET_ACCESS_KEY"
+restic --cache-dir "/var/cache/{{ backup_name }}-backup" snapshots
+```
+
+Or via the S3 backend directly, from a host with `awscli` configured against it —
+restic prefixes every job's objects under `{{ backup_name }}` within the bucket:
+
+```bash
+aws s3 ls s3://<bucket>/{{ backup_name }}/ --recursive
+```
+
 ## Restore Process
 
 Restore never runs automatically — every restore-related task is tagged
