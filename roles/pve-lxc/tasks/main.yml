@@ -47,6 +47,7 @@
     validate_certs: false
     node: "{{ ansible_facts['hostname'] }}"
     vmid: "{{ pve_lxc_id }}"
+    hostname: "{{ pve_lxc_hostname }}"
     state: started
   tags:
     # PVE API not available in containers — requires proxmox-ve package
