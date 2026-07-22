@@ -9,9 +9,9 @@ pve_lxc_template: "alpine-3.23-default_20260116_amd64.tar.xz"
 pve_lxc_disk: "local-lvm:4" # storage:sizeGB
 pve_lxc_cores: 1
 pve_lxc_memory: 256
-pve_lxc_ip: "10.0.0.102/24"
-pve_lxc_gateway: "10.0.0.254"
-pve_lxc_dns: "10.0.0.254"
+pve_lxc_ip: "{{ network_ipv4_address }}/24"
+pve_lxc_gateway: "{{ network_ipv4_gateway }}"
+pve_lxc_dns: "{{ network_ipv4_dns }}"
 pve_lxc_ssh_port: 2222
 
 cgit_hostname: "git.home.arpa"
@@ -23,7 +23,7 @@ backup_name: "git"
 backup_paths:
   - "/srv/git"
 backup_cron_schedule: "0 0 * * 0"
-backup_repo: "s3:http://{{ hostvars['rpi5.local'].network_ipv4_address }}:3900/backups"
-backup_access_key_id: "{{ hostvars['rpi5.local'].garage_access_key_id }}"
-backup_secret_access_key: "{{ hostvars['rpi5.local'].garage_secret_access_key }}"
+backup_repo: "s3:http://10.0.0.254:3900/backups"
+backup_access_key_id: "GK_CHAGNEME"
+backup_secret_access_key: "CHANGEME"
 backup_password: "changeme"
