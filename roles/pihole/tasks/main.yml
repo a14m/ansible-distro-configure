@@ -1,8 +1,8 @@
 ---
-- name: "Validate network_ipv*_dns params"
+- name: "Validate network_ipv4_dns param"
   ansible.builtin.fail:
-    msg: "Pihole role cannot work when network_ipv4_dns or network_ipv6_dns are defined"
-  when: network_ipv4_dns is defined or network_ipv6_dns is defined
+    msg: "Pihole role cannot work when network_ipv4_dns is defined"
+  when: network_ipv4_dns is defined
 
 - name: "Validate pihole_dhcp_* params"
   ansible.builtin.assert:

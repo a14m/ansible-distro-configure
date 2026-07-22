@@ -7,7 +7,6 @@ LOG_FACILITY="local0.info"
 
 # Ansible template variables - configured at deployment time
 GATEWAY_SUBNET_V4="{{ gateway_local_ipv4_subnet }}"
-GATEWAY_SUBNET_V6="{{ gateway_local_ipv6_subnet }}"
 GATEWAY_INTERFACE="{{ gateway_router_interface }}"
 log_message() {
     echo "[$SCRIPT_NAME] $1" | logger -t "$SCRIPT_NAME" -p "$LOG_FACILITY"
@@ -25,11 +24,6 @@ clear_rules() {
     iptables -t nat -D POSTROUTING -s "$GATEWAY_SUBNET_V4" -o "$GATEWAY_INTERFACE" -j MASQUERADE 2>/dev/null || true
     iptables -D OUTPUT -o wg+ -j ACCEPT 2>/dev/null || true
     iptables -D OUTPUT -o "$GATEWAY_INTERFACE" -j ACCEPT 2>/dev/null || true
-    if [ -n "$GATEWAY_SUBNET_V6" ]; then
-        ip6tables -F FORWARD 2>/dev/null || true
-        ip6tables -F OUTPUT 2>/dev/null || true
-        ip6tables -t nat -F POSTROUTING 2>/dev/null || true
-    fi
 }
 
 apply_vpn_mode() {
@@ -39,13 +33,6 @@ apply_vpn_mode() {
     iptables -A OUTPUT -o wg+ -j ACCEPT
     iptables -A FORWARD -s "$GATEWAY_SUBNET_V4" -o wg+ -j ACCEPT
     iptables -A FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
-    if [ -n "$GATEWAY_SUBNET_V6" ]; then
-        ip6tables -t nat -A POSTROUTING -o wg+ -j MASQUERADE
-        ip6tables -I OUTPUT 1 -p ipv6-icmp --icmpv6-type redirect -j DROP
-        ip6tables -A OUTPUT -o wg+ -j ACCEPT
-        ip6tables -A FORWARD -i "$GATEWAY_INTERFACE" -o wg+ -j ACCEPT
-        ip6tables -A FORWARD -i wg+ -o "$GATEWAY_INTERFACE" -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
-    fi
     log_message "VPN mode rules applied - traffic routed through VPN"
 }
 
@@ -55,13 +42,6 @@ apply_direct_rules() {
     iptables -A OUTPUT -o "$GATEWAY_INTERFACE" -j ACCEPT
     iptables -A FORWARD -s "$GATEWAY_SUBNET_V4" -o "$GATEWAY_INTERFACE" -j ACCEPT
     iptables -A FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
-    if [ -n "$GATEWAY_SUBNET_V6" ]; then
-        ip6tables -t nat -A POSTROUTING -o "$GATEWAY_INTERFACE" -j MASQUERADE
-        ip6tables -I OUTPUT 1 -p ipv6-icmp --icmpv6-type redirect -j DROP
-        ip6tables -A OUTPUT -o "$GATEWAY_INTERFACE" -j ACCEPT
-        ip6tables -A FORWARD -s "$GATEWAY_SUBNET_V6" -i "$GATEWAY_INTERFACE" -o "$GATEWAY_INTERFACE" -j ACCEPT
-        ip6tables -A FORWARD -i "$GATEWAY_INTERFACE" -o "$GATEWAY_INTERFACE" -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
-    fi
     log_message "Direct mode rules applied - normal routing active"
 }
 

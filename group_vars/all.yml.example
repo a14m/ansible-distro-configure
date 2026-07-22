@@ -1,7 +1,4 @@
 ---
-network_ipv6_disabled: true
-network_prefer_ipv4: true
-
 user_public_keys:
   - "ssh-ed25519 AAAA...fMo"
   - "ssh-rsa AAAA...4I3"

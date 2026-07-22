@@ -26,14 +26,6 @@ method=auto
 {% endif %}
 
 [ipv6]
-addr-gen-mode=default
-{% if network_ipv6_disabled %}
 method=disabled
-{% elif network_ipv6_gateway is defined %}
-method=auto
-routes=::/0,{{ network_ipv6_gateway }},100
-{% else %}
-method=auto
-{% endif %}
 
 [proxy]
