@@ -1,6 +1,12 @@
 ---
 user_public_keys:
   - "ssh-ed25519 AAAA...fMo"
-  - "ssh-rsa AAAA...4I3"
+  - "ssh-ed25519 AAAA...4I3"
 
 ssh_port: 2222
+
+ssh_knonwn_hosts:
+  - "git.sr.ht ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMZvRd4EtM7R+IHVMWmDkVU3VLQTSwQDSAvW0t2Tkj60"
+  - "github.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl"
+  - "[desktop.local]:2222 ssh-ed25519 AAAA...fMo"
+  - "[laptop.local]:2222 ssh-ed25519 AAAA...4I3"

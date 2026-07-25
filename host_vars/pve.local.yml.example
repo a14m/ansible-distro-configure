@@ -7,6 +7,15 @@ network_ipv4_gateway: "10.0.0.254"
 network_ipv4_dns: "10.0.0.254"
 network_bridge_interface: "eth0"
 
+# Generate with: ssh-keygen -t ed25519 -f host_key -C '' -N ''
+ssh_public_key: "ssh-ed25519 AAAA...fMo"
+ssh_private_key: |
+  -----BEGIN OPENSSH PRIVATE KEY-----
+  b3BlbnNzaC1r..........................................................
+  ......................................................................
+  ...................BAgME
+  -----END OPENSSH PRIVATE KEY-----
+
 pve_admin_user: "admin"
 pve_admin_password: "changeme"
 pve_storage_device: "/dev/sda4"

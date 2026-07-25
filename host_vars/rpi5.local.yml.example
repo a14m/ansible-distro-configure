@@ -3,6 +3,15 @@ network_interface: "eth0"
 network_ipv4_address: "10.0.0.254"
 network_ipv4_gateway: "10.0.0.1"
 
+# Generate with: ssh-keygen -t ed25519 -f host_key -C '' -N ''
+ssh_public_key: "ssh-ed25519 AAAA...fMo"
+ssh_private_key: |
+  -----BEGIN OPENSSH PRIVATE KEY-----
+  b3BlbnNzaC1r..........................................................
+  ......................................................................
+  ...................BAgME
+  -----END OPENSSH PRIVATE KEY-----
+
 proxy_type: "caddy"
 
 pihole_hostname: "dns.home.arpa"
