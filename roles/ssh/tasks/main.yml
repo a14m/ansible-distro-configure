@@ -8,11 +8,25 @@
     name: "{{ ssh_package }}"
     state: "present"
 
-- name: "Generate /etc/ssh/ Ed25519 host key"
+- name: "Deploy /etc/ssh/ Ed25519 host private key"
   become: true
-  ansible.builtin.command:
-    cmd: "ssh-keygen -q -t ed25519 -f /etc/ssh/ssh_host_ed25519_key -C '' -N ''"
-    creates: "/etc/ssh/ssh_host_ed25519_key"
+  no_log: true
+  ansible.builtin.copy:
+    dest: "/etc/ssh/ssh_host_ed25519_key"
+    content: "{{ ssh_private_key | trim }}\n"
+    owner: "root"
+    group: "root"
+    mode: "0600"
+  notify: "Restart ssh"
+
+- name: "Deploy /etc/ssh/ Ed25519 host public key"
+  become: true
+  ansible.builtin.copy:
+    dest: "/etc/ssh/ssh_host_ed25519_key.pub"
+    content: "{{ ssh_public_key | trim }}\n"
+    owner: "root"
+    group: "root"
+    mode: "0644"
 
 - name: "Ensure ssh service is enabled"
   become: true

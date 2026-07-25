@@ -16,3 +16,11 @@ argument_specs:
         elements: "str"
         required: false
         description: "List of SSH known_hosts entries in 'hostname keytype keydata' format"
+      ssh_private_key:
+        type: "str"
+        required: true
+        description: "Pre-generated Ed25519 host private key (OpenSSH format), unique per host"
+      ssh_public_key:
+        type: "str"
+        required: true
+        description: "Pre-generated Ed25519 host public key matching ssh_private_key"
