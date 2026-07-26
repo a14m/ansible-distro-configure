@@ -4,7 +4,6 @@
   ansible.builtin.apt:
     name: "{{ gnome_packages }}"
     state: "present"
-    install_recommends: false
   tags:
     # NOTE: the gnome-core packages resinstalls the avahi packages
     # Disabling the idemopotence test to prevent always reporting changed
