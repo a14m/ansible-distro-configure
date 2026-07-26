@@ -20,7 +20,7 @@ export AWS_SECRET_ACCESS_KEY="${BACKUP_SECRET_ACCESS_KEY}"
 # --target /, as a guardrail against unbounded deletion, so scope it to
 # exactly the paths this job backs up.
 restic restore "{{ backup_restore_id }}" \
-  --cache-dir "/var/cache/{{ backup_name }}-backup" \
+  --cache-dir "/var/cache/{{ backup_name }}-restore" \
   --target "{{ restore_target }}" \
   --delete \
   --include {{ backup_paths | map('quote') | join(' --include ') }}

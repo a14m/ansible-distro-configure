@@ -50,6 +50,18 @@
   ansible.builtin.include_tasks: "openrc.yml"
   when: ansible_facts['service_mgr'] == "openrc"
 
+- name: "Create restic restore cache directory"
+  become: true
+  ansible.builtin.file:
+    path: "/var/cache/{{ backup_name }}-restore"
+    state: "directory"
+    owner: "root"
+    group: "root"
+    mode: "0700"
+  tags:
+    - "never"
+    - "restore"
+
 - name: "Deploy restore script"
   become: true
   ansible.builtin.template:
