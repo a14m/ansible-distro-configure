@@ -16,26 +16,28 @@
   tags:
     - "molecule-notest"
 
-- name: "Install openssh and configure openssh"
+- name: "Install openssh"
   become: true
   tags:
     - "molecule-notest"
   when: pve_lxc_ssh_check.rc != 0
-  block:
-    - name: "Install openssh"
-      ansible.builtin.command:
-        cmd: >
-          pct exec {{ pve_lxc_id }} -- sh -c '
-          . /etc/os-release;
-          case $ID in
-            alpine) apk add --no-cache openssh ;;
-            debian|ubuntu) apt-get install -y openssh-server ;;
-            *) echo "Unsupported distro: $ID" && exit 1 ;;
-          esac;'
-      changed_when: true
+  ansible.builtin.command:
+    cmd: >
+      pct exec {{ pve_lxc_id }} -- sh -c '
+      . /etc/os-release;
+      case $ID in
+        alpine) apk add --no-cache openssh ;;
+        debian|ubuntu) apt-get install -y openssh-server ;;
+        *) echo "Unsupported distro: $ID" && exit 1 ;;
+      esac;'
+  changed_when: true
 
+- name: "Configure openssh"
+  become: true
+  tags:
+    - "molecule-notest"
+  block:
     - name: "Deploy ssh host private key"
-      become: true
       no_log: true
       ansible.builtin.command:
         cmd: >
@@ -45,7 +47,6 @@
       changed_when: true
 
     - name: "Deploy ssh host public key"
-      become: true
       ansible.builtin.command:
         cmd: >
           pct exec {{ pve_lxc_id }} -- sh -c
@@ -60,7 +61,6 @@
         mode: "0600"
 
     - name: "Push sshd_config into container"
-      become: true
       ansible.builtin.command:
         cmd: pct push {{ pve_lxc_id }} /tmp/sshd_config_{{ pve_lxc_id }} /etc/ssh/sshd_config --perms 0640
       changed_when: true
@@ -71,7 +71,6 @@
         state: absent
 
     - name: "Enable and start sshd"
-      become: true
       ansible.builtin.command:
         cmd: >
           pct exec {{ pve_lxc_id }} -- sh -c
