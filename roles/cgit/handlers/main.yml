@@ -4,9 +4,3 @@
   ansible.builtin.service:
     name: lighttpd
     state: restarted
-
-- name: "Restart sshd"
-  become: true
-  ansible.builtin.service:
-    name: sshd
-    state: restarted

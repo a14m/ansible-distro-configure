@@ -20,7 +20,6 @@
     name: "{{ cgit_ssh_user }}"
     group: "{{ cgit_ssh_user }}"
     shell: "/usr/bin/git-shell"
-    home: "{{ cgit_repos_dir }}"
     create_home: true
     system: true
     password: "*"
@@ -32,37 +31,13 @@
     scope: system
     value: main
 
-- name: "Ensure sshd_config restricts login to expected users"
-  become: true
-  ansible.builtin.lineinfile:
-    path: "/etc/ssh/sshd_config"
-    regexp: "^AllowUsers "
-    line: "AllowUsers root {{ cgit_ssh_user }}"
-    validate: "sshd -T -f %s"
-  notify: "Restart sshd"
-
 - name: "Deploy authorized_keys"
   become: true
   ansible.posix.authorized_key:
     user: "{{ cgit_ssh_user }}"
     key: "{{ item }}"
-    path: "/etc/ssh/authorized_keys/{{ cgit_ssh_user }}"
     state: present
   loop: "{{ user_public_keys }}"
-
-- name: "Configure sshd AuthorizedKeysFile for {{ cgit_ssh_user }}"
-  become: true
-  ansible.builtin.blockinfile:
-    path: "/etc/ssh/sshd_config"
-    marker: "# {mark} ANSIBLE {{ cgit_ssh_user }} MATCH BLOCK"
-    validate: "sshd -T -f %s"
-    block: |
-      Match User {{ cgit_ssh_user }}
-          AuthorizedKeysFile /etc/ssh/authorized_keys/%u
-          AllowTcpForwarding no
-          AllowAgentForwarding no
-          PermitTTY no
-  notify: "Restart sshd"
 
 - name: "Create repos directory"
   become: true
