@@ -34,13 +34,23 @@
           esac;'
       changed_when: true
 
-    - name: "Generate ssh host keys"
+    - name: "Deploy ssh host private key"
+      become: true
+      no_log: true
+      ansible.builtin.command:
+        cmd: >
+          pct exec {{ pve_lxc_id }} -- sh -c
+          'umask 077; cat > /etc/ssh/ssh_host_ed25519_key'
+        stdin: "{{ pve_lxc_ssh_private_key | trim }}\n"
+      changed_when: true
+
+    - name: "Deploy ssh host public key"
       become: true
       ansible.builtin.command:
         cmd: >
           pct exec {{ pve_lxc_id }} -- sh -c
-          '[ -f /etc/ssh/ssh_host_ed25519_key ] && exit 0;
-          ssh-keygen -q -t ed25519 -f /etc/ssh/ssh_host_ed25519_key -C "" -N "";'
+          'cat > /etc/ssh/ssh_host_ed25519_key.pub; chmod 0644 /etc/ssh/ssh_host_ed25519_key.pub'
+        stdin: "{{ pve_lxc_ssh_public_key | trim }}\n"
       changed_when: true
 
     - name: "Render sshd_config"

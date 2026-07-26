@@ -10,3 +10,11 @@ argument_specs:
         type: "int"
         default: 2222
         description: "SSH port to configure inside the container"
+      pve_lxc_ssh_private_key:
+        type: "str"
+        required: true
+        description: "Pre-generated Ed25519 host private key (OpenSSH format), unique per container"
+      pve_lxc_ssh_public_key:
+        type: "str"
+        required: true
+        description: "Pre-generated Ed25519 host public key matching pve_lxc_ssh_private_key"

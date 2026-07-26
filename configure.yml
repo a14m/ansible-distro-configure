@@ -152,6 +152,8 @@
       vars:
         pve_lxc_id: "{{ hostvars[service_host].pve_lxc_id }}"
         pve_lxc_ssh_port: "{{ hostvars[service_host].pve_lxc_ssh_port }}"
+        pve_lxc_ssh_private_key: "{{ hostvars[service_host].pve_lxc_ssh_private_key }}"
+        pve_lxc_ssh_public_key: "{{ hostvars[service_host].pve_lxc_ssh_public_key }}"
       loop: "{{ groups['containers'] }}"
       loop_control:
         loop_var: "service_host"
