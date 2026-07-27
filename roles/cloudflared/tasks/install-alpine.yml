@@ -1,7 +1,7 @@
 ---
 - name: "Set cloudflared arch"
   ansible.builtin.set_fact:
-    cloudflared_arch: "{{ 'arm64' if ansible_facts['architecture'] == 'aarch64' else 'amd64' }}"
+    _cloudflared_arch: "{{ 'arm64' if ansible_facts['architecture'] == 'aarch64' else 'amd64' }}"
 
 - name: "Check if cloudflared binary exists"
   ansible.builtin.stat:
@@ -11,7 +11,7 @@
 - name: "Download cloudflared binary"
   become: true
   ansible.builtin.get_url:
-    url: "https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-{{ cloudflared_arch }}"
+    url: "https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-{{ _cloudflared_arch }}"
     dest: "/usr/local/bin/cloudflared"
     mode: "0755"
     owner: "root"

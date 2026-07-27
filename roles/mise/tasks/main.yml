@@ -1,23 +1,23 @@
 ---
 - name: "Set mise arch"
   ansible.builtin.set_fact:
-    mise_arch: "{{ 'arm64' if ansible_facts['architecture'] == 'aarch64' else 'x64' }}"
+    _mise_arch: "{{ 'arm64' if ansible_facts['architecture'] == 'aarch64' else 'x64' }}"
 
 - name: "Set mise URL (latest)"
   ansible.builtin.set_fact:
-    mise_url: "https://mise.jdx.dev/mise-latest-linux-{{ mise_arch }}-musl"
+    _mise_url: "https://mise.jdx.dev/mise-latest-linux-{{ _mise_arch }}-musl"
   when: mise_version == 'latest'
 
 - name: "Set mise URL (versioned)"
   ansible.builtin.set_fact:
-    mise_url: "https://github.com/jdx/mise/releases/download/v{{ mise_version }}/\
-      mise-v{{ mise_version }}-linux-{{ mise_arch }}-musl"
+    _mise_url: "https://github.com/jdx/mise/releases/download/v{{ mise_version }}/\
+      mise-v{{ mise_version }}-linux-{{ _mise_arch }}-musl"
   when: mise_version != 'latest'
 
 - name: "Download mise binary"
   become: true
   ansible.builtin.get_url:
-    url: "{{ mise_url }}"
+    url: "{{ _mise_url }}"
     dest: "/usr/local/bin/mise"
     mode: "0755"
 

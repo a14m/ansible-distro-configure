@@ -22,7 +22,7 @@
 # no such special case, it's always "[<name>]".
 - name: "Determine aws-cli config section name"
   ansible.builtin.set_fact:
-    awscli_config_section: "{{ 'default' if awscli_profile_name == 'default' else 'profile ' + awscli_profile_name }}"
+    _awscli_config_section: "{{ 'default' if awscli_profile_name == 'default' else 'profile ' + awscli_profile_name }}"
 
 - name: "Configure aws-cli credentials"
   community.general.ini_file:
@@ -39,7 +39,7 @@
 - name: "Configure aws-cli profile region"
   community.general.ini_file:
     path: "{{ ansible_facts['env']['HOME'] }}/.aws/config"
-    section: "{{ awscli_config_section }}"
+    section: "{{ _awscli_config_section }}"
     option: "region"
     value: "{{ awscli_region }}"
     mode: "0600"
@@ -47,7 +47,7 @@
 - name: "Configure aws-cli profile endpoint URL"
   community.general.ini_file:
     path: "{{ ansible_facts['env']['HOME'] }}/.aws/config"
-    section: "{{ awscli_config_section }}"
+    section: "{{ _awscli_config_section }}"
     option: "endpoint_url"
     value: "{{ awscli_endpoint_url }}"
     mode: "0600"
