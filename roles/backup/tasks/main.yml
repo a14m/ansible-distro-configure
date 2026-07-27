@@ -43,11 +43,11 @@
   no_log: true
 
 - name: "Schedule backup via systemd"
-  ansible.builtin.include_tasks: "systemd.yml"
+  ansible.builtin.include_tasks: "configure-systemd.yml"
   when: ansible_facts['service_mgr'] == "systemd"
 
 - name: "Schedule backup via cron"
-  ansible.builtin.include_tasks: "openrc.yml"
+  ansible.builtin.include_tasks: "configure-openrc.yml"
   when: ansible_facts['service_mgr'] == "openrc"
 
 - name: "Create restic restore cache directory"
