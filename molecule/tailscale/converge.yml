@@ -1,0 +1,11 @@
+---
+- name: "Tailscale configure"
+  gather_facts: true
+  hosts:
+    - tailscale.home.arpa
+  vars:
+    tailscale_auth_key: "CHANGEME"
+    tailscale_advertise_routes:
+      - "10.0.0.0/24"
+  roles:
+    - role: "tailscale"
