@@ -1,0 +1,33 @@
+---
+network_ipv4_address: "10.0.0.103"
+network_ipv4_gateway: "10.0.0.254"
+network_ipv4_dns: "10.0.0.254"
+
+pve_lxc_id: 103
+pve_lxc_hostname: "tailscale"
+pve_lxc_template: "alpine-3.23-default_20260116_amd64.tar.xz"
+pve_lxc_disk: "local-lvm:2" # storage:sizeGB
+pve_lxc_cores: 1
+pve_lxc_memory: 128
+pve_lxc_ip: "{{ network_ipv4_address }}/24"
+pve_lxc_gateway: "{{ network_ipv4_gateway }}"
+pve_lxc_dns: "{{ network_ipv4_dns }}"
+# Required for Tailscale (or any WireGuard-based tool) to create its tun interface
+pve_lxc_raw_config: |
+  lxc.cgroup2.devices.allow: c 10:200 rwm
+  lxc.mount.entry: /dev/net/tun dev/net/tun none bind,create=file
+pve_lxc_ssh_port: 2222
+pve_lxc_ssh_public_key: "ssh-ed25519 AAAA...fMo"
+pve_lxc_ssh_private_key: |
+      -----BEGIN OPENSSH PRIVATE KEY-----
+      b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
+      QyNTUxOQAAACAQ0GydCVLVXnXpzBxM6MbmRIDHNjC8dqZoFHgx1PiSgQAAAJi7TmCqu05g
+      qgAAAAtzc2gtZWQyNTUxOQAAACAQ0GydCVLVXnXpzBxM6MbmRIDHNjC8dqZoFHgx1PiSgQ
+      AAAEBgO+cOwV2j8gNZ/EugDk+vbi0eGrK125vRcE3FOtJJMRDQbJ0JUtVedenMHEzoxuZE
+      gMc2MLx2pmgUeDHU+JKBAAAAEm1vbGVjdWxlLXRlc3Qtb25seQECAw==
+      -----END OPENSSH PRIVATE KEY-----
+
+# Generate at: https://login.tailscale.com/admin/settings/keys
+tailscale_auth_key: "CHANGEME"
+tailscale_advertise_routes:
+  - "10.0.0.0/24"

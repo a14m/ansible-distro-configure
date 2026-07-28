@@ -14,3 +14,10 @@
   roles:
     - role: "cgit"
     - role: "backup"
+
+- name: "Tailscale configure"
+  gather_facts: true
+  hosts:
+    - tailscale.home.arpa
+  roles:
+    - role: "tailscale"
