@@ -38,3 +38,7 @@ argument_specs:
         type: "str"
         description: "Container DNS server"
         default: "10.0.0.1"
+      pve_lxc_raw_config:
+        type: "str"
+        description: "Raw lxc.conf block to append to the container config (e.g. device passthrough)"
+        required: false

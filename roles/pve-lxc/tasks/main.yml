@@ -39,6 +39,18 @@
     # PVE API not available in containers — requires proxmox-ve package
     - "molecule-notest"
 
+- name: "Append raw LXC config ({{ pve_lxc_id }})"
+  become: true
+  ansible.builtin.blockinfile:
+    path: "/etc/pve/lxc/{{ pve_lxc_id }}.conf"
+    block: "{{ pve_lxc_raw_config }}"
+    marker: "# {mark} ANSIBLE MANAGED BLOCK - pve_lxc_raw_config"
+  when: pve_lxc_raw_config is defined
+  notify: "Restart LXC container for raw config changes"
+  tags:
+    # PVE API not available in containers — requires proxmox-ve package
+    - "molecule-notest"
+
 - name: "Start LXC container ({{ pve_lxc_id }})"
   community.proxmox.proxmox:
     api_host: "{{ ansible_facts.hostname }}"
@@ -52,6 +64,9 @@
   tags:
     # PVE API not available in containers — requires proxmox-ve package
     - "molecule-notest"
+
+- name: "Flush handlers to apply raw config changes ({{ pve_lxc_id }})"
+  ansible.builtin.meta: flush_handlers
 
 - name: "Bootstrap python3 for ansible ({{ pve_lxc_id }})"
   become: true
