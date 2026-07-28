@@ -128,11 +128,11 @@
     - role: "ethtool"
   tasks:
     - name: "Provision LXC containers"
-      tags: ["pve-lxc"]
+      tags: ["lxc"]
       ansible.builtin.include_role:
         name: "pve-lxc"
         apply:
-          tags: ["pve-lxc"]
+          tags: ["lxc"]
       vars:
         pve_lxc_id: "{{ hostvars[service_host].pve_lxc_id }}"
         pve_lxc_hostname: "{{ hostvars[service_host].pve_lxc_hostname }}"
@@ -149,11 +149,11 @@
         loop_var: "service_host"
 
     - name: "Configure SSH on LXC containers"
-      tags: ["pve-lxc"]
+      tags: ["lxc"]
       ansible.builtin.include_role:
         name: "pve-lxc-ssh"
         apply:
-          tags: ["pve-lxc"]
+          tags: ["lxc"]
       vars:
         pve_lxc_id: "{{ hostvars[service_host].pve_lxc_id }}"
         pve_lxc_ssh_port: "{{ hostvars[service_host].pve_lxc_ssh_port }}"
