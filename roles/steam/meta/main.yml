@@ -1,9 +1,9 @@
 ---
 dependencies:
   - role: "multilib"
-    when: ansible_facts['distribution'] == "Archlinux"
+    when: ansible_facts.distribution == "Archlinux"
   - role: "multiverse"
-    when: ansible_facts['distribution'] == "Ubuntu"
+    when: ansible_facts.distribution == "Ubuntu"
   - role: "gpu_driver"
 galaxy_info:
   author: "a14m"

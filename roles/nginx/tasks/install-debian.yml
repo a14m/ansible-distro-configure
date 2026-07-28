@@ -13,8 +13,8 @@
   ansible.builtin.apt_repository:
     repo: >-
       deb [signed-by=/etc/apt/trusted.gpg.d/nginx.asc]
-      https://nginx.org/packages/{{ ansible_facts['distribution'] | lower }}
-      {{ ansible_facts['distribution_release'] }} nginx
+      https://nginx.org/packages/{{ ansible_facts.distribution | lower }}
+      {{ ansible_facts.distribution_release }} nginx
     state: "present"
     filename: "nginx"
 

@@ -1,9 +1,9 @@
 ---
 - name: "Include OS-specific variables"
-  ansible.builtin.include_vars: "{{ ansible_facts['os_family'] | lower }}.yml"
+  ansible.builtin.include_vars: "{{ ansible_facts.os_family | lower }}.yml"
 
 - name: "Include OS-specific tasks"
-  ansible.builtin.include_tasks: "install-{{ ansible_facts['os_family'] | lower }}.yml"
+  ansible.builtin.include_tasks: "install-{{ ansible_facts.os_family | lower }}.yml"
 
 - name: "Install browserpass extension for Firefox"
   ansible.builtin.include_tasks: "install-plugin-browserpass.yml"

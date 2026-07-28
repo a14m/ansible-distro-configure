@@ -13,7 +13,7 @@
 
 - name: "Ensure .aws directory exists"
   ansible.builtin.file:
-    path: "{{ ansible_facts['env']['HOME'] }}/.aws"
+    path: "{{ ansible_facts.env.HOME }}/.aws"
     state: "directory"
     mode: "0700"
 
@@ -26,7 +26,7 @@
 
 - name: "Configure aws-cli credentials"
   community.general.ini_file:
-    path: "{{ ansible_facts['env']['HOME'] }}/.aws/credentials"
+    path: "{{ ansible_facts.env.HOME }}/.aws/credentials"
     section: "{{ awscli_profile_name }}"
     option: "{{ item.key }}"
     value: "{{ item.value }}"
@@ -38,7 +38,7 @@
 
 - name: "Configure aws-cli profile region"
   community.general.ini_file:
-    path: "{{ ansible_facts['env']['HOME'] }}/.aws/config"
+    path: "{{ ansible_facts.env.HOME }}/.aws/config"
     section: "{{ _awscli_config_section }}"
     option: "region"
     value: "{{ awscli_region }}"
@@ -46,7 +46,7 @@
 
 - name: "Configure aws-cli profile endpoint URL"
   community.general.ini_file:
-    path: "{{ ansible_facts['env']['HOME'] }}/.aws/config"
+    path: "{{ ansible_facts.env.HOME }}/.aws/config"
     section: "{{ _awscli_config_section }}"
     option: "endpoint_url"
     value: "{{ awscli_endpoint_url }}"

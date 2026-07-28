@@ -1,7 +1,7 @@
 ---
 - name: "Set mise arch"
   ansible.builtin.set_fact:
-    _mise_arch: "{{ 'arm64' if ansible_facts['architecture'] == 'aarch64' else 'x64' }}"
+    _mise_arch: "{{ 'arm64' if ansible_facts.architecture == 'aarch64' else 'x64' }}"
 
 - name: "Set mise URL (latest)"
   ansible.builtin.set_fact:
@@ -23,7 +23,7 @@
 
 - name: "Add mise activation to bash"
   ansible.builtin.blockinfile:
-    path: "{{ ansible_facts['env']['HOME'] }}/.bashrc"
+    path: "{{ ansible_facts.env.HOME }}/.bashrc"
     state: "present"
     prepend_newline: true
     append_newline: true

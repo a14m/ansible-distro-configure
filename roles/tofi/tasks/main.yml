@@ -15,7 +15,7 @@
     mode: "0755"
   loop:
     - "/etc/xdg/tofi"
-    - "{{ ansible_facts['env']['HOME'] }}/.config/tofi"
+    - "{{ ansible_facts.env.HOME }}/.config/tofi"
     - "/usr/local/share/applications"
 
 - name: "Configure system defaults"
@@ -27,7 +27,7 @@
 
 - name: "Configure user defaults"
   ansible.builtin.blockinfile:
-    path: "{{ ansible_facts['env']['HOME'] }}/.config/tofi/config"
+    path: "{{ ansible_facts.env.HOME }}/.config/tofi/config"
     state: "present"
     prepend_newline: true
     append_newline: true

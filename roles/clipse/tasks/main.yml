@@ -15,12 +15,12 @@
 
 - name: "Create system config directory"
   ansible.builtin.file:
-    path: "{{ ansible_facts['env']['HOME'] }}/.config/clipse"
+    path: "{{ ansible_facts.env.HOME }}/.config/clipse"
     state: "directory"
     mode: "0755"
 
 - name: "Configure system defaults"
   ansible.builtin.copy:
     src: "config.json"
-    dest: "{{ ansible_facts['env']['HOME'] }}/.config/clipse/config.json"
+    dest: "{{ ansible_facts.env.HOME }}/.config/clipse/config.json"
     mode: "0644"

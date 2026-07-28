@@ -1,7 +1,7 @@
 ---
 - name: "Set cloudflared arch"
   ansible.builtin.set_fact:
-    _cloudflared_arch: "{{ 'arm64' if ansible_facts['architecture'] == 'aarch64' else 'amd64' }}"
+    _cloudflared_arch: "{{ 'arm64' if ansible_facts.architecture == 'aarch64' else 'amd64' }}"
 
 - name: "Check if cloudflared binary exists"
   ansible.builtin.stat:

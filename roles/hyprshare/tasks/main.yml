@@ -28,6 +28,6 @@
 - name: "Template user share picker configuration"
   ansible.builtin.template:
     src: "xdph.conf.j2"
-    dest: "{{ ansible_facts['env']['HOME'] }}/.config/hypr/xdph.conf"
+    dest: "{{ ansible_facts.env.HOME }}/.config/hypr/xdph.conf"
     mode: "0644"
   notify: "Restart xdg-desktop-portal-hyprland"

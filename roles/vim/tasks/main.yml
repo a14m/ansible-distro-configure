@@ -1,6 +1,6 @@
 ---
 - name: "Include OS-specific variables"
-  ansible.builtin.include_vars: "{{ ansible_facts['os_family'] | lower }}.yml"
+  ansible.builtin.include_vars: "{{ ansible_facts.os_family | lower }}.yml"
 
 - name: "Ensure vim is installed"
   become: true
@@ -11,7 +11,7 @@
 - name: "Clone vimrc git repo"
   ansible.builtin.git:
     repo: "{{ vimrc_repo_url }}"
-    dest: "{{ ansible_facts['env']['HOME'] }}/.vim"
+    dest: "{{ ansible_facts.env.HOME }}/.vim"
     clone: true
     update: false
     single_branch: true
@@ -19,8 +19,8 @@
 
 - name: "Ensure .vimrc is linked"
   ansible.builtin.file:
-    src: "{{ ansible_facts['env']['HOME'] }}/.vim/.vimrc"
-    dest: "{{ ansible_facts['env']['HOME'] }}/.vimrc"
+    src: "{{ ansible_facts.env.HOME }}/.vim/.vimrc"
+    dest: "{{ ansible_facts.env.HOME }}/.vimrc"
     state: "link"
 
 # We don't care much if vim failed to install all plugins
@@ -29,5 +29,5 @@
   ansible.builtin.shell:
     cmd: "{{ vimrc_setup_script }}"
     executable: "/bin/bash"
-    creates: "{{ ansible_facts['env']['HOME'] }}/.vim/bundle/"
+    creates: "{{ ansible_facts.env.HOME }}/.vim/bundle/"
   failed_when: false

@@ -14,9 +14,9 @@
     modification_time: "preserve"
     access_time: "preserve"
   loop:
-    - "{{ ansible_facts['env']['HOME'] }}/.bashrc"
-    - "{{ ansible_facts['env']['HOME'] }}/.bash_profile"
-    - "{{ ansible_facts['env']['HOME'] }}/.profile"
+    - "{{ ansible_facts.env.HOME }}/.bashrc"
+    - "{{ ansible_facts.env.HOME }}/.bash_profile"
+    - "{{ ansible_facts.env.HOME }}/.profile"
 
 - name: "Ensure bash-completion is installed"
   become: true
@@ -26,7 +26,7 @@
 
 - name: "Add bash-completion to shell profile"
   ansible.builtin.blockinfile:
-    path: "{{ ansible_facts['env']['HOME'] }}/.bashrc"
+    path: "{{ ansible_facts.env.HOME }}/.bashrc"
     state: "present"
     prepend_newline: true
     append_newline: true

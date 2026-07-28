@@ -4,4 +4,4 @@
   ansible.builtin.meta: end_role
 
 - name: "Include OS-specific installation tasks"
-  ansible.builtin.include_tasks: "install-{{ ansible_facts['os_family'] | lower }}.yml"
+  ansible.builtin.include_tasks: "install-{{ ansible_facts.os_family | lower }}.yml"

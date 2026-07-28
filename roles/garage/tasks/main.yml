@@ -2,7 +2,7 @@
 - name: "Install garage binary"
   become: true
   vars:
-    garage_arch: "{{ ansible_facts['architecture'] }}-unknown-linux-musl"
+    garage_arch: "{{ ansible_facts.architecture }}-unknown-linux-musl"
     garage_url: "https://garagehq.deuxfleurs.fr/_releases/v{{ garage_version }}/{{ garage_arch }}/garage"
   block:
     - name: "Check if garage is installed"

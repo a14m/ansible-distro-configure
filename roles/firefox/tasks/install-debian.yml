@@ -15,6 +15,6 @@
   ansible.builtin.command:
     cmd: "xdg-settings set default-web-browser org.mozilla.firefox.desktop"
   environment:
-    XDG_DATA_DIRS: "{{ ansible_facts['env']['HOME'] }}/.local/share/flatpak/exports/share"
+    XDG_DATA_DIRS: "{{ ansible_facts.env.HOME }}/.local/share/flatpak/exports/share"
   changed_when: false
   when: firefox_is_default | default(false)
