@@ -1,0 +1,14 @@
+---
+argument_specs:
+  main:
+    options:
+      tailscale_advertise_routes:
+        type: "list"
+        elements: "str"
+        description: "Subnets to advertise as subnet router (e.g. ['192.168.178.0/24']). Empty = no subnet routing."
+        default: []
+      tailscale_auth_key:
+        type: "str"
+        description: "Tailscale pre-auth key (generate at https://login.tailscale.com/admin/settings/keys)"
+        required: true
+        no_log: true

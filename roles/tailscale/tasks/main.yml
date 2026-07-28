@@ -1,0 +1,36 @@
+---
+- name: "Include OS-specific installation tasks"
+  ansible.builtin.include_tasks: "install-{{ ansible_facts.os_family | lower }}.yml"
+
+- name: "Enable IPv4 forwarding for subnet routing"
+  become: true
+  ansible.posix.sysctl:
+    name: "net.ipv4.ip_forward"
+    value: "1"
+    sysctl_set: true
+    state: "present"
+    reload: true
+  when: tailscale_advertise_routes | length > 0
+
+- name: "Check tailscale connection status"
+  become: true
+  ansible.builtin.command:
+    cmd: "tailscale status"
+  register: tailscale_status_check
+  changed_when: false
+  failed_when: false
+
+- name: "Connect to Tailscale"
+  become: true
+  ansible.builtin.command:
+    argv:
+      - "tailscale"
+      - "up"
+      - "--auth-key={{ tailscale_auth_key }}"
+      - "--accept-dns=false"
+      - "--advertise-routes={{ tailscale_advertise_routes | join(',') }}"
+  when: '"Logged in" not in tailscale_status_check.stdout'
+  changed_when: true
+  no_log: true
+  tags:
+    - molecule-idempotence-notest

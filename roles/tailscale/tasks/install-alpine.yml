@@ -1,0 +1,29 @@
+---
+- name: "Add edge community repository for tailscale"
+  become: true
+  ansible.builtin.lineinfile:
+    path: "/etc/apk/repositories"
+    line: "@edge http://dl-cdn.alpinelinux.org/alpine/edge/community"
+    state: "present"
+
+- name: "Update apk package cache"
+  become: true
+  community.general.apk:
+    update_cache: true
+  changed_when: false
+
+- name: "Ensure tailscale is installed"
+  become: true
+  ansible.builtin.package:
+    name:
+      - "tailscale@edge"
+      - "iptables"
+      - "ip6tables"
+    state: "present"
+
+- name: "Enable and start tailscale"
+  become: true
+  ansible.builtin.service:
+    name: "tailscale"
+    enabled: true
+    state: "started"
