@@ -1,5 +1,5 @@
 ---
-- name: "Download LXC template"
+- name: "Download LXC template ({{ pve_lxc_id }})"
   community.proxmox.proxmox_template:
     api_host: "{{ ansible_facts.hostname }}"
     api_user: "{{ pve_admin_user }}@pve"
@@ -14,7 +14,7 @@
     # PVE API not available in containers — requires proxmox-ve package
     - "molecule-notest"
 
-- name: "Provision LXC container"
+- name: "Provision LXC container ({{ pve_lxc_id }})"
   community.proxmox.proxmox:
     api_host: "{{ ansible_facts.hostname }}"
     api_user: "{{ pve_admin_user }}@pve"
@@ -39,7 +39,7 @@
     # PVE API not available in containers — requires proxmox-ve package
     - "molecule-notest"
 
-- name: "Start LXC container"
+- name: "Start LXC container ({{ pve_lxc_id }})"
   community.proxmox.proxmox:
     api_host: "{{ ansible_facts.hostname }}"
     api_user: "{{ pve_admin_user }}@pve"
@@ -53,7 +53,7 @@
     # PVE API not available in containers — requires proxmox-ve package
     - "molecule-notest"
 
-- name: "Bootstrap python3 for ansible"
+- name: "Bootstrap python3 for ansible ({{ pve_lxc_id }})"
   become: true
   ansible.builtin.command:
     cmd: >

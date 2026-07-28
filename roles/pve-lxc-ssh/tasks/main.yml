@@ -1,5 +1,5 @@
 ---
-- name: "Check if sshd is installed"
+- name: "Check if sshd is installed ({{ pve_lxc_id }})"
   become: true
   ansible.builtin.command:
     cmd: >
@@ -16,7 +16,7 @@
   tags:
     - "molecule-notest"
 
-- name: "Install openssh"
+- name: "Install openssh ({{ pve_lxc_id }})"
   become: true
   tags:
     - "molecule-notest"
@@ -32,12 +32,12 @@
       esac;'
   changed_when: true
 
-- name: "Configure openssh"
+- name: "Configure openssh ({{ pve_lxc_id }})"
   become: true
   tags:
     - "molecule-notest"
   block:
-    - name: "Deploy ssh host private key"
+    - name: "Deploy ssh host private key ({{ pve_lxc_id }})"
       no_log: true
       ansible.builtin.command:
         cmd: >
@@ -46,7 +46,7 @@
         stdin: "{{ pve_lxc_ssh_private_key | trim }}\n"
       changed_when: true
 
-    - name: "Deploy ssh host public key"
+    - name: "Deploy ssh host public key ({{ pve_lxc_id }})"
       ansible.builtin.command:
         cmd: >
           pct exec {{ pve_lxc_id }} -- sh -c
@@ -54,23 +54,23 @@
         stdin: "{{ pve_lxc_ssh_public_key | trim }}\n"
       changed_when: true
 
-    - name: "Render sshd_config"
+    - name: "Render sshd_config ({{ pve_lxc_id }})"
       ansible.builtin.template:
         src: "sshd_config.j2"
         dest: "/tmp/sshd_config_{{ pve_lxc_id }}"
         mode: "0600"
 
-    - name: "Push sshd_config into container"
+    - name: "Push sshd_config into container ({{ pve_lxc_id }})"
       ansible.builtin.command:
         cmd: pct push {{ pve_lxc_id }} /tmp/sshd_config_{{ pve_lxc_id }} /etc/ssh/sshd_config --perms 0640
       changed_when: true
 
-    - name: "Remove temp sshd_config"
+    - name: "Remove temp sshd_config ({{ pve_lxc_id }})"
       ansible.builtin.file:
         path: "/tmp/sshd_config_{{ pve_lxc_id }}"
         state: absent
 
-    - name: "Enable and start sshd"
+    - name: "Enable and start sshd ({{ pve_lxc_id }})"
       ansible.builtin.command:
         cmd: >
           pct exec {{ pve_lxc_id }} -- sh -c
