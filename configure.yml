@@ -131,6 +131,8 @@
       tags: ["pve-lxc"]
       ansible.builtin.include_role:
         name: "pve-lxc"
+        apply:
+          tags: ["pve-lxc"]
       vars:
         pve_lxc_id: "{{ hostvars[service_host].pve_lxc_id }}"
         pve_lxc_hostname: "{{ hostvars[service_host].pve_lxc_hostname }}"
@@ -149,6 +151,8 @@
       tags: ["pve-lxc"]
       ansible.builtin.include_role:
         name: "pve-lxc-ssh"
+        apply:
+          tags: ["pve-lxc"]
       vars:
         pve_lxc_id: "{{ hostvars[service_host].pve_lxc_id }}"
         pve_lxc_ssh_port: "{{ hostvars[service_host].pve_lxc_ssh_port }}"
