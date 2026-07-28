@@ -26,6 +26,7 @@
     argv:
       - "tailscale"
       - "up"
+      - "--reset"
       - "--auth-key={{ tailscale_auth_key }}"
       - "--accept-dns=false"
       - "--advertise-routes={{ tailscale_advertise_routes | join(',') }}"
@@ -33,4 +34,6 @@
   changed_when: true
   no_log: true
   tags:
-    - molecule-idempotence-notest
+    # Requires a real auth key and outbound connectivity to Tailscale's
+    # control servers — not available/desired in a molecule container
+    - "molecule-notest"
