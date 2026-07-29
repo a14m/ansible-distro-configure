@@ -77,7 +77,10 @@
           '. /etc/os-release;
           case $ID in
             alpine) rc-update add sshd default; rc-service sshd restart ;;
-            debian|ubuntu) systemctl enable --now ssh; systemctl restart ssh ;;
+            debian|ubuntu)
+              systemctl disable --now ssh.socket 2>/dev/null;
+              systemctl enable --now ssh.service;
+              systemctl restart ssh.service ;;
             *) echo "Unsupported distro: $ID" && exit 1 ;;
           esac'
       changed_when: true
