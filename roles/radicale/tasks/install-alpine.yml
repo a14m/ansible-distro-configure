@@ -1,0 +1,9 @@
+---
+- name: "Install radicale"
+  become: true
+  ansible.builtin.package:
+    name:
+      - "radicale"
+      - "py3-passlib"
+      - "py3-bcrypt"
+    state: "present"

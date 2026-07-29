@@ -13,3 +13,4 @@ containers:
     git.home.arpa: {}
     proxy.home.arpa: {}
     tailscale.home.arpa: {}
+    caldav.home.arpa: {}

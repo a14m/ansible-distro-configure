@@ -1,0 +1,33 @@
+---
+- name: "Install radicale"
+  become: true
+  ansible.builtin.package:
+    name:
+      - "radicale"
+      - "python3-passlib"
+      - "python3-bcrypt"
+    state: "present"
+
+- name: "Create radicale systemd drop-in directory"
+  become: true
+  ansible.builtin.file:
+    path: "/etc/systemd/system/radicale.service.d"
+    state: "directory"
+    owner: "root"
+    group: "root"
+    mode: "0755"
+
+- name: "Create radicale systemd hardening drop-in"
+  become: true
+  ansible.builtin.copy:
+    src: "hardening.conf"
+    dest: "/etc/systemd/system/radicale.service.d/hardening.conf"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+  notify: "Restart radicale"
+
+- name: "Reload systemd daemon for radicale hardening drop-in"
+  become: true
+  ansible.builtin.systemd_service:
+    daemon_reload: true

@@ -1,0 +1,6 @@
+---
+- name: "Restart radicale"
+  become: true
+  ansible.builtin.service:
+    name: "radicale"
+    state: "restarted"

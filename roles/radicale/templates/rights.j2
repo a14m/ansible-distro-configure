@@ -1,0 +1,7 @@
+{% for rule in radicale_rights_rules %}
+[{{ rule.name }}]
+user = {{ rule.user }}
+collection = {{ rule.collection }}
+permissions = {{ rule.permissions }}
+
+{% endfor %}

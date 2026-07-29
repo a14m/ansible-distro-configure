@@ -1,0 +1,15 @@
+[server]
+hosts = {{ network_ipv4_address }}:{{ radicale_port }}
+
+[auth]
+type = htpasswd
+htpasswd_filename = /etc/radicale/users
+htpasswd_encryption = bcrypt
+delay = {{ radicale_auth_delay }}
+
+[rights]
+type = from_file
+file = /etc/radicale/rights
+
+[storage]
+filesystem_folder = {{ radicale_storage_dir }}

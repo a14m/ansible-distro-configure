@@ -1,0 +1,65 @@
+---
+- name: "Create radicale group"
+  become: true
+  ansible.builtin.group:
+    name: "radicale"
+    system: true
+
+- name: "Create radicale user"
+  become: true
+  ansible.builtin.user:
+    name: "radicale"
+    group: "radicale"
+    system: true
+    shell: "/usr/sbin/nologin"
+    create_home: false
+
+- name: "Include OS-specific installation tasks"
+  ansible.builtin.include_tasks: "install-{{ ansible_facts.os_family | lower }}.yml"
+
+- name: "Create radicale storage directory"
+  become: true
+  ansible.builtin.file:
+    path: "{{ radicale_storage_dir }}"
+    state: "directory"
+    owner: "radicale"
+    group: "radicale"
+    mode: "0750"
+
+- name: "Create radicale configuration file"
+  become: true
+  ansible.builtin.template:
+    src: "config.j2"
+    dest: "/etc/radicale/config"
+    owner: "root"
+    group: "radicale"
+    mode: "0640"
+  notify: "Restart radicale"
+
+- name: "Create radicale rights file"
+  become: true
+  ansible.builtin.template:
+    src: "rights.j2"
+    dest: "/etc/radicale/rights"
+    owner: "root"
+    group: "radicale"
+    mode: "0640"
+  notify: "Restart radicale"
+
+- name: "Create radicale htpasswd users file"
+  become: true
+  ansible.builtin.template:
+    src: "users.j2"
+    dest: "/etc/radicale/users"
+    owner: "root"
+    group: "radicale"
+    mode: "0640"
+  no_log: true
+  notify: "Restart radicale"
+
+- name: "Start and enable radicale"
+  become: true
+  ansible.builtin.service:
+    name: "radicale"
+    state: "started"
+    enabled: true

@@ -15,6 +15,13 @@
     - role: "cgit"
     - role: "backup"
 
+- name: "Caldav configure"
+  gather_facts: true
+  hosts:
+    - caldav.home.arpa
+  roles:
+    - role: "radicale"
+
 - name: "Tailscale configure"
   gather_facts: true
   hosts:

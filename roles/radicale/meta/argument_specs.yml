@@ -1,0 +1,38 @@
+---
+argument_specs:
+  main:
+    options:
+      radicale_hostname:
+        type: "str"
+        description: "FQDN radicale is reverse-proxied under from proxy.home.arpa."
+        default: "caldav.example.com"
+      radicale_port:
+        type: "int"
+        description: "Port for the radicale server to bind on network_ipv4_address"
+        default: 5232
+      radicale_storage_dir:
+        type: "str"
+        description: "Filesystem path where radicale stores collections"
+        default: "/var/lib/radicale/collections"
+      radicale_auth_delay:
+        type: "int"
+        description: "Seconds throttled (average) after each failed/denied login attempt"
+        default: 3
+      radicale_users:
+        type: "list"
+        elements: "str"
+        description: "List of raw 'user:hash' htpasswd lines."
+        default: []
+      radicale_rights_rules:
+        type: "list"
+        elements: "dict"
+        description: "List of {name, user, collection, permissions} rules written to /etc/radicale/rights"
+        default:
+          - name: "root"
+            user: ".+"
+            collection: ""
+            permissions: "R"
+          - name: "owner-only"
+            user: ".+"
+            collection: "{user}(/.*)?"
+            permissions: "RWrw"
