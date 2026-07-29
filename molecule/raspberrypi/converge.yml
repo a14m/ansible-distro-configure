@@ -89,6 +89,7 @@
     - role: "jq"
     - role: "ag"
     - role: "tcpdump"
+    - role: "whois"
     - role: "libheif"
     - role: "tmux"
     - role: "python"

@@ -1,0 +1,6 @@
+---
+- name: "Install mkpasswd"
+  become: true
+  ansible.builtin.package:
+    name: "mkpasswd"
+    state: "present"
