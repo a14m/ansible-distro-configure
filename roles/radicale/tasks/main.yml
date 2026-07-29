@@ -63,3 +63,27 @@
     name: "radicale"
     state: "started"
     enabled: true
+
+- name: "Create radicale nginx vhost configuration on proxy"
+  become: true
+  delegate_to: "proxy.home.arpa"
+  when: radicale_hostname | length > 0 and hostvars['proxy.home.arpa'].proxy_type == "nginx"
+  ansible.builtin.template:
+    src: "radicale.nginx.conf.j2"
+    dest: "/etc/nginx/conf.d/radicale.conf"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+  notify: "Restart proxy"
+
+- name: "Create radicale caddy configuration on proxy"
+  become: true
+  delegate_to: "proxy.home.arpa"
+  when: radicale_hostname | length > 0 and hostvars['proxy.home.arpa'].proxy_type == "caddy"
+  ansible.builtin.template:
+    src: "radicale.caddy.j2"
+    dest: "/etc/caddy/sites/radicale.caddy"
+    owner: "root"
+    group: "caddy"
+    mode: "0640"
+  notify: "Restart proxy"

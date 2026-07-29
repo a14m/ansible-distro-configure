@@ -23,10 +23,10 @@ pve_lxc_ssh_private_key: |
       gMc2MLx2pmgUeDHU+JKBAAAAEm1vbGVjdWxlLXRlc3Qtb25seQECAw==
       -----END OPENSSH PRIVATE KEY-----
 
-cgit_hostname: "git.home.arpa"
 cgit_title: "git.example.com"
 cgit_description: "git repositories"
 cgit_ssh_user: "git"
+cgit_hostname: "git.example.com"
 
 backup_name: "git"
 backup_paths:

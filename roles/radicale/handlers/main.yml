@@ -4,3 +4,10 @@
   ansible.builtin.service:
     name: "radicale"
     state: "restarted"
+
+- name: "Restart proxy"
+  become: true
+  delegate_to: "proxy.home.arpa"
+  ansible.builtin.service:
+    name: "{{ hostvars['proxy.home.arpa'].proxy_type }}"
+    state: restarted

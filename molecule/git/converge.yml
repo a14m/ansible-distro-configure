@@ -1,4 +1,13 @@
 ---
+- name: "Proxy configure"
+  gather_facts: true
+  hosts:
+    - proxy.home.arpa
+  vars:
+    network_ipv4_address: "{{ ansible_facts.default_ipv4.address }}"
+  roles:
+    - role: "caddy"
+
 - name: "Git configure"
   gather_facts: true
   hosts:
@@ -9,6 +18,7 @@
     backup_repo: "s3:https://example.com/backups"
     backup_access_key_id: "GK_CHANGEME"
     backup_secret_access_key: "CHANGEME"
+    cgit_hostname: "git.example.com"
   roles:
     - role: "cgit"
     - role: "backup"

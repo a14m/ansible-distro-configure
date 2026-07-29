@@ -4,7 +4,7 @@ argument_specs:
     options:
       radicale_hostname:
         type: "str"
-        description: "FQDN radicale is reverse-proxied under from proxy.home.arpa."
+        description: "FQDN for radicale (e.g. caldav.example.com)"
         default: "caldav.example.com"
       radicale_port:
         type: "int"

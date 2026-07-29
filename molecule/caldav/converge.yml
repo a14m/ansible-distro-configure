@@ -1,4 +1,13 @@
 ---
+- name: "Proxy configure"
+  gather_facts: true
+  hosts:
+    - proxy.home.arpa
+  vars:
+    network_ipv4_address: "{{ ansible_facts.default_ipv4.address }}"
+  roles:
+    - role: "caddy"
+
 - name: "Caldav configure"
   gather_facts: true
   hosts:
@@ -7,5 +16,6 @@
     network_ipv4_address: "{{ ansible_facts.default_ipv4.address }}"
     radicale_users:
       - "test:$2y$05$h9PuTgv/bjaDUemm3oLHTeFZ5T0OMFQVFtrSaoVw6mero0kZXT.e2"
+    radicale_hostname: "caldav.example.com"
   roles:
     - role: "radicale"

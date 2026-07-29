@@ -4,7 +4,7 @@ argument_specs:
     options:
       cgit_hostname:
         type: "str"
-        description: "Hostname for cgit (e.g. git.example.com)"
+        description: "FQDN for cgit (e.g. git.example.com)"
         default: "git.example.com"
       cgit_port:
         type: "int"

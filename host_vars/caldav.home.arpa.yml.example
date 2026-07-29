@@ -23,7 +23,7 @@ pve_lxc_ssh_private_key: |
       gMc2MLx2pmgUeDHU+JKBAAAAEm1vbGVjdWxlLXRlc3Qtb25seQECAw==
       -----END OPENSSH PRIVATE KEY-----
 
-radicale_hostname: "caldav.home.arpa"
+radicale_hostname: "caldav.example.com"
 # list of "user:hash" lines generated with htpasswd or mkpasswd
 # -R/-C set the bcrypt cost (default 5 is low; 12 is a reasonable minimum)
 # echo "user:$(mkpasswd -m bcrypt -R 12 changeme)"
