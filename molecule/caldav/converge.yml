@@ -17,5 +17,10 @@
     radicale_users:
       - "test:$2y$05$h9PuTgv/bjaDUemm3oLHTeFZ5T0OMFQVFtrSaoVw6mero0kZXT.e2"
     radicale_hostname: "caldav.example.com"
+    backup_name: "caldav"
+    backup_repo: "s3:https://example.com/backups"
+    backup_access_key_id: "GK_CHANGEME"
+    backup_secret_access_key: "CHANGEME"
   roles:
     - role: "radicale"
+    - role: "backup"

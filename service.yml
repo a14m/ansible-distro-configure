@@ -21,6 +21,7 @@
     - caldav.home.arpa
   roles:
     - role: "radicale"
+    - role: "backup"
 
 - name: "Tailscale configure"
   gather_facts: true
