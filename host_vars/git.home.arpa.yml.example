@@ -27,6 +27,7 @@ cgit_title: "git.example.com"
 cgit_description: "git repositories"
 cgit_ssh_user: "git"
 cgit_hostname: "git.example.com"
+cgit_clone_prefix: "git.home.arpa"
 
 backup_name: "git"
 backup_paths:

@@ -8,7 +8,7 @@ repo.group=personal
 root-title={{ cgit_title }}
 root-desc={{ cgit_description }}
 
-clone-prefix=ssh://{{ cgit_ssh_user }}@{{ cgit_hostname }}:{{ pve_lxc_ssh_port }}{{ cgit_repos_dir }}
+clone-prefix=ssh://{{ cgit_ssh_user }}@{{ cgit_clone_prefix }}:{{ pve_lxc_ssh_port }}{{ cgit_repos_dir }}
 
 enable-index-links=1
 enable-index-owner=0
