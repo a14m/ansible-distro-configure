@@ -5,6 +5,8 @@ command="/usr/local/bin/cloudflared"
 command_args="tunnel --no-autoupdate run --token {{ cloudflared_tunnel_token }}"
 command_background=true
 pidfile="/run/cloudflared.pid"
+output_log="/var/log/cloudflared.log"
+error_log="/var/log/cloudflared.log"
 depend() {
     need net
 }

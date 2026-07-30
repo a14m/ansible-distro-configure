@@ -5,3 +5,23 @@
 
 - name: "Include OS-specific installation tasks"
   ansible.builtin.include_tasks: "install-{{ ansible_facts.os_family | lower }}.yml"
+
+- name: "Create cloudflared logrotate configuration"
+  become: true
+  ansible.builtin.copy:
+    content: |
+      /var/log/cloudflared.log {
+        weekly
+        missingok
+        rotate 12
+        compress
+        delaycompress
+        notifempty
+        copytruncate
+        create 0644 root root
+      }
+    dest: "/etc/logrotate.d/cloudflared"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+  failed_when: false
