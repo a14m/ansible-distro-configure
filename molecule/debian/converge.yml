@@ -4,8 +4,6 @@
   gather_facts: true
   vars:
     ansible_become_method: su
-    network_ipv4_address: "{{ ansible_facts.default_ipv4.address }}"
-    network_ipv4_gateway: "{{ ansible_facts.default_ipv4.gateway }}"
     user_public_keys:
       - "ssh-ed25519 AAAA...fMo"
       - "ssh-rsa AAAA...4I3"
