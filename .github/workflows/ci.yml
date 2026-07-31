@@ -44,6 +44,8 @@ jobs:
             runs_on: "ubuntu-24.04-arm"
           - name: git
             runs_on: "ubuntu-latest"
+          - name: caldav
+            runs_on: "ubuntu-latest"
           - name: tailscale
             runs_on: "ubuntu-latest"
     runs-on: ${{ matrix.molecule_distro.runs_on }}
