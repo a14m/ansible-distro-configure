@@ -3,10 +3,10 @@ radicale_hostname: "caldav.example.com"
 radicale_port: 5232
 radicale_storage_dir: "/var/lib/radicale/collections"
 radicale_auth_delay: 3 # seconds throttled after each failed/denied login attempt
-# list of "user:hash" lines generated with htpasswd or mkpasswd
+# list of {name, password_hash} dicts; password_hash generated with htpasswd or mkpasswd
 # -R/-C set the bcrypt cost (default 5 is low; 12 is a reasonable minimum)
-# echo "<user>:$(mkpasswd -m bcrypt -R 12 <password>)"
-# htpasswd -nbB -C 12 <user> <password>
+# mkpasswd -m bcrypt -R 12 <password>
+# htpasswd -nbB -C 12 <user> <password> | cut -d: -f2
 radicale_users: []
 radicale_rights_rules:
   - name: "root"
@@ -17,3 +17,5 @@ radicale_rights_rules:
     user: ".+"
     collection: "{user}(/.*)?"
     permissions: "RWrw"
+# list of {owner, collection, members} dicts; see README for the sharing model
+radicale_collections: []

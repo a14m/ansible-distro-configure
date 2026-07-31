@@ -24,12 +24,6 @@ pve_lxc_ssh_private_key: |
       -----END OPENSSH PRIVATE KEY-----
 
 radicale_hostname: "caldav.example.com"
-# list of "user:hash" lines generated with htpasswd or mkpasswd
-# -R/-C set the bcrypt cost (default 5 is low; 12 is a reasonable minimum)
-# echo "user:$(mkpasswd -m bcrypt -R 12 changeme)"
-# htpasswd -nbB -C 12 user changeme
-radicale_users:
-  - "user:$2y$05$h9PuTgv/bjaDUemm3oLHTeFZ5T0OMFQVFtrSaoVw6mero0kZXT.e2"
 radicale_rights_rules:
   - name: "root"
     user: ".+"
@@ -39,6 +33,21 @@ radicale_rights_rules:
     user: ".+"
     collection: "{user}(/.*)?"
     permissions: "RWrw"
+# list of {name, password_hash} dicts; password_hash generated with htpasswd or mkpasswd
+# -R/-C set the bcrypt cost (default 5 is low; 12 is a reasonable minimum)
+# mkpasswd -m bcrypt -R 12 changeme
+# htpasswd -nbB -C 12 user changeme | cut -d: -f2
+radicale_users:
+  - name: "alice"
+    password_hash: "$2y$05$h9PuTgv/bjaDUemm3oLHTeFZ5T0OMFQVFtrSaoVw6mero0kZXT.e2"
+  - name: "bob"
+    password_hash: "$2y$12$rJu1JeJJKth1xTd4NY501eTIl6TEI1B0CiY3s.gmz13rJpRxXQoeS"
+# Shared collections between users; each collection has an owner and a list of members
+# collection must be a flat name (no "/") for the symlink task to work unattended
+radicale_collections:
+  - owner: "alice"
+    collection: "e8eb7e18-7686-7077-585e-f730c632a60e"
+    members: ["bob"]
 
 backup_name: "caldav"
 backup_paths:

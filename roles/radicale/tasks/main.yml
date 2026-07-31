@@ -26,6 +26,35 @@
     group: "radicale"
     mode: "0750"
 
+- name: "Ensure per-user collection directories exist"
+  become: true
+  ansible.builtin.file:
+    path: "{{ radicale_storage_dir }}/collection-root/{{ item.name }}"
+    state: "directory"
+    owner: "radicale"
+    group: "radicale"
+    mode: "0750"
+  loop: "{{ radicale_users }}"
+  loop_control:
+    label: "{{ item.name }}"
+
+- name: "Symlink shared collections into member accounts"
+  become: true
+  vars:
+    collection: "{{ item.0 }}"
+    member: "{{ item.1 }}"
+  ansible.builtin.file:
+    src: "{{ radicale_storage_dir }}/collection-root/{{ collection.owner }}/{{ collection.collection }}"
+    dest: "{{ radicale_storage_dir }}/collection-root/{{ member }}/{{ collection.collection }}"
+    state: "link"
+    force: true
+    follow: false
+    owner: "radicale"
+    group: "radicale"
+  loop: "{{ radicale_collections | subelements('members') }}"
+  loop_control:
+    label: "{{ member }}/{{ collection.collection }}"
+
 - name: "Create radicale configuration file"
   become: true
   ansible.builtin.template:

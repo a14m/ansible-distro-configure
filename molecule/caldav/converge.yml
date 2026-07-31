@@ -15,7 +15,14 @@
   vars:
     network_ipv4_address: "{{ ansible_facts.default_ipv4.address }}"
     radicale_users:
-      - "test:$2y$05$h9PuTgv/bjaDUemm3oLHTeFZ5T0OMFQVFtrSaoVw6mero0kZXT.e2"
+      - name: "test"
+        password_hash: "$2y$05$h9PuTgv/bjaDUemm3oLHTeFZ5T0OMFQVFtrSaoVw6mero0kZXT.e2"
+      - name: "test2"
+        password_hash: "$2y$05$h9PuTgv/bjaDUemm3oLHTeFZ5T0OMFQVFtrSaoVw6mero0kZXT.e2"
+    radicale_collections:
+      - owner: "test"
+        collection: "example"
+        members: ["test2"]
     radicale_hostname: "caldav.example.com"
     backup_name: "caldav"
     backup_repo: "s3:https://example.com/backups"

@@ -20,8 +20,8 @@ argument_specs:
         default: 3
       radicale_users:
         type: "list"
-        elements: "str"
-        description: "List of raw 'user:hash' htpasswd lines."
+        elements: "dict"
+        description: "List of {name, password_hash} dicts written as 'name:password_hash' lines to /etc/radicale/users."
         default: []
       radicale_rights_rules:
         type: "list"
@@ -36,3 +36,12 @@ argument_specs:
             user: ".+"
             collection: "{user}(/.*)?"
             permissions: "RWrw"
+      radicale_collections:
+        type: "list"
+        elements: "dict"
+        description: >-
+          List of {owner, collection, members} dicts. For each entry, symlinks
+          `collection` (a flat name under the owner's own collection directory)
+          into every listed member's own collection tree, so it appears as one of
+          their own calendars/address books. See README for the sharing model.
+        default: []
