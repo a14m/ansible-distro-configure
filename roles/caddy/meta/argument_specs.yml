@@ -1,4 +1,12 @@
 ---
 argument_specs:
   main:
-    options: {}
+    options:
+      caddy_metrics_port:
+        type: "str"
+        description: >-
+          Port for a dedicated Prometheus /metrics-only endpoint, reachable
+          on the network. Separate from Caddy's admin API (always
+          localhost-only, untouched) so nothing beyond metrics is exposed.
+          When empty (default), no metrics endpoint is created.
+        default: ""

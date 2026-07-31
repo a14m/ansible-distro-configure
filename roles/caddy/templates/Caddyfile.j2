@@ -1,5 +1,10 @@
 {
 	local_certs
+{% if caddy_metrics_port | length > 0 %}
+	servers {
+		metrics
+	}
+{% endif %}
 }
 
 import /etc/caddy/sites/*.caddy

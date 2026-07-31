@@ -29,6 +29,25 @@
     mode: "0640"
   notify: "Restart caddy"
 
+- name: "Configure metrics-only vhost"
+  become: true
+  notify: "Restart caddy"
+  block:
+    - name: "Create metrics-only vhost configuration"
+      when: caddy_metrics_port | length > 0
+      ansible.builtin.template:
+        src: "metrics.caddy.j2"
+        dest: "/etc/caddy/sites/metrics.caddy"
+        owner: "root"
+        group: "caddy"
+        mode: "0640"
+
+    - name: "Remove metrics-only vhost configuration when disabled"
+      when: caddy_metrics_port | length == 0
+      ansible.builtin.file:
+        path: "/etc/caddy/sites/metrics.caddy"
+        state: "absent"
+
 - name: "Start and enable caddy"
   become: true
   ansible.builtin.service:
