@@ -7,8 +7,45 @@
     enabled: false
   failed_when: false
 
-- name: "Include OS-specific installation tasks"
-  ansible.builtin.include_tasks: "install-{{ ansible_facts.os_family | lower }}.yml"
+- name: "Create caddy group"
+  become: true
+  ansible.builtin.group:
+    name: "caddy"
+    system: true
+
+- name: "Create caddy user"
+  become: true
+  ansible.builtin.user:
+    name: "caddy"
+    group: "caddy"
+    system: true
+    shell: "/sbin/nologin"
+    home: "/var/lib/caddy"
+    create_home: true
+
+- name: "Set caddy download architecture"
+  ansible.builtin.set_fact:
+    _caddy_arch: "{{ 'arm64' if ansible_facts.architecture in ['aarch64', 'arm64'] else 'amd64' }}"
+
+- name: "Check if caddy binary exists"
+  ansible.builtin.stat:
+    path: "/usr/bin/caddy"
+  register: caddy_binary
+
+- name: "Download caddy binary (with ratelimit module)"
+  become: true
+  ansible.builtin.get_url:
+    # yamllint disable-line rule:line-length
+    url: "https://caddyserver.com/api/download?os=linux&arch={{ _caddy_arch }}&p=github.com/mholt/caddy-ratelimit"
+    dest: "/usr/bin/caddy"
+    owner: "root"
+    group: "root"
+    mode: "0755"
+  when: not caddy_binary.stat.exists
+  notify: "Restart caddy"
+
+- name: "Include service-manager-specific configuration"
+  ansible.builtin.include_tasks: "configure-{{ ansible_facts.service_mgr }}.yml"
 
 - name: "Ensure caddy sites directory exists"
   become: true

@@ -1,0 +1,32 @@
+---
+- name: "Create caddy log directory"
+  become: true
+  ansible.builtin.file:
+    path: "/var/log/caddy"
+    state: "directory"
+    owner: "caddy"
+    group: "caddy"
+    mode: "0750"
+
+- name: "Deploy caddy OpenRC service"
+  become: true
+  ansible.builtin.template:
+    src: "caddy.initd.j2"
+    dest: "/etc/init.d/caddy"
+    owner: "root"
+    group: "root"
+    mode: "0755"
+  notify: "Restart caddy"
+
+- name: "Ensure libcap is installed"
+  become: true
+  ansible.builtin.package:
+    name: "libcap"
+    state: "present"
+
+- name: "Grant caddy binary permission to bind privileged ports"
+  become: true
+  community.general.capabilities:
+    path: "/usr/bin/caddy"
+    capability: "cap_net_bind_service=ep"
+    state: "present"

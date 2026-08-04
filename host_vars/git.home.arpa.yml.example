@@ -28,6 +28,7 @@ cgit_description: "git repositories"
 cgit_ssh_user: "git"
 cgit_hostname: "git.example.com"
 cgit_clone_prefix: "git.home.arpa"
+cgit_rate_limit_rps: 5
 
 backup_name: "git"
 backup_paths:

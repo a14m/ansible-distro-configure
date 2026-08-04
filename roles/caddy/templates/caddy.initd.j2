@@ -1,0 +1,20 @@
+#!/sbin/openrc-run
+
+description="Caddy web server"
+command="/usr/bin/caddy"
+command_args="run --environ --config /etc/caddy/Caddyfile"
+command_user="caddy:caddy"
+command_background=true
+pidfile="/run/caddy.pid"
+output_log="/var/log/caddy/caddy.log"
+error_log="/var/log/caddy/caddy.log"
+
+depend() {
+	need net
+}
+
+reload() {
+	ebegin "Reloading ${RC_SVCNAME}"
+	/usr/bin/caddy reload --config /etc/caddy/Caddyfile --force
+	eend $?
+}

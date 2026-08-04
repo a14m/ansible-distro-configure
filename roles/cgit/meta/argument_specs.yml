@@ -33,3 +33,9 @@ argument_specs:
         type: "str"
         description: "System user for SSH git push access"
         default: "git"
+      cgit_rate_limit_rps:
+        type: "int"
+        description: >-
+          Max requests per second per client IP on the Caddy vhost (via the
+          mholt/caddy-ratelimit module). Omit to leave rate limiting off.
+        required: false

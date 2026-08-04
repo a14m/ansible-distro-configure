@@ -1,6 +1,0 @@
----
-- name: "Install caddy"
-  become: true
-  ansible.builtin.package:
-    name: "caddy"
-    state: "present"

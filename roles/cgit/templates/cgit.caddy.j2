@@ -1,3 +1,12 @@
 {{ cgit_hostname }} {
+{% if cgit_rate_limit_rps is defined %}
+	rate_limit {
+		zone cgit {
+			key    {remote_host}
+			events {{ cgit_rate_limit_rps }}
+			window 1s
+		}
+	}
+{% endif %}
 	reverse_proxy {{ network_ipv4_address }}:{{ cgit_port }}
 }
