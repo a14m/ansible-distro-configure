@@ -1,0 +1,22 @@
+---
+- name: "Add edge main repository for cgit"
+  become: true
+  ansible.builtin.lineinfile:
+    path: "/etc/apk/repositories"
+    line: "@edge http://dl-cdn.alpinelinux.org/alpine/edge/main"
+    state: "present"
+
+- name: "Update apk package cache"
+  become: true
+  community.general.apk:
+    update_cache: true
+  changed_when: false
+
+- name: "Install packages"
+  become: true
+  ansible.builtin.package:
+    name:
+      - "cgit@edge"
+      - "lighttpd"
+      - "openssh"
+    state: present

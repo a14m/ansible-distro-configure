@@ -1,0 +1,9 @@
+---
+- name: "Install packages"
+  become: true
+  ansible.builtin.package:
+    name:
+      - "cgit"
+      - "lighttpd"
+      - "openssh"
+    state: present

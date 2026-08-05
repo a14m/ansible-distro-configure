@@ -1,12 +1,6 @@
 ---
-- name: "Install packages"
-  become: true
-  ansible.builtin.package:
-    name:
-      - cgit
-      - lighttpd
-      - openssh
-    state: present
+- name: "Include OS-specific installation tasks"
+  ansible.builtin.include_tasks: "install-{{ ansible_facts.os_family | lower }}.yml"
 
 - name: "Create git group"
   become: true
@@ -74,8 +68,8 @@
     enabled: true
     state: started
   loop:
-    - lighttpd
-    - sshd
+    - "lighttpd"
+    - "{{ 'ssh' if ansible_facts.os_family == 'Debian' else 'sshd' }}"
 
 - name: "Create cgit nginx vhost configuration on proxy"
   become: true

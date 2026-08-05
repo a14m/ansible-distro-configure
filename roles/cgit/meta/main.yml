@@ -7,6 +7,15 @@ galaxy_info:
   license: "MIT"
   min_ansible_version: "2.18"
   platforms:
+    - name: "ArchLinux"
+      versions:
+        - "all"
+    - name: "Ubuntu"
+      versions:
+        - "noble"
+    - name: "Debian"
+      versions:
+        - "bookworm"
     - name: "Alpine"
       versions:
         - "all"
