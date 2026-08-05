@@ -2,6 +2,6 @@
 - name: "Install alloy"
   become: true
   kewlfft.aur.aur:
-    name: "alloy-bin"
+    name: "grafana-alloy-bin"
     state: "present"
     use: "yay"
