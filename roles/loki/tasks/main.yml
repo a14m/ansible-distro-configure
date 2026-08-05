@@ -29,6 +29,16 @@
     - "/etc/loki"
     - "/var/lib/loki"
 
+- name: "Configure loki service (conf.d overrides)"
+  become: true
+  ansible.builtin.template:
+    src: "loki.confd.j2"
+    dest: "/etc/conf.d/loki"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+  notify: "Restart loki"
+
 - name: "Create loki configuration"
   become: true
   ansible.builtin.template:
