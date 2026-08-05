@@ -1,6 +1,7 @@
 ---
 - name: "Install loki"
   become: true
+  become_user: "aur_builder"
   kewlfft.aur.aur:
     name: "loki-bin"
     state: "present"

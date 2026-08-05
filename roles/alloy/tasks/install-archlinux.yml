@@ -1,6 +1,7 @@
 ---
 - name: "Install alloy"
   become: true
+  become_user: "aur_builder"
   kewlfft.aur.aur:
     name: "grafana-alloy-bin"
     state: "present"
