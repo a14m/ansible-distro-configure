@@ -1,0 +1,4 @@
+---
+loki_hostname: "logs.example.com"
+loki_port: 3100
+loki_retention: "744h"

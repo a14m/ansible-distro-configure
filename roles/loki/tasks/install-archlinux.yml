@@ -1,0 +1,7 @@
+---
+- name: "Install loki"
+  become: true
+  kewlfft.aur.aur:
+    name: "loki-bin"
+    state: "present"
+    use: "yay"

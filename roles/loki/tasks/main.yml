@@ -1,0 +1,71 @@
+---
+- name: "Create loki group"
+  become: true
+  ansible.builtin.group:
+    name: "loki"
+    system: true
+
+- name: "Create loki user"
+  become: true
+  ansible.builtin.user:
+    name: "loki"
+    group: "loki"
+    system: true
+    shell: "/sbin/nologin"
+    create_home: false
+
+- name: "Include OS-specific installation tasks"
+  ansible.builtin.include_tasks: "install-{{ ansible_facts.os_family | lower }}.yml"
+
+- name: "Create loki directories"
+  become: true
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: "directory"
+    owner: "loki"
+    group: "loki"
+    mode: "0750"
+  loop:
+    - "/etc/loki"
+    - "/var/lib/loki"
+
+- name: "Create loki configuration"
+  become: true
+  ansible.builtin.template:
+    src: "loki.yml.j2"
+    dest: "/etc/loki/config.yml"
+    owner: "loki"
+    group: "loki"
+    mode: "0640"
+  notify: "Restart loki"
+
+- name: "Start and enable loki"
+  become: true
+  ansible.builtin.service:
+    name: "loki"
+    state: "started"
+    enabled: true
+
+- name: "Create loki nginx vhost configuration on proxy"
+  become: true
+  delegate_to: "proxy.home.arpa"
+  when: loki_hostname | length > 0 and hostvars['proxy.home.arpa'].proxy_type == "nginx"
+  ansible.builtin.template:
+    src: "loki.nginx.conf.j2"
+    dest: "/etc/nginx/conf.d/loki.conf"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+  notify: "Restart proxy"
+
+- name: "Create loki caddy configuration on proxy"
+  become: true
+  delegate_to: "proxy.home.arpa"
+  when: loki_hostname | length > 0 and hostvars['proxy.home.arpa'].proxy_type == "caddy"
+  ansible.builtin.template:
+    src: "loki.caddy.j2"
+    dest: "/etc/caddy/sites/loki.caddy"
+    owner: "root"
+    group: "caddy"
+    mode: "0640"
+  notify: "Restart proxy"
