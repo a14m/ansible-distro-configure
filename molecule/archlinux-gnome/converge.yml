@@ -125,6 +125,7 @@
     - role: "prometheus"
     - role: "prometheus-node-exporter"
     - role: "grafana"
+    - role: "alloy"
     - role: "bluetui"
     - role: "wlctl"
     - role: "pipewire"

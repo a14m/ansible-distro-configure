@@ -50,6 +50,7 @@
     - role: "gnome-papers"
     - role: "gnome-disk-utility"
     - role: "prometheus-node-exporter"
+    - role: "alloy"
     - role: "gpu_driver"
   tasks:
     - name: "Configure distro roles"
@@ -98,6 +99,7 @@
     - role: "prometheus"
     - role: "prometheus-node-exporter"
     - role: "grafana"
+    - role: "alloy"
     - role: "neomutt"
     - role: "mount"
     - role: "garage"
@@ -127,6 +129,7 @@
     - role: "password_store"
     - role: "vim"
     - role: "prometheus-node-exporter"
+    - role: "alloy"
     - role: "restic"
     - role: "ethtool"
   tasks:

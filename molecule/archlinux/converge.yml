@@ -126,6 +126,7 @@
     - role: "prometheus"
     - role: "prometheus-node-exporter"
     - role: "grafana"
+    - role: "alloy"
     - role: "localsend"
     - role: "restic"
     - role: "ethtool"

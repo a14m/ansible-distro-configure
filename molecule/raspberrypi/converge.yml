@@ -110,6 +110,7 @@
     - role: "prometheus"
     - role: "prometheus-node-exporter"
     - role: "grafana"
+    - role: "alloy"
     - role: "mount"
     - role: "garage"
     - role: "awscli"

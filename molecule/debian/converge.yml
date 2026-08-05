@@ -106,6 +106,7 @@
     - role: "prometheus"
     - role: "prometheus-node-exporter"
     - role: "grafana"
+    - role: "alloy"
     - role: "gnome"
     - role: "gnome-calendar"
     - role: "gnome-loupe"

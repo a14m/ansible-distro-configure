@@ -81,3 +81,4 @@
     - role: "restic"
     - role: "proxmoxer"
     - role: "ethtool"
+    - role: "alloy"

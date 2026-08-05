@@ -63,6 +63,22 @@ DNS records are managed via `pihole_dns_hosts` in `host_vars/rpi5.local.yml`.
 Override the default FQDN per service using `pihole_hostname`, `wg_portal_hostname`,
 `grafana_hostname`, or `prometheus_hostname`.
 
+## Container Services
+
+Services deployed as LXC containers on `pve.local`, proxied through `proxy.home.arpa`. FQDNs
+below resolve via Pi-hole (`pihole_dns_hosts` in `host_vars/rpi5.local.yml`).
+
+| Service | Default FQDN | Description |
+|---|---|---|
+| cgit | `git.home.arpa` | Git repository browsing and SSH push/clone |
+| Radicale | `caldav.home.arpa` | CalDAV/CardDAV server |
+| Tailscale | `tailscale.home.arpa` | Tailscale subnet router (no HTTP vhost) |
+| Loki | `logs.home.arpa` | Log aggregation |
+
+`cgit_hostname` and `radicale_hostname` can instead be set to a public domain for access outside
+the LAN via the `cloudflared` tunnel on `proxy.home.arpa`; `cgit_clone_prefix` then keeps the LAN
+clone URL separate. Override the Loki FQDN via `loki_hostname`.
+
 ## Special Thanks to
 
 - [Jeff Geerling](https://www.jeffgeerling.com/), who I learned a **LOT** from his open-source work.

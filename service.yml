@@ -6,6 +6,7 @@
   roles:
     - role: "caddy"
     - role: "cloudflared"
+    - role: "alloy"
 
 - name: "Git configure"
   gather_facts: true
@@ -14,6 +15,7 @@
   roles:
     - role: "cgit"
     - role: "backup"
+    - role: "alloy"
 
 - name: "Caldav configure"
   gather_facts: true
@@ -22,6 +24,7 @@
   roles:
     - role: "radicale"
     - role: "backup"
+    - role: "alloy"
 
 - name: "Tailscale configure"
   gather_facts: true
@@ -29,3 +32,12 @@
     - tailscale.home.arpa
   roles:
     - role: "tailscale"
+    - role: "alloy"
+
+- name: "Logs configure"
+  gather_facts: true
+  hosts:
+    - logs.home.arpa
+  roles:
+    - role: "loki"
+    - role: "alloy"

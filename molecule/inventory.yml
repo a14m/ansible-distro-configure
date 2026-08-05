@@ -14,3 +14,4 @@ containers:
     proxy.home.arpa: {}
     tailscale.home.arpa: {}
     caldav.home.arpa: {}
+    logs.home.arpa: {}
