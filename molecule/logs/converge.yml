@@ -1,20 +1,10 @@
 ---
-- name: "Proxy configure"
-  gather_facts: true
-  hosts:
-    - proxy.home.arpa
-  vars:
-    network_ipv4_address: "{{ ansible_facts.default_ipv4.address }}"
-  roles:
-    - role: "caddy"
-
 - name: "Logs configure"
   gather_facts: true
   hosts:
     - logs.home.arpa
   vars:
     network_ipv4_address: "{{ ansible_facts.default_ipv4.address }}"
-    loki_hostname: "logs.example.com"
   roles:
     - role: "loki"
     - role: "alloy"

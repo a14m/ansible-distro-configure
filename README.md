@@ -73,11 +73,13 @@ below resolve via Pi-hole (`pihole_dns_hosts` in `host_vars/rpi5.local.yml`).
 | cgit | `git.home.arpa` | Git repository browsing and SSH push/clone |
 | Radicale | `caldav.home.arpa` | CalDAV/CardDAV server |
 | Tailscale | `tailscale.home.arpa` | Tailscale subnet router (no HTTP vhost) |
-| Loki | `logs.home.arpa` | Log aggregation |
+| Loki | `logs.home.arpa` | Log aggregation (no HTTP vhost; queried directly on port 3100) |
 
 `cgit_hostname` and `radicale_hostname` can instead be set to a public domain for access outside
 the LAN via the `cloudflared` tunnel on `proxy.home.arpa`; `cgit_clone_prefix` then keeps the LAN
-clone URL separate. Override the Loki FQDN via `loki_hostname`.
+clone URL separate. Loki has no reverse-proxy vhost - `logs.home.arpa` resolves straight to its
+LXC's own IP, and it's reached at `http://logs.home.arpa:3100` (or by IP), since it's only ever
+consumed by Grafana and Alloy on the LAN, not exposed externally.
 
 ## Special Thanks to
 

@@ -2,10 +2,6 @@
 argument_specs:
   main:
     options:
-      loki_hostname:
-        type: "str"
-        description: "FQDN for the loki nginx/caddy vhost on proxy.home.arpa (e.g. 'logs.home.arpa')."
-        default: "logs.example.com"
       loki_port:
         type: "int"
         description: "Port for the Loki HTTP API"

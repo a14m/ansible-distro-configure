@@ -55,27 +55,3 @@
     name: "loki"
     state: "started"
     enabled: true
-
-- name: "Create loki nginx vhost configuration on proxy"
-  become: true
-  delegate_to: "proxy.home.arpa"
-  when: loki_hostname | length > 0 and hostvars['proxy.home.arpa'].proxy_type == "nginx"
-  ansible.builtin.template:
-    src: "loki.nginx.conf.j2"
-    dest: "/etc/nginx/conf.d/loki.conf"
-    owner: "root"
-    group: "root"
-    mode: "0644"
-  notify: "Restart proxy"
-
-- name: "Create loki caddy configuration on proxy"
-  become: true
-  delegate_to: "proxy.home.arpa"
-  when: loki_hostname | length > 0 and hostvars['proxy.home.arpa'].proxy_type == "caddy"
-  ansible.builtin.template:
-    src: "loki.caddy.j2"
-    dest: "/etc/caddy/sites/loki.caddy"
-    owner: "root"
-    group: "caddy"
-    mode: "0640"
-  notify: "Restart proxy"
