@@ -51,7 +51,7 @@
     follow: false
     owner: "radicale"
     group: "radicale"
-  loop: "{{ radicale_collections | subelements('members') }}"
+  loop: "{{ radicale_collections | subelements('members', skip_missing=True) }}"
   loop_control:
     label: "{{ member }}/{{ collection.collection }}"
 
