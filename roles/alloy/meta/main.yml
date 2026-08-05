@@ -1,0 +1,22 @@
+---
+dependencies:
+  - role: "yay"
+    when: ansible_facts.os_family == "Archlinux"
+galaxy_info:
+  author: "a14m"
+  description: "Install and configure Grafana Alloy to ship logs to Loki"
+  license: "MIT"
+  min_ansible_version: "2.18"
+  platforms:
+    - name: "ArchLinux"
+      versions:
+        - "all"
+    - name: "Ubuntu"
+      versions:
+        - "noble"
+    - name: "Debian"
+      versions:
+        - "bookworm"
+    - name: "Alpine"
+      versions:
+        - "all"

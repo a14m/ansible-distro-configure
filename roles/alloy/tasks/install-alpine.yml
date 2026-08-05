@@ -1,0 +1,19 @@
+---
+- name: "Add edge community repository for alloy"
+  become: true
+  ansible.builtin.lineinfile:
+    path: "/etc/apk/repositories"
+    line: "@edge http://dl-cdn.alpinelinux.org/alpine/edge/community"
+    state: "present"
+
+- name: "Update apk package cache"
+  become: true
+  community.general.apk:
+    update_cache: true
+  changed_when: false
+
+- name: "Install alloy"
+  become: true
+  ansible.builtin.package:
+    name: "alloy@edge"
+    state: "present"

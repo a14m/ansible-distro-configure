@@ -1,0 +1,7 @@
+---
+- name: "Install alloy"
+  become: true
+  kewlfft.aur.aur:
+    name: "alloy-bin"
+    state: "present"
+    use: "yay"

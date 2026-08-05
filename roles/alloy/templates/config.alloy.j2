@@ -1,0 +1,29 @@
+loki.write "default" {
+  endpoint {
+    url = "http://{{ alloy_loki_host }}/loki/api/v1/push"
+  }
+}
+
+{% if ansible_facts.service_mgr == "systemd" %}
+loki.source.journal "read" {
+  forward_to = [loki.write.default.receiver]
+  labels = {
+    host = "{{ ansible_facts.hostname }}",
+  }
+}
+{% endif %}
+
+{% for target in alloy_file_scrape_targets %}
+local.file_match "{{ target.name }}" {
+  path_targets = [{
+    "__path__" = "{{ target.path }}",
+    "job"      = "{{ target.name }}",
+    "host"     = "{{ ansible_facts.hostname }}",
+  }]
+}
+
+loki.source.file "{{ target.name }}" {
+  targets    = local.file_match.{{ target.name }}.targets
+  forward_to = [loki.write.default.receiver]
+}
+{% endfor %}

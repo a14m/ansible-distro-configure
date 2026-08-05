@@ -1,0 +1,22 @@
+---
+argument_specs:
+  main:
+    options:
+      alloy_loki_host:
+        type: "str"
+        description: "host:port of the Loki push API"
+        required: true
+      alloy_file_scrape_targets:
+        description: "Additional log files to tail and forward to Loki"
+        type: "list"
+        elements: "dict"
+        default: []
+        options:
+          name:
+            description: "Unique job name for this file target (used as the alloy component label)"
+            type: "str"
+            required: true
+          path:
+            description: "Absolute path (glob supported) of the log file(s) to tail"
+            type: "str"
+            required: true

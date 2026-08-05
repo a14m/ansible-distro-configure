@@ -1,0 +1,52 @@
+---
+- name: "Create alloy group"
+  become: true
+  ansible.builtin.group:
+    name: "alloy"
+    system: true
+
+- name: "Create alloy user"
+  become: true
+  ansible.builtin.user:
+    name: "alloy"
+    group: "alloy"
+    system: true
+    shell: "/sbin/nologin"
+    create_home: false
+
+- name: "Add alloy user to systemd-journal group"
+  become: true
+  when: ansible_facts.service_mgr == "systemd"
+  ansible.builtin.user:
+    name: "alloy"
+    groups: "systemd-journal"
+    append: true
+
+- name: "Include OS-specific installation tasks"
+  ansible.builtin.include_tasks: "install-{{ ansible_facts.os_family | lower }}.yml"
+
+- name: "Create alloy configuration directory"
+  become: true
+  ansible.builtin.file:
+    path: "/etc/alloy"
+    state: "directory"
+    owner: "alloy"
+    group: "alloy"
+    mode: "0750"
+
+- name: "Create alloy configuration"
+  become: true
+  ansible.builtin.template:
+    src: "config.alloy.j2"
+    dest: "/etc/alloy/config.alloy"
+    owner: "alloy"
+    group: "alloy"
+    mode: "0640"
+  notify: "Restart alloy"
+
+- name: "Start and enable alloy"
+  become: true
+  ansible.builtin.service:
+    name: "alloy"
+    state: "started"
+    enabled: true
