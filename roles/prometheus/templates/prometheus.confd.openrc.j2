@@ -1,0 +1,4 @@
+prometheus_config_file="/etc/prometheus/prometheus.yml"
+prometheus_storage_path="/var/lib/prometheus"
+prometheus_retention_time="{{ prometheus_retention }}"
+prometheus_args="--web.listen-address={{ prometheus_host }}:{{ prometheus_port }}"

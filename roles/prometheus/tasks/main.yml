@@ -29,11 +29,8 @@
     - "/etc/prometheus"
     - "/var/lib/prometheus"
 
-- name: "Install prometheus"
-  become: true
-  ansible.builtin.package:
-    name: "prometheus"
-    state: "present"
+- name: "Include OS-specific installation tasks"
+  ansible.builtin.include_tasks: "install-{{ ansible_facts.os_family | lower }}.yml"
 
 - name: "Create prometheus configuration"
   become: true
@@ -45,26 +42,25 @@
     mode: "0644"
   notify: "Restart prometheus"
 
-# NOTE: show systemd configurations using: systemctl cat prometheus
-- name: "Configure prometheus host/port via environment file"
-  become: true
-  ansible.builtin.copy:
-    content: |
-      PROMETHEUS_ARGS="--web.listen-address={{ prometheus_host }}:{{ prometheus_port }}"
-    dest: "{{ prometheus_env_file }}"
-    mode: "0644"
-  notify: "Restart prometheus"
+- name: "Configure prometheus via systemd environment file"
+  ansible.builtin.include_tasks: "configure-systemd.yml"
+  when: ansible_facts.service_mgr == "systemd"
+
+- name: "Configure prometheus via openrc conf.d"
+  ansible.builtin.include_tasks: "configure-openrc.yml"
+  when: ansible_facts.service_mgr == "openrc"
 
 - name: "Start and enable prometheus"
   become: true
-  ansible.builtin.systemd_service:
+  ansible.builtin.service:
     name: "prometheus"
     state: "started"
     enabled: true
 
-- name: "Create prometheus nginx vhost configuration"
+- name: "Create prometheus nginx vhost configuration on proxy"
   become: true
-  when: proxy_type == "nginx" and prometheus_hostname | length > 0
+  delegate_to: "proxy.home.arpa"
+  when: prometheus_hostname | length > 0 and hostvars['proxy.home.arpa'].proxy_type == "nginx"
   ansible.builtin.template:
     src: "prometheus.nginx.conf.j2"
     dest: "/etc/nginx/conf.d/prometheus.conf"
@@ -77,9 +73,10 @@
         sudo nginx -T -c /tmp/nginx-vhost.conf; ec=$?; rm -f /tmp/nginx-vhost.conf; exit $ec'
   notify: "Restart proxy"
 
-- name: "Create prometheus caddy configuration"
+- name: "Create prometheus caddy configuration on proxy"
   become: true
-  when: proxy_type == "caddy" and prometheus_hostname | length > 0
+  delegate_to: "proxy.home.arpa"
+  when: prometheus_hostname | length > 0 and hostvars['proxy.home.arpa'].proxy_type == "caddy"
   ansible.builtin.template:
     src: "prometheus.caddy.j2"
     dest: "/etc/caddy/sites/prometheus.caddy"

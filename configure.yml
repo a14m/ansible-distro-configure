@@ -96,7 +96,6 @@
     - role: "caddy"
     - role: "wg_portal"
     - role: "pihole"
-    - role: "prometheus"
     - role: "prometheus-node-exporter"
     - role: "grafana"
     - role: "alloy"

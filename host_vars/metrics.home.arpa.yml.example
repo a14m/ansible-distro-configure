@@ -1,0 +1,48 @@
+---
+network_ipv4_address: "10.0.0.106"
+network_ipv4_gateway: "10.0.0.254"
+network_ipv4_dns: "10.0.0.254"
+
+pve_lxc_id: 106
+pve_lxc_hostname: "metrics"
+pve_lxc_template: "alpine-3.23-default_20260116_amd64.tar.xz"
+pve_lxc_disk: "local-lvm:8" # storage:sizeGB
+pve_lxc_cores: 1
+pve_lxc_memory: 512
+pve_lxc_ip: "{{ network_ipv4_address }}/24"
+pve_lxc_gateway: "{{ network_ipv4_gateway }}"
+pve_lxc_dns: "{{ network_ipv4_dns }}"
+pve_lxc_ssh_port: 2222
+pve_lxc_ssh_public_key: "ssh-ed25519 AAAA...fMo"
+pve_lxc_ssh_private_key: |
+      -----BEGIN OPENSSH PRIVATE KEY-----
+      b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
+      QyNTUxOQAAACAQ0GydCVLVXnXpzBxM6MbmRIDHNjC8dqZoFHgx1PiSgQAAAJi7TmCqu05g
+      qgAAAAtzc2gtZWQyNTUxOQAAACAQ0GydCVLVXnXpzBxM6MbmRIDHNjC8dqZoFHgx1PiSgQ
+      AAAEBgO+cOwV2j8gNZ/EugDk+vbi0eGrK125vRcE3FOtJJMRDQbJ0JUtVedenMHEzoxuZE
+      gMc2MLx2pmgUeDHU+JKBAAAAEm1vbGVjdWxlLXRlc3Qtb25seQECAw==
+      -----END OPENSSH PRIVATE KEY-----
+
+prometheus_host: "{{ network_ipv4_address }}"
+prometheus_port: 9090
+prometheus_retention: "15d"
+prometheus_scrape_interval: "15s"
+prometheus_node_exporter_targets:
+  - "{{ hostvars['rpi5.local'].network_ipv4_address }}:9100"
+  - "{{ hostvars['desktop.local']['network_ipv4_address'] }}:9100"
+  - "{{ hostvars['laptop.local']['network_ipv4_address'] }}:9100"
+  - "{{ hostvars['macbook.local']['network_ipv4_address'] }}:9100"
+  - "{{ hostvars['pve.local']['network_ipv4_address'] }}:9100"
+prometheus_extra_scrape_configs:
+  - name: "garage"
+    targets:
+      - "{{ hostvars['rpi5.local'].network_ipv4_address }}:{{ hostvars['rpi5.local'].garage_admin_port }}"
+    metrics_path: "/metrics"
+  - name: "caddy"
+    targets:
+      - "{{ hostvars['proxy.home.arpa'].network_ipv4_address }}:{{ hostvars['proxy.home.arpa'].caddy_metrics_port }}"
+    metrics_path: "/metrics"
+  - name: "loki"
+    targets:
+      - "{{ hostvars['logs.home.arpa'].network_ipv4_address }}:{{ hostvars['logs.home.arpa'].loki_port }}"
+    metrics_path: "/metrics"

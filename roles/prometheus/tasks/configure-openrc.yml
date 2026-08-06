@@ -1,0 +1,8 @@
+---
+- name: "Configure prometheus service (conf.d overrides)"
+  become: true
+  ansible.builtin.template:
+    src: "prometheus.confd.openrc.j2"
+    dest: "{{ prometheus_env_file }}"
+    mode: "0644"
+  notify: "Restart prometheus"

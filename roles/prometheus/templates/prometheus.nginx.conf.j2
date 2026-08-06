@@ -8,6 +8,6 @@ server {
     error_log /var/log/nginx/error.log;
 
     location / {
-        proxy_pass http://127.0.0.1:{{ prometheus_port }}/;
+        proxy_pass http://{{ network_ipv4_address }}:{{ prometheus_port }}/;
     }
 }

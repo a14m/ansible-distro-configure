@@ -1,0 +1,6 @@
+---
+- name: "Install prometheus"
+  become: true
+  ansible.builtin.package:
+    name: "prometheus"
+    state: "present"

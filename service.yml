@@ -41,3 +41,11 @@
   roles:
     - role: "loki"
     - role: "alloy"
+
+- name: "Metrics configure"
+  gather_facts: true
+  hosts:
+    - metrics.home.arpa
+  roles:
+    - role: "prometheus"
+    - role: "alloy"

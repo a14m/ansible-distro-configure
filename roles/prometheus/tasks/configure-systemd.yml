@@ -1,0 +1,10 @@
+---
+# NOTE: show systemd configurations using: systemctl cat prometheus
+- name: "Configure prometheus host/port via environment file"
+  become: true
+  ansible.builtin.copy:
+    content: |
+      PROMETHEUS_ARGS="--web.listen-address={{ prometheus_host }}:{{ prometheus_port }}"
+    dest: "{{ prometheus_env_file }}"
+    mode: "0644"
+  notify: "Restart prometheus"
