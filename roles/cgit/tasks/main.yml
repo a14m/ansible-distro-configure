@@ -61,6 +61,16 @@
     mode: "0644"
   notify: "Restart lighttpd"
 
+# TODO: Remove this when cgit is released with dark mode support (development branch)
+- name: "Deploy dark-mode cgit.css"
+  become: true
+  ansible.builtin.copy:
+    src: "cgit.css"
+    dest: "/usr/share/webapps/cgit/cgit.css"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+
 - name: "Enable and start services"
   become: true
   ansible.builtin.service:
