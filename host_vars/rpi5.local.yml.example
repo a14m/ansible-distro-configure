@@ -18,8 +18,8 @@ pihole_password: "{{ ('changeme' | hash('sha256') | hash('sha256'))[:64] }}"
 pihole_interface: "{{ network_interface }}"
 pihole_hostname: "dns.home.arpa"
 pihole_dhcp_enabled: true
-pihole_dhcp_start: "10.0.0.100"
-pihole_dhcp_end: "10.0.0.199"
+pihole_dhcp_start: "10.0.0.10"
+pihole_dhcp_end: "10.0.0.99"
 pihole_dhcp_router: "{{ network_ipv4_address }}"
 pihole_dhcp_hosts:
   - "ff:ff:ff:ff:ff:fe, 10.0.0.252,TV"
@@ -62,6 +62,7 @@ gateway_router_interface: "{{ network_interface }}"
 gateway_local_ipv4_subnet: "10.0.0.0/24"
 
 mount_device: "PARTLABEL=backup"
+garage_admin_port: "3903"
 garage_rpc_secret: "changeme"
 garage_access_key_id: "GK_changeme"
 garage_secret_access_key: "changeme"
