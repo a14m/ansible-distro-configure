@@ -1,0 +1,72 @@
+---
+network_ipv4_address: "10.0.0.107"
+network_ipv4_gateway: "10.0.0.254"
+network_ipv4_dns: "10.0.0.254"
+
+pve_lxc_id: 107
+pve_lxc_hostname: "monitor"
+pve_lxc_template: "alpine-3.23-default_20260116_amd64.tar.xz"
+pve_lxc_disk: "local-lvm:8" # storage:sizeGB
+pve_lxc_cores: 1
+pve_lxc_memory: 512
+pve_lxc_ip: "{{ network_ipv4_address }}/24"
+pve_lxc_gateway: "{{ network_ipv4_gateway }}"
+pve_lxc_dns: "{{ network_ipv4_dns }}"
+pve_lxc_ssh_port: 2222
+pve_lxc_ssh_public_key: "ssh-ed25519 AAAA...fMo"
+pve_lxc_ssh_private_key: |
+      -----BEGIN OPENSSH PRIVATE KEY-----
+      b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
+      QyNTUxOQAAACAQ0GydCVLVXnXpzBxM6MbmRIDHNjC8dqZoFHgx1PiSgQAAAJi7TmCqu05g
+      qgAAAAtzc2gtZWQyNTUxOQAAACAQ0GydCVLVXnXpzBxM6MbmRIDHNjC8dqZoFHgx1PiSgQ
+      AAAEBgO+cOwV2j8gNZ/EugDk+vbi0eGrK125vRcE3FOtJJMRDQbJ0JUtVedenMHEzoxuZE
+      gMc2MLx2pmgUeDHU+JKBAAAAEm1vbGVjdWxlLXRlc3Qtb25seQECAw==
+      -----END OPENSSH PRIVATE KEY-----
+
+grafana_port: 3000
+grafana_hostname: "monitor.home.arpa"
+grafana_admin_user: "admin"
+grafana_admin_password: "changeme"
+grafana_database_type: "sqlite3"
+grafana_datasources:
+  - name: "prometheus"
+    uid: "prometheus"
+    # yamllint disable-line rule:line-length
+    url: "http://{{ hostvars['metrics.home.arpa'].network_ipv4_address }}:{{ hostvars['metrics.home.arpa'].prometheus_port }}"
+    default: true
+  - name: "loki"
+    uid: "loki"
+    type: "loki"
+    url: "http://{{ hostvars['logs.home.arpa'].network_ipv4_address }}:{{ hostvars['logs.home.arpa'].loki_port }}"
+grafana_dashboards:
+  - name: "node-exporter-full"
+    url: "https://grafana.com/api/dashboards/1860/revisions/45/download"
+    datasource_mappings:
+      - key: "000000001"
+        value: "prometheus"
+  - name: "prometheus-overview"
+    url: "https://grafana.com/api/dashboards/3662/revisions/2/download"
+    datasource_mappings:
+      - key: "${DS_THEMIS}"
+        value: "prometheus"
+  - name: "node-exporter-prometheus"
+    url: "https://grafana.com/api/dashboards/11074/revisions/9/download"
+    datasource_mappings:
+      - key: "${DS__VICTORIAMETRICS}"
+        value: "prometheus"
+  - name: "garage"
+    # yamllint disable-line rule:line-length
+    url: "https://git.deuxfleurs.fr/Deuxfleurs/garage/raw/branch/main/script/telemetry/grafana-garage-dashboard-prometheus.json"
+    datasource_mappings:
+      - key: "${DS_prometheus}"
+        value: "prometheus"
+  - name: "caddy"
+    url: "https://grafana.com/api/dashboards/22870/revisions/3/download"
+    datasource_mappings:
+      - key: "${DS_PROMETHEUS}"
+        value: "prometheus"
+  - name: "loki"
+    url: "https://grafana.com/api/dashboards/17781/revisions/1/download"
+    datasource_mappings:
+      - key: "${DS_PROMETHEUS}"
+        value: "prometheus"

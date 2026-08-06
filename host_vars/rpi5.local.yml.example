@@ -30,7 +30,7 @@ pihole_dns_hosts:
   - "{{ hostvars['laptop.local'].network_ipv4_address }} laptop.lan"
   - "{{ network_ipv4_address }} {{ pihole_hostname }}"
   - "{{ network_ipv4_address }} {{ wg_portal_hostname }}"
-  - "{{ network_ipv4_address }} monitor.home.arpa"
+  - "{{ hostvars['monitor.home.arpa'].network_ipv4_address }} monitor.home.arpa"
   - "{{ hostvars['git.home.arpa'].network_ipv4_address }} git.home.arpa"
   - "{{ hostvars['tailscale.home.arpa'].network_ipv4_address }} tailscale.home.arpa"
   - "{{ hostvars['caldav.home.arpa'].network_ipv4_address }} caldav.home.arpa"
@@ -60,54 +60,6 @@ wg_portal_hostname: "vpn.home.arpa"
 gateway_enabled: true
 gateway_router_interface: "{{ network_interface }}"
 gateway_local_ipv4_subnet: "10.0.0.0/24"
-
-grafana_port: 3000
-grafana_hostname: "monitor.home.arpa"
-grafana_admin_user: "admin"
-grafana_admin_password: "changeme"
-grafana_database_type: "sqlite3"
-grafana_datasources:
-  - name: "prometheus"
-    uid: "prometheus"
-    # yamllint disable-line rule:line-length
-    url: "http://{{ hostvars['metrics.home.arpa'].network_ipv4_address }}:{{ hostvars['metrics.home.arpa'].prometheus_port }}"
-    default: true
-  - name: "loki"
-    uid: "loki"
-    type: "loki"
-    url: "http://{{ hostvars['logs.home.arpa'].network_ipv4_address }}:{{ hostvars['logs.home.arpa'].loki_port }}"
-grafana_dashboards:
-  - name: "node-exporter-full"
-    url: "https://grafana.com/api/dashboards/1860/revisions/45/download"
-    datasource_mappings:
-      - key: "000000001"
-        value: "prometheus"
-  - name: "prometheus-overview"
-    url: "https://grafana.com/api/dashboards/3662/revisions/2/download"
-    datasource_mappings:
-      - key: "${DS_THEMIS}"
-        value: "prometheus"
-  - name: "node-exporter-prometheus"
-    url: "https://grafana.com/api/dashboards/11074/revisions/9/download"
-    datasource_mappings:
-      - key: "${DS__VICTORIAMETRICS}"
-        value: "prometheus"
-  - name: "garage"
-    # yamllint disable-line rule:line-length
-    url: "https://git.deuxfleurs.fr/Deuxfleurs/garage/raw/branch/main/script/telemetry/grafana-garage-dashboard-prometheus.json"
-    datasource_mappings:
-      - key: "${DS_prometheus}"
-        value: "prometheus"
-  - name: "caddy"
-    url: "https://grafana.com/api/dashboards/22870/revisions/3/download"
-    datasource_mappings:
-      - key: "${DS_PROMETHEUS}"
-        value: "prometheus"
-  - name: "loki"
-    url: "https://grafana.com/api/dashboards/17781/revisions/1/download"
-    datasource_mappings:
-      - key: "${DS_PROMETHEUS}"
-        value: "prometheus"
 
 mount_device: "PARTLABEL=backup"
 garage_rpc_secret: "changeme"

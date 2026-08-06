@@ -16,3 +16,4 @@ containers:
     caldav.home.arpa: {}
     logs.home.arpa: {}
     metrics.home.arpa: {}
+    monitor.home.arpa: {}

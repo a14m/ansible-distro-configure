@@ -61,6 +61,9 @@ jobs:
           - name: logs
             category: service
             runs_on: "ubuntu-latest"
+          - name: monitor
+            category: service
+            runs_on: "ubuntu-latest"
     runs-on: ${{ matrix.molecule_distro.runs_on }}
     steps:
       - uses: actions/checkout@v6

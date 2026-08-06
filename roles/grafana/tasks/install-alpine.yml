@@ -1,0 +1,21 @@
+---
+- name: "Add edge community repository for grafana"
+  become: true
+  ansible.builtin.lineinfile:
+    path: "/etc/apk/repositories"
+    line: "@edge http://dl-cdn.alpinelinux.org/alpine/edge/community"
+    state: "present"
+
+- name: "Update apk package cache"
+  become: true
+  community.general.apk:
+    update_cache: true
+  changed_when: false
+
+- name: "Install grafana"
+  become: true
+  ansible.builtin.package:
+    name:
+      - "grafana@edge"
+      - "grafana-openrc@edge"
+    state: "present"

@@ -49,3 +49,11 @@
   roles:
     - role: "prometheus"
     - role: "alloy"
+
+- name: "Monitor configure"
+  gather_facts: true
+  hosts:
+    - monitor.home.arpa
+  roles:
+    - role: "grafana"
+    - role: "alloy"

@@ -1,0 +1,19 @@
+---
+- name: "Proxy configure"
+  gather_facts: true
+  hosts:
+    - proxy.home.arpa
+  vars:
+    network_ipv4_address: "{{ ansible_facts.default_ipv4.address }}"
+  roles:
+    - role: "caddy"
+
+- name: "Monitor configure"
+  gather_facts: true
+  hosts:
+    - monitor.home.arpa
+  vars:
+    network_ipv4_address: "{{ ansible_facts.default_ipv4.address }}"
+  roles:
+    - role: "grafana"
+    - role: "alloy"

@@ -1,0 +1,2 @@
+GRAFANA_HOME=/var/lib/grafana
+GRAFANA_OPTS="-config {{ grafana_config_file }} -homepath /usr/share/grafana cfg:paths.data=$GRAFANA_HOME/data cfg:paths.plugins=$GRAFANA_HOME/plugins cfg:paths.provisioning=/etc/grafana/provisioning"

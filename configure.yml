@@ -97,7 +97,6 @@
     - role: "wg_portal"
     - role: "pihole"
     - role: "prometheus-node-exporter"
-    - role: "grafana"
     - role: "alloy"
     - role: "neomutt"
     - role: "mount"
