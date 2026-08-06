@@ -52,6 +52,7 @@
     timezone: "GMT"
     pihole_interface: "eth0"
     pihole_domain: "pi.hole"
+    pihole_hostname: "dns.example.com"
     pihole_totp_secret: "CHANGEME"
     pihole_password: "{{ ('changeme' | hash('sha256') | hash('sha256'))[:64] }}"
     pihole_dhcp_enabled: false

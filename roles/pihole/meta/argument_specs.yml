@@ -61,8 +61,9 @@ argument_specs:
         default: "8081"
       pihole_hostname:
         type: "str"
-        description: "FQDN for the pihole nginx vhost (e.g. 'dns.home.arpa')."
-        default: "dns.home.arpa"
+        description: >-
+          FQDN for the pihole vhost (e.g. 'dns.home.arpa').
+          Leave undefined to skip vhost creation entirely.
       pihole_dns_hosts:
         type: "list"
         description: "Custom DNS A records written to pihole.toml [dns] hosts (format: 'IP HOSTNAME')"

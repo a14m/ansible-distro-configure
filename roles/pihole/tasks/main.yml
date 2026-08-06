@@ -150,10 +150,10 @@
     - molecule-idempotence-notest
 
 - name: "Create pihole proxy vhost"
+  when: pihole_hostname is defined
   ansible.builtin.include_role:
     name: "vhost"
   vars:
-    vhost_hostname: "{{ pihole_hostname }}"
     vhost_name: "pihole"
     vhost_nginx_content: "{{ lookup('template', 'pihole.nginx.conf.j2') }}"
     vhost_caddy_content: "{{ lookup('template', 'pihole.caddy.j2') }}"

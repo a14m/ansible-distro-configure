@@ -12,5 +12,4 @@ pihole_dhcp_domain: "local"
 pihole_dhcp_hosts: []
 pihole_domain: ""
 pihole_port: "8081"
-pihole_hostname: "dns.home.arpa"
 pihole_dns_hosts: []
