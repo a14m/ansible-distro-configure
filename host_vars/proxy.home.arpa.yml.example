@@ -23,5 +23,4 @@ pve_lxc_ssh_private_key: |
       gMc2MLx2pmgUeDHU+JKBAAAAEm1vbGVjdWxlLXRlc3Qtb25seQECAw==
       -----END OPENSSH PRIVATE KEY-----
 
-proxy_type: "caddy"
 caddy_metrics_port: "9091"

@@ -2,7 +2,7 @@
 - name: "Create nginx vhost configuration for {{ vhost_name }}"
   become: true
   delegate_to: "{{ vhost_proxy_host }}"
-  when: hostvars[vhost_proxy_host].proxy_type == "nginx"
+  when: vhost_proxy_type == "nginx"
   ansible.builtin.copy:
     content: "{{ vhost_nginx_content }}"
     dest: "/etc/nginx/conf.d/{{ vhost_name }}.conf"
@@ -18,7 +18,7 @@
 - name: "Create caddy vhost configuration for {{ vhost_name }}"
   become: true
   delegate_to: "{{ vhost_proxy_host }}"
-  when: hostvars[vhost_proxy_host].proxy_type == "caddy"
+  when: vhost_proxy_type == "caddy"
   ansible.builtin.copy:
     content: "{{ vhost_caddy_content }}"
     dest: "/etc/caddy/sites/{{ vhost_name }}.caddy"

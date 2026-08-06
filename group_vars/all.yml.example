@@ -3,6 +3,8 @@ user_public_keys:
   - "ssh-ed25519 AAAA...fMo"
   - "ssh-ed25519 AAAA...4I3"
 
+vhost_proxy_type: "caddy"
+
 ssh_port: 2222
 
 ssh_knonwn_hosts:

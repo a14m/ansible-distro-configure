@@ -12,8 +12,6 @@ ssh_private_key: |
   ...................BAgME
   -----END OPENSSH PRIVATE KEY-----
 
-proxy_type: "caddy"
-
 # TOTP generator: `openssl rand -base64 32 | head -c "20" | base32`
 pihole_totp_secret: "CHANGEME"
 pihole_password: "{{ ('changeme' | hash('sha256') | hash('sha256'))[:64] }}"

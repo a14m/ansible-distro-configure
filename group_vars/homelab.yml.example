@@ -56,8 +56,6 @@ vimrc_setup_script: |
 chromium_is_default: false
 firefox_is_default: true
 
-proxy_type: "nginx"
-
 alloy_loki_host: "{{ hostvars['logs.home.arpa'].network_ipv4_address }}:{{ hostvars['logs.home.arpa'].loki_port }}"
 
 wireguard_autostart_connection: "vpn0"

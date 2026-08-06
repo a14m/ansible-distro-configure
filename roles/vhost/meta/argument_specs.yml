@@ -24,3 +24,13 @@ argument_specs:
         type: "str"
         description: "Inventory host the vhost config is written to and the proxy service is restarted on"
         required: true
+      vhost_proxy_type:
+        type: "str"
+        description: >-
+          The reverse proxy in use ("nginx" or "caddy") on vhost_proxy_host.
+          Passed explicitly by the caller rather than looked up via
+          hostvars, since proxy_type is often only a play-level var.
+        required: true
+        choices:
+          - "nginx"
+          - "caddy"
