@@ -25,4 +25,6 @@
     owner: "root"
     group: "caddy"
     mode: "0640"
+    backup: true
+    validate: "sudo caddy validate --config %s --adapter caddyfile"
   notify: "Restart proxy"
