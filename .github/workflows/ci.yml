@@ -26,29 +26,40 @@ jobs:
           ansible-lint
 
   playbook:
+    name: "${{ matrix.molecule_distro.category }}: ${{ matrix.molecule_distro.name }}"
     strategy:
       fail-fast: false
       matrix:
         molecule_distro:
           - name: archlinux
+            category: machine
             runs_on: "ubuntu-latest"
           - name: archlinux-gnome
+            category: machine
             runs_on: "ubuntu-latest"
           - name: ubuntu
+            category: machine
             runs_on: "ubuntu-latest"
           - name: debian
+            category: machine
             runs_on: "ubuntu-latest"
           - name: proxmox
+            category: machine
             runs_on: "ubuntu-latest"
           - name: raspberrypi
+            category: machine
             runs_on: "ubuntu-24.04-arm"
           - name: git
+            category: service
             runs_on: "ubuntu-latest"
           - name: caldav
+            category: service
             runs_on: "ubuntu-latest"
           - name: tailscale
+            category: service
             runs_on: "ubuntu-latest"
           - name: logs
+            category: service
             runs_on: "ubuntu-latest"
     runs-on: ${{ matrix.molecule_distro.runs_on }}
     steps:
