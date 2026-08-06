@@ -3,8 +3,8 @@
   become: true
   delegate_to: "{{ vhost_proxy_host }}"
   when: vhost_hostname | length > 0 and hostvars[vhost_proxy_host].proxy_type == "nginx"
-  ansible.builtin.template:
-    src: "{{ vhost_nginx_template }}"
+  ansible.builtin.copy:
+    content: "{{ vhost_nginx_content }}"
     dest: "/etc/nginx/conf.d/{{ vhost_name }}.conf"
     owner: "root"
     group: "root"
@@ -19,8 +19,8 @@
   become: true
   delegate_to: "{{ vhost_proxy_host }}"
   when: vhost_hostname | length > 0 and hostvars[vhost_proxy_host].proxy_type == "caddy"
-  ansible.builtin.template:
-    src: "{{ vhost_caddy_template }}"
+  ansible.builtin.copy:
+    content: "{{ vhost_caddy_content }}"
     dest: "/etc/caddy/sites/{{ vhost_name }}.caddy"
     owner: "root"
     group: "caddy"

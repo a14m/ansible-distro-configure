@@ -155,6 +155,6 @@
   vars:
     vhost_hostname: "{{ pihole_hostname }}"
     vhost_name: "pihole"
-    vhost_nginx_template: "{{ role_path }}/templates/pihole.nginx.conf.j2"
-    vhost_caddy_template: "{{ role_path }}/templates/pihole.caddy.j2"
+    vhost_nginx_content: "{{ lookup('template', 'pihole.nginx.conf.j2') }}"
+    vhost_caddy_content: "{{ lookup('template', 'pihole.caddy.j2') }}"
     vhost_proxy_host: "{{ inventory_hostname }}"

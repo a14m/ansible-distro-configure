@@ -10,19 +10,19 @@ argument_specs:
         type: "str"
         description: "Short slug used for the nginx/caddy config filename"
         required: true
-      vhost_nginx_template:
+      vhost_nginx_content:
         type: "str"
         description: >-
-          Absolute path to the calling role's own nginx vhost template.
-          Use '{{ role_path }}/templates/<name>.nginx.conf.j2' so each
-          calling role keeps ownership of its own template content.
+          Fully-rendered nginx vhost config content. Pass
+          "{{ lookup('template', '<name>.nginx.conf.j2') }}" so the
+          calling role renders its own template with its own vars.
         required: true
-      vhost_caddy_template:
+      vhost_caddy_content:
         type: "str"
         description: >-
-          Absolute path to the calling role's own caddy vhost template.
-          Use '{{ role_path }}/templates/<name>.caddy.j2' so each
-          calling role keeps ownership of its own template content.
+          Fully-rendered caddy vhost config content. Pass
+          "{{ lookup('template', '<name>.caddy.j2') }}" so the
+          calling role renders its own template with its own vars.
         required: true
       vhost_proxy_host:
         type: "str"

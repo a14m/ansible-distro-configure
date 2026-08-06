@@ -100,6 +100,6 @@
   vars:
     vhost_hostname: "{{ wg_portal_hostname }}"
     vhost_name: "wg-portal"
-    vhost_nginx_template: "{{ role_path }}/templates/wg_portal.nginx.conf.j2"
-    vhost_caddy_template: "{{ role_path }}/templates/wg_portal.caddy.j2"
+    vhost_nginx_content: "{{ lookup('template', 'wg_portal.nginx.conf.j2') }}"
+    vhost_caddy_content: "{{ lookup('template', 'wg_portal.caddy.j2') }}"
     vhost_proxy_host: "{{ inventory_hostname }}"

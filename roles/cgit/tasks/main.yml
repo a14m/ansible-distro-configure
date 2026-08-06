@@ -87,6 +87,6 @@
   vars:
     vhost_hostname: "{{ cgit_hostname }}"
     vhost_name: "cgit"
-    vhost_nginx_template: "{{ role_path }}/templates/cgit.nginx.conf.j2"
-    vhost_caddy_template: "{{ role_path }}/templates/cgit.caddy.j2"
+    vhost_nginx_content: "{{ lookup('template', 'cgit.nginx.conf.j2') }}"
+    vhost_caddy_content: "{{ lookup('template', 'cgit.caddy.j2') }}"
     vhost_proxy_host: "proxy.home.arpa"
