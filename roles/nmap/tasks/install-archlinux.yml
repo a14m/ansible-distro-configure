@@ -1,0 +1,6 @@
+---
+- name: "Install nmap"
+  become: true
+  ansible.builtin.package:
+    name: "nmap"
+    state: "present"

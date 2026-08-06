@@ -17,6 +17,7 @@
     - role: "ag"
     - role: "tcpdump"
     - role: "whois"
+    - role: "nmap"
     - role: "libheif"
     - role: "tmuxinator"
     - role: "rsync"
