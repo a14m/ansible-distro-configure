@@ -57,6 +57,8 @@
     pihole_dhcp_enabled: false
     wireguard_autostart_connection: ""
     proxy_type: "caddy"
+    wg_portal_hostname: "vpn.example.com"
+    grafana_hostname: "monitor.example.com"
     gateway_enabled: true
     gateway_local_ipv4_subnet: "10.0.0.0/24"
     grafana_dashboards:

@@ -95,10 +95,10 @@
     enabled: true
 
 - name: "Create wg-portal proxy vhost"
+  when: wg_portal_hostname is defined
   ansible.builtin.include_role:
     name: "vhost"
   vars:
-    vhost_hostname: "{{ wg_portal_hostname }}"
     vhost_name: "wg-portal"
     vhost_nginx_content: "{{ lookup('template', 'wg_portal.nginx.conf.j2') }}"
     vhost_caddy_content: "{{ lookup('template', 'wg_portal.caddy.j2') }}"

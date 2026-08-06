@@ -16,5 +16,6 @@ argument_specs:
         default: "{{ ('changeme' | hash('sha256') | hash('sha256'))[:64] }}"
       wg_portal_hostname:
         type: "str"
-        description: "FQDN for the wg-portal nginx vhost (e.g. 'vpn.home.arpa')."
-        default: "vpn.home.arpa"
+        description: >-
+          FQDN for the wg-portal vhost (e.g. 'vpn.home.arpa').
+          Leave undefined to skip vhost creation entirely.

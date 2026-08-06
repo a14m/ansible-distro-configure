@@ -2,4 +2,3 @@
 wg_portal_version: "latest"
 wg_portal_port: "8080"
 wg_portal_password: "{{ ('changeme' | hash('sha256') | hash('sha256'))[:64] }}"
-wg_portal_hostname: "vpn.home.arpa"

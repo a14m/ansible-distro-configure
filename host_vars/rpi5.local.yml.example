@@ -30,7 +30,7 @@ pihole_dns_hosts:
   - "{{ hostvars['desktop.local'].network_ipv4_address }} desktop.lan"
   - "{{ hostvars['laptop.local'].network_ipv4_address }} laptop.lan"
   - "{{ network_ipv4_address }} dns.home.arpa"
-  - "{{ network_ipv4_address }} vpn.home.arpa"
+  - "{{ network_ipv4_address }} {{ wg_portal_hostname }}"
   - "{{ network_ipv4_address }} monitor.home.arpa"
   - "{{ hostvars['git.home.arpa'].network_ipv4_address }} git.home.arpa"
   - "{{ hostvars['tailscale.home.arpa'].network_ipv4_address }} tailscale.home.arpa"
@@ -56,6 +56,7 @@ wireguard_connections:
 
 wg_portal_password: "{{ ('changeme' | hash('sha256') | hash('sha256'))[:64] }}"
 wg_portal_port: "8080"
+wg_portal_hostname: "vpn.home.arpa"
 
 gateway_enabled: true
 gateway_router_interface: "{{ network_interface }}"
