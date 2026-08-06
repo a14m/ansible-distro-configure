@@ -12,7 +12,7 @@
     backup: true
     validate: >
       bash -c 'echo "events { worker_connections 64; } http { include %s; }" > /tmp/nginx-vhost.conf;
-        sudo nginx -T -c /tmp/nginx-vhost.conf; ec=$?; rm -f /tmp/nginx-vhost.conf; exit $ec'
+        nginx -T -c /tmp/nginx-vhost.conf; ec=$?; rm -f /tmp/nginx-vhost.conf; exit $ec'
   notify: "Restart proxy"
 
 - name: "Create caddy vhost configuration for {{ vhost_name }}"
@@ -26,5 +26,5 @@
     group: "caddy"
     mode: "0640"
     backup: true
-    validate: "sudo caddy validate --config %s --adapter caddyfile"
+    validate: "caddy validate --config %s --adapter caddyfile"
   notify: "Restart proxy"
