@@ -4,15 +4,16 @@ argument_specs:
     options:
       cgit_hostname:
         type: "str"
-        description: "FQDN for cgit (e.g. git.example.com)"
-        default: "git.example.com"
+        description: >-
+          FQDN for cgit (e.g. git.example.com).
+          Leave undefined to skip vhost creation entirely.
       cgit_clone_prefix:
         type: "str"
         description: >-
-          Hostname used for the SSH clone-prefix (e.g. git.home.arpa). Defaults
-          to cgit_hostname; override when cgit_hostname is a public
-          reverse-proxy vhost name (HTTP-only) not reachable over SSH.
-        default: "git.example.com"
+          Hostname used for the SSH clone-prefix (e.g. git.home.arpa).
+          Independent of cgit_hostname, since the clone prefix is reached
+          over SSH while cgit_hostname is the HTTP-only reverse-proxy vhost.
+        default: "git.home.arpa"
       cgit_port:
         type: "int"
         description: "Port lighttpd listens on internally"

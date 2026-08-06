@@ -82,10 +82,10 @@
     - "{{ 'ssh' if ansible_facts.os_family == 'Debian' else 'sshd' }}"
 
 - name: "Create cgit proxy vhost"
+  when: cgit_hostname is defined
   ansible.builtin.include_role:
     name: "vhost"
   vars:
-    vhost_hostname: "{{ cgit_hostname }}"
     vhost_name: "cgit"
     vhost_nginx_content: "{{ lookup('template', 'cgit.nginx.conf.j2') }}"
     vhost_caddy_content: "{{ lookup('template', 'cgit.caddy.j2') }}"

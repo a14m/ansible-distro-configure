@@ -1,6 +1,5 @@
 ---
-cgit_hostname: "git.example.com"
-cgit_clone_prefix: "{{ cgit_hostname }}"
+cgit_clone_prefix: "git.home.arpa"
 cgit_port: 3000
 cgit_repos_dir: "/srv/git"
 cgit_title: "git"
