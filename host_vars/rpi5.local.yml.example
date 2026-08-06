@@ -64,6 +64,7 @@ gateway_router_interface: "{{ network_interface }}"
 gateway_local_ipv4_subnet: "10.0.0.0/24"
 
 grafana_port: 3000
+grafana_hostname: "monitor.home.arpa"
 grafana_admin_user: "admin"
 grafana_admin_password: "changeme"
 grafana_database_type: "sqlite3"
