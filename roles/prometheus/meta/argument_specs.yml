@@ -30,8 +30,9 @@ argument_specs:
         default: []
       prometheus_hostname:
         type: "str"
-        description: "FQDN for the prometheus nginx vhost (e.g. 'metrics.home.arpa')."
-        default: "metrics.home.arpa"
+        description: >-
+          FQDN for the prometheus vhost (e.g. 'metrics.home.arpa').
+          Leave undefined to skip vhost creation entirely.
       prometheus_extra_scrape_configs:
         description: "Additional Prometheus scrape jobs"
         type: "list"

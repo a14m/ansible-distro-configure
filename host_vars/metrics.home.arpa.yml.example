@@ -24,6 +24,7 @@ pve_lxc_ssh_private_key: |
       -----END OPENSSH PRIVATE KEY-----
 
 prometheus_host: "{{ network_ipv4_address }}"
+prometheus_hostname: "metrics.home.arpa"
 prometheus_port: 9090
 prometheus_retention: "15d"
 prometheus_scrape_interval: "15s"

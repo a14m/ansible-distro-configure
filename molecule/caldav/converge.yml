@@ -39,6 +39,7 @@
     - metrics.home.arpa
   vars:
     network_ipv4_address: "{{ ansible_facts.default_ipv4.address }}"
+    prometheus_hostname: "metrics.example.com"
   roles:
     - role: "prometheus"
     - role: "alloy"

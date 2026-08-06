@@ -53,10 +53,10 @@
     enabled: true
 
 - name: "Create prometheus proxy vhost"
+  when: prometheus_hostname is defined
   ansible.builtin.include_role:
     name: "vhost"
   vars:
-    vhost_hostname: "{{ prometheus_hostname }}"
     vhost_name: "prometheus"
     vhost_nginx_content: "{{ lookup('template', 'prometheus.nginx.conf.j2') }}"
     vhost_caddy_content: "{{ lookup('template', 'prometheus.caddy.j2') }}"
