@@ -23,3 +23,13 @@
     - role: "cgit"
     - role: "backup"
     - role: "alloy"
+
+- name: "Metrics configure"
+  gather_facts: true
+  hosts:
+    - metrics.home.arpa
+  vars:
+    network_ipv4_address: "{{ ansible_facts.default_ipv4.address }}"
+  roles:
+    - role: "prometheus"
+    - role: "alloy"
