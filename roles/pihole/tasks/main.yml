@@ -149,28 +149,12 @@
   tags:
     - molecule-idempotence-notest
 
-- name: "Create pihole nginx vhost configuration"
-  become: true
-  when: proxy_type == "nginx" and pihole_hostname | length > 0
-  ansible.builtin.template:
-    src: "pihole.nginx.conf.j2"
-    dest: "/etc/nginx/conf.d/pihole.conf"
-    owner: "root"
-    group: "root"
-    mode: "0644"
-    backup: true
-    validate: >
-      bash -c 'echo "events { worker_connections 64; } http { include %s; }" > /tmp/nginx-vhost.conf;
-        sudo nginx -T -c /tmp/nginx-vhost.conf; ec=$?; rm -f /tmp/nginx-vhost.conf; exit $ec'
-  notify: "Restart proxy"
-
-- name: "Create pihole caddy configuration"
-  become: true
-  when: proxy_type == "caddy" and pihole_hostname | length > 0
-  ansible.builtin.template:
-    src: "pihole.caddy.j2"
-    dest: "/etc/caddy/sites/pihole.caddy"
-    owner: "root"
-    group: "caddy"
-    mode: "0640"
-  notify: "Restart proxy"
+- name: "Create pihole proxy vhost"
+  ansible.builtin.include_role:
+    name: "vhost"
+  vars:
+    vhost_hostname: "{{ pihole_hostname }}"
+    vhost_name: "pihole"
+    vhost_nginx_template: "{{ role_path }}/templates/pihole.nginx.conf.j2"
+    vhost_caddy_template: "{{ role_path }}/templates/pihole.caddy.j2"
+    vhost_proxy_host: "{{ inventory_hostname }}"

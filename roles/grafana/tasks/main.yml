@@ -87,28 +87,12 @@
     state: "started"
     enabled: true
 
-- name: "Create grafana nginx vhost configuration"
-  become: true
-  when: proxy_type == "nginx" and grafana_hostname | length > 0
-  ansible.builtin.template:
-    src: "grafana.nginx.conf.j2"
-    dest: "/etc/nginx/conf.d/grafana.conf"
-    owner: "root"
-    group: "root"
-    mode: "0644"
-    backup: true
-    validate: >
-      bash -c 'echo "events { worker_connections 64; } http { include %s; }" > /tmp/nginx-vhost.conf;
-        sudo nginx -T -c /tmp/nginx-vhost.conf; ec=$?; rm -f /tmp/nginx-vhost.conf; exit $ec'
-  notify: "Restart proxy"
-
-- name: "Create grafana caddy configuration"
-  become: true
-  when: proxy_type == "caddy" and grafana_hostname | length > 0
-  ansible.builtin.template:
-    src: "grafana.caddy.j2"
-    dest: "/etc/caddy/sites/grafana.caddy"
-    owner: "root"
-    group: "caddy"
-    mode: "0640"
-  notify: "Restart proxy"
+- name: "Create grafana proxy vhost"
+  ansible.builtin.include_role:
+    name: "vhost"
+  vars:
+    vhost_hostname: "{{ grafana_hostname }}"
+    vhost_name: "grafana"
+    vhost_nginx_template: "{{ role_path }}/templates/grafana.nginx.conf.j2"
+    vhost_caddy_template: "{{ role_path }}/templates/grafana.caddy.j2"
+    vhost_proxy_host: "{{ inventory_hostname }}"

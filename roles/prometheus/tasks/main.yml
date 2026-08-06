@@ -52,30 +52,12 @@
     state: "started"
     enabled: true
 
-- name: "Create prometheus nginx vhost configuration on proxy"
-  become: true
-  delegate_to: "proxy.home.arpa"
-  when: prometheus_hostname | length > 0 and hostvars['proxy.home.arpa'].proxy_type == "nginx"
-  ansible.builtin.template:
-    src: "prometheus.nginx.conf.j2"
-    dest: "/etc/nginx/conf.d/prometheus.conf"
-    owner: "root"
-    group: "root"
-    mode: "0644"
-    backup: true
-    validate: >
-      bash -c 'echo "events { worker_connections 64; } http { include %s; }" > /tmp/nginx-vhost.conf;
-        sudo nginx -T -c /tmp/nginx-vhost.conf; ec=$?; rm -f /tmp/nginx-vhost.conf; exit $ec'
-  notify: "Restart proxy"
-
-- name: "Create prometheus caddy configuration on proxy"
-  become: true
-  delegate_to: "proxy.home.arpa"
-  when: prometheus_hostname | length > 0 and hostvars['proxy.home.arpa'].proxy_type == "caddy"
-  ansible.builtin.template:
-    src: "prometheus.caddy.j2"
-    dest: "/etc/caddy/sites/prometheus.caddy"
-    owner: "root"
-    group: "caddy"
-    mode: "0640"
-  notify: "Restart proxy"
+- name: "Create prometheus proxy vhost"
+  ansible.builtin.include_role:
+    name: "vhost"
+  vars:
+    vhost_hostname: "{{ prometheus_hostname }}"
+    vhost_name: "prometheus"
+    vhost_nginx_template: "{{ role_path }}/templates/prometheus.nginx.conf.j2"
+    vhost_caddy_template: "{{ role_path }}/templates/prometheus.caddy.j2"
+    vhost_proxy_host: "proxy.home.arpa"

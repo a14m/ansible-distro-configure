@@ -1,0 +1,20 @@
+---
+dependencies: []
+galaxy_info:
+  author: "a14m"
+  description: "Create an nginx/caddy reverse-proxy vhost on a target host and restart it"
+  license: "MIT"
+  min_ansible_version: "2.18"
+  platforms:
+    - name: "ArchLinux"
+      versions:
+        - "all"
+    - name: "Ubuntu"
+      versions:
+        - "noble"
+    - name: "Debian"
+      versions:
+        - "bookworm"
+    - name: "Alpine"
+      versions:
+        - "all"

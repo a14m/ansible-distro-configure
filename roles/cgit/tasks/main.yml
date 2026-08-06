@@ -81,26 +81,12 @@
     - "lighttpd"
     - "{{ 'ssh' if ansible_facts.os_family == 'Debian' else 'sshd' }}"
 
-- name: "Create cgit nginx vhost configuration on proxy"
-  become: true
-  delegate_to: "proxy.home.arpa"
-  when: cgit_hostname | length > 0 and hostvars['proxy.home.arpa'].proxy_type == "nginx"
-  ansible.builtin.template:
-    src: "cgit.nginx.conf.j2"
-    dest: "/etc/nginx/conf.d/cgit.conf"
-    owner: "root"
-    group: "root"
-    mode: "0644"
-  notify: "Restart proxy"
-
-- name: "Create cgit caddy configuration on proxy"
-  become: true
-  delegate_to: "proxy.home.arpa"
-  when: cgit_hostname | length > 0 and hostvars['proxy.home.arpa'].proxy_type == "caddy"
-  ansible.builtin.template:
-    src: "cgit.caddy.j2"
-    dest: "/etc/caddy/sites/cgit.caddy"
-    owner: "root"
-    group: "caddy"
-    mode: "0640"
-  notify: "Restart proxy"
+- name: "Create cgit proxy vhost"
+  ansible.builtin.include_role:
+    name: "vhost"
+  vars:
+    vhost_hostname: "{{ cgit_hostname }}"
+    vhost_name: "cgit"
+    vhost_nginx_template: "{{ role_path }}/templates/cgit.nginx.conf.j2"
+    vhost_caddy_template: "{{ role_path }}/templates/cgit.caddy.j2"
+    vhost_proxy_host: "proxy.home.arpa"

@@ -1,0 +1,7 @@
+---
+- name: "Restart proxy"
+  become: true
+  delegate_to: "{{ vhost_proxy_host }}"
+  ansible.builtin.service:
+    name: "{{ hostvars[vhost_proxy_host].proxy_type }}"
+    state: "restarted"

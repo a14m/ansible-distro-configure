@@ -1,0 +1,30 @@
+---
+argument_specs:
+  main:
+    options:
+      vhost_hostname:
+        type: "str"
+        description: "FQDN for the vhost (e.g. 'metrics.home.arpa')"
+        required: true
+      vhost_name:
+        type: "str"
+        description: "Short slug used for the nginx/caddy config filename"
+        required: true
+      vhost_nginx_template:
+        type: "str"
+        description: >-
+          Absolute path to the calling role's own nginx vhost template.
+          Use '{{ role_path }}/templates/<name>.nginx.conf.j2' so each
+          calling role keeps ownership of its own template content.
+        required: true
+      vhost_caddy_template:
+        type: "str"
+        description: >-
+          Absolute path to the calling role's own caddy vhost template.
+          Use '{{ role_path }}/templates/<name>.caddy.j2' so each
+          calling role keeps ownership of its own template content.
+        required: true
+      vhost_proxy_host:
+        type: "str"
+        description: "Inventory host the vhost config is written to and the proxy service is restarted on"
+        required: true
