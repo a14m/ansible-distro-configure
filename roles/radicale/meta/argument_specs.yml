@@ -4,8 +4,9 @@ argument_specs:
     options:
       radicale_hostname:
         type: "str"
-        description: "FQDN for radicale (e.g. caldav.example.com)"
-        default: "caldav.example.com"
+        description: >-
+          FQDN for radicale (e.g. caldav.example.com).
+          Leave undefined to skip vhost creation entirely.
       radicale_port:
         type: "int"
         description: "Port for the radicale server to bind on network_ipv4_address"

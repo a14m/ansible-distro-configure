@@ -94,10 +94,10 @@
     enabled: true
 
 - name: "Create radicale proxy vhost"
+  when: radicale_hostname is defined
   ansible.builtin.include_role:
     name: "vhost"
   vars:
-    vhost_hostname: "{{ radicale_hostname }}"
     vhost_name: "radicale"
     vhost_nginx_content: "{{ lookup('template', 'radicale.nginx.conf.j2') }}"
     vhost_caddy_content: "{{ lookup('template', 'radicale.caddy.j2') }}"

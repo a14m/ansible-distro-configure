@@ -8,8 +8,8 @@ htpasswd-based auth, a rights file, and an optional reverse-proxy vhost on `prox
 ### Server
 
 - `radicale_hostname` FQDN Radicale is reached at (e.g. `caldav.example.com`). Also used as the
-  reverse-proxy vhost's `server_name`/site block — set to `""` to skip the proxy vhost entirely
-  (default: `"caldav.example.com"`).
+  reverse-proxy vhost's `server_name`/site block — leave undefined to skip the proxy vhost
+  entirely (no default).
 - `radicale_port` port Radicale binds on `network_ipv4_address` (default: `5232`).
 - `radicale_storage_dir` filesystem path where collections are stored (default:
   `/var/lib/radicale/collections`).
