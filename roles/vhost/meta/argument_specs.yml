@@ -2,10 +2,6 @@
 argument_specs:
   main:
     options:
-      vhost_hostname:
-        type: "str"
-        description: "FQDN for the vhost (e.g. 'metrics.home.arpa')"
-        required: true
       vhost_name:
         type: "str"
         description: "Short slug used for the nginx/caddy config filename"
