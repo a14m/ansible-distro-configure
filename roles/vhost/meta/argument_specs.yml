@@ -10,15 +10,15 @@ argument_specs:
         type: "str"
         description: >-
           Fully-rendered nginx vhost config content. Pass
-          "{{ lookup('template', '<name>.nginx.conf.j2') }}" so the
-          calling role renders its own template with its own vars.
+          {% raw %}"{{ lookup('template', '<name>.nginx.conf.j2') }}"{% endraw %}
+          so the calling role renders its own template with its own vars.
         required: true
       vhost_caddy_content:
         type: "str"
         description: >-
           Fully-rendered caddy vhost config content. Pass
-          "{{ lookup('template', '<name>.caddy.j2') }}" so the
-          calling role renders its own template with its own vars.
+          {% raw %}"{{ lookup('template', '<name>.caddy.j2') }}"{% endraw %}
+          so the calling role renders its own template with its own vars.
         required: true
       vhost_proxy_host:
         type: "str"

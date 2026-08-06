@@ -60,7 +60,7 @@ argument_specs:
         description: >-
           Snapshot ID to restore, or "latest". Only used with --tags restore.
           To list available snapshot IDs, run on the target host: source
-          /etc/credstore/{{ backup_name }}-backup.env, export
+          {% raw %}/etc/credstore/{{ backup_name }}-backup.env{% endraw %}, export
           RESTIC_REPOSITORY="$BACKUP_REPO" RESTIC_PASSWORD="$BACKUP_PASSWORD"
           AWS_ACCESS_KEY_ID="$BACKUP_ACCESS_KEY_ID"
           AWS_SECRET_ACCESS_KEY="$BACKUP_SECRET_ACCESS_KEY", then run
