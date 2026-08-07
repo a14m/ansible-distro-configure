@@ -24,7 +24,7 @@ pve_lxc_ssh_private_key: |
       -----END OPENSSH PRIVATE KEY-----
 
 grafana_port: 3000
-grafana_hostname: "monitor.lan"
+grafana_hostname: "monitor.internal"
 grafana_admin_user: "admin"
 grafana_admin_password: "changeme"
 grafana_database_type: "sqlite3"

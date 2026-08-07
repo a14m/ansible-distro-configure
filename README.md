@@ -52,12 +52,12 @@ ansible-playbook site.yml --ask-become-pass --limit ${HOSTNAME}
 
 Pi-hole and WireGuard Portal run directly on `rpi5.local`:
 
-| Service | `*.home.arpa` (direct, no TLS) | `*.lan` (via proxy, TLS) | Description |
+| Service | `*.home.arpa` (direct, no TLS) | `*.internal` (via proxy, TLS) | Description |
 |---|---|---|---|
-| Pi-hole | `dns.home.arpa` | `dns.lan` | DNS filtering and ad blocking |
-| WireGuard Portal | `vpn.home.arpa` | `vpn.lan` | WireGuard VPN management UI |
+| Pi-hole | `dns.home.arpa` | `dns.internal` | DNS filtering and ad blocking |
+| WireGuard Portal | `vpn.home.arpa` | `vpn.internal` | WireGuard VPN management UI |
 
-Override the default hostnames with `pihole_hostname`/`wg_portal_hostname` (the `*.lan` name) -
+Override the default hostnames with `pihole_hostname`/`wg_portal_hostname` (the `*.internal` name) -
 the `*.home.arpa` alias to `rpi5.local` itself is a separate, fixed entry in `pihole_dns_hosts`.
 
 ## Container Services
@@ -65,10 +65,10 @@ the `*.home.arpa` alias to `rpi5.local` itself is a separate, fixed entry in `pi
 Services deployed as LXC containers on `pve.local`. FQDNs resolve via Pi-hole
 (`pihole_dns_hosts` in `host_vars/rpi5.local.yml`).
 
-| Service | `*.home.arpa` (direct, no TLS) | `*.lan` (via proxy, TLS) | Description |
+| Service | `*.home.arpa` (direct, no TLS) | `*.internal` (via proxy, TLS) | Description |
 |---|---|---|---|
-| Grafana | `monitor.home.arpa` | `monitor.lan` | Metrics dashboards |
-| Prometheus | `metrics.home.arpa` | `metrics.lan` | Metrics collection |
+| Grafana | `monitor.home.arpa` | `monitor.internal` | Metrics dashboards |
+| Prometheus | `metrics.home.arpa` | `metrics.internal` | Metrics collection |
 | cgit | `git.home.arpa` | - | Git repository browsing and SSH push/clone |
 | Radicale | `caldav.home.arpa` | - | CalDAV/CardDAV server |
 | Tailscale | `tailscale.home.arpa` | - | Tailscale subnet router (no HTTP vhost) |
@@ -76,9 +76,10 @@ Services deployed as LXC containers on `pve.local`. FQDNs resolve via Pi-hole
 
 For every service, `*.home.arpa` always resolves straight to that container's own IP - useful for
 direct access, but plain HTTP only (no vhost behind it for Grafana/Prometheus, since their Caddy
-vhost lives on the separate `proxy.home.arpa` host). `*.lan` is the new, unified way to reach a
-service through the single centralized Caddy on `proxy.home.arpa`: no port, self-signed TLS via
-Caddy's internal CA. Override the `*.lan` name with `grafana_hostname`/`prometheus_hostname`.
+vhost lives on the separate `proxy.home.arpa` host). `*.internal` is the new, unified way to reach
+a service through the single centralized Caddy on `proxy.home.arpa`: no port, self-signed TLS via
+Caddy's internal CA (`.internal` is IANA-reserved for exactly this per RFC 9476, safer than an
+unreserved `.lan`). Override the `*.internal` name with `grafana_hostname`/`prometheus_hostname`.
 
 `cgit_hostname` and `radicale_hostname` can instead be set to a public domain for access outside
 the LAN via the `cloudflared` tunnel on `proxy.home.arpa`; `cgit_clone_prefix` then keeps the LAN

@@ -16,7 +16,7 @@ ssh_private_key: |
 pihole_totp_secret: "CHANGEME"
 pihole_password: "{{ ('changeme' | hash('sha256') | hash('sha256'))[:64] }}"
 pihole_interface: "{{ network_interface }}"
-pihole_hostname: "dns.lan"
+pihole_hostname: "dns.internal"
 pihole_dhcp_enabled: true
 pihole_dhcp_start: "10.0.0.10"
 pihole_dhcp_end: "10.0.0.99"
@@ -38,11 +38,11 @@ pihole_dns_hosts:
   - "{{ hostvars['proxy.home.arpa'].network_ipv4_address }} proxy.home.arpa"
   - "{{ hostvars['logs.home.arpa'].network_ipv4_address }} logs.home.arpa"
   - "{{ hostvars['metrics.home.arpa'].network_ipv4_address }} metrics.home.arpa"
-  # *.lan, always through the centralized proxy, with TLS
+  # *.internal, always through the centralized proxy, with TLS
   - "{{ hostvars['proxy.home.arpa'].network_ipv4_address }} {{ pihole_hostname }}"
   - "{{ hostvars['proxy.home.arpa'].network_ipv4_address }} {{ wg_portal_hostname }}"
-  - "{{ hostvars['proxy.home.arpa'].network_ipv4_address }} monitor.lan"
-  - "{{ hostvars['proxy.home.arpa'].network_ipv4_address }} metrics.lan"
+  - "{{ hostvars['proxy.home.arpa'].network_ipv4_address }} monitor.internal"
+  - "{{ hostvars['proxy.home.arpa'].network_ipv4_address }} metrics.internal"
 
 wireguard_autostart_connection: "vpn2"
 wireguard_connections:
@@ -61,7 +61,7 @@ wireguard_connections:
 
 wg_portal_password: "{{ ('changeme' | hash('sha256') | hash('sha256'))[:64] }}"
 wg_portal_port: "8080"
-wg_portal_hostname: "vpn.lan"
+wg_portal_hostname: "vpn.internal"
 
 gateway_enabled: true
 gateway_router_interface: "{{ network_interface }}"
