@@ -55,7 +55,7 @@
     gateway_local_ipv4_subnet: "10.0.0.0/24"
     python_global_version: "3.13"
     python_versions:
-      - "3.13"
+      - "3.13.7"
     vimrc_repo_url: "https://git.sr.ht/~a14m/.vim"
     password_store_repo_url: "https://github.com/octocat/Spoon-Knife"
     firefox_install_browserpass: true

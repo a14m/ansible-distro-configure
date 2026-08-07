@@ -55,7 +55,7 @@
     gateway_local_ipv4_subnet: "10.0.0.0/24"
     python_global_version: "3.13"
     python_versions:
-      - "3.13"
+      - "3.13.7"
     prometheus_host: "localhost"
     prometheus_port: 9090
     prometheus_node_exporter_port: 9100
