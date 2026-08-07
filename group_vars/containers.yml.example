@@ -1,3 +1,4 @@
 ---
 ansible_user: root
 alloy_loki_host: "{{ hostvars['logs.home.arpa'].network_ipv4_address }}:{{ hostvars['logs.home.arpa'].loki_port }}"
+vhost_proxy_host: "proxy.home.arpa"

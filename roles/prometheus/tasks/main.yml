@@ -60,4 +60,3 @@
     vhost_name: "prometheus"
     vhost_nginx_content: "{{ lookup('template', 'prometheus.nginx.conf.j2') }}"
     vhost_caddy_content: "{{ lookup('template', 'prometheus.caddy.j2') }}"
-    vhost_proxy_host: "proxy.home.arpa"

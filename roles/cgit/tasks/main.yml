@@ -89,4 +89,3 @@
     vhost_name: "cgit"
     vhost_nginx_content: "{{ lookup('template', 'cgit.nginx.conf.j2') }}"
     vhost_caddy_content: "{{ lookup('template', 'cgit.caddy.j2') }}"
-    vhost_proxy_host: "proxy.home.arpa"

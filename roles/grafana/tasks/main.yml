@@ -104,4 +104,3 @@
     vhost_name: "grafana"
     vhost_nginx_content: "{{ lookup('template', 'grafana.nginx.conf.j2') }}"
     vhost_caddy_content: "{{ lookup('template', 'grafana.caddy.j2') }}"
-    vhost_proxy_host: "proxy.home.arpa"

@@ -47,6 +47,9 @@
   remote_user: "{{ username }}"
   vars:
     ansible_become_method: sudo
+    network_ipv4_address: "{{ ansible_facts.default_ipv4.address }}"
+    network_ipv4_gateway: "{{ ansible_facts.default_ipv4.gateway }}"
+    vhost_proxy_host: "{{ inventory_hostname }}"
     locales:
       - "en_US.UTF-8 UTF-8"
     timezone: "GMT"
