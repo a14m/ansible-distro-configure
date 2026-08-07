@@ -94,7 +94,6 @@
     - role: "vim"
     - role: "wireguard"
     - role: "gateway"
-    - role: "caddy"
     - role: "wg_portal"
     - role: "pihole"
     - role: "prometheus-node-exporter"

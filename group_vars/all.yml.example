@@ -4,6 +4,7 @@ user_public_keys:
   - "ssh-ed25519 AAAA...4I3"
 
 vhost_proxy_type: "caddy"
+vhost_proxy_host: "proxy.home.arpa"
 
 ssh_port: 2222
 

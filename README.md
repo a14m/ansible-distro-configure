@@ -50,30 +50,35 @@ ansible-playbook site.yml --ask-become-pass --limit ${HOSTNAME}
 
 ## Raspberry Pi Services
 
-Services deployed on `rpi5.local` and their default FQDNs (resolved via Pi-hole DNS):
+Pi-hole and WireGuard Portal run directly on `rpi5.local`:
 
-| Service | Default FQDN | Description |
-|---|---|---|
-| Pi-hole | `dns.home.arpa` | DNS filtering and ad blocking |
-| WireGuard Portal | `vpn.home.arpa` | WireGuard VPN management UI |
-| Grafana | `monitor.home.arpa` | Metrics dashboards |
-| Prometheus | `metrics.home.arpa` | Metrics collection |
+| Service | `*.home.arpa` (direct, no TLS) | `*.lan` (via proxy, TLS) | Description |
+|---|---|---|---|
+| Pi-hole | `dns.home.arpa` | `dns.lan` | DNS filtering and ad blocking |
+| WireGuard Portal | `vpn.home.arpa` | `vpn.lan` | WireGuard VPN management UI |
 
-DNS records are managed via `pihole_dns_hosts` in `host_vars/rpi5.local.yml`.
-Override the default FQDN per service using `pihole_hostname`, `wg_portal_hostname`,
-`grafana_hostname`, or `prometheus_hostname`.
+Override the default hostnames with `pihole_hostname`/`wg_portal_hostname` (the `*.lan` name) -
+the `*.home.arpa` alias to `rpi5.local` itself is a separate, fixed entry in `pihole_dns_hosts`.
 
 ## Container Services
 
-Services deployed as LXC containers on `pve.local`, proxied through `proxy.home.arpa`. FQDNs
-below resolve via Pi-hole (`pihole_dns_hosts` in `host_vars/rpi5.local.yml`).
+Services deployed as LXC containers on `pve.local`. FQDNs resolve via Pi-hole
+(`pihole_dns_hosts` in `host_vars/rpi5.local.yml`).
 
-| Service | Default FQDN | Description |
-|---|---|---|
-| cgit | `git.home.arpa` | Git repository browsing and SSH push/clone |
-| Radicale | `caldav.home.arpa` | CalDAV/CardDAV server |
-| Tailscale | `tailscale.home.arpa` | Tailscale subnet router (no HTTP vhost) |
-| Loki | `logs.home.arpa` | Log aggregation (no HTTP vhost; queried directly on port 3100) |
+| Service | `*.home.arpa` (direct, no TLS) | `*.lan` (via proxy, TLS) | Description |
+|---|---|---|---|
+| Grafana | `monitor.home.arpa` | `monitor.lan` | Metrics dashboards |
+| Prometheus | `metrics.home.arpa` | `metrics.lan` | Metrics collection |
+| cgit | `git.home.arpa` | - | Git repository browsing and SSH push/clone |
+| Radicale | `caldav.home.arpa` | - | CalDAV/CardDAV server |
+| Tailscale | `tailscale.home.arpa` | - | Tailscale subnet router (no HTTP vhost) |
+| Loki | `logs.home.arpa` | - | Log aggregation (no HTTP vhost; queried directly on port 3100) |
+
+For every service, `*.home.arpa` always resolves straight to that container's own IP - useful for
+direct access, but plain HTTP only (no vhost behind it for Grafana/Prometheus, since their Caddy
+vhost lives on the separate `proxy.home.arpa` host). `*.lan` is the new, unified way to reach a
+service through the single centralized Caddy on `proxy.home.arpa`: no port, self-signed TLS via
+Caddy's internal CA. Override the `*.lan` name with `grafana_hostname`/`prometheus_hostname`.
 
 `cgit_hostname` and `radicale_hostname` can instead be set to a public domain for access outside
 the LAN via the `cloudflared` tunnel on `proxy.home.arpa`; `cgit_clone_prefix` then keeps the LAN

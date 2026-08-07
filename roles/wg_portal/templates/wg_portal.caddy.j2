@@ -1,3 +1,3 @@
 {{ wg_portal_hostname }} {
-	reverse_proxy localhost:{{ wg_portal_port }}
+	reverse_proxy {{ network_ipv4_address }}:{{ wg_portal_port }}
 }

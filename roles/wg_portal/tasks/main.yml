@@ -102,4 +102,3 @@
     vhost_name: "wg-portal"
     vhost_nginx_content: "{{ lookup('template', 'wg_portal.nginx.conf.j2') }}"
     vhost_caddy_content: "{{ lookup('template', 'wg_portal.caddy.j2') }}"
-    vhost_proxy_host: "{{ inventory_hostname }}"
