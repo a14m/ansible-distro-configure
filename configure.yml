@@ -43,7 +43,6 @@
     - role: "firefox"
     - role: "obsidian"
     - role: "localsend"
-    - role: "microsoft-teams"
     - role: "gnome-calendar"
     - role: "gnome-newsflash"
     - role: "gnome-planify"
