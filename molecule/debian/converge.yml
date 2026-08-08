@@ -47,6 +47,7 @@
   remote_user: "{{ username }}"
   vars:
     ansible_become_method: sudo
+    network_ipv4_dns: "1.1.1.1"
     locales:
       - "en_US.UTF-8 UTF-8"
     timezone: "GMT"
