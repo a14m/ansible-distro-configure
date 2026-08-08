@@ -1,5 +1,6 @@
 [connection]
 id=ethernet
+uuid={{ 'ethernet' | to_uuid }}
 type=ethernet
 autoconnect=true
 {% if network_bridge_interface is defined %}
