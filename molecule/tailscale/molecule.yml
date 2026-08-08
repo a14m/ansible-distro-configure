@@ -11,14 +11,13 @@ platforms:
   - name: tailscale.home.arpa
     image: tailscale
     dockerfile: Dockerfile.j2
-    platform: "linux/amd64"
     pre_build_image: false
     privileged: true
     command: ${MOLECULE_COMMAND:-"/sbin/init"}
-    tmpfs:
-      "/tmp": "rw"
-      "/run": "rw,exec"
-    cgroupns_mode: host
+    extra_opts:
+      - "--cgroupns=host"
+      - "--tmpfs=/tmp:rw"
+      - "--tmpfs=/run:rw,exec"
 
 provisioner:
   name: ansible
