@@ -19,3 +19,6 @@ metrics_require_token = true
 {% else %}
 api_bind_addr = "127.0.0.1:{{ garage_admin_port }}"
 {% endif %}
+{% if garage_admin_token is defined %}
+admin_token = "{{ garage_admin_token }}"
+{% endif %}

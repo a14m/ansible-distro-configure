@@ -1,0 +1,27 @@
+---
+argument_specs:
+  main:
+    options:
+      garage_webui_version:
+        type: "str"
+        description: "garage-webui release version to install"
+        default: "1.1.0"
+      garage_webui_port:
+        type: "int"
+        description: "Port for garage-webui to bind on (loopback + the proxied vhost)"
+        default: 3909
+      garage_webui_hostname:
+        type: "str"
+        description: >-
+          FQDN for the garage-webui vhost (e.g. 's3.internal').
+          Leave undefined to skip vhost creation entirely.
+      garage_webui_auth_user:
+        type: "str"
+        description: "Username for garage-webui's built-in login"
+        required: true
+      garage_webui_auth_password_hash:
+        type: "str"
+        description: >-
+          Bcrypt hash of the login password (generate with e.g.
+          'htpasswd -nbBC 10 user password' and take the part after the colon).
+        required: true

@@ -1,0 +1,15 @@
+[Unit]
+Description=Garage Web UI
+After=network.target garage.service
+
+[Service]
+Environment="PORT={{ garage_webui_port }}"
+Environment="CONFIG_PATH=/etc/garage.toml"
+Environment="AUTH_USER_PASS={{ garage_webui_auth_user }}:{{ garage_webui_auth_password_hash }}"
+ExecStart=/usr/local/bin/garage-webui
+User=garage-webui
+Group=garage-webui
+Restart=always
+
+[Install]
+WantedBy=default.target

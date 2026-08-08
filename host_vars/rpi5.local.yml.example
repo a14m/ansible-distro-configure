@@ -31,6 +31,7 @@ pihole_dns_hosts:
   # *.home.arpa
   - "{{ network_ipv4_address }} dns.home.arpa"
   - "{{ network_ipv4_address }} vpn.home.arpa"
+  - "{{ network_ipv4_address }} s3.home.arpa"
   - "{{ hostvars['monitor.home.arpa'].network_ipv4_address }} monitor.home.arpa"
   - "{{ hostvars['git.home.arpa'].network_ipv4_address }} git.home.arpa"
   - "{{ hostvars['tailscale.home.arpa'].network_ipv4_address }} tailscale.home.arpa"
@@ -43,6 +44,7 @@ pihole_dns_hosts:
   - "{{ hostvars['proxy.home.arpa'].network_ipv4_address }} {{ wg_portal_hostname }}"
   - "{{ hostvars['proxy.home.arpa'].network_ipv4_address }} monitor.internal"
   - "{{ hostvars['proxy.home.arpa'].network_ipv4_address }} metrics.internal"
+  - "{{ hostvars['proxy.home.arpa'].network_ipv4_address }} {{ garage_webui_hostname }}"
 
 wireguard_autostart_connection: "vpn2"
 wireguard_connections:
@@ -73,9 +75,15 @@ garage_rpc_secret: "changeme"
 garage_access_key_id: "GK_changeme"
 garage_secret_access_key: "changeme"
 garage_metrics_token: "changeme"
+garage_admin_token: "changeme"
 garage_bucket: "restic"
 garage_data_dir: "/backup/garage/data"
 garage_meta_dir: "/backup/garage/meta"
+
+garage_webui_hostname: "s3.internal"
+garage_webui_auth_user: "changeme"
+# generate with: htpasswd -nbBC 10 user password
+garage_webui_auth_password_hash: "changeme"
 
 awscli_profile_name: "garage"
 awscli_region: "garage"

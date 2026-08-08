@@ -1,0 +1,64 @@
+---
+- name: "Install garage-webui binary"
+  become: true
+  vars:
+    garage_webui_arch: "{{ 'arm64' if ansible_facts.architecture == 'aarch64' else 'amd64' }}"
+    # yamllint disable-line rule:line-length
+    garage_webui_url: "https://github.com/khairul169/garage-webui/releases/download/{{ garage_webui_version }}/garage-webui-v{{ garage_webui_version }}-linux-{{ garage_webui_arch }}"
+  block:
+    - name: "Check if garage-webui is installed"
+      ansible.builtin.stat:
+        path: "/usr/local/bin/garage-webui"
+      register: garage_webui_binary_check
+
+    - name: "Download garage-webui binary"
+      when: not garage_webui_binary_check.stat.exists
+      ansible.builtin.get_url:
+        url: "{{ garage_webui_url }}"
+        dest: "/usr/local/bin/garage-webui"
+        mode: "0755"
+        owner: "root"
+        group: "root"
+
+- name: "Configure garage-webui"
+  become: true
+  block:
+    - name: "Create garage-webui group"
+      ansible.builtin.group:
+        name: "garage-webui"
+        system: true
+
+    - name: "Create garage-webui user"
+      ansible.builtin.user:
+        name: "garage-webui"
+        group: "garage-webui"
+        groups: "garage"
+        system: true
+        shell: "/usr/sbin/nologin"
+        create_home: false
+
+    - name: "Deploy garage-webui systemd service"
+      ansible.builtin.template:
+        src: "garage-webui.service.j2"
+        dest: "/etc/systemd/system/garage-webui.service"
+        owner: "root"
+        group: "root"
+        mode: "0644"
+      no_log: true
+      notify: "Restart garage-webui"
+
+    - name: "Start and enable garage-webui"
+      ansible.builtin.systemd_service:
+        name: "garage-webui"
+        state: "started"
+        enabled: true
+        daemon_reload: true
+
+    - name: "Create garage-webui proxy vhost"
+      when: garage_webui_hostname is defined
+      ansible.builtin.include_role:
+        name: "vhost"
+      vars:
+        vhost_name: "garage-webui"
+        vhost_nginx_content: "{{ lookup('template', 'garage-webui.nginx.conf.j2') }}"
+        vhost_caddy_content: "{{ lookup('template', 'garage-webui.caddy.j2') }}"

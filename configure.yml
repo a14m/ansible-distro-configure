@@ -101,6 +101,7 @@
     - role: "neomutt"
     - role: "mount"
     - role: "garage"
+    - role: "garage-webui"
     - role: "awscli"
     - role: "wakeonlan"
 

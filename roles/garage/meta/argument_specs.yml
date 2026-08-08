@@ -52,3 +52,10 @@ argument_specs:
           Bearer token required to read /metrics. Leave undefined to keep the admin
           API loopback-only (default) - setting this widens api_bind_addr to
           0.0.0.0 so /metrics is remotely scrapable, gated by this token.
+      garage_admin_token:
+        type: "str"
+        description: >-
+          Bearer token required for the full admin API (buckets/keys/nodes), e.g.
+          for a locally-running admin UI. Leave undefined to keep the admin API
+          fully locked (Garage's default since v2.0). Does not affect
+          api_bind_addr - only garage_metrics_token controls that.
