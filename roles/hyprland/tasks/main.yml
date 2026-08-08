@@ -12,7 +12,6 @@
     name:
       - "swaybg"
       - "hyprlock"
-      - "hypridle"
       - "hyprpicker"
       - "hyprsunset"
       - "hyprshot"
@@ -83,8 +82,6 @@
       dest: "/etc/hypr/rules.conf"
     - src: "hypr/hyprlock.conf.j2"
       dest: "/etc/hypr/hyprlock.conf"
-    - src: "hypr/hypridle.conf.j2"
-      dest: "/etc/hypr/hypridle.conf"
     - src: "hypr/hyprland.conf.j2"
       dest: "/etc/hypr/hyprland.conf"
     - src: "hypr/kanshi.conf.j2"
@@ -108,17 +105,6 @@
         block: |
           # System defaults
           source = /etc/hypr/hyprland.conf
-
-    - name: "Configure user hypridle configuration"
-      ansible.builtin.blockinfile:
-        path: "{{ ansible_facts.env.HOME }}/.config/hypr/hypridle.conf"
-        state: "present"
-        prepend_newline: true
-        append_newline: true
-        marker: "# ==== {mark} ANSIBLE HYPRLAND CONFIG"
-        block: |
-          # System defaults
-          source = /etc/hypr/hypridle.conf
 
     - name: "Configure user kanshi configuration"
       ansible.builtin.blockinfile:
