@@ -46,3 +46,9 @@ argument_specs:
         type: "str"
         description: "S3 secret access key"
         required: true
+      garage_metrics_token:
+        type: "str"
+        description: >-
+          Bearer token required to read /metrics. Leave undefined to keep the admin
+          API loopback-only (default) - setting this widens api_bind_addr to
+          0.0.0.0 so /metrics is remotely scrapable, gated by this token.

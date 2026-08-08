@@ -39,6 +39,7 @@ prometheus_extra_scrape_configs:
     targets:
       - "{{ hostvars['rpi5.local'].network_ipv4_address }}:{{ hostvars['rpi5.local'].garage_admin_port }}"
     metrics_path: "/metrics"
+    bearer_token: "{{ hostvars['rpi5.local'].garage_metrics_token }}"
   - name: "caddy"
     targets:
       - "{{ hostvars['proxy.home.arpa'].network_ipv4_address }}:{{ hostvars['proxy.home.arpa'].caddy_metrics_port }}"

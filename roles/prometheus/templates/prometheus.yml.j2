@@ -22,4 +22,8 @@ scrape_configs:
       - targets: {{ job.targets | to_yaml }}
     scrape_interval: {{ job.scrape_interval | default(prometheus_scrape_interval) }}
     metrics_path: {{ job.metrics_path | default('/metrics') }}
+{% if job.bearer_token is defined %}
+    authorization:
+      credentials: {{ job.bearer_token }}
+{% endif %}
 {% endfor %}

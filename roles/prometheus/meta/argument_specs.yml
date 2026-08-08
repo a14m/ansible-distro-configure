@@ -38,3 +38,24 @@ argument_specs:
         type: "list"
         elements: "dict"
         default: []
+        options:
+          name:
+            description: "Job name"
+            type: "str"
+            required: true
+          targets:
+            description: "List of host:port targets to scrape"
+            type: "list"
+            elements: "str"
+            required: true
+          metrics_path:
+            description: "Path to scrape metrics from"
+            type: "str"
+            default: "/metrics"
+          scrape_interval:
+            description: "Scrape interval for this job"
+            type: "str"
+            default: "{{ prometheus_scrape_interval }}"
+          bearer_token:
+            description: "Bearer token sent as an Authorization header, if the target requires one"
+            type: "str"
