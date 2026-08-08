@@ -90,6 +90,24 @@
         dest: "/etc/systemd/resolved.conf.d/99-custom.conf"
         mode: "0644"
 
+    - name: "Configure system DNS"
+      # /etc/resolv.conf can start out "foreign" (e.g. container runtimes writing
+      # their own copy at creation time) - systemd-resolved then defers to it
+      # rather than reclaiming it, silently making the config above dead code.
+      # Points at the stub listener (127.0.0.53), not resolve/resolv.conf's raw
+      # upstream list, since DNSStubListener=yes above - unlike pihole's override,
+      # which disables the stub and points here directly at its own resolver.
+      ansible.builtin.file:
+        src: "/run/systemd/resolve/stub-resolv.conf"
+        dest: "/etc/resolv.conf"
+        state: "link"
+        force: true
+        # /etc/resolv.conf is commonly a bind mount in containers (Podman/Docker) -
+        # the kernel refuses to rename() onto an active mount point, so Ansible's
+        # normal atomic replace (temp file + rename) fails with EBUSY. This falls
+        # back to a non-atomic in-place write, which bind mounts do allow.
+        unsafe_writes: true
+
     - name: "Configure NetworkManager"
       ansible.builtin.template:
         src: "NetworkManager.conf.j2"
