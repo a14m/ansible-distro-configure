@@ -4,6 +4,14 @@
   gather_facts: true
   vars:
     ansible_become_method: su
+    # NOTE: also set below in the "Configure" play. Pihole depends on the
+    # network role, so it runs a second time there; if these were only
+    # defined in one play, the two runs would render the ethernet/wifi
+    # nmconnection templates with different content (method=auto here vs
+    # method=manual there), making every run report "changed" and failing
+    # idempotence.
+    network_ipv4_address: "{{ ansible_facts.default_ipv4.address }}"
+    network_ipv4_gateway: "{{ ansible_facts.default_ipv4.gateway }}"
     user_public_keys:
       - "ssh-ed25519 AAAA...fMo"
       - "ssh-rsa AAAA...4I3"
