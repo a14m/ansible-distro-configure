@@ -21,6 +21,22 @@
   failed_when: gpg_import_result.rc != 0 and 'already in secret keyring' not in gpg_import_result.stderr
   no_log: true
 
+- name: "Trust imported GPG public keys ultimately"
+  ansible.builtin.shell: |
+    set -euo pipefail
+    fpr=$(
+      gpg --with-colons --import-options show-only --import <<<"{{ item }}" \
+        | awk -F: '$1 == "fpr" { print $10; exit }'
+    )
+    echo "${fpr}:6:" | gpg --import-ownertrust
+  args:
+    executable: /bin/bash
+  loop: "{{ gpg_public_keys }}"
+  when: gpg_public_keys is defined
+  register: gpg_trust_result
+  changed_when: "'inserting ownertrust' in gpg_trust_result.stderr or 'changing ownertrust' in gpg_trust_result.stderr"
+  no_log: true
+
 - name: "Enable smart-card reader daemon"
   become: true
   ansible.builtin.systemd_service:
