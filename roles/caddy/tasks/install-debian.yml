@@ -1,20 +1,15 @@
 ---
-- name: "Download Caddy GPG key"
-  become: true
-  ansible.builtin.get_url:
-    url: "https://dl.cloudsmith.io/public/caddy/stable/gpg.key"
-    dest: "/etc/apt/trusted.gpg.d/caddy-stable.asc"
-    mode: "0644"
-    owner: "root"
-    group: "root"
-
 - name: "Add Caddy APT repository"
   become: true
-  ansible.builtin.apt_repository:
-    # yamllint disable-line rule:line-length
-    repo: "deb [signed-by=/etc/apt/trusted.gpg.d/caddy-stable.asc] https://dl.cloudsmith.io/public/caddy/stable/deb/debian any-version main"
+  ansible.builtin.deb822_repository:
+    name: "caddy-stable"
+    types: "deb"
+    uris: "https://dl.cloudsmith.io/public/caddy/stable/deb/debian"
+    suites: "any-version"
+    components: "main"
+    signed_by: "https://dl.cloudsmith.io/public/caddy/stable/gpg.key"
     state: "present"
-    filename: "caddy-stable"
+    install_python_debian: true
 
 - name: "Install caddy"
   become: true

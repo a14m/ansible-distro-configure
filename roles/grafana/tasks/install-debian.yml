@@ -5,19 +5,17 @@
     name: "sqlite3"
     state: "present"
 
-- name: "Download Grafana GPG key"
-  become: true
-  ansible.builtin.get_url:
-    url: "https://apt.grafana.com/gpg.key"
-    dest: "/etc/apt/trusted.gpg.d/grafana.asc"
-    mode: "0644"
-
 - name: "Add Grafana repository"
   become: true
-  ansible.builtin.apt_repository:
-    repo: "deb [signed-by=/etc/apt/trusted.gpg.d/grafana.asc] https://apt.grafana.com stable main"
+  ansible.builtin.deb822_repository:
+    name: "grafana"
+    types: "deb"
+    uris: "https://apt.grafana.com"
+    suites: "stable"
+    components: "main"
+    signed_by: "https://apt.grafana.com/gpg.key"
     state: "present"
-    filename: "grafana"
+    install_python_debian: true
 
 - name: "Update package cache"
   become: true
