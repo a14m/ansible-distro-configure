@@ -31,6 +31,17 @@ RUN systemctl enable avahi-daemon
 # still purges the dhcpcd package itself later as part of its real logic.
 RUN systemctl mask dhcpcd.service
 
+# Root cause of the intermittent "Temporary failure resolving
+# archive.ubuntu.com" CI failures: podman/pasta's passthrough interface here
+# is a "tun"-driver device. NetworkManager leaves it unmanaged until
+# network-manager-config-connectivity-ubuntu (pulled in by the gnome role's
+# ubuntu-gnome-desktop metapackage) runs `nmcli general reload` in its
+# postinst, which makes NM claim the interface, try DHCP (no DHCP server
+# exists on this network), fail, and strip the interface's address/route as
+# a side effect -- permanently killing outbound connectivity, DNS included.
+RUN mkdir -p /etc/NetworkManager/conf.d && \
+    printf '[keyfile]\nunmanaged-devices=driver:tun\n' > /etc/NetworkManager/conf.d/99-molecule-unmanage-tun.conf
+
 VOLUME ["/sys/fs/cgroup", "/tmp", "/run", "/opt"]
 
 CMD ["/lib/systemd/systemd"]
