@@ -42,6 +42,31 @@
     group: "{{ cgit_ssh_user }}"
     mode: "2755"
 
+- name: "Create git template hooks directory"
+  become: true
+  ansible.builtin.file:
+    path: "{{ cgit_repos_dir }}/.git-templates/hooks"
+    state: directory
+    owner: "root"
+    group: "root"
+    mode: "0755"
+
+- name: "Deploy post-receive hook to git template"
+  become: true
+  ansible.builtin.copy:
+    src: "post-receive"
+    dest: "{{ cgit_repos_dir }}/.git-templates/hooks/post-receive"
+    owner: "root"
+    group: "root"
+    mode: "0755"
+
+- name: "Set git template dir for new repos"
+  become: true
+  community.general.git_config:
+    name: init.templateDir
+    scope: system
+    value: "{{ cgit_repos_dir }}/.git-templates"
+
 - name: "Deploy cgitrc"
   become: true
   ansible.builtin.template:

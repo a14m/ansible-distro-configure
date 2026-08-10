@@ -1,0 +1,5 @@
+#!/bin/sh
+mkdir -p "$GIT_DIR/info/web"
+git --git-dir="$GIT_DIR" for-each-ref --sort=-committerdate \
+    --format='%(committerdate:iso8601)' --count=1 refs/heads/ \
+    > "$GIT_DIR/info/web/last-modified"
