@@ -68,22 +68,22 @@
     dest: "{{ item.dest }}"
     mode: "0644"
   loop:
-    - src: "hypr/autostart.conf.j2"
-      dest: "/etc/hypr/autostart.conf"
-    - src: "hypr/monitors.conf.j2"
-      dest: "/etc/hypr/monitors.conf"
-    - src: "hypr/input.conf.j2"
-      dest: "/etc/hypr/input.conf"
-    - src: "hypr/bindings.conf.j2"
-      dest: "/etc/hypr/bindings.conf"
-    - src: "hypr/looknfeel.conf.j2"
-      dest: "/etc/hypr/looknfeel.conf"
-    - src: "hypr/rules.conf.j2"
-      dest: "/etc/hypr/rules.conf"
+    - src: "hypr/autostart.lua.j2"
+      dest: "/etc/hypr/autostart.lua"
+    - src: "hypr/monitors.lua.j2"
+      dest: "/etc/hypr/monitors.lua"
+    - src: "hypr/input.lua.j2"
+      dest: "/etc/hypr/input.lua"
+    - src: "hypr/bindings.lua.j2"
+      dest: "/etc/hypr/bindings.lua"
+    - src: "hypr/looknfeel.lua.j2"
+      dest: "/etc/hypr/looknfeel.lua"
+    - src: "hypr/rules.lua.j2"
+      dest: "/etc/hypr/rules.lua"
     - src: "hypr/hyprlock.conf.j2"
       dest: "/etc/hypr/hyprlock.conf"
-    - src: "hypr/hyprland.conf.j2"
-      dest: "/etc/hypr/hyprland.conf"
+    - src: "hypr/hyprland.lua.j2"
+      dest: "/etc/hypr/hyprland.lua"
     - src: "hypr/kanshi.conf.j2"
       dest: "/etc/xdg/kanshi/config"
     - src: "uwsm/env.j2"
@@ -97,14 +97,14 @@
   block:
     - name: "Configure user hyprland configuration"
       ansible.builtin.blockinfile:
-        path: "{{ ansible_facts.env.HOME }}/.config/hypr/hyprland.conf"
+        path: "{{ ansible_facts.env.HOME }}/.config/hypr/hyprland.lua"
         state: "present"
         prepend_newline: true
         append_newline: true
-        marker: "# ==== {mark} ANSIBLE HYPRLAND CONFIG"
+        marker: "-- ==== {mark} ANSIBLE HYPRLAND CONFIG"
         block: |
-          # System defaults
-          source = /etc/hypr/hyprland.conf
+          -- System defaults
+          require("/etc/hypr/hyprland.lua")
 
     - name: "Configure user kanshi configuration"
       ansible.builtin.blockinfile:

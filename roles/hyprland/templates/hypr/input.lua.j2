@@ -1,0 +1,29 @@
+hl.config({
+  input = {
+    -- keyboard layout
+    kb_layout = "us,de",
+    -- keyboard repeat settings
+    repeat_rate = 50,
+    repeat_delay = 500,
+    -- don't start with numlock on by default
+    numlock_by_default = false,
+
+    -- increase sensitivity for mouse/trackpad (default: 0)
+      -- sensitivity = 0.35,
+      -- focus follows mouse pointer
+      -- follow_mouse = 1,
+
+    touchpad = {
+      natural_scroll = false,
+      clickfinger_behavior = true,
+      scroll_factor = 0.4
+    }
+  },
+
+  misc = {
+    key_press_enables_dpms = true,  -- key press will trigger wake
+    mouse_move_enables_dpms = true, -- mouse move will trigger wake
+  },
+})
+
+hl.gesture({fingers = 4, direction = "horizontal", action = "workspace"})

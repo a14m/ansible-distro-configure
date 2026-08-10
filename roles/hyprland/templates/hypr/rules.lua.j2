@@ -1,0 +1,71 @@
+-- Configure Hyprland Window Rules
+--
+-- See https://wiki.hypr.land/Configuring/Window-Rules/
+
+-- Scroll nicely in the terminal
+hl.window_rule({ name = "scroll-touchpad-alacritty-kitty", match = { class = "(Alacritty|kitty)" }, scroll_touchpad = 1.5 })
+hl.window_rule({ name = "scroll-touchpad-ghostty", match = { class = "com.mitchellh.ghostty" }, scroll_touchpad = 0.2 })
+
+-- Floating windows
+hl.window_rule({
+  name = "floating-window",
+  match = { tag = "floating-window" },
+  float = true,
+  center = true,
+  size = "875 600",
+  stay_focused = true,
+})
+
+hl.window_rule({
+  name = "tag-floating-window",
+  match = { class = "work.kartoffln.(bluetui|btop|battop|wiremix|wlctl|clipse)" },
+  tag = "+floating-window",
+})
+hl.window_rule({ name = "gnome-calculator-float", match = { class = "org.gnome.Calculator" }, float = true })
+
+-- Picture-in-picture overlays
+hl.window_rule({ name = "tag-pic-in-pic", match = { title = "(Picture.?in.?[Pp]icture)" }, tag = "+pic-in-pic" })
+hl.window_rule({
+  name = "pic-in-pic",
+  match = { tag = "pic-in-pic" },
+  float = true,
+  pin = true,
+  size = "600 338",
+  opacity = "1.0 override 1.0 override",
+  move = "(monitor_w-window_w-40) (monitor_h*0.04)",
+})
+
+-- Browser types
+hl.window_rule({
+  name = "tag-chromium-based-browser",
+  match = { class = "((google-)?[cC]hrom(e|ium)|[bB]rave-browser|[mM]icrosoft-edge|Vivaldi-stable|helium)" },
+  tag = "+chromium-based-browser",
+})
+hl.window_rule({
+  name = "tag-firefox-based-browser",
+  match = { class = "([fF]irefox|zen|librewolf)" },
+  tag = "+firefox-based-browser",
+})
+hl.window_rule({ name = "chromium-based-browser-opacity", match = { tag = "chromium-based-browser" }, opacity = "1.0 override 0.97 override" })
+hl.window_rule({ name = "firefox-based-browser-opacity", match = { tag = "firefox-based-browser" }, opacity = "1.0 override 0.97 override" })
+
+-- Pinentry windows
+hl.window_rule({ name = "pinentry-stay-focused", match = { class = "(pinentry-)(.*)" }, stay_focused = true })
+
+-- Steam windows
+hl.window_rule({ name = "steam-float", match = { class = "steam" }, float = true })
+hl.window_rule({ name = "steam-center", match = { class = "steam", title = "Steam" }, center = true })
+hl.window_rule({ name = "steam-opacity", match = { title = "Steam" }, opacity = "1.0 override 1.0 override" })
+hl.window_rule({ name = "steam-friends-list-size", match = { class = "steam", title = "Friends List" }, size = "460 800" })
+
+-- Power menu
+-- Workaround dimming, by creating a 1x1 behind the tofi menu and configure dimming around that window
+hl.window_rule({
+  name = "power-menu",
+  match = { class = "work.kartoffln.power\\-menu" },
+  float = true,
+  center = true,
+  size = "1 1",
+  stay_focused = true,
+  dim_around = true,
+})

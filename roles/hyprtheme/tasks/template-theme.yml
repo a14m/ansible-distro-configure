@@ -7,7 +7,7 @@
     hyprtheme_theme_files:
       - "alacritty.toml"
       - "btop.theme"
-      - "hyprland.conf"
+      - "hyprland.lua"
       - "hyprlock.conf"
       - "waybar.css"
       - "clipse.json"
