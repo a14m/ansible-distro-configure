@@ -16,7 +16,7 @@ psk={{ network_wifi_pass }}
 [ipv4]
 {% if network_ipv4_address is defined %}
 method=manual
-addresses={{ network_ipv4_address }}
+addresses={{ network_ipv4_address }}/{{ network_ipv4_prefix | default(24) }}
 gateway={{ network_ipv4_gateway }}
 {% if network_ipv4_dns is defined %}
 dns={{ network_ipv4_dns }}
