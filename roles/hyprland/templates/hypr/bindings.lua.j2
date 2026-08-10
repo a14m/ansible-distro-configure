@@ -30,17 +30,25 @@ hl.bind("CTRL + 7", hl.dsp.focus({ workspace = 7 }), { description = "Switch to 
 hl.bind("CTRL + 8", hl.dsp.focus({ workspace = 8 }), { description = "Switch to workspace 8" })
 hl.bind("CTRL + 9", hl.dsp.focus({ workspace = 9 }), { description = "Switch to workspace 9" })
 
--- Move active window to a workspace with ctrl + SHIFT + [0-9]
-hl.bind("CTRL + SHIFT + 1", hl.dsp.window.move({ workspace = 1 }), { description = "Move active window to workspace 1" })
-hl.bind("CTRL + SHIFT + 2", hl.dsp.window.move({ workspace = 2 }), { description = "Move active window to workspace 2" })
-hl.bind("CTRL + SHIFT + 3", hl.dsp.window.move({ workspace = 3 }), { description = "Move active window to workspace 3" })
-hl.bind("CTRL + SHIFT + 4", hl.dsp.window.move({ workspace = 4 }), { description = "Move active window to workspace 4" })
-hl.bind("CTRL + SHIFT + 5", hl.dsp.window.move({ workspace = 5 }), { description = "Move active window to workspace 5" })
-hl.bind("CTRL + SHIFT + 6", hl.dsp.window.move({ workspace = 6 }), { description = "Move active window to workspace 6" })
-hl.bind("CTRL + SHIFT + 7", hl.dsp.window.move({ workspace = 7 }), { description = "Move active window to workspace 7" })
-hl.bind("CTRL + SHIFT + 8", hl.dsp.window.move({ workspace = 8 }), { description = "Move active window to workspace 8" })
-hl.bind("CTRL + SHIFT + 9", hl.dsp.window.move({ workspace = 9 }), { description = "Move active window to workspace 9" })
-hl.bind("CTRL + SHIFT + 0", hl.dsp.window.move({ workspace = 10 }), { description = "Move active window to workspace 10" })
+-- Move active window to a workspace with ctrl + SHIFT + [1-9]
+hl.bind("CTRL + SHIFT + 1", hl.dsp.window.move({ workspace = 1 }),
+  { description = "Move active window to workspace 1" })
+hl.bind("CTRL + SHIFT + 2", hl.dsp.window.move({ workspace = 2 }),
+  { description = "Move active window to workspace 2" })
+hl.bind("CTRL + SHIFT + 3", hl.dsp.window.move({ workspace = 3 }),
+  { description = "Move active window to workspace 3" })
+hl.bind("CTRL + SHIFT + 4", hl.dsp.window.move({ workspace = 4 }),
+  { description = "Move active window to workspace 4" })
+hl.bind("CTRL + SHIFT + 5", hl.dsp.window.move({ workspace = 5 }),
+  { description = "Move active window to workspace 5" })
+hl.bind("CTRL + SHIFT + 6", hl.dsp.window.move({ workspace = 6 }),
+  { description = "Move active window to workspace 6" })
+hl.bind("CTRL + SHIFT + 7", hl.dsp.window.move({ workspace = 7 }),
+  { description = "Move active window to workspace 7" })
+hl.bind("CTRL + SHIFT + 8", hl.dsp.window.move({ workspace = 8 }),
+  { description = "Move active window to workspace 8" })
+hl.bind("CTRL + SHIFT + 9", hl.dsp.window.move({ workspace = 9 }),
+  { description = "Move active window to workspace 9" })
 
 -- Move/resize windows with mouse (SUPER + SHIFT + left/right click)
 hl.bind("SUPER + SHIFT + mouse:272", hl.dsp.window.drag(), { mouse = true, description = "Move window with mouse" })
@@ -59,18 +67,28 @@ hl.bind("SUPER + SHIFT + k", hl.dsp.window.swap({ direction = "up" }), { descrip
 hl.bind("SUPER + SHIFT + l", hl.dsp.window.swap({ direction = "right" }), { description = "Swap window right" })
 
 -- Resize windows with (SUPER + CONTROL + h/j/k/l)
-hl.bind("SUPER + CONTROL + h", hl.dsp.window.resize({ x = -20, y = 0, relative = true }), { repeating = true, description = "Resize window left" })
-hl.bind("SUPER + CONTROL + j", hl.dsp.window.resize({ x = 0, y = 20, relative = true }), { repeating = true, description = "Resize window down" })
-hl.bind("SUPER + CONTROL + k", hl.dsp.window.resize({ x = 0, y = -20, relative = true }), { repeating = true, description = "Resize window up" })
-hl.bind("SUPER + CONTROL + l", hl.dsp.window.resize({ x = 20, y = 0, relative = true }), { repeating = true, description = "Resize window right" })
+hl.bind("SUPER + CONTROL + h", hl.dsp.window.resize({ x = -20, y = 0, relative = true }),
+  { repeating = true, description = "Resize window left" })
+hl.bind("SUPER + CONTROL + j", hl.dsp.window.resize({ x = 0, y = 20, relative = true }),
+  { repeating = true, description = "Resize window down" })
+hl.bind("SUPER + CONTROL + k", hl.dsp.window.resize({ x = 0, y = -20, relative = true }),
+  { repeating = true, description = "Resize window up" })
+hl.bind("SUPER + CONTROL + l", hl.dsp.window.resize({ x = 20, y = 0, relative = true }),
+  { repeating = true, description = "Resize window right" })
 
 -- Laptop multimedia keys for volume and LCD brightness
-hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("/etc/hypr/scripts/volume.sh --inc 1"), { locked = true, repeating = true, description = "Increase volume" })
-hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("/etc/hypr/scripts/volume.sh --dec 1"), { locked = true, repeating = true, description = "Decrease volume" })
-hl.bind("XF86AudioMute", hl.dsp.exec_cmd("/etc/hypr/scripts/volume.sh --toggle-mute-vol"), { locked = true, repeating = true, description = "Toggle mute volume" })
-hl.bind("XF86AudioMicMute", hl.dsp.exec_cmd("/etc/hypr/scripts/volume.sh --toggle-mute-mic"), { locked = true, repeating = true, description = "Toggle mute microphone" })
-hl.bind("XF86MonBrightnessUp", hl.dsp.exec_cmd("/etc/hypr/scripts/brightness.sh --inc 5"), { locked = true, repeating = true, description = "Increase brightness" })
-hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("/etc/hypr/scripts/brightness.sh --dec 5"), { locked = true, repeating = true, description = "Decrease brightness" })
+hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("/etc/hypr/scripts/volume.sh --inc 1"),
+  { locked = true, repeating = true, description = "Increase volume" })
+hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("/etc/hypr/scripts/volume.sh --dec 1"),
+  { locked = true, repeating = true, description = "Decrease volume" })
+hl.bind("XF86AudioMute", hl.dsp.exec_cmd("/etc/hypr/scripts/volume.sh --toggle-mute-vol"),
+  { locked = true, repeating = true, description = "Toggle mute volume" })
+hl.bind("XF86AudioMicMute", hl.dsp.exec_cmd("/etc/hypr/scripts/volume.sh --toggle-mute-mic"),
+  { locked = true, repeating = true, description = "Toggle mute microphone" })
+hl.bind("XF86MonBrightnessUp", hl.dsp.exec_cmd("/etc/hypr/scripts/brightness.sh --inc 5"),
+  { locked = true, repeating = true, description = "Increase brightness" })
+hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("/etc/hypr/scripts/brightness.sh --dec 5"),
+  { locked = true, repeating = true, description = "Decrease brightness" })
 
 -- Requires playerctl
 hl.bind("XF86AudioNext", hl.dsp.exec_cmd("playerctl next"), { locked = true, description = "Next track" })
@@ -79,5 +97,7 @@ hl.bind("XF86AudioPlay", hl.dsp.exec_cmd("playerctl play-pause"), { locked = tru
 hl.bind("XF86AudioPrev", hl.dsp.exec_cmd("playerctl previous"), { locked = true, description = "Previous track" })
 
 -- Screenshot
-hl.bind("SUPER + SHIFT + 3", hl.dsp.exec_cmd("/etc/hypr/scripts/screenshot.sh --window"), { description = "Screenshot window" })
-hl.bind("SUPER + SHIFT + 4", hl.dsp.exec_cmd("/etc/hypr/scripts/screenshot.sh --region"), { description = "Screenshot region" })
+hl.bind("SUPER + SHIFT + 3", hl.dsp.exec_cmd("/etc/hypr/scripts/screenshot.sh --window"),
+  { description = "Screenshot window" })
+hl.bind("SUPER + SHIFT + 4", hl.dsp.exec_cmd("/etc/hypr/scripts/screenshot.sh --region"),
+  { description = "Screenshot region" })

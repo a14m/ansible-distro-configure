@@ -3,7 +3,11 @@
 -- See https://wiki.hypr.land/Configuring/Window-Rules/
 
 -- Scroll nicely in the terminal
-hl.window_rule({ name = "scroll-touchpad-alacritty-kitty", match = { class = "(Alacritty|kitty)" }, scroll_touchpad = 1.5 })
+hl.window_rule({
+  name = "scroll-touchpad-alacritty-kitty",
+  match = { class = "(Alacritty|kitty)" },
+  scroll_touchpad = 1.5,
+})
 hl.window_rule({ name = "scroll-touchpad-ghostty", match = { class = "com.mitchellh.ghostty" }, scroll_touchpad = 0.2 })
 
 -- Floating windows
@@ -46,8 +50,16 @@ hl.window_rule({
   match = { class = "([fF]irefox|zen|librewolf)" },
   tag = "+firefox-based-browser",
 })
-hl.window_rule({ name = "chromium-based-browser-opacity", match = { tag = "chromium-based-browser" }, opacity = "1.0 override 0.97 override" })
-hl.window_rule({ name = "firefox-based-browser-opacity", match = { tag = "firefox-based-browser" }, opacity = "1.0 override 0.97 override" })
+hl.window_rule({
+  name = "chromium-based-browser-opacity",
+  match = { tag = "chromium-based-browser" },
+  opacity = "1.0 override 0.97 override",
+})
+hl.window_rule({
+  name = "firefox-based-browser-opacity",
+  match = { tag = "firefox-based-browser" },
+  opacity = "1.0 override 0.97 override",
+})
 
 -- Pinentry windows
 hl.window_rule({ name = "pinentry-stay-focused", match = { class = "(pinentry-)(.*)" }, stay_focused = true })
@@ -56,7 +68,11 @@ hl.window_rule({ name = "pinentry-stay-focused", match = { class = "(pinentry-)(
 hl.window_rule({ name = "steam-float", match = { class = "steam" }, float = true })
 hl.window_rule({ name = "steam-center", match = { class = "steam", title = "Steam" }, center = true })
 hl.window_rule({ name = "steam-opacity", match = { title = "Steam" }, opacity = "1.0 override 1.0 override" })
-hl.window_rule({ name = "steam-friends-list-size", match = { class = "steam", title = "Friends List" }, size = "460 800" })
+hl.window_rule({
+  name = "steam-friends-list-size",
+  match = { class = "steam", title = "Friends List" },
+  size = "460 800",
+})
 
 -- Power menu
 -- Workaround dimming, by creating a 1x1 behind the tofi menu and configure dimming around that window

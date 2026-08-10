@@ -17,4 +17,5 @@ case "${MODE}" in
         exit 0
         ;;
 
-esac | satty --filename - --disable-notifications --output-filename "$(xdg-user-dir PICTURES)/screenshot-%Y%m%d_%H%M%S.png"
+esac | satty --filename - --disable-notifications \
+    --output-filename "$(xdg-user-dir PICTURES)/screenshot-%Y%m%d_%H%M%S.png"
