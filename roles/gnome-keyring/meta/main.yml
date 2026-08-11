@@ -1,9 +1,8 @@
 ---
-dependencies:
-  - role: "gnome-keyring"
+dependencies: []
 galaxy_info:
   author: "a14m"
-  description: "Install gnome-calendar"
+  description: "Install gnome-keyring"
   license: "MIT"
   min_ansible_version: "2.18"
   platforms:
