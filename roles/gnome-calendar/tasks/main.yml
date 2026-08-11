@@ -4,3 +4,10 @@
   ansible.builtin.package:
     name: "gnome-calendar"
     state: "present"
+
+- name: "Ensure gnome-online-accounts is installed"
+  become: true
+  when: ansible_facts.os_family == "Archlinux"
+  ansible.builtin.package:
+    name: "gnome-online-accounts"
+    state: "present"
