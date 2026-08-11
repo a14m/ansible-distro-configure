@@ -19,6 +19,15 @@
     group: "caddy"
     mode: "0750"
 
+- name: "Ensure caddy log directory exists"
+  become: true
+  ansible.builtin.file:
+    path: "/var/log/caddy"
+    state: "directory"
+    owner: "caddy"
+    group: "caddy"
+    mode: "0750"
+
 - name: "Create Caddyfile"
   become: true
   ansible.builtin.template:

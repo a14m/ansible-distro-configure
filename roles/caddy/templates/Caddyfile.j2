@@ -1,5 +1,11 @@
 {
 	local_certs
+	log {
+		output file /var/log/caddy/caddy.log {
+			roll_size 10mb
+			roll_keep 5
+		}
+	}
 {% if caddy_metrics_port | length > 0 %}
 	servers {
 		metrics
