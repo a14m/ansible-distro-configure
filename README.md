@@ -4,10 +4,12 @@ Ansible roles and playbooks to configure different *nix distros.
 
 ## Prerequisite
 
-- [Ansible][ansible]
+- [mise][mise] — run `mise install` to get `uv`, then `uv sync` to install the pinned
+  `ansible-core`/`ansible-lint`/`molecule` (see `pyproject.toml`). Invoke commands via
+  `uv run`, e.g. `uv run ansible-playbook site.yml --ask-become-pass`.
 - [`git-crypt`][git-crypt] **optional** for keeping encrypted configurations.
 
-[ansible]: https://docs.ansible.com/ansible/latest/index.html
+[mise]: https://mise.jdx.dev/
 [git-crypt]: https://github.com/AGWA/git-crypt
 
 If you are using `git-crypt`, setup your key, and override the encrypted files (`host_vars/*.yml`)

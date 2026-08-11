@@ -1,0 +1,10 @@
+[project]
+name = "ansible-distro-configure"
+version = "0.0.0"
+requires-python = ">=3.12"
+dependencies = [
+  "ansible-core==2.21.2",
+  "ansible-lint==25.9.2",
+  "molecule==26.4.0",
+  "molecule-plugins[docker,podman]==26.7.15",
+]
