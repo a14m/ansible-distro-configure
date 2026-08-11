@@ -25,6 +25,34 @@
 - name: "Include OS-specific installation tasks"
   ansible.builtin.include_tasks: "install-{{ ansible_facts.os_family | lower }}.yml"
 
+- name: "Grant alloy read access to existing scrape target files"
+  become: true
+  ansible.posix.acl:
+    path: "{{ target.path | dirname }}"
+    entity: "alloy"
+    etype: "group"
+    permissions: "rx"
+    recursive: true
+    state: "present"
+  loop: "{{ alloy_file_scrape_targets }}"
+  loop_control:
+    loop_var: "target"
+    label: "{{ target.name }}"
+
+- name: "Grant alloy read access to future (e.g. rotated) scrape target files"
+  become: true
+  ansible.posix.acl:
+    path: "{{ target.path | dirname }}"
+    entity: "alloy"
+    etype: "group"
+    permissions: "rx"
+    default: true
+    state: "present"
+  loop: "{{ alloy_file_scrape_targets }}"
+  loop_control:
+    loop_var: "target"
+    label: "{{ target.name }}"
+
 - name: "Create alloy configuration directory"
   become: true
   ansible.builtin.file:
