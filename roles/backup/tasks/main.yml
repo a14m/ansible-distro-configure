@@ -42,6 +42,38 @@
     mode: "0600"
   no_log: true
 
+- name: "Grant backup traverse access to backup path parent directories"
+  become: true
+  ansible.posix.acl:
+    path: "{{ item }}"
+    entity: "{{ backup_group }}"
+    etype: "group"
+    permissions: "x"
+    state: "present"
+  loop: "{{ backup_paths | map('dirname') | unique | list }}"
+
+- name: "Grant backup read access to existing files in backup paths"
+  become: true
+  ansible.posix.acl:
+    path: "{{ item }}"
+    entity: "{{ backup_group }}"
+    etype: "group"
+    permissions: "rx"
+    recursive: true
+    state: "present"
+  loop: "{{ backup_paths }}"
+
+- name: "Grant backup read access to future files in backup paths"
+  become: true
+  ansible.posix.acl:
+    path: "{{ item }}"
+    entity: "{{ backup_group }}"
+    etype: "group"
+    permissions: "rx"
+    default: true
+    state: "present"
+  loop: "{{ backup_paths }}"
+
 - name: "Include service-manager-specific configuration tasks"
   ansible.builtin.include_tasks: "configure-{{ ansible_facts.service_mgr }}.yml"
 
