@@ -5,8 +5,18 @@ loki.write "default" {
 }
 
 {% if ansible_facts.service_mgr == "systemd" %}
-loki.source.journal "read" {
+loki.process "journal" {
   forward_to = [loki.write.default.receiver]
+
+{% for expression in alloy_journal_drop_expressions %}
+  stage.drop {
+    expression = "{{ expression }}"
+  }
+{% endfor %}
+}
+
+loki.source.journal "read" {
+  forward_to = [loki.process.journal.receiver]
   labels = {
     host = "{{ ansible_facts.hostname }}",
   }

@@ -20,3 +20,8 @@ argument_specs:
             description: "Absolute path (glob supported) of the log file(s) to tail"
             type: "str"
             required: true
+      alloy_journal_drop_expressions:
+        description: "RE2 regexes matched against journal log lines; matching lines are dropped before reaching Loki"
+        type: "list"
+        elements: "str"
+        default: []
