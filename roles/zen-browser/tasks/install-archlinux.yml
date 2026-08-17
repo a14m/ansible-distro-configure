@@ -9,6 +9,6 @@
 
 - name: "Set Zen Browser as default"
   ansible.builtin.command:
-    cmd: "xdg-settings set default-web-browser zen-browser-bin.desktop"
+    cmd: "xdg-settings set default-web-browser zen.desktop"
   changed_when: false
   when: zen_browser_is_default | default(false)
