@@ -14,6 +14,40 @@
     shell: "/sbin/nologin"
     create_home: false
 
+# Walks each backup path's ancestors, granting execute-only traversal so the
+# backup user can reach it even through a private (mode 0700) home directory.
+- name: "Grant backup traverse access to backup path ancestor directories"
+  become: true
+  ansible.builtin.shell: |
+    set -e
+    path={{ item | quote }}
+    while true; do
+      path=$(dirname "$path")
+      [ "$path" = "/" ] && break
+      setfacl -m "g:{{ backup_group }}:x" "$path"
+    done
+  changed_when: false
+  loop: "{{ backup_paths }}"
+
+# -m grants access on files/dirs that already exist; -d -m is a default ACL so
+# anything created later (e.g. an app rewriting a file via temp-then-rename)
+# inherits read access too. Both need -R to reach every subdirectory.
+# ansible.posix.acl's recursive + default combo silently no-ops instead of
+# doing this (tested on 2.1.0), so setfacl is called directly here.
+# NOTE: backup_group gets execute (traverse) on every ancestor of backup_paths
+# (e.g. the whole home dir chain). Any sibling directory under that chain that
+# is already world-readable becomes reachable too — accepted tradeoff.
+- name: "Grant backup read access to backup paths"
+  become: true
+  ansible.builtin.command:
+    cmd: >-
+      setfacl -R
+      -m "g:{{ backup_group }}:rx"
+      -d -m "g:{{ backup_group }}:rx"
+      {{ item | quote }}
+  changed_when: false
+  loop: "{{ backup_paths }}"
+
 - name: "Create restic cache directory"
   become: true
   ansible.builtin.file:
@@ -41,38 +75,6 @@
     group: "root"
     mode: "0600"
   no_log: true
-
-- name: "Grant backup traverse access to backup path parent directories"
-  become: true
-  ansible.posix.acl:
-    path: "{{ item }}"
-    entity: "{{ backup_group }}"
-    etype: "group"
-    permissions: "x"
-    state: "present"
-  loop: "{{ backup_paths | map('dirname') | unique | list }}"
-
-- name: "Grant backup read access to existing files in backup paths"
-  become: true
-  ansible.posix.acl:
-    path: "{{ item }}"
-    entity: "{{ backup_group }}"
-    etype: "group"
-    permissions: "rx"
-    recursive: true
-    state: "present"
-  loop: "{{ backup_paths }}"
-
-- name: "Grant backup read access to future files in backup paths"
-  become: true
-  ansible.posix.acl:
-    path: "{{ item }}"
-    entity: "{{ backup_group }}"
-    etype: "group"
-    permissions: "rx"
-    default: true
-    state: "present"
-  loop: "{{ backup_paths }}"
 
 - name: "Include service-manager-specific configuration tasks"
   ansible.builtin.include_tasks: "configure-{{ ansible_facts.service_mgr }}.yml"

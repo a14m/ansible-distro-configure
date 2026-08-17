@@ -53,6 +53,8 @@
     - role: "prometheus-node-exporter"
     - role: "alloy"
     - role: "gpu_driver"
+    - role: "backup"
+      when: inventory_hostname == "desktop.local"
   tasks:
     - name: "Configure distro roles"
       when: ansible_distribution == role.distro
