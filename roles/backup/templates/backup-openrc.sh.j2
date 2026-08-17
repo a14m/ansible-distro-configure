@@ -8,6 +8,7 @@ export RESTIC_REPOSITORY="${BACKUP_REPO}"
 export RESTIC_PASSWORD="${BACKUP_PASSWORD}"
 export AWS_ACCESS_KEY_ID="${BACKUP_ACCESS_KEY_ID}"
 export AWS_SECRET_ACCESS_KEY="${BACKUP_SECRET_ACCESS_KEY}"
+export AWS_DEFAULT_REGION="${BACKUP_S3_REGION}"
 export CACHE_DIR="/var/cache/{{ backup_name }}-backup"
 
 # -p (--preserve-environment) -s (--shell): busybox su has no long-form flags

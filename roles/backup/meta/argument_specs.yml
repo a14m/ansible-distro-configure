@@ -35,6 +35,10 @@ argument_specs:
         type: "str"
         description: "Restic repository URL (e.g. s3:http://machine.local:3900/backups)"
         required: true
+      backup_s3_region:
+        type: "str"
+        description: "S3 region to sign requests with (e.g. required by Garage)"
+        default: ""
       backup_access_key_id:
         type: "str"
         description: "S3 access key ID"
@@ -63,7 +67,8 @@ argument_specs:
           {% raw %}/etc/credstore/{{ backup_name }}-backup.env{% endraw %}, export
           RESTIC_REPOSITORY="$BACKUP_REPO" RESTIC_PASSWORD="$BACKUP_PASSWORD"
           AWS_ACCESS_KEY_ID="$BACKUP_ACCESS_KEY_ID"
-          AWS_SECRET_ACCESS_KEY="$BACKUP_SECRET_ACCESS_KEY", then run
+          AWS_SECRET_ACCESS_KEY="$BACKUP_SECRET_ACCESS_KEY"
+          AWS_DEFAULT_REGION="$BACKUP_S3_REGION", then run
           restic snapshots
         default: "latest"
       restore_target:

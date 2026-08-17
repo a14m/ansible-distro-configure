@@ -54,6 +54,7 @@ backup_paths:
   - "/var/lib/radicale/collections"
 backup_cron_schedule: "0 0 * * 0"
 backup_repo: "s3:http://10.0.0.254:3900/backups"
+backup_s3_region: "garage"
 backup_access_key_id: "GK_CHANGEME"
 backup_secret_access_key: "CHANGEME"
 backup_password: "changeme"

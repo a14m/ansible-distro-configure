@@ -8,6 +8,7 @@ export RESTIC_REPOSITORY="${BACKUP_REPO}"
 export RESTIC_PASSWORD="${BACKUP_PASSWORD}"
 export AWS_ACCESS_KEY_ID="${BACKUP_ACCESS_KEY_ID}"
 export AWS_SECRET_ACCESS_KEY="${BACKUP_SECRET_ACCESS_KEY}"
+export AWS_DEFAULT_REGION="${BACKUP_S3_REGION}"
 
 # Runs as root (unlike backup, which drops to an unprivileged user): restore
 # writes into paths owned by other service accounts and needs to set their
