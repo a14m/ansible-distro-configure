@@ -1,0 +1,6 @@
+---
+- name: "Ensure solaar is installed"
+  become: true
+  ansible.builtin.package:
+    name: "solaar"
+    state: "present"

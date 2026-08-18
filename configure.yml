@@ -19,6 +19,7 @@
     - role: "whois"
     - role: "nmap"
     - role: "usbutils"
+    - role: "solaar"
     - role: "libheif"
     - role: "tmuxinator"
     - role: "rsync"

@@ -90,6 +90,7 @@
     - role: "zoxide"
     - role: "gum"
     - role: "usbutils"
+    - role: "solaar"
     - role: "docker"
     - role: "podman"
     - role: "ansible"

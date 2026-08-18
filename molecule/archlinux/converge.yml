@@ -123,6 +123,7 @@
     - role: "waybar"
     - role: "hyprland"
     - role: "usbutils"
+    - role: "solaar"
     - role: "nginx"
     - role: "prometheus"
     - role: "prometheus-node-exporter"
