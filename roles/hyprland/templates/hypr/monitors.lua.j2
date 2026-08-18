@@ -4,3 +4,8 @@ hl.monitor({
   position = "auto",
   scale = 1
 })
+{% for mon in hyprland_workspace_monitors %}
+{% for ws in mon.workspaces %}
+hl.workspace_rule({ workspace = "{{ ws }}", monitor = "{{ mon.monitor }}"{% if loop.first %}, default = true{% endif %} })
+{% endfor %}
+{% endfor %}

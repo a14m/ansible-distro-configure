@@ -6,3 +6,11 @@ argument_specs:
         type: "int"
         default: 1
         description: "GDK_SCALE value exported via uwsm env; use 2 for HiDPI/4K displays with fractional scaling"
+      hyprland_workspace_monitors:
+        type: "list"
+        elements: "dict"
+        default: []
+        description: >-
+          Pins workspaces to monitors, matched by `desc:<monitor description>` (see `hyprctl monitors`,
+          same description strings used in kanshi_profiles). Each item: monitor (string), workspaces
+          (list of strings, first one is the monitor's default workspace).
