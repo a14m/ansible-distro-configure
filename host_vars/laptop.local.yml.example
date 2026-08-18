@@ -48,7 +48,7 @@ fonts_extra:
 
 hyprland_nvidia: false
 hyprland_gdk_scale: 2
-hyprland_kanshi_profiles: |
+kanshi_profiles: |
   profile default {
       output * mode preferred position 0,0 scale 1.6
   }

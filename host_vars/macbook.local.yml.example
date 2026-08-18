@@ -64,7 +64,7 @@ firefox_extra_extensions:
 # `hyprctl monitors` (use "Unknown" for any missing field), not just the
 # model name — otherwise the profile silently never matches and kanshi
 # does nothing.
-hyprland_kanshi_profiles: |
+kanshi_profiles: |
   profile docked {
       output "Apple Computer Inc Built-in Display Unknown" disable
       output "Some Company LEFT-MODEL 1234ABCD" mode 2560x1440@59.95Hz position 0,0 scale 1.0

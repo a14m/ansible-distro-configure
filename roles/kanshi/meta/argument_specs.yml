@@ -1,0 +1,9 @@
+---
+argument_specs:
+  main:
+    options:
+      kanshi_profiles:
+        type: "str"
+        description: >-
+          Raw kanshi profile config deployed to ~/.config/kanshi/config;
+          falls back to a generic single-monitor profile when unset

@@ -1,0 +1,53 @@
+---
+- name: "Ensure kanshi is installed"
+  become: true
+  ansible.builtin.package:
+    name:
+      - "kanshi"
+    state: "present"
+
+- name: "Create config directories"
+  become: true
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: "directory"
+    mode: "0755"
+  loop:
+    - "/etc/xdg/kanshi"
+    - "{{ ansible_facts.env.HOME }}/.config/kanshi"
+
+- name: "Configure system defaults"
+  become: true
+  ansible.builtin.template:
+    src: "kanshi/config.j2"
+    dest: "/etc/xdg/kanshi/config"
+    mode: "0644"
+  notify: "Restart kanshi"
+
+- name: "Configure user defaults"
+  ansible.builtin.blockinfile:
+    path: "{{ ansible_facts.env.HOME }}/.config/kanshi/config"
+    state: "present"
+    prepend_newline: true
+    append_newline: true
+    marker: "# ==== {mark} ANSIBLE KANSHI CONFIG"
+    block: |
+      # System defaults
+      include /etc/xdg/kanshi/config
+  notify: "Restart kanshi"
+
+- name: "Configure kanshi systemd user service"
+  become: true
+  ansible.builtin.template:
+    src: "systemd/kanshi.service.j2"
+    dest: "/etc/systemd/user/kanshi.service"
+    mode: "0644"
+  notify: "Restart kanshi"
+
+- name: "Ensure kanshi service is enabled and started"
+  ansible.builtin.systemd_service:
+    name: "kanshi.service"
+    enabled: true
+    state: "started"
+    scope: "user"
+    daemon_reload: true

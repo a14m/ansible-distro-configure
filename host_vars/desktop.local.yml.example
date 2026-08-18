@@ -48,7 +48,7 @@ fonts_extra:
   - "noto-fonts"
 
 hyprland_gdk_scale: 2
-hyprland_kanshi_profiles: |
+kanshi_profiles: |
   profile home {
       output "Left Monitor" mode 3840x2160@60Hz position 0,0 scale 1.6
       output "Right Monitor" mode 3840x2160@60Hz position 2400,0 scale 1.6
