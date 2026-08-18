@@ -54,6 +54,10 @@ hl.bind("CTRL + SHIFT + 9", hl.dsp.window.move({ workspace = 9 }),
 hl.bind("SUPER + SHIFT + mouse:272", hl.dsp.window.drag(), { mouse = true, description = "Move window with mouse" })
 hl.bind("SUPER + SHIFT + mouse:273", hl.dsp.window.resize(), { mouse = true, description = "Move window with mouse" })
 
+-- Cycle windows (alt-tab style) with SUPER + TAB
+hl.bind("SUPER + TAB", hl.dsp.window.cycle_next({ next = true }), { description = "Cycle to next window" })
+hl.bind("SUPER + SHIFT + TAB", hl.dsp.window.cycle_next({ next = false }), { description = "Cycle to previous window" })
+
 -- Move focus with (SUPER + h/j/k/l)
 hl.bind("SUPER + h", hl.dsp.focus({ direction = "left" }), { description = "Move focus left" })
 hl.bind("SUPER + j", hl.dsp.focus({ direction = "down" }), { description = "Move focus down" })
