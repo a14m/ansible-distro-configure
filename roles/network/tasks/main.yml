@@ -68,6 +68,21 @@
     group: "root"
     mode: "0644"
 
+# Static entries so hosts in the homelab group resolve each other without
+# depending on mDNS (which doesn't reliably cross the wifi/wired boundary on
+# consumer APs) or on rpi5's pihole being up.
+- name: "Configure static /etc/hosts entries for homelab machines"
+  become: true
+  ansible.builtin.blockinfile:
+    path: "/etc/hosts"
+    marker: "# {mark} ANSIBLE MANAGED BLOCK - homelab static hosts"
+    block: |
+      {% for host in groups['homelab'] %}
+      {% if host != inventory_hostname and hostvars[host].network_ipv4_address is defined %}
+      {{ hostvars[host].network_ipv4_address }}	{{ host }}
+      {% endif %}
+      {% endfor %}
+
 - name: "Configure NetworkManager"
   become: true
   notify:
