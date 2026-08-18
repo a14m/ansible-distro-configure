@@ -64,11 +64,11 @@ hl.bind("SUPER + j", hl.dsp.focus({ direction = "down" }), { description = "Move
 hl.bind("SUPER + k", hl.dsp.focus({ direction = "up" }), { description = "Move focus up" })
 hl.bind("SUPER + l", hl.dsp.focus({ direction = "right" }), { description = "Move focus right" })
 
--- Swap windows with (SUPER + SHIFT + h/j/k/l)
-hl.bind("SUPER + SHIFT + h", hl.dsp.window.swap({ direction = "left" }), { description = "Swap window left" })
-hl.bind("SUPER + SHIFT + j", hl.dsp.window.swap({ direction = "down" }), { description = "Swap window down" })
-hl.bind("SUPER + SHIFT + k", hl.dsp.window.swap({ direction = "up" }), { description = "Swap window up" })
-hl.bind("SUPER + SHIFT + l", hl.dsp.window.swap({ direction = "right" }), { description = "Swap window right" })
+-- Move windows within workspace with (SUPER + SHIFT + h/j/k/l)
+hl.bind("SUPER + SHIFT + h", hl.dsp.window.move({ direction = "left" }), { description = "Move window left" })
+hl.bind("SUPER + SHIFT + j", hl.dsp.window.move({ direction = "down" }), { description = "Move window down" })
+hl.bind("SUPER + SHIFT + k", hl.dsp.window.move({ direction = "up" }), { description = "Move window up" })
+hl.bind("SUPER + SHIFT + l", hl.dsp.window.move({ direction = "right" }), { description = "Move window right" })
 
 -- Resize windows with (SUPER + CONTROL + h/j/k/l)
 hl.bind("SUPER + CONTROL + h", hl.dsp.window.resize({ x = -20, y = 0, relative = true }),
