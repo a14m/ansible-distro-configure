@@ -24,3 +24,15 @@ pve_lxc_ssh_private_key: |
       -----END OPENSSH PRIVATE KEY-----
 
 loki_port: 3100
+
+ufw_rules:
+  - rule: "allow"
+    port: "{{ ssh_port }}"
+    protocol: "tcp"
+    direction: "in"
+    from: "10.0.0.0/24"
+  - rule: "allow"
+    port: "{{ loki_port }}"
+    protocol: "tcp"
+    direction: "in"
+    from: "10.0.0.0/24"

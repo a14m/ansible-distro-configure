@@ -24,3 +24,25 @@ pve_lxc_ssh_private_key: |
       -----END OPENSSH PRIVATE KEY-----
 
 caddy_metrics_port: "9091"
+
+ufw_rules:
+  - rule: "allow"
+    port: "{{ ssh_port }}"
+    protocol: "tcp"
+    direction: "in"
+    from: "10.0.0.0/24"
+  - rule: "allow"
+    port: 80
+    protocol: "tcp"
+    direction: "in"
+    from: "10.0.0.0/24"
+  - rule: "allow"
+    port: 443
+    protocol: "tcp"
+    direction: "in"
+    from: "10.0.0.0/24"
+  - rule: "allow"
+    port: "{{ caddy_metrics_port }}"
+    protocol: "tcp"
+    direction: "in"
+    from: "{{ hostvars['metrics.home.arpa'].network_ipv4_address }}"

@@ -31,3 +31,21 @@ pve_lxc_ssh_private_key: |
 tailscale_auth_key: "CHANGEME"
 tailscale_advertise_routes:
   - "10.0.0.0/24"
+
+ufw_rules:
+  - rule: "allow"
+    port: "{{ ssh_port }}"
+    protocol: "tcp"
+    direction: "in"
+    from: "10.0.0.0/24"
+
+# Subnet-router traffic (tailnet peers -> LAN) crosses the FORWARD chain, which ufw
+# doesn't filter by default, so no rule is needed for routing itself.
+# Tailscale's own peer/relay UDP port (commonly 41641) is NOT opened here by
+# default - verify the live port first (`tailscale status` / `ss -lun`), then
+# add to ufw_rules above:
+#   - rule: "allow"
+#     port: 41641
+#     protocol: "udp"
+#     direction: "in"
+#     from: "any"

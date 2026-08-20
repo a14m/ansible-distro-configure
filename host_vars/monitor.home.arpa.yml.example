@@ -70,3 +70,15 @@ grafana_dashboards:
     datasource_mappings:
       - key: "${DS_PROMETHEUS}"
         value: "prometheus"
+
+ufw_rules:
+  - rule: "allow"
+    port: "{{ ssh_port }}"
+    protocol: "tcp"
+    direction: "in"
+    from: "10.0.0.0/24"
+  - rule: "allow"
+    port: "{{ grafana_port }}"
+    protocol: "tcp"
+    direction: "in"
+    from: "{{ hostvars['proxy.home.arpa'].network_ipv4_address }}"

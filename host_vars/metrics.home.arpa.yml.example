@@ -48,3 +48,20 @@ prometheus_extra_scrape_configs:
     targets:
       - "{{ hostvars['logs.home.arpa'].network_ipv4_address }}:{{ hostvars['logs.home.arpa'].loki_port }}"
     metrics_path: "/metrics"
+
+ufw_rules:
+  - rule: "allow"
+    port: "{{ ssh_port }}"
+    protocol: "tcp"
+    direction: "in"
+    from: "10.0.0.0/24"
+  - rule: "allow"
+    port: "{{ prometheus_port }}"
+    protocol: "tcp"
+    direction: "in"
+    from: "{{ hostvars['proxy.home.arpa'].network_ipv4_address }}"
+  - rule: "allow"
+    port: "{{ prometheus_port }}"
+    protocol: "tcp"
+    direction: "in"
+    from: "{{ hostvars['monitor.home.arpa'].network_ipv4_address }}"

@@ -7,6 +7,7 @@
     - role: "caddy"
     - role: "cloudflared"
     - role: "alloy"
+    - role: "ufw"
 
 - name: "Git configure"
   gather_facts: true
@@ -16,6 +17,7 @@
     - role: "cgit"
     - role: "backup"
     - role: "alloy"
+    - role: "ufw"
 
 - name: "Caldav configure"
   gather_facts: true
@@ -25,6 +27,7 @@
     - role: "radicale"
     - role: "backup"
     - role: "alloy"
+    - role: "ufw"
 
 - name: "Tailscale configure"
   gather_facts: true
@@ -33,6 +36,7 @@
   roles:
     - role: "tailscale"
     - role: "alloy"
+    - role: "ufw"
 
 - name: "Logs configure"
   gather_facts: true
@@ -41,6 +45,7 @@
   roles:
     - role: "loki"
     - role: "alloy"
+    - role: "ufw"
 
 - name: "Metrics configure"
   gather_facts: true
@@ -49,6 +54,7 @@
   roles:
     - role: "prometheus"
     - role: "alloy"
+    - role: "ufw"
 
 - name: "Monitor configure"
   gather_facts: true
@@ -57,3 +63,4 @@
   roles:
     - role: "grafana"
     - role: "alloy"
+    - role: "ufw"
