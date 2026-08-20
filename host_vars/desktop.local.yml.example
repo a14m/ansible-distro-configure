@@ -58,3 +58,15 @@ zen_browser_install_browserpass: true
 zen_browser_install_passff: false
 firefox_install_browserpass: false
 firefox_install_passff: true
+
+ufw_rules:
+  - rule: "allow"
+    port: "{{ ssh_port }}"
+    protocol: "tcp"
+    direction: "in"
+    from: "10.0.0.0/24"
+  - rule: "allow"
+    port: "{{ node_exporter_port }}"
+    protocol: "tcp"
+    direction: "in"
+    from: "10.0.0.106"

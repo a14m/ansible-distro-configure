@@ -54,3 +54,15 @@ kanshi_profiles: |
   }
 
 logind_lid_ac_action: "ignore"
+
+ufw_rules:
+  - rule: "allow"
+    port: "{{ ssh_port }}"
+    protocol: "tcp"
+    direction: "in"
+    from: "10.0.0.0/24"
+  - rule: "allow"
+    port: "{{ node_exporter_port }}"
+    protocol: "tcp"
+    direction: "in"
+    from: "10.0.0.106"

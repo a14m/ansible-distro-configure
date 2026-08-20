@@ -24,3 +24,32 @@ restic_version: "0.19.0"
 
 ethtool_wol_interface: "eth0"
 logind_lid_ac_action: "ignore"
+
+# 8006 is Proxmox's default web UI port, not templated anywhere in this repo.
+# Restricted to admin workstations rather than the whole LAN.
+ufw_rules:
+  - rule: "allow"
+    port: "{{ ssh_port }}"
+    protocol: "tcp"
+    direction: "in"
+    from: "10.0.0.0/24"
+  - rule: "allow"
+    port: 8006
+    protocol: "tcp"
+    direction: "in"
+    from: "10.0.0.201"
+  - rule: "allow"
+    port: 8006
+    protocol: "tcp"
+    direction: "in"
+    from: "10.0.0.203"
+  - rule: "allow"
+    port: 8006
+    protocol: "tcp"
+    direction: "in"
+    from: "10.0.0.202"
+  - rule: "allow"
+    port: "{{ node_exporter_port }}"
+    protocol: "tcp"
+    direction: "in"
+    from: "10.0.0.106"

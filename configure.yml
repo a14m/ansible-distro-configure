@@ -6,6 +6,7 @@
     - macbook.local
     - laptop.local
   roles:
+    - role: "ufw"
     - role: "locales"
     - role: "timezone"
     - role: "font"
@@ -80,6 +81,7 @@
   hosts:
     - rpi5.local
   roles:
+    - role: "ufw"
     - role: "pihole"
     - role: "locales"
     - role: "timezone"
@@ -113,6 +115,7 @@
   hosts:
     - pve.local
   roles:
+    - role: "ufw"
     - role: "pve"
     - role: "pve-storage"
     - role: "locales"
