@@ -28,6 +28,7 @@ pihole_dns_hosts:
   - "{{ network_ipv4_address }} rpi5.lan"
   - "{{ hostvars['desktop.local'].network_ipv4_address }} desktop.lan"
   - "{{ hostvars['laptop.local'].network_ipv4_address }} laptop.lan"
+  - "{{ hostvars['pve.local'].network_ipv4_address }} pve.lan"
   # *.home.arpa
   - "{{ network_ipv4_address }} dns.home.arpa"
   - "{{ network_ipv4_address }} vpn.home.arpa"
@@ -45,6 +46,7 @@ pihole_dns_hosts:
   - "{{ hostvars['proxy.home.arpa'].network_ipv4_address }} monitor.internal"
   - "{{ hostvars['proxy.home.arpa'].network_ipv4_address }} metrics.internal"
   - "{{ hostvars['proxy.home.arpa'].network_ipv4_address }} {{ garage_webui_hostname }}"
+  - "{{ hostvars['proxy.home.arpa'].network_ipv4_address }} vm.internal"
 
 wireguard_autostart_connection: "vpn2"
 wireguard_connections:

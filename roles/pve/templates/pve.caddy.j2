@@ -1,0 +1,7 @@
+{{ pve_hostname }} {
+	reverse_proxy https://{{ network_ipv4_address }}:8006 {
+		transport http {
+			tls_insecure_skip_verify
+		}
+	}
+}

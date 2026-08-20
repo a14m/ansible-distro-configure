@@ -75,6 +75,12 @@ Services deployed as LXC containers on `pve.local`. FQDNs resolve via Pi-hole
 | Radicale | `caldav.home.arpa` | - | CalDAV/CardDAV server |
 | Tailscale | `tailscale.home.arpa` | - | Tailscale subnet router (no HTTP vhost) |
 | Loki | `logs.home.arpa` | - | Log aggregation (no HTTP vhost; queried directly on port 3100) |
+| Proxmox VE | - | `vm.internal` | PVE hypervisor web UI (runs on `pve.local` itself, not an LXC) |
+
+Proxmox VE is the one entry above that isn't an LXC guest - it's `pve.local` itself. Its `8006`
+backend is HTTPS-only with a self-signed cert, so its `*.internal` vhost skips upstream cert
+verification instead of proxying plain HTTP like the others. Override the name with
+`pve_hostname`.
 
 For every service, `*.home.arpa` always resolves straight to that container's own IP - useful for
 direct access, but plain HTTP only (no vhost behind it for Grafana/Prometheus, since their Caddy

@@ -94,3 +94,12 @@
   tags:
     # PVE services not available in containers — proxmox-ve package was skipped
     - "molecule-notest"
+
+- name: "Create PVE proxy vhost"
+  when: pve_hostname is defined
+  ansible.builtin.include_role:
+    name: "vhost"
+  vars:
+    vhost_name: "pve"
+    vhost_nginx_content: "{{ lookup('template', 'pve.nginx.conf.j2') }}"
+    vhost_caddy_content: "{{ lookup('template', 'pve.caddy.j2') }}"

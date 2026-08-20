@@ -17,3 +17,8 @@ argument_specs:
         type: "str"
         description: "PVE realm admin password"
         default: "changeme"
+      pve_hostname:
+        type: "str"
+        description: >-
+          FQDN for the PVE vhost (e.g. 'vm.internal').
+          Leave undefined to skip vhost creation entirely.

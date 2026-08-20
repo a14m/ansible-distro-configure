@@ -1,0 +1,20 @@
+server {
+    listen 80;
+    listen [::]:80;
+
+    server_name {{ pve_hostname }};
+
+    access_log /var/log/nginx/access.log;
+    error_log /var/log/nginx/error.log;
+
+    location / {
+        proxy_pass https://{{ network_ipv4_address }}:8006;
+        proxy_ssl_verify off;
+
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_set_header Host $host;
+        proxy_read_timeout 3600;
+    }
+}

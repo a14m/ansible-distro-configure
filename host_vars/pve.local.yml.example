@@ -19,6 +19,7 @@ ssh_private_key: |
 pve_admin_user: "admin"
 pve_admin_password: "changeme"
 pve_storage_device: "/dev/sda4"
+pve_hostname: "vm.internal"
 
 restic_version: "0.19.0"
 
