@@ -1,0 +1,58 @@
+---
+argument_specs:
+  main:
+    options:
+      ufw_rules:
+        type: "list"
+        elements: "dict"
+        required: false
+        default: []
+        description: "Allow rules to apply on top of the deny-all default."
+        options:
+          rule:
+            type: "str"
+            required: true
+            choices:
+              - "allow"
+              - "deny"
+              - "limit"
+              - "reject"
+            description: "Same choices as community.general.ufw's own 'rule' argument."
+          port:
+            type: "int"
+            required: true
+            description: "Destination port to allow."
+          protocol:
+            type: "str"
+            required: true
+            choices:
+              - "any"
+              - "tcp"
+              - "udp"
+              - "ipv6"
+              - "esp"
+              - "ah"
+              - "gre"
+              - "igmp"
+              - "vrrp"
+            description: "Same choices as community.general.ufw's own 'proto' argument."
+          direction:
+            type: "str"
+            required: true
+            choices:
+              - "in"
+              - "incoming"
+              - "out"
+              - "outgoing"
+              - "routed"
+            description: "Same choices as community.general.ufw's own 'direction' argument."
+          from:
+            type: "str"
+            required: false
+            description: "Source IP/CIDR, or 'any'. Required unless 'interface' is set."
+          interface:
+            type: "str"
+            required: false
+            description: >-
+              Restrict the rule to this inbound interface instead of a source IP
+              (e.g. DHCP broadcast). Mutually exclusive with 'from'.

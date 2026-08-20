@@ -1,0 +1,5 @@
+---
+# Alpine's ufw wraps iptables, not nftables, so iptables must be installed alongside it
+ufw_packages:
+  - "ufw"
+  - "iptables"

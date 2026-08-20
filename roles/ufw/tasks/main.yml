@@ -1,0 +1,37 @@
+---
+- name: "Include OS-specific variables"
+  ansible.builtin.include_vars: "{{ ansible_facts.os_family | lower }}.yml"
+
+- name: "Ensure ufw is installed"
+  become: true
+  ansible.builtin.package:
+    name: "{{ ufw_packages }}"
+    state: "present"
+
+- name: "Set default incoming policy"
+  become: true
+  community.general.ufw:
+    direction: "incoming"
+    policy: "deny"
+
+- name: "Set default outgoing policy"
+  become: true
+  community.general.ufw:
+    direction: "outgoing"
+    policy: "allow"
+
+- name: "Apply rules"
+  become: true
+  community.general.ufw:
+    rule: "{{ item.rule }}"
+    direction: "{{ item.direction }}"
+    protocol: "{{ item.protocol }}"
+    port: "{{ item.port | string }}"
+    from: "{{ omit if item.interface is defined else item.from }}"
+    interface: "{{ item.interface | default(omit) }}"
+  loop: "{{ ufw_rules }}"
+
+- name: "Enable ufw"
+  become: true
+  community.general.ufw:
+    state: "enabled"

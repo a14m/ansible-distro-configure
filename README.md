@@ -89,6 +89,31 @@ clone URL separate. Loki has no reverse-proxy vhost - `logs.home.arpa` resolves 
 LXC's own IP, and it's reached at `http://logs.home.arpa:3100` (or by IP), since it's only ever
 consumed by Grafana and Alloy on the LAN, not exposed externally.
 
+## Firewall
+
+Every host runs `ufw` (`roles/ufw`) with deny-all inbound by default, plus explicit allow
+rules per flow, set via `ufw_rules` in each host's `host_vars/*.yml`. There is no implicit
+default: **every host's `ufw_rules` must include its own explicit `ssh_port` allow entry**,
+or applying the role locks that host out over SSH (recoverable only via `pve.local`'s
+console for LXCs, or physical/BMC console otherwise). Copy the SSH entry from an existing
+`host_vars/*.yml` when adding a new host.
+
+Beyond SSH, most container admin UIs only allow `proxy.home.arpa` as the source, not the
+whole LAN.
+
+If you need direct browser access to a locked-down service - debugging with the proxy
+down, or just poking at something without going through the vhost - use an SSH local port
+forward instead of widening the firewall rule:
+
+```bash
+ssh -L 8080:localhost:5232 caldav.home.arpa
+# then open http://localhost:8080/.web/ in your browser
+```
+
+This works for any host/port and doesn't require any firewall change: the service is
+always reachable from itself over loopback, `ufw` only filters inbound traffic from the
+network, and the tunnel only exists for as long as the SSH session is open.
+
 ## Special Thanks to
 
 - [Jeff Geerling](https://www.jeffgeerling.com/), who I learned a **LOT** from his open-source work.

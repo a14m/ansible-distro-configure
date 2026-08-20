@@ -1,0 +1,20 @@
+---
+dependencies: []
+galaxy_info:
+  author: "a14m"
+  description: "Configure deny-by-default ufw firewall with per-flow allow rules"
+  license: "MIT"
+  min_ansible_version: "2.18"
+  platforms:
+    - name: "ArchLinux"
+      versions:
+        - "all"
+    - name: "Ubuntu"
+      versions:
+        - "noble"
+    - name: "Debian"
+      versions:
+        - "bookworm"
+    - name: "Alpine"
+      versions:
+        - "all"
