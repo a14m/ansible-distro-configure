@@ -54,6 +54,16 @@ kanshi_profiles: |
       output "Right Monitor" mode 3840x2160@60Hz position 2400,0 scale 1.6
   }
 
+backup_name: "zen-browser"
+backup_paths:
+  - "/home/test_user/.zen"
+backup_systemd_schedule: "Sun *-*-*"
+backup_repo: "s3:http://backup-host.local:3900/backups"
+backup_s3_region: "garage"
+backup_access_key_id: "changeme"
+backup_secret_access_key: "changeme"
+backup_password: "changeme"
+
 zen_browser_install_browserpass: true
 zen_browser_install_passff: false
 firefox_install_browserpass: false
