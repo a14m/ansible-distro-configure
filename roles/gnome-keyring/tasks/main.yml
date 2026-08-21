@@ -2,5 +2,7 @@
 - name: "Ensure gnome-keyring is installed"
   become: true
   ansible.builtin.package:
-    name: "gnome-keyring"
+    name:
+      - "gnome-keyring"
+      - "seahorse"
     state: "present"
