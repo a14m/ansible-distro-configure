@@ -5,8 +5,15 @@
     name: "gnome-control-center"
     state: "present"
 
+- name: "Create local applications directory"
+  when: ansible_facts.distribution == "Archlinux"
+  ansible.builtin.file:
+    path: "{{ ansible_facts.env.HOME }}/.local/share/applications"
+    state: "directory"
+    mode: "0755"
+
 - name: "Create Hyprland-compatible launcher for gnome-control-center"
-  when: ansible_distribution == "Archlinux"
+  when: ansible_facts.distribution == "Archlinux"
   ansible.builtin.copy:
     dest: "{{ ansible_facts.env.HOME }}/.local/share/applications/gnome-control-center.desktop"
     mode: "0644"
