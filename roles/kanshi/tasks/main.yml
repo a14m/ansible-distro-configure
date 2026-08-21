@@ -44,10 +44,9 @@
     mode: "0644"
   notify: "Restart kanshi"
 
-- name: "Ensure kanshi service is enabled and started"
+- name: "Ensure kanshi service is enabled"
   ansible.builtin.systemd_service:
     name: "kanshi.service"
     enabled: true
-    state: "started"
     scope: "user"
     daemon_reload: true
