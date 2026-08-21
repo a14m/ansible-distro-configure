@@ -1,0 +1,6 @@
+---
+- name: "Ensure gnome-contacts is installed"
+  become: true
+  ansible.builtin.package:
+    name: "gnome-contacts"
+    state: "present"

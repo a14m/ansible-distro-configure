@@ -1,0 +1,20 @@
+---
+- name: "Ensure gnome-control-center is installed"
+  become: true
+  ansible.builtin.package:
+    name: "gnome-control-center"
+    state: "present"
+
+- name: "Create Hyprland-compatible launcher for gnome-control-center"
+  when: ansible_distribution == "Archlinux"
+  ansible.builtin.copy:
+    dest: "{{ ansible_facts.env.HOME }}/.local/share/applications/gnome-control-center.desktop"
+    mode: "0644"
+    content: |
+      [Desktop Entry]
+      Name=Gnome Control Center
+      Icon=org.gnome.Settings
+      Exec=env XDG_CURRENT_DESKTOP=GNOME:Hyprland gnome-control-center
+      Terminal=false
+      Type=Application
+      Categories=GNOME;GTK;Settings;

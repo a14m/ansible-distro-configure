@@ -101,6 +101,8 @@
     - role: "gnome-loupe"
     - role: "gnome-papers"
     - role: "gnome-planify"
+    - role: "gnome-contacts"
+    - role: "gnome-control-center"
     - role: "gnome-disk-utility"
     - role: "gnome-newsflash"
     - role: "gradia"

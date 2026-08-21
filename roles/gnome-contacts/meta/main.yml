@@ -1,0 +1,19 @@
+---
+dependencies:
+  - role: "gnome-keyring"
+  - role: "gnome-control-center"
+galaxy_info:
+  author: "a14m"
+  description: "Install gnome-contacts"
+  license: "MIT"
+  min_ansible_version: "2.18"
+  platforms:
+    - name: "ArchLinux"
+      versions:
+        - "all"
+    - name: "Ubuntu"
+      versions:
+        - "noble"
+    - name: "Debian"
+      versions:
+        - "bookworm"
