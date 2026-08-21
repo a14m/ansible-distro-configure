@@ -59,7 +59,7 @@
       when: inventory_hostname == "desktop.local"
   tasks:
     - name: "Configure distro roles"
-      when: ansible_distribution == role.distro
+      when: ansible_facts.distribution == role.distro
       tags: always
       ansible.builtin.include_role:
         name: "{{ role.name }}"
