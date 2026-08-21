@@ -1,0 +1,8 @@
+---
+- name: "Ensure openlogi is installed"
+  become: true
+  become_user: "aur_builder"
+  kewlfft.aur.aur:
+    name: "openlogi-bin"
+    state: "present"
+    use: "yay"

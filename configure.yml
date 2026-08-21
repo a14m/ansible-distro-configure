@@ -20,7 +20,6 @@
     - role: "whois"
     - role: "nmap"
     - role: "usbutils"
-    - role: "solaar"
     - role: "libheif"
     - role: "tmuxinator"
     - role: "rsync"
@@ -55,6 +54,7 @@
     - role: "prometheus-node-exporter"
     - role: "alloy"
     - role: "gpu_driver"
+    - role: "openlogi"
     - role: "backup"
       when: inventory_hostname == "desktop.local"
   tasks:

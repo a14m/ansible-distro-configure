@@ -125,7 +125,7 @@
     - role: "waybar"
     - role: "hyprland"
     - role: "usbutils"
-    - role: "solaar"
+    - role: "openlogi"
     - role: "nginx"
     - role: "prometheus"
     - role: "prometheus-node-exporter"

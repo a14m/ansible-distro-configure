@@ -1,0 +1,20 @@
+---
+- name: "Determine openlogi package architecture"
+  ansible.builtin.set_fact:
+    openlogi_arch: "{{ 'arm64' if ansible_facts.architecture == 'aarch64' else 'amd64' }}"
+
+- name: "Download openlogi package"
+  become: true
+  vars:
+    # yamllint disable-line rule:line-length
+    openlogi_release_url: "https://github.com/AprilNEA/OpenLogi/releases/download/v{{ openlogi_version }}"
+  ansible.builtin.get_url:
+    url: "{{ openlogi_release_url }}/openlogi-v{{ openlogi_version }}-linux-{{ openlogi_arch }}.deb"
+    dest: "/tmp/openlogi-v{{ openlogi_version }}-linux-{{ openlogi_arch }}.deb"
+    checksum: "sha256:{{ openlogi_release_url }}/SHA256SUMS"
+    mode: "0644"
+
+- name: "Install openlogi package"
+  become: true
+  ansible.builtin.apt:
+    deb: "/tmp/openlogi-v{{ openlogi_version }}-linux-{{ openlogi_arch }}.deb"

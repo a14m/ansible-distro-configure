@@ -1,0 +1,10 @@
+---
+argument_specs:
+  main:
+    options:
+      openlogi_version:
+        type: "str"
+        description: >-
+          OpenLogi release version to install (Debian/Ubuntu only;
+          Arch always tracks latest via the openlogi-bin AUR package).
+        default: "0.7.4"
