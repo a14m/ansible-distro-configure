@@ -34,9 +34,13 @@
   failed_when: false
 
 - name: "Check molecule-plugins version {{ molecule_plugins_version }}"
+  # `uv tool list --show-with` doesn't exist on this uv version (errors out,
+  # leaving stdout empty and forcing a reinstall every run) — read the pinned
+  # extra dependency straight from uv's own install receipt instead.
   ansible.builtin.shell: |
     set -euo pipefail
-    mise exec uv -- uv tool list --show-with | grep "^molecule " | grep -oP 'molecule-plugins==\K[0-9.]+' || true
+    grep -oP '"molecule-plugins".*specifier = "==\K[0-9.]+' \
+      "{{ ansible_facts.env.HOME }}/.local/share/uv/tools/molecule/uv-receipt.toml" 2>/dev/null || true
   args:
     executable: /bin/bash
   register: molecule_plugins_installed_version

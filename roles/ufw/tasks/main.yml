@@ -13,6 +13,10 @@
   community.general.ufw:
     direction: "incoming"
     policy: "deny"
+  # The module's "default" command has no real pre-check outside check-mode; it
+  # diffs full `ufw status verbose` text before/after, which can shift (rule
+  # renumbering) even when the policy itself is unchanged.
+  changed_when: false
 
 - name: "Set default outgoing policy"
   become: true
