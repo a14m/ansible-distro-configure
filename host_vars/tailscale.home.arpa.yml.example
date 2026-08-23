@@ -39,8 +39,21 @@ ufw_rules:
     direction: "in"
     from: "10.0.0.0/24"
 
-# Subnet-router traffic (tailnet peers -> LAN) crosses the FORWARD chain, which ufw
-# doesn't filter by default, so no rule is needed for routing itself.
+# Subnet-router traffic (tailnet peers -> LAN) crosses the FORWARD chain.
+# ufw's stock DEFAULT_FORWARD_POLICY is "DROP", and this role never changes it,
+# so forwarded packets are blocked unless explicitly allowed with a 'route: true'
+# rule below - one per port/proto the tailnet needs to reach on the LAN, e.g.:
+#   - rule: "allow"
+#     port: 53
+#     protocol: "tcp"
+#     route: true
+#     from: "100.64.0.0/10"
+#   - rule: "allow"
+#     port: 53
+#     protocol: "udp"
+#     route: true
+#     from: "100.64.0.0/10"
+#
 # Tailscale's own peer/relay UDP port (commonly 41641) is NOT opened here by
 # default - verify the live port first (`tailscale status` / `ss -lun`), then
 # add to ufw_rules above:

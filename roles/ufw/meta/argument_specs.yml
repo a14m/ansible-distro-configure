@@ -38,14 +38,22 @@ argument_specs:
             description: "Same choices as community.general.ufw's own 'proto' argument."
           direction:
             type: "str"
-            required: true
+            required: false
             choices:
               - "in"
-              - "incoming"
               - "out"
-              - "outgoing"
-              - "routed"
-            description: "Same choices as community.general.ufw's own 'direction' argument."
+            description: >-
+              Traffic direction for a directional rule. Mutually exclusive with 'route' -
+              community.general.ufw only accepts "in"/"out" here (unlike its 'direction'
+              argument, "routed" is not valid on a per-rule basis).
+          route:
+            type: "bool"
+            required: false
+            default: false
+            description: >-
+              Apply the rule to routed/forwarded packets (ufw's FORWARD chain, e.g. a
+              Tailscale subnet router) instead of a directional one. Mutually exclusive
+              with 'direction'.
           from:
             type: "str"
             required: false

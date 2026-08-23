@@ -28,10 +28,11 @@
   become: true
   community.general.ufw:
     rule: "{{ item.rule }}"
-    direction: "{{ item.direction }}"
+    direction: "{{ item.direction | default(omit) }}"
+    route: "{{ item.route | default(omit) }}"
     protocol: "{{ item.protocol }}"
     port: "{{ item.port | string }}"
-    from: "{{ omit if item.interface is defined else item.from }}"
+    from: "{{ item.from | default(omit) }}"
     interface: "{{ item.interface | default(omit) }}"
   loop: "{{ ufw_rules }}"
 
