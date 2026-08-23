@@ -21,6 +21,17 @@
       - "ip6tables"
     state: "present"
 
+- name: "Set tailscaled UDP port"
+  become: true
+  ansible.builtin.copy:
+    dest: "/etc/conf.d/tailscale"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+    content: |
+      port="{{ tailscale_port }}"
+  notify: "Restart tailscale (openrc)"
+
 - name: "Enable and start tailscale"
   become: true
   ansible.builtin.service:

@@ -12,3 +12,7 @@ argument_specs:
         description: "Tailscale pre-auth key (generate at https://login.tailscale.com/admin/settings/keys)"
         required: true
         no_log: true
+      tailscale_port:
+        type: "int"
+        description: "UDP port for WireGuard peer/relay traffic."
+        default: 41641

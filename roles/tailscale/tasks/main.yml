@@ -2,6 +2,11 @@
 - name: "Include OS-specific installation tasks"
   ansible.builtin.include_tasks: "install-{{ ansible_facts.os_family | lower }}.yml"
 
+- name: "Flush handlers before checking Tailscale status"
+  # A pinned-port restart (notified above) must apply before the status/connect
+  # tasks below observe or act on the daemon.
+  ansible.builtin.meta: flush_handlers
+
 - name: "Enable IPv4 forwarding for subnet routing"
   become: true
   ansible.posix.sysctl:

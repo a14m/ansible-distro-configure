@@ -31,6 +31,7 @@ pve_lxc_ssh_private_key: |
 tailscale_auth_key: "CHANGEME"
 tailscale_advertise_routes:
   - "10.0.0.0/24"
+tailscale_port: 41641
 
 ufw_rules:
   - rule: "allow"
@@ -54,11 +55,10 @@ ufw_rules:
 #     route: true
 #     from: "100.64.0.0/10"
 #
-# Tailscale's own peer/relay UDP port (commonly 41641) is NOT opened here by
-# default - verify the live port first (`tailscale status` / `ss -lun`), then
-# add to ufw_rules above:
+# Tailscale's own peer/relay UDP port, pinned via tailscale_port so direct
+# (non-DERP-relayed) peer connections can reach it.
 #   - rule: "allow"
-#     port: 41641
+#     port: "{{ tailscale_port }}"
 #     protocol: "udp"
 #     direction: "in"
 #     from: "any"

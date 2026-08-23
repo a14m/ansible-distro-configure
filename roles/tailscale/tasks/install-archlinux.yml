@@ -5,6 +5,17 @@
     name: "tailscale"
     state: "present"
 
+- name: "Set tailscaled UDP port"
+  become: true
+  ansible.builtin.copy:
+    dest: "/etc/default/tailscaled"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+    content: |
+      PORT={{ tailscale_port }}
+  notify: "Restart tailscaled (systemd)"
+
 - name: "Enable and start tailscale"
   become: true
   ansible.builtin.systemd_service:
