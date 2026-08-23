@@ -7,3 +7,6 @@
   ansible.builtin.package:
     name: "{{ linux_headers_pkg }}"
     state: "{{ linux_headers_state }}"
+
+- name: "Include OS-specific configuration"
+  ansible.builtin.include_tasks: "configure-{{ ansible_facts.os_family | lower }}.yml"

@@ -1,0 +1,14 @@
+---
+- name: "Ensure custom pacman hooks directory exists"
+  become: true
+  ansible.builtin.file:
+    path: "/etc/pacman.d/hooks"
+    state: "directory"
+    mode: "0755"
+
+- name: "Ensure systemd-boot entries are regenerated on kernel upgrades"
+  become: true
+  ansible.builtin.copy:
+    src: "pacman-hooks/91-kernel-install.hook"
+    dest: "/etc/pacman.d/hooks/91-kernel-install.hook"
+    mode: "0644"

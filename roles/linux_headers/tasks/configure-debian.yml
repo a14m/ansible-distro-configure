@@ -1,0 +1,16 @@
+---
+# UNVERIFIED: assumed necessary by analogy with Arch (configure-archlinux.yml)
+# Safe no-op if wrong.
+- name: "Ensure custom kernel postinst hooks directory exists"
+  become: true
+  ansible.builtin.file:
+    path: "/etc/kernel/postinst.d"
+    state: "directory"
+    mode: "0755"
+
+- name: "Ensure systemd-boot entries are regenerated on kernel upgrades"
+  become: true
+  ansible.builtin.copy:
+    src: "kernel-postinst.d/zz-kernel-install"
+    dest: "/etc/kernel/postinst.d/zz-kernel-install"
+    mode: "0755"
