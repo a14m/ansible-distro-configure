@@ -58,8 +58,9 @@ Pi-hole and WireGuard Portal run directly on `rpi5.local`:
 |---|---|---|---|
 | Pi-hole | `dns.home.arpa` | `dns.internal` | DNS filtering and ad blocking |
 | WireGuard Portal | `vpn.home.arpa` | `vpn.internal` | WireGuard VPN management UI |
+| Garage webui | `s3.home.arpa` | `s3.internal` | Garage S3-compatible object store admin UI |
 
-Override the default hostnames with `pihole_hostname`/`wg_portal_hostname` (the `*.internal` name) -
+Override the default hostnames with `pihole_hostname`/`wg_portal_hostname`/`garage_webui_hostname` (the `*.internal` name) -
 the `*.home.arpa` alias to `rpi5.local` itself is a separate, fixed entry in `pihole_dns_hosts`.
 
 ## Container Services
