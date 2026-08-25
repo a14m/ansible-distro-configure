@@ -2,9 +2,12 @@
 argument_specs:
   main:
     options:
-      pihole_password:
+      pihole_admin_password:
         type: "str"
-        description: "The pi-hole web-server plain text password (double sha265 hashed) default: changeme"
+        description: >-
+          Double-SHA256 hash of the pi-hole web-server password. Compute inline, e.g.
+          {{ ('yourpassword' | hash('sha256') | hash('sha256'))[:64] }} — never store the
+          plaintext as a separate value. default: hash of 'changeme'
         default: "{{ ('changeme' | hash('sha256') | hash('sha256'))[:64] }}"
       pihole_totp_secret:
         type: "str"

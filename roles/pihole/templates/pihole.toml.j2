@@ -78,5 +78,5 @@ cert = "/etc/pihole/tls.pem"
 webhome = "/admin/"
 
 [webserver.api]
-pwhash = "{{ pihole_password }}"    # valid double hashed string
+pwhash = "{{ pihole_admin_password }}"    # valid double hashed string
 totp_secret = "{{ pihole_totp_secret }}"   # valid TOTP secret (20 Bytes in Base32 encoding)

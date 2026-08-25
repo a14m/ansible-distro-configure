@@ -4,7 +4,9 @@ This role configure the [pihole](https://github.com/pi-hole/pi-hole) DNS Sinkhol
 
 ## Role Variables
 
-- `pihole_password` the pi-hole web-server plain text password (default: `changeme`).
+- `pihole_admin_password` double-SHA256 hash of the pi-hole web-server password. Compute inline,
+  e.g. `{{ ('yourpassword' | hash('sha256') | hash('sha256'))[:64] }}` — never store the plaintext
+  as a separate value (default: hash of `changeme`).
 - `pihole_totp_secret` the pi-hole TOTP 2FA secret (default: `CHANGEME`).
 - `pihole_interface` the interface to bind the pi-hole on (default: "{{ ansible_default_ipv4.interface }}").
 - `pihole_dns` the list of DNS servers to use as upstreams (default: `[9.9.9.9, 1.1.1.1, 8.8.8.8]`).

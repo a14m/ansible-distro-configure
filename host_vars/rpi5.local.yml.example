@@ -14,7 +14,7 @@ ssh_private_key: |
 
 # TOTP generator: `openssl rand -base64 32 | head -c "20" | base32`
 pihole_totp_secret: "CHANGEME"
-pihole_password: "{{ ('changeme' | hash('sha256') | hash('sha256'))[:64] }}"
+pihole_admin_password: "{{ ('changeme' | hash('sha256') | hash('sha256'))[:64] }}"
 pihole_interface: "{{ network_interface }}"
 pihole_hostname: "dns.internal"
 pihole_dhcp_enabled: true

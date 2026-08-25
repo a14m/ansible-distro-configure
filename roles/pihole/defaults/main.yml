@@ -1,5 +1,5 @@
 ---
-pihole_password: "{{ ('changeme' | hash('sha256') | hash('sha256'))[:64] }}"
+pihole_admin_password: "{{ ('changeme' | hash('sha256') | hash('sha256'))[:64] }}"
 pihole_totp_secret: "CHANGEME"
 pihole_dns:
   - "1.1.1.1" # Cloudflare
