@@ -76,6 +76,7 @@ Services deployed as LXC containers on `pve.local`. FQDNs resolve via Pi-hole
 | Radicale | `caldav.home.arpa` | - | CalDAV/CardDAV server |
 | Tailscale | `tailscale.home.arpa` | - | Tailscale subnet router (no HTTP vhost) |
 | Loki | `logs.home.arpa` | - | Log aggregation (no HTTP vhost; queried directly on port 3100) |
+| Wallos | `subscriptions.home.arpa` | `subscriptions.internal` | Subscription/recurring-cost tracker |
 | Proxmox VE | - | `vm.internal` | PVE hypervisor web UI (runs on `pve.local` itself, not an LXC) |
 
 Proxmox VE is the one entry above that isn't an LXC guest - it's `pve.local` itself. Its `8006`
@@ -88,7 +89,8 @@ direct access, but plain HTTP only (no vhost behind it for Grafana/Prometheus, s
 vhost lives on the separate `proxy.home.arpa` host). `*.internal` is the new, unified way to reach
 a service through the single centralized Caddy on `proxy.home.arpa`: no port, self-signed TLS via
 Caddy's internal CA (`.internal` is IANA-reserved for exactly this per RFC 9476, safer than an
-unreserved `.lan`). Override the `*.internal` name with `grafana_hostname`/`prometheus_hostname`.
+unreserved `.lan`). Override the `*.internal` name with `grafana_hostname`/`prometheus_hostname`/
+`wallos_hostname`.
 
 `cgit_hostname` and `radicale_hostname` can instead be set to a public domain for access outside
 the LAN via the `cloudflared` tunnel on `proxy.home.arpa`; `cgit_clone_prefix` then keeps the LAN

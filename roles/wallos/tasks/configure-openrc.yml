@@ -1,0 +1,40 @@
+---
+- name: "Deploy wallos OpenRC service"
+  become: true
+  ansible.builtin.template:
+    src: "wallos.initd.j2"
+    dest: "/etc/init.d/wallos"
+    owner: "root"
+    group: "root"
+    mode: "0755"
+  notify: "Restart wallos"
+
+- name: "Start and enable wallos"
+  become: true
+  ansible.builtin.service:
+    name: "wallos"
+    state: "started"
+    enabled: true
+
+- name: "Start and enable crond"
+  become: true
+  ansible.builtin.service:
+    name: "crond"
+    state: "started"
+    enabled: true
+
+- name: "Deploy wallos cron jobs"
+  become: true
+  ansible.builtin.blockinfile:
+    path: "/etc/crontabs/wallos"
+    marker: "# {mark} ANSIBLE WALLOS {{ item.name }} CRON"
+    block: >-
+      {{ item.cron_schedule }} cd {{ wallos_install_dir }}/endpoints/cronjobs && {{ wallos_php_bin }} {{ item.script }}
+      >> /var/log/wallos/{{ item.name }}.log 2>&1
+    create: true
+    owner: "wallos"
+    group: "wallos"
+    mode: "0600"
+  loop: "{{ wallos_jobs }}"
+  loop_control:
+    label: "{{ item.name }}"

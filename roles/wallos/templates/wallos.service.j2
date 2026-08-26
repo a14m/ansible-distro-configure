@@ -1,0 +1,12 @@
+[Unit]
+Description=Wallos
+After=network.target
+
+[Service]
+ExecStart={{ wallos_php_bin }} -S 0.0.0.0:{{ wallos_port }} -t {{ wallos_install_dir }}
+User=wallos
+Group=wallos
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

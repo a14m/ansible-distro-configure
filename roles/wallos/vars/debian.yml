@@ -1,0 +1,12 @@
+---
+wallos_php_bin: "php"
+wallos_php_packages:
+  - "php-cli"
+  - "php-calendar"
+  - "php-curl"
+  - "php-xml"
+  - "php-gd"
+  - "php-intl"
+  - "php-sqlite3"
+  - "php-zip"
+  - "php-mbstring"

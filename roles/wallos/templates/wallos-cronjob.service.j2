@@ -1,0 +1,11 @@
+[Unit]
+Description=Wallos cron job: {{ item.name }}
+
+[Service]
+Type=oneshot
+WorkingDirectory={{ wallos_install_dir }}/endpoints/cronjobs
+ExecStart={{ wallos_php_bin }} {{ item.script }}
+User=wallos
+Group=wallos
+StandardOutput=append:/var/log/wallos/{{ item.name }}.log
+StandardError=append:/var/log/wallos/{{ item.name }}.log

@@ -1,0 +1,9 @@
+[Unit]
+Description=Wallos cron job timer: {{ item.name }}
+
+[Timer]
+OnCalendar={{ item.systemd_schedule }}
+Persistent=true
+
+[Install]
+WantedBy=timers.target

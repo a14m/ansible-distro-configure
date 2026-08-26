@@ -1,0 +1,13 @@
+#!/sbin/openrc-run
+
+description="Wallos"
+command="/usr/bin/{{ wallos_php_bin }}"
+command_args="-S 0.0.0.0:{{ wallos_port }} -t {{ wallos_install_dir }}"
+command_user="wallos:wallos"
+command_background=true
+pidfile="/run/wallos.pid"
+output_log="/var/log/wallos/wallos.log"
+error_log="/var/log/wallos/wallos.log"
+depend() {
+    need net
+}

@@ -1,0 +1,45 @@
+---
+argument_specs:
+  main:
+    options:
+      wallos_version:
+        type: "str"
+        description: "Wallos git tag to deploy"
+        default: "v5.4.5"
+      wallos_install_dir:
+        type: "str"
+        description: "Path to clone Wallos into"
+        default: "/opt/wallos"
+      wallos_port:
+        type: "int"
+        description: "Port php85's built-in server listens on (proxied by proxy.home.arpa)"
+        default: 8282
+      wallos_hostname:
+        type: "str"
+        description: >-
+          FQDN for the wallos vhost on the centralized proxy (e.g. 'subscriptions.internal').
+          Leave undefined to skip vhost creation entirely.
+      wallos_main_currency:
+        type: "str"
+        description: "Currency code (ISO 4217) for the wallos_admin account"
+        default: "EUR"
+      wallos_language:
+        type: "str"
+        description: "UI language code for the wallos_admin account"
+        default: "de"
+      wallos_admin:
+        type: "dict"
+        description: >-
+          Account bootstrapped via public registration (unconditionally allowed while the user
+          table is empty). Becomes Wallos's sole account. Leave undefined to skip user
+          provisioning; add further accounts by hand through the web UI.
+        options:
+          username:
+            type: "str"
+            required: true
+          email:
+            type: "str"
+            required: true
+          password:
+            type: "str"
+            required: true

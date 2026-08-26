@@ -1,0 +1,22 @@
+---
+dependencies:
+  - role: "git"
+  - role: "busybox-openrc"
+    when: ansible_facts.service_mgr == "openrc"
+  - role: "systemd"
+    when: ansible_facts.service_mgr == "systemd"
+galaxy_info:
+  author: "a14m"
+  description: "Deploy Wallos subscription tracker from source, pinned to a git tag"
+  license: "MIT"
+  min_ansible_version: "2.18"
+  platforms:
+    - name: "Alpine"
+      versions:
+        - "all"
+    - name: "Ubuntu"
+      versions:
+        - "noble"
+    - name: "Debian"
+      versions:
+        - "bookworm"

@@ -64,3 +64,13 @@
     - role: "grafana"
     - role: "alloy"
     - role: "ufw"
+
+- name: "Subscriptions configure"
+  gather_facts: true
+  hosts:
+    - subscriptions.home.arpa
+  roles:
+    - role: "wallos"
+    - role: "backup"
+    - role: "alloy"
+    - role: "ufw"

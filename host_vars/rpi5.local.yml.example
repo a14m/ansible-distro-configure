@@ -40,6 +40,7 @@ pihole_dns_hosts:
   - "{{ hostvars['proxy.home.arpa'].network_ipv4_address }} proxy.home.arpa"
   - "{{ hostvars['logs.home.arpa'].network_ipv4_address }} logs.home.arpa"
   - "{{ hostvars['metrics.home.arpa'].network_ipv4_address }} metrics.home.arpa"
+  - "{{ hostvars['subscriptions.home.arpa'].network_ipv4_address }} subscriptions.home.arpa"
   # *.internal, always through the centralized proxy, with TLS
   - "{{ hostvars['proxy.home.arpa'].network_ipv4_address }} {{ pihole_hostname }}"
   - "{{ hostvars['proxy.home.arpa'].network_ipv4_address }} {{ wg_portal_hostname }}"
@@ -47,6 +48,7 @@ pihole_dns_hosts:
   - "{{ hostvars['proxy.home.arpa'].network_ipv4_address }} metrics.internal"
   - "{{ hostvars['proxy.home.arpa'].network_ipv4_address }} {{ garage_webui_hostname }}"
   - "{{ hostvars['proxy.home.arpa'].network_ipv4_address }} vm.internal"
+  - "{{ hostvars['proxy.home.arpa'].network_ipv4_address }} subscriptions.internal"
 
 wireguard_autostart_connection: "vpn2"
 wireguard_connections:

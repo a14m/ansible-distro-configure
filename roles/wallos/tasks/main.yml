@@ -1,0 +1,100 @@
+---
+- name: "Include OS-specific variables"
+  ansible.builtin.include_vars: "{{ ansible_facts.os_family | lower }}.yml"
+
+- name: "Include OS-specific installation tasks"
+  ansible.builtin.include_tasks: "install-{{ ansible_facts.os_family | lower }}.yml"
+
+- name: "Create wallos group"
+  become: true
+  ansible.builtin.group:
+    name: "wallos"
+    system: true
+
+- name: "Create wallos user"
+  become: true
+  ansible.builtin.user:
+    name: "wallos"
+    group: "wallos"
+    system: true
+    shell: "/usr/sbin/nologin"
+    create_home: false
+
+- name: "Clone wallos"
+  become: true
+  ansible.builtin.git:
+    repo: "https://github.com/ellite/Wallos.git"
+    dest: "{{ wallos_install_dir }}"
+    version: "{{ wallos_version }}"
+    force: true
+
+- name: "Check if wallos database exists"
+  ansible.builtin.stat:
+    path: "{{ wallos_install_dir }}/db/wallos.db"
+  register: wallos_db_check
+
+- name: "Initialize wallos database"
+  become: true
+  ansible.builtin.command:
+    cmd: "{{ wallos_php_bin }} createdatabase.php"
+    chdir: "{{ wallos_install_dir }}/endpoints/cronjobs"
+  when: not wallos_db_check.stat.exists
+  changed_when: true
+
+- name: "Run wallos database migrations"
+  become: true
+  ansible.builtin.command:
+    cmd: "{{ wallos_php_bin }} migrate.php"
+    chdir: "{{ wallos_install_dir }}/endpoints/db"
+  changed_when: false
+
+- name: "Ensure wallos data directories are owned by wallos"
+  become: true
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: "directory"
+    owner: "wallos"
+    group: "wallos"
+    mode: "0750"
+    recurse: true
+  loop:
+    - "{{ wallos_install_dir }}/db"
+    - "{{ wallos_install_dir }}/images/uploads/logos"
+
+- name: "Ensure wallos cron log directory exists"
+  become: true
+  ansible.builtin.file:
+    path: "/var/log/wallos"
+    state: "directory"
+    owner: "wallos"
+    group: "wallos"
+    mode: "0750"
+
+- name: "Include service-manager-specific service and scheduling tasks"
+  ansible.builtin.include_tasks: "configure-{{ ansible_facts.service_mgr }}.yml"
+
+- name: "Bootstrap wallos admin account"
+  when: wallos_admin is defined
+  no_log: true
+  ansible.builtin.uri:
+    url: "http://127.0.0.1:{{ wallos_port }}/registration.php"
+    method: "POST"
+    body_format: "form-urlencoded"
+    body:
+      username: "{{ wallos_admin.username }}"
+      email: "{{ wallos_admin.email }}"
+      password: "{{ wallos_admin.password }}"
+      confirm_password: "{{ wallos_admin.password }}"
+      main_currency: "{{ wallos_main_currency }}"
+      language: "{{ wallos_language }}"
+  changed_when: false
+  failed_when: false
+
+- name: "Create wallos proxy vhost"
+  when: wallos_hostname is defined
+  ansible.builtin.include_role:
+    name: "vhost"
+  vars:
+    vhost_name: "wallos"
+    vhost_nginx_content: "{{ lookup('template', 'wallos.nginx.conf.j2') }}"
+    vhost_caddy_content: "{{ lookup('template', 'wallos.caddy.j2') }}"

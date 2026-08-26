@@ -1,0 +1,13 @@
+server {
+    listen 80;
+    listen [::]:80;
+
+    server_name {{ wallos_hostname }};
+
+    access_log /var/log/nginx/access.log;
+    error_log /var/log/nginx/error.log;
+
+    location / {
+        proxy_pass http://{{ network_ipv4_address }}:{{ wallos_port }}/;
+    }
+}

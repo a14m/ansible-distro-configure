@@ -1,0 +1,16 @@
+---
+wallos_php_bin: "php85"
+wallos_php_packages:
+  - "php85"
+  - "php85-calendar"
+  - "php85-curl"
+  - "php85-dom"
+  - "php85-gd"
+  - "php85-intl"
+  - "php85-openssl"
+  - "php85-sqlite3"
+  - "php85-zip"
+  - "php85-mbstring"
+  - "php85-session"
+  - "php85-phar"
+  - "php85-fileinfo"

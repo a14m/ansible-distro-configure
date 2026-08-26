@@ -1,0 +1,7 @@
+---
+- name: "Install PHP and extensions"
+  become: true
+  ansible.builtin.apt:
+    name: "{{ wallos_php_packages }}"
+    state: "present"
+    update_cache: true
