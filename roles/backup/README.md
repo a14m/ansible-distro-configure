@@ -77,12 +77,29 @@ and can restore a snapshot back on demand.
 
 ## Manual Backup
 
-The scheduled timer/cron just calls the same script deployed to
-`/usr/local/bin/{{ backup_name }}-backup` — run it directly to back up on demand:
+The scheduled timer/cron calls the same script deployed to
+`/usr/local/bin/{{ backup_name }}-backup`, but how you trigger it by hand differs by init
+system:
 
-```bash
-sudo /usr/local/bin/{{ backup_name }}-backup
-```
+- **systemd**: run the service directly, not the script — the script reads its
+  credentials from `$CREDENTIALS_DIRECTORY`, a variable systemd only sets up when it
+  runs the unit itself via `LoadCredential=`. Invoking the script path directly skips
+  that and fails with `CREDENTIALS_DIRECTORY: unbound variable`.
+
+  ```bash
+  sudo systemctl start {{ backup_name }}-backup.service
+  journalctl -u {{ backup_name }}-backup.service -n 50
+  ```
+
+  (`systemctl start` blocks until this oneshot service finishes, so it returns once
+  the backup's done.)
+
+- **OpenRC**: the script reads its credentials from the fixed path
+  `/etc/credstore/{{ backup_name }}-backup.env` instead, so running it directly works:
+
+  ```bash
+  sudo /usr/local/bin/{{ backup_name }}-backup
+  ```
 
 To verify the snapshot landed, via restic:
 
