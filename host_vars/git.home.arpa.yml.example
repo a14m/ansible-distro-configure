@@ -33,6 +33,7 @@ backup_name: "git"
 backup_paths:
   - "/srv/git"
 backup_cron_schedule: "0 0 * * 0"
+backup_systemd_schedule: "Sun *-*-*"
 backup_repo: "s3:http://10.0.0.254:3900/backups"
 backup_s3_region: "garage"
 backup_access_key_id: "GK_CHAGNEME"
