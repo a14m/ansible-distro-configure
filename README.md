@@ -72,7 +72,7 @@ Services deployed as LXC containers on `pve.local`. FQDNs resolve via Pi-hole
 |---|---|---|---|
 | Grafana | `monitor.home.arpa` | `monitor.internal` | Metrics dashboards |
 | Prometheus | `metrics.home.arpa` | `metrics.internal` | Metrics collection |
-| cgit | `git.home.arpa` | - | Git repository browsing and SSH push/clone |
+| cgit | `git.home.arpa` | `git.internal` | Git repository browsing and SSH push/clone |
 | Radicale | `caldav.home.arpa` | - | CalDAV/CardDAV server |
 | Tailscale | `tailscale.home.arpa` | - | Tailscale subnet router (no HTTP vhost) |
 | Loki | `logs.home.arpa` | - | Log aggregation (no HTTP vhost; queried directly on port 3100) |
@@ -90,7 +90,7 @@ vhost lives on the separate `proxy.home.arpa` host). `*.internal` is the new, un
 a service through the single centralized Caddy on `proxy.home.arpa`: no port, self-signed TLS via
 Caddy's internal CA (`.internal` is IANA-reserved for exactly this per RFC 9476, safer than an
 unreserved `.lan`). Override the `*.internal` name with `grafana_hostname`/`prometheus_hostname`/
-`wallos_hostname`.
+`wallos_hostname`/`cgit_hostname`.
 
 `cgit_hostname` and `radicale_hostname` can instead be set to a public domain for access outside
 the LAN via the `cloudflared` tunnel on `proxy.home.arpa`; `cgit_clone_prefix` then keeps the LAN
