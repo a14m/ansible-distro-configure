@@ -29,6 +29,7 @@ pve_lxc_ssh_private_key: |
 
 # Generate at: https://login.tailscale.com/admin/settings/keys
 tailscale_auth_key: "CHANGEME"
+tailscale_exit_node: true
 tailscale_advertise_routes:
   - "10.0.0.0/24"
 tailscale_port: 41641

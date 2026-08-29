@@ -35,6 +35,7 @@
       - "--auth-key={{ tailscale_auth_key }}"
       - "--accept-dns=false"
       - "--advertise-routes={{ tailscale_advertise_routes | join(',') }}"
+      - "{{ '--advertise-exit-node' if tailscale_exit_node else omit }}"
   when: '"Logged in" not in tailscale_status_check.stdout'
   changed_when: true
   no_log: true

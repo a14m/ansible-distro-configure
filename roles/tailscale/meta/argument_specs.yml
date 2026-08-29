@@ -7,6 +7,10 @@ argument_specs:
         elements: "str"
         description: "Subnets to advertise as subnet router (e.g. ['192.168.178.0/24']). Empty = no subnet routing."
         default: []
+      tailscale_exit_node:
+        type: "bool"
+        description: "Advertise this node as an exit node."
+        default: false
       tailscale_auth_key:
         type: "str"
         description: "Tailscale pre-auth key (generate at https://login.tailscale.com/admin/settings/keys)"
