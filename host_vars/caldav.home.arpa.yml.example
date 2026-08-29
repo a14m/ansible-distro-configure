@@ -60,6 +60,12 @@ backup_access_key_id: "GK_CHANGEME"
 backup_secret_access_key: "CHANGEME"
 backup_password: "changeme"
 
+alloy_file_scrape_targets:
+  - name: "radicale"
+    path: "/var/log/radicale/radicale.log"
+  - name: "caldav-backup"
+    path: "/var/log/caldav-backup.log"
+
 ufw_rules:
   - rule: "allow"
     port: "{{ ssh_port }}"

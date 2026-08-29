@@ -76,6 +76,8 @@ backup_password: "changeme"
 alloy_file_scrape_targets:
   - name: "wallos"
     path: "/var/log/wallos/*.log"
+  - name: "subscriptions-backup"
+    path: "/var/log/subscriptions-backup.log"
 
 ufw_rules:
   - rule: "allow"
