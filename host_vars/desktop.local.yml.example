@@ -54,7 +54,7 @@ kanshi_profiles: |
       output "Right Monitor" mode 3840x2160@60Hz position 2400,0 scale 1.6
   }
 
-backup_name: "zen-browser"
+backup_name: "desktop"
 backup_paths:
   - "/home/test_user/.zen"
 backup_systemd_schedule: "Sun *-*-*"
