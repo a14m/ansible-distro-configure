@@ -24,7 +24,8 @@ loki.source.journal "read" {
 {% endif %}
 
 {% for target in alloy_file_scrape_targets %}
-local.file_match "{{ target.name }}" {
+{% set component_id = target.name | replace("-", "_") %}
+local.file_match "{{ component_id }}" {
   path_targets = [{
     "__path__" = "{{ target.path }}",
     "job"      = "{{ target.name }}",
@@ -32,8 +33,8 @@ local.file_match "{{ target.name }}" {
   }]
 }
 
-loki.source.file "{{ target.name }}" {
-  targets    = local.file_match.{{ target.name }}.targets
+loki.source.file "{{ component_id }}" {
+  targets    = local.file_match.{{ component_id }}.targets
   forward_to = [loki.write.default.receiver]
 }
 {% endfor %}
