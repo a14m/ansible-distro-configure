@@ -15,7 +15,11 @@ export CACHE_DIR="/var/cache/{{ backup_name }}-backup"
 exec su -p -s /bin/sh {{ backup_user }} <<'BACKUP_SU_EOF'
 restic --cache-dir "$CACHE_DIR" snapshots &>/dev/null || restic --cache-dir "$CACHE_DIR" init
 
-restic --cache-dir "$CACHE_DIR" backup {{ backup_paths | map('quote') | join(' ') }}
+restic --cache-dir "$CACHE_DIR" backup \
+{% for path in backup_paths_exclude -%}
+  --exclude {{ path | quote }} \
+{% endfor -%}
+  {{ backup_paths | map('quote') | join(' ') }}
 
 restic --cache-dir "$CACHE_DIR" forget \
   --keep-daily {{ backup_retention_daily }} \

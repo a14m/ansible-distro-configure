@@ -11,6 +11,11 @@ argument_specs:
         elements: "str"
         description: "List of paths to back up"
         required: true
+      backup_paths_exclude:
+        type: "list"
+        elements: "str"
+        description: "Paths/patterns to exclude from the restic backup (passed as --exclude)"
+        default: []
       backup_systemd_schedule:
         type: "str"
         description: "systemd OnCalendar schedule (e.g. daily, weekly, *-*-* 02:00) — used on systemd hosts"

@@ -1,5 +1,6 @@
 ---
 backup_name: "backup"
+backup_paths_exclude: []
 backup_systemd_schedule: "daily"
 backup_cron_schedule: "0 0 * * *"
 backup_retention_daily: 7

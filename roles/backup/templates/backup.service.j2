@@ -5,6 +5,9 @@ Wants=network-online.target
 
 [Service]
 Type=oneshot
+# restic exits 3 when the backup completed but some source paths were
+# unreadable (snapshot still saved) — not a failure worth alerting on.
+SuccessExitStatus=3
 ExecStart=/usr/local/bin/{{ backup_name }}-backup
 User={{ backup_user }}
 Group={{ backup_group }}

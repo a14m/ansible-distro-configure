@@ -57,6 +57,8 @@ kanshi_profiles: |
 backup_name: "desktop"
 backup_paths:
   - "/home/test_user/.zen"
+backup_paths_exclude:
+  - "/home/test_user/.config/zen/firefox-mpris"
 backup_systemd_schedule: "Sun *-*-*"
 backup_repo: "s3:http://backup-host.local:3900/backups"
 backup_s3_region: "garage"
