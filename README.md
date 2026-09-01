@@ -56,9 +56,9 @@ Pi-hole and WireGuard Portal run directly on `rpi5.local`:
 
 | Service | `*.home.arpa` (direct, no TLS) | `*.internal` (via proxy, TLS) | Description |
 |---|---|---|---|
-| Pi-hole | `dns.home.arpa` | `dns.internal` | DNS filtering and ad blocking |
-| WireGuard Portal | `vpn.home.arpa` | `vpn.internal` | WireGuard VPN management UI |
-| Garage webui | `s3.home.arpa` | `s3.internal` | Garage S3-compatible object store admin UI |
+| Pi-hole | [`dns.home.arpa`](http://dns.home.arpa:8081/) | [`dns.internal`](https://dns.internal) | DNS filtering and ad blocking |
+| WireGuard Portal | [`vpn.home.arpa`](http://vpn.home.arpa:8080/) | [`vpn.internal`](https://vpn.internal) | WireGuard VPN management UI |
+| Garage webui | [`s3.home.arpa`](http://s3.home.arpa:3909/) | [`s3.internal`](https://s3.internal) | Garage S3-compatible object store admin UI |
 
 Override the default hostnames with `pihole_hostname`/`wg_portal_hostname`/`garage_webui_hostname` (the `*.internal` name) -
 the `*.home.arpa` alias to `rpi5.local` itself is a separate, fixed entry in `pihole_dns_hosts`.
@@ -70,14 +70,14 @@ Services deployed as LXC containers on `pve.local`. FQDNs resolve via Pi-hole
 
 | Service | `*.home.arpa` (direct, no TLS) | `*.internal` (via proxy, TLS) | Description |
 |---|---|---|---|
-| Grafana | `monitor.home.arpa` | `monitor.internal` | Metrics dashboards |
-| Prometheus | `metrics.home.arpa` | `metrics.internal` | Metrics collection |
-| cgit | `git.home.arpa` | - | Git repository browsing and SSH push/clone |
-| Radicale | `caldav.home.arpa` | - | CalDAV/CardDAV server |
+| Grafana | [`monitor.home.arpa`](http://monitor.home.arpa:3000/) | [`monitor.internal`](https://monitor.internal) | Metrics dashboards |
+| Prometheus | [`metrics.home.arpa`](http://metrics.home.arpa:9090/) | [`metrics.internal`](https://metrics.internal) | Metrics collection |
+| cgit | [`git.home.arpa`](http://git.home.arpa:3000/) | - | Git repository browsing and SSH push/clone |
+| Radicale | [`caldav.home.arpa`](http://caldav.home.arpa:5232/.web/) | - | CalDAV/CardDAV server |
 | Tailscale | `tailscale.home.arpa` | - | Tailscale subnet router (no HTTP vhost) |
 | Loki | `logs.home.arpa` | - | Log aggregation (no HTTP vhost; queried directly on port 3100) |
-| Wallos | `subscriptions.home.arpa` | `subscriptions.internal` | Subscription/recurring-cost tracker |
-| Proxmox VE | - | `vm.internal` | PVE hypervisor web UI (runs on `pve.local` itself, not an LXC) |
+| Wallos | [`subscriptions.home.arpa`](http://subscriptions.home.arpa:8282/) | [`subscriptions.internal`](https://subscriptions.internal) | Subscription/recurring-cost tracker |
+| Proxmox VE | - | [`vm.internal`](https://vm.internal) | PVE hypervisor web UI (runs on `pve.local` itself, not an LXC) |
 
 Proxmox VE is the one entry above that isn't an LXC guest - it's `pve.local` itself. Its `8006`
 backend is HTTPS-only with a self-signed cert, so its `*.internal` vhost skips upstream cert
