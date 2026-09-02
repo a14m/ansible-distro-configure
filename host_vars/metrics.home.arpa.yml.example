@@ -48,6 +48,11 @@ prometheus_extra_scrape_configs:
     targets:
       - "{{ hostvars['logs.home.arpa'].network_ipv4_address }}:{{ hostvars['logs.home.arpa'].loki_port }}"
     metrics_path: "/metrics"
+  - name: "fritzbox"
+    targets:
+      - "{{ hostvars['rpi5.local'].network_ipv4_address }}:9042"
+    metrics_path: "/metrics"
+    scrape_interval: "60s"
 
 ufw_rules:
   - rule: "allow"

@@ -97,6 +97,9 @@
     awscli_region: "eu-central-1"
     awscli_access_key_id: "CHANGEME"
     awscli_secret_access_key: "CHANGEME"
+    fritzbox_6660_exporter_gateway_url: "http://10.0.0.1:49000"
+    fritzbox_6660_exporter_username: "monitoring"
+    fritzbox_6660_exporter_password: "changeme"
   pre_tasks:
     - name: "Override is_chroot fact for container environment"
       ansible.builtin.set_fact:
@@ -127,6 +130,7 @@
     - role: "pihole"
     - role: "prometheus"
     - role: "prometheus-node-exporter"
+    - role: "fritzbox_6660_exporter"
     - role: "grafana"
     - role: "alloy"
     - role: "mount"

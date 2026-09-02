@@ -1,0 +1,29 @@
+[Unit]
+Description=Prometheus exporter for AVM Fritz!Box
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+EnvironmentFile=/etc/fritzbox_6660_exporter.env
+ExecStart={{ fritzbox_6660_exporter_install_dir }}/fritzbox_exporter \
+    -listen-address {{ fritzbox_6660_exporter_listen_address }} \
+    -gateway-url {{ fritzbox_6660_exporter_gateway_url }} \
+    -gateway-luaurl {{ fritzbox_6660_exporter_gateway_luaurl }} \
+    -metrics-file {{ fritzbox_6660_exporter_install_dir }}/metrics.json \
+    -lua-metrics-file {{ fritzbox_6660_exporter_install_dir }}/metrics-lua_cable.json
+WorkingDirectory={{ fritzbox_6660_exporter_install_dir }}
+User=fritzbox_6660_exporter
+Group=fritzbox_6660_exporter
+Restart=always
+RestartSec=10
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+PrivateDevices=true
+RestrictAddressFamilies=AF_INET AF_INET6
+LockPersonality=true
+MemoryDenyWriteExecute=true
+
+[Install]
+WantedBy=multi-user.target

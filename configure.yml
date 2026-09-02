@@ -102,6 +102,7 @@
     - role: "gateway"
     - role: "wg_portal"
     - role: "prometheus-node-exporter"
+    - role: "fritzbox_6660_exporter"
     - role: "alloy"
     - role: "neomutt"
     - role: "mount"

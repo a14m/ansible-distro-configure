@@ -89,6 +89,12 @@ garage_webui_auth_user: "changeme"
 # generate with: htpasswd -nbBC 10 user password
 garage_webui_auth_password_hash: "changeme"
 
+# Dedicated Fritz!Box user with the "FRITZ!Box Settings" permission; also enable
+# "Transmit status information over UPnP" (Home Network > Network > Network Settings).
+fritzbox_6660_exporter_gateway_url: "http://{{ network_ipv4_gateway }}:49000"
+fritzbox_6660_exporter_username: "monitoring"
+fritzbox_6660_exporter_password: "changeme"
+
 awscli_profile_name: "garage"
 awscli_region: "garage"
 awscli_endpoint_url: "http://127.0.0.1:{{ garage_s3_port }}"
@@ -136,6 +142,11 @@ ufw_rules:
     protocol: "tcp"
     direction: "in"
     from: "10.0.0.0/24"
+  - rule: "allow"
+    port: "{{ fritzbox_6660_exporter_port }}"
+    protocol: "tcp"
+    direction: "in"
+    from: "{{ hostvars['metrics.home.arpa'].network_ipv4_address }}"
   - rule: "allow"
     port: "{{ garage_admin_port }}"
     protocol: "tcp"

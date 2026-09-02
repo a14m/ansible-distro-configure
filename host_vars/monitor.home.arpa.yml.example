@@ -70,6 +70,8 @@ grafana_dashboards:
     datasource_mappings:
       - key: "${DS_PROMETHEUS}"
         value: "prometheus"
+  - name: "fritzbox"
+    source: "roles/fritzbox_6660_exporter/files/grafana-dashboard.json"
 
 ufw_rules:
   - rule: "allow"

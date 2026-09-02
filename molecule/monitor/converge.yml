@@ -14,6 +14,10 @@
     - monitor.home.arpa
   vars:
     network_ipv4_address: "{{ ansible_facts.default_ipv4.address }}"
+    grafana_dashboards:
+      - name: "fritzbox"
+        # yamllint disable-line rule:line-length
+        source: "{{ lookup('env', 'MOLECULE_PROJECT_DIRECTORY') }}/roles/fritzbox_6660_exporter/files/grafana-dashboard.json"
   roles:
     - role: "grafana"
     - role: "alloy"
