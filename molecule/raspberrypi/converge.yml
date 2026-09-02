@@ -74,7 +74,7 @@
     gateway_local_ipv4_subnet: "10.0.0.0/24"
     grafana_dashboards:
       - name: "node-exporter-full"
-        url: "https://grafana.com/api/dashboards/1860/revisions/45/download"
+        source: "https://grafana.com/api/dashboards/1860/revisions/45/download"
         datasource_mappings:
           - key: "000000001"
             value: "prometheus"

@@ -61,15 +61,27 @@
   tags:
     - molecule-idempotence-notest
   block:
-    - name: "Download Grafana dashboards"
+    - name: "Download remote Grafana dashboards"
       become: true
+      when: "item.source is match('https?://')"
       ansible.builtin.get_url:
-        url: "{{ item.url }}"
+        url: "{{ item.source }}"
         dest: "/etc/grafana/provisioning/dashboards/{{ item.name }}.json"
         owner: "grafana"
         group: "grafana"
         mode: "0644"
         force: false
+      loop: "{{ grafana_dashboards }}"
+
+    - name: "Copy bundled Grafana dashboards"
+      become: true
+      when: "not (item.source is match('https?://'))"
+      ansible.builtin.copy:
+        src: "{{ item.source }}"
+        dest: "/etc/grafana/provisioning/dashboards/{{ item.name }}.json"
+        owner: "grafana"
+        group: "grafana"
+        mode: "0644"
       loop: "{{ grafana_dashboards }}"
 
     - name: "Fix datasource references in downloaded dashboards"

@@ -64,8 +64,11 @@ argument_specs:
             description: "Local name for the dashboard file"
             type: "str"
             required: true
-          url:
-            description: "URL to download the dashboard JSON from"
+          source:
+            description: >-
+              Dashboard JSON location: an http(s):// URL to download, or a path
+              on the control node (resolved relative to the playbook directory,
+              or absolute) to copy as-is.
             type: "str"
             required: true
           datasource_mappings:

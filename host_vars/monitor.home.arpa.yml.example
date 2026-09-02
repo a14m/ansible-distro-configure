@@ -40,33 +40,33 @@ grafana_datasources:
     url: "http://{{ hostvars['logs.home.arpa'].network_ipv4_address }}:{{ hostvars['logs.home.arpa'].loki_port }}"
 grafana_dashboards:
   - name: "node-exporter-full"
-    url: "https://grafana.com/api/dashboards/1860/revisions/45/download"
+    source: "https://grafana.com/api/dashboards/1860/revisions/45/download"
     datasource_mappings:
       - key: "000000001"
         value: "prometheus"
   - name: "prometheus-overview"
-    url: "https://grafana.com/api/dashboards/3662/revisions/2/download"
+    source: "https://grafana.com/api/dashboards/3662/revisions/2/download"
     datasource_mappings:
       - key: "${DS_THEMIS}"
         value: "prometheus"
   - name: "node-exporter-prometheus"
-    url: "https://grafana.com/api/dashboards/11074/revisions/9/download"
+    source: "https://grafana.com/api/dashboards/11074/revisions/9/download"
     datasource_mappings:
       - key: "${DS__VICTORIAMETRICS}"
         value: "prometheus"
   - name: "garage"
     # yamllint disable-line rule:line-length
-    url: "https://git.deuxfleurs.fr/Deuxfleurs/garage/raw/branch/main/script/telemetry/grafana-garage-dashboard-prometheus.json"
+    source: "https://git.deuxfleurs.fr/Deuxfleurs/garage/raw/branch/main/script/telemetry/grafana-garage-dashboard-prometheus.json"
     datasource_mappings:
       - key: "${DS_prometheus}"
         value: "prometheus"
   - name: "caddy"
-    url: "https://grafana.com/api/dashboards/22870/revisions/3/download"
+    source: "https://grafana.com/api/dashboards/22870/revisions/3/download"
     datasource_mappings:
       - key: "${DS_PROMETHEUS}"
         value: "prometheus"
   - name: "loki"
-    url: "https://grafana.com/api/dashboards/17781/revisions/1/download"
+    source: "https://grafana.com/api/dashboards/17781/revisions/1/download"
     datasource_mappings:
       - key: "${DS_PROMETHEUS}"
         value: "prometheus"
