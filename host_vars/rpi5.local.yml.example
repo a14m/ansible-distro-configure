@@ -12,6 +12,10 @@ ssh_private_key: |
   ...................BAgME
   -----END OPENSSH PRIVATE KEY-----
 
+alloy_journal_drop_expressions:
+  - "UPnPError 401"
+  - "UFW BLOCK.*DST=224.0.0."
+
 # TOTP generator: `openssl rand -base64 32 | head -c "20" | base32`
 pihole_totp_secret: "CHANGEME"
 pihole_admin_password: "{{ ('changeme' | hash('sha256') | hash('sha256'))[:64] }}"
