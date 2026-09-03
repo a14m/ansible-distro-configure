@@ -59,14 +59,3 @@ argument_specs:
           bearer_token:
             description: "Bearer token sent as an Authorization header, if the target requires one"
             type: "str"
-          params:
-            description: >-
-              Query-string parameters for the scrape, e.g. {module: [icmp]} for
-              the blackbox exporter's /probe endpoint.
-            type: "dict"
-          relabel_configs:
-            description: >-
-              Prometheus relabel_configs for this job (list of dicts), e.g. the
-              blackbox multi-target pattern that maps a target into __param_target.
-            type: "list"
-            elements: "dict"

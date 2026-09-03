@@ -131,7 +131,6 @@
     - role: "prometheus"
     - role: "prometheus-node-exporter"
     - role: "fritzbox_6660_exporter"
-    - role: "blackbox_exporter"
     - role: "grafana"
     - role: "alloy"
     - role: "mount"
