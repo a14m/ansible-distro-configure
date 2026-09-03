@@ -19,13 +19,13 @@ argument_specs:
         description: "32-byte hex RPC secret shared across nodes"
         required: true
       garage_s3_port:
-        type: "str"
+        type: "int"
         description: "Port for S3 API"
-        default: "3900"
+        default: 3900
       garage_admin_port:
-        type: "str"
+        type: "int"
         description: "Port for admin API"
-        default: "3903"
+        default: 3903
       garage_rpc_bind_addr:
         type: "str"
         description: "RPC bind address"

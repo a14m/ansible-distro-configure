@@ -8,8 +8,8 @@ argument_specs:
         default: "latest"
       wg_portal_port:
         description: "Port for wg-portal web interface"
-        type: "str"
-        default: "8080"
+        type: "int"
+        default: 8080
       wg_portal_password:
         description: "Password hash for wg-portal authentication"
         type: "str"

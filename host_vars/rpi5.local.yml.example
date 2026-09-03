@@ -18,6 +18,7 @@ alloy_journal_drop_expressions:
 
 # TOTP generator: `openssl rand -base64 32 | head -c "20" | base32`
 pihole_totp_secret: "CHANGEME"
+pihole_port: 8081
 pihole_admin_password: "{{ ('changeme' | hash('sha256') | hash('sha256'))[:64] }}"
 pihole_interface: "{{ network_interface }}"
 pihole_hostname: "dns.internal"
@@ -70,7 +71,7 @@ wireguard_connections:
     Endpoint = vpn.com:51820
 
 wg_portal_password: "{{ ('changeme' | hash('sha256') | hash('sha256'))[:64] }}"
-wg_portal_port: "8080"
+wg_portal_port: 8080
 wg_portal_hostname: "vpn.internal"
 
 gateway_enabled: true
@@ -78,7 +79,7 @@ gateway_router_interface: "{{ network_interface }}"
 gateway_local_ipv4_subnet: "10.0.0.0/24"
 
 mount_device: "PARTLABEL=backup"
-garage_admin_port: "3903"
+garage_admin_port: 3903
 garage_rpc_secret: "changeme"
 garage_access_key_id: "GK_changeme"
 garage_secret_access_key: "changeme"
