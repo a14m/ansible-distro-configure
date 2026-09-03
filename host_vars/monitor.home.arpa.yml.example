@@ -56,9 +56,9 @@ grafana_dashboards:
         value: "prometheus"
   - name: "garage"
     # yamllint disable-line rule:line-length
-    source: "https://git.deuxfleurs.fr/Deuxfleurs/garage/raw/branch/main/script/telemetry/grafana-garage-dashboard-prometheus.json"
+    source: "https://git.deuxfleurs.fr/Deuxfleurs/garage/raw/tag/v2.3.0/script/telemetry/grafana-garage-dashboard-prometheus.json"
     datasource_mappings:
-      - key: "${DS_prometheus}"
+      - key: "${DS_DS_PROMETHEUS}"
         value: "prometheus"
   - name: "caddy"
     source: "https://grafana.com/api/dashboards/22870/revisions/3/download"
