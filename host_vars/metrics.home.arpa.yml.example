@@ -53,6 +53,41 @@ prometheus_extra_scrape_configs:
       - "{{ hostvars['rpi5.local'].network_ipv4_address }}:9042"
     metrics_path: "/metrics"
     scrape_interval: "60s"
+  # blackbox: probes run from rpi5 (the gateway); target is passed via relabeling
+  - name: "blackbox-icmp"
+    metrics_path: "/probe"
+    scrape_interval: "30s"
+    params:
+      module: ["icmp"]
+    targets:
+      - "{{ hostvars['rpi5.local'].network_ipv4_gateway }}"  # FritzBox
+      - "1.1.1.1"
+      - "8.8.8.8"
+      - "9.9.9.9"
+    relabel_configs: &blackbox_relabel
+      - source_labels: ["__address__"]
+        target_label: "__param_target"
+      - source_labels: ["__param_target"]
+        target_label: "instance"
+      - target_label: "__address__"
+        replacement: "{{ hostvars['rpi5.local'].network_ipv4_address }}:9115"
+  - name: "blackbox-dns"
+    metrics_path: "/probe"
+    scrape_interval: "30s"
+    params:
+      module: ["dns_a"]
+    targets:
+      - "{{ hostvars['rpi5.local'].network_ipv4_address }}:53"  # Pi-hole
+      - "1.1.1.1:53"
+    relabel_configs: *blackbox_relabel
+  - name: "blackbox-http"
+    metrics_path: "/probe"
+    scrape_interval: "30s"
+    params:
+      module: ["http_2xx"]
+    targets:
+      - "https://www.google.com/generate_204"
+    relabel_configs: *blackbox_relabel
 
 ufw_rules:
   - rule: "allow"

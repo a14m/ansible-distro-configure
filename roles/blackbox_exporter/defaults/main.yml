@@ -1,0 +1,27 @@
+---
+blackbox_exporter_version: "0.28.0"
+blackbox_exporter_install_dir: "/opt/blackbox_exporter"
+blackbox_exporter_port: 9115
+blackbox_exporter_listen_address: "0.0.0.0:{{ blackbox_exporter_port }}"
+
+# Prober modules. Probe *targets* live in the Prometheus scrape config, not here.
+blackbox_exporter_modules:
+  icmp:
+    prober: "icmp"
+    timeout: "5s"
+    icmp:
+      preferred_ip_protocol: "ip4"
+  http_2xx:
+    prober: "http"
+    timeout: "5s"
+    http:
+      preferred_ip_protocol: "ip4"
+      follow_redirects: true
+      valid_status_codes: []
+  dns_a:
+    prober: "dns"
+    timeout: "5s"
+    dns:
+      preferred_ip_protocol: "ip4"
+      query_name: "example.com"
+      query_type: "A"

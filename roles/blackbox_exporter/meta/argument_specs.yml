@@ -1,0 +1,21 @@
+---
+argument_specs:
+  main:
+    options:
+      blackbox_exporter_version:
+        type: "str"
+        default: "0.28.0"
+        description: "Release version to install"
+      blackbox_exporter_install_dir:
+        type: "str"
+        default: "/opt/blackbox_exporter"
+      blackbox_exporter_port:
+        type: "int"
+        default: 9115
+      blackbox_exporter_listen_address:
+        type: "str"
+        default: "0.0.0.0:9115"
+        description: "host:port the exporter binds to"
+      blackbox_exporter_modules:
+        type: "dict"
+        description: "Prober module definitions rendered into config.yml"
