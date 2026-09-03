@@ -76,7 +76,7 @@
       - name: "node-exporter-full"
         source: "https://grafana.com/api/dashboards/1860/revisions/45/download"
         datasource_mappings:
-          - key: "000000001"
+          - key: "${ds_prometheus}"
             value: "prometheus"
     vimrc_repo_url: "https://git.sr.ht/~a14m/.vim"
     password_store_repo_url: "https://github.com/octocat/Spoon-Knife"

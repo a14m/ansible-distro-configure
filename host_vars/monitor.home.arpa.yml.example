@@ -42,7 +42,7 @@ grafana_dashboards:
   - name: "node-exporter-full"
     source: "https://grafana.com/api/dashboards/1860/revisions/45/download"
     datasource_mappings:
-      - key: "000000001"
+      - key: "${ds_prometheus}"
         value: "prometheus"
   - name: "prometheus-overview"
     source: "https://grafana.com/api/dashboards/3662/revisions/2/download"
