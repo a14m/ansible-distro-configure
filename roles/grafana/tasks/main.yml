@@ -54,12 +54,9 @@
   no_log: true
 
 - name: "Provision Grafana dashboards"
-  notify: "Restart grafana"
-  # grafana downloaded dashboards are being rewritten after successful download
-  # this is to correct the datasource mapping in the downloaded files
-  # This is why these tasks are not idempotent and can't be.
-  tags:
-    - molecule-idempotence-notest
+  # These tasks intentionally re-run every play and report "ok" (see changed_when
+  # notes below). Grafana's file provider hot-reloads dashboards on its own
+  # (updateIntervalSeconds), so no restart handler is needed.
   block:
     - name: "Download remote Grafana dashboards"
       become: true
@@ -70,8 +67,13 @@
         owner: "grafana"
         group: "grafana"
         mode: "0644"
-        force: false
+        # force so a changed `source` (bumped revision/tag) is always fetched,
+        # even from servers that would answer a conditional request with 304.
+        force: true
       loop: "{{ grafana_dashboards }}"
+      # Ignore changes here, since the file is always re-downloaded (and thus rewritten) every run.
+      # But the source is versioned, so it's "not changed"
+      changed_when: false
 
     - name: "Copy bundled Grafana dashboards"
       become: true
@@ -91,6 +93,9 @@
         regexp: "{{ item.1.key | regex_escape }}"
         replace: "{{ item.1.value }}"
       loop: "{{ grafana_dashboards | subelements('datasource_mappings', skip_missing=True) }}"
+      # Ignore changes here, since the file is always re-downloaded (and thus rewritten) every run.
+      # But the source is versioned, so it's "not changed"
+      changed_when: false
 
 - name: "Configure grafana service (conf.d overrides)"
   become: true
