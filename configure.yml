@@ -101,6 +101,7 @@
     - role: "wireguard"
     - role: "gateway"
     - role: "wg_portal"
+    - role: "tmux"
     - role: "prometheus-node-exporter"
     - role: "fritzbox_6660_exporter"
     - role: "alloy"
