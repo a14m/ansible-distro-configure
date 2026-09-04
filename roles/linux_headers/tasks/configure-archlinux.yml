@@ -6,6 +6,18 @@
     state: "directory"
     mode: "0755"
 
+- name: "Install kernel-install sync/prune script"
+  # kernel-install add-all only ever adds entries - it never removes ones for
+  # kernel versions pacman has already deleted from /usr/lib/modules/, so a
+  # small ESP (this desktop's is 1GiB) fills up with stale entries over a few
+  # kernel upgrades and the next kernel-install add then silently fails,
+  # leaving the system unable to boot the newly installed kernel.
+  become: true
+  ansible.builtin.copy:
+    src: "pacman-hooks/kernel-install-sync"
+    dest: "/usr/local/bin/kernel-install-sync"
+    mode: "0755"
+
 - name: "Ensure systemd-boot entries are regenerated on kernel upgrades"
   become: true
   ansible.builtin.copy:
