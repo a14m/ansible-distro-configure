@@ -52,6 +52,7 @@ pihole_dns_hosts:
   - "{{ hostvars['proxy.home.arpa'].network_ipv4_address }} {{ wg_portal_hostname }}"
   - "{{ hostvars['proxy.home.arpa'].network_ipv4_address }} monitor.internal"
   - "{{ hostvars['proxy.home.arpa'].network_ipv4_address }} metrics.internal"
+  - "{{ hostvars['proxy.home.arpa'].network_ipv4_address }} {{ garage_hostname }}"
   - "{{ hostvars['proxy.home.arpa'].network_ipv4_address }} {{ garage_webui_hostname }}"
   - "{{ hostvars['proxy.home.arpa'].network_ipv4_address }} vm.internal"
   - "{{ hostvars['proxy.home.arpa'].network_ipv4_address }} subscriptions.internal"
@@ -92,8 +93,9 @@ garage_buckets:
     secret_access_key: *backup_secret_key
 garage_data_dir: "/backup/garage/data"
 garage_meta_dir: "/backup/garage/meta"
+garage_hostname: "s3.internal"
 
-garage_webui_hostname: "s3.internal"
+garage_webui_hostname: "web.s3.internal"
 garage_webui_auth_user: "changeme"
 # generate with: htpasswd -nbBC 10 user password
 garage_webui_auth_password_hash: "changeme"

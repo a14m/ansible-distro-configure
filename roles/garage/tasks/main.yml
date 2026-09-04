@@ -147,3 +147,12 @@
         loop_var: "bucket"
         label: "{{ bucket.name }}"
       no_log: true
+
+- name: "Create garage proxy vhost"
+  when: garage_hostname is defined
+  ansible.builtin.include_role:
+    name: "vhost"
+  vars:
+    vhost_name: "garage"
+    vhost_nginx_content: "{{ lookup('template', 'garage.nginx.conf.j2') }}"
+    vhost_caddy_content: "{{ lookup('template', 'garage.caddy.j2') }}"

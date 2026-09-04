@@ -58,10 +58,11 @@ Pi-hole and WireGuard Portal run directly on `rpi5.local`:
 |---|---|---|---|
 | Pi-hole | [`dns.home.arpa`](http://dns.home.arpa:8081/) | [`dns.internal`](https://dns.internal) | DNS filtering and ad blocking |
 | WireGuard Portal | [`vpn.home.arpa`](http://vpn.home.arpa:8080/) | [`vpn.internal`](https://vpn.internal) | WireGuard VPN management UI |
-| Garage webui | [`s3.home.arpa`](http://s3.home.arpa:3909/) | [`s3.internal`](https://s3.internal) | Garage S3-compatible object store admin UI |
+| Garage S3 API | [`s3.home.arpa`](http://s3.home.arpa:3900/) | [`s3.internal`](https://s3.internal) | Garage S3-compatible object store API |
+| Garage webui | [`s3.home.arpa`](http://s3.home.arpa:3909/) | [`web.s3.internal`](https://web.s3.internal) | Garage S3-compatible object store admin UI |
 
-Override the default hostnames with `pihole_hostname`/`wg_portal_hostname`/`garage_webui_hostname` (the `*.internal` name) -
-the `*.home.arpa` alias to `rpi5.local` itself is a separate, fixed entry in `pihole_dns_hosts`.
+Override the default hostnames with `pihole_hostname`/`wg_portal_hostname`/`garage_hostname`/`garage_webui_hostname`
+(the `*.internal` name) - the `*.home.arpa` alias to `rpi5.local` itself is a separate, fixed entry in `pihole_dns_hosts`.
 
 ## Container Services
 

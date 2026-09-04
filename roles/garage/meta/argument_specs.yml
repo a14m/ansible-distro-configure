@@ -67,3 +67,9 @@ argument_specs:
           for a locally-running admin UI. Leave undefined to keep the admin API
           fully locked (Garage's default since v2.0). Does not affect
           api_bind_addr - only garage_metrics_token controls that.
+      garage_hostname:
+        type: "str"
+        description: >-
+          FQDN for the S3 API vhost (e.g. 'sync.internal'). Required for S3
+          clients that need HTTPS (e.g. Obsidian Mobile). Leave undefined to
+          skip vhost creation entirely.
