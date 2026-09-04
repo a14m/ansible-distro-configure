@@ -1,0 +1,9 @@
+---
+- name: "Include OS-specific variables"
+  ansible.builtin.include_vars: "{{ ansible_facts.os_family | lower }}.yml"
+
+- name: "Ensure conntrack is installed"
+  become: true
+  ansible.builtin.package:
+    name: "{{ conntrack_package }}"
+    state: "present"

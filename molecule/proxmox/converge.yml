@@ -70,6 +70,7 @@
     - role: "jq"
     - role: "ag"
     - role: "tcpdump"
+    - role: "conntrack"
     - role: "whois"
     - role: "btop"
     - role: "gpg"

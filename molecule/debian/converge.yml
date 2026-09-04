@@ -87,6 +87,7 @@
     - role: "jq"
     - role: "ag"
     - role: "tcpdump"
+    - role: "conntrack"
     - role: "whois"
     - role: "libheif"
     - role: "tmuxinator"
