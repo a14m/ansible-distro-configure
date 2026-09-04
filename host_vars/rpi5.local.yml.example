@@ -82,11 +82,14 @@ gateway_local_ipv4_subnet: "10.0.0.0/24"
 mount_device: "PARTLABEL=backup"
 garage_admin_port: 3903
 garage_rpc_secret: "changeme"
-garage_access_key_id: "GK_changeme"
-garage_secret_access_key: "changeme"
 garage_metrics_token: "changeme"
 garage_admin_token: "changeme"
-garage_bucket: "restic"
+backup_access_key_id: &backup_access_key_id "GK_changeme"
+backup_secret_key: &backup_secret_key "changeme"
+garage_buckets:
+  - name: "restic"
+    access_key_id: *backup_access_key_id
+    secret_access_key: *backup_secret_key
 garage_data_dir: "/backup/garage/data"
 garage_meta_dir: "/backup/garage/meta"
 
@@ -104,8 +107,8 @@ fritzbox_6660_exporter_password: "changeme"
 awscli_profile_name: "garage"
 awscli_region: "garage"
 awscli_endpoint_url: "http://127.0.0.1:{{ garage_s3_port }}"
-awscli_access_key_id: "{{ garage_access_key_id }}"
-awscli_secret_access_key: "{{ garage_secret_access_key }}"
+awscli_access_key_id: *backup_access_key_id
+awscli_secret_access_key: *backup_secret_key
 
 ufw_rules:
   - rule: "allow"

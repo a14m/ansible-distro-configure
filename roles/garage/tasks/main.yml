@@ -112,26 +112,38 @@
       retries: 30
       delay: 1
 
-- name: "Provision garage bucket and key"
+- name: "Provision garage buckets and keys"
   become: true
   block:
     - name: "Create bucket"
       ansible.builtin.command:
-        cmd: "garage bucket create {{ garage_bucket }}"
+        cmd: "garage bucket create {{ bucket.name }}"
       register: garage_bucket_create
       changed_when: garage_bucket_create.rc == 0
       failed_when: garage_bucket_create.rc != 0 and 'already exists' not in garage_bucket_create.stderr
+      loop: "{{ garage_buckets }}"
+      loop_control:
+        loop_var: "bucket"
+        label: "{{ bucket.name }}"
 
     - name: "Import key"
       ansible.builtin.command:
-        cmd: "garage key import --yes -n {{ garage_bucket }} {{ garage_access_key_id }} {{ garage_secret_access_key }}"
+        cmd: "garage key import --yes -n {{ bucket.name }} {{ bucket.access_key_id }} {{ bucket.secret_access_key }}"
       register: garage_key_import
       changed_when: garage_key_import.rc == 0
       failed_when: garage_key_import.rc != 0 and 'already exists' not in garage_key_import.stderr
+      loop: "{{ garage_buckets }}"
+      loop_control:
+        loop_var: "bucket"
+        label: "{{ bucket.name }}"
       no_log: true
 
     - name: "Allow key on bucket"
       ansible.builtin.command:
-        cmd: "garage bucket allow --read --write --owner --key {{ garage_access_key_id }} {{ garage_bucket }}"
+        cmd: "garage bucket allow --read --write --owner --key {{ bucket.access_key_id }} {{ bucket.name }}"
       changed_when: false
+      loop: "{{ garage_buckets }}"
+      loop_control:
+        loop_var: "bucket"
+        label: "{{ bucket.name }}"
       no_log: true

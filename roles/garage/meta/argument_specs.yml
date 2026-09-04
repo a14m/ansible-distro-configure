@@ -34,18 +34,26 @@ argument_specs:
         type: "str"
         description: "Storage capacity for this node (e.g. 100G, 200G)"
         default: "100G"
-      garage_bucket:
-        type: "str"
-        description: "Bucket name to create for restic backups"
-        default: "restic"
-      garage_access_key_id:
-        type: "str"
-        description: "S3 access key ID"
-        required: true
-      garage_secret_access_key:
-        type: "str"
-        description: "S3 secret access key"
-        required: true
+      garage_buckets:
+        type: "list"
+        elements: "dict"
+        description: >-
+          Buckets to create, each with its own key scoped (owner/read/write) to
+          that bucket only — a key for one bucket cannot read or write another.
+        default: []
+        options:
+          name:
+            type: "str"
+            description: "Bucket name"
+            required: true
+          access_key_id:
+            type: "str"
+            description: "S3 access key ID for this bucket's dedicated key"
+            required: true
+          secret_access_key:
+            type: "str"
+            description: "S3 secret access key for this bucket's dedicated key"
+            required: true
       garage_metrics_token:
         type: "str"
         description: >-

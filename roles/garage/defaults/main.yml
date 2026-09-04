@@ -6,4 +6,4 @@ garage_meta_dir: "/var/garage/meta"
 garage_s3_port: 3900
 garage_admin_port: 3903
 garage_rpc_bind_addr: "127.0.0.1:3901"
-garage_bucket: "default-bucket"
+garage_buckets: []
