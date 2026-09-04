@@ -15,6 +15,7 @@ ssh_private_key: |
 alloy_journal_drop_expressions:
   - "UPnPError 401"
   - "UFW BLOCK.*DST=224.0.0."
+  - "UFW BLOCK.*DPT=5353"
 
 # TOTP generator: `openssl rand -base64 32 | head -c "20" | base32`
 pihole_totp_secret: "CHANGEME"
