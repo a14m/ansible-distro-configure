@@ -87,10 +87,15 @@ garage_metrics_token: "changeme"
 garage_admin_token: "changeme"
 backup_access_key_id: &backup_access_key_id "GK_changeme"
 backup_secret_key: &backup_secret_key "changeme"
+obsidian_access_key_id: &obsidian_access_key_id "GK_changeme"
+obsidian_secret_key: &obsidian_secret_key "changeme"
 garage_buckets:
   - name: "restic"
     access_key_id: *backup_access_key_id
     secret_access_key: *backup_secret_key
+  - name: "obsidian"
+    access_key_id: *obsidian_access_key_id
+    secret_access_key: *obsidian_secret_key
 garage_data_dir: "/backup/garage/data"
 garage_meta_dir: "/backup/garage/meta"
 garage_hostname: "s3.internal"

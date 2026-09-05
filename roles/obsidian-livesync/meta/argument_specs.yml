@@ -1,0 +1,51 @@
+---
+argument_specs:
+  main:
+    options:
+      obsidian_livesync_vault_path:
+        type: "str"
+        description: "Filesystem path to the vault to configure (e.g. '{{ ansible_facts.env.HOME }}/obsidian')"
+        required: true
+      obsidian_livesync_plugin_version:
+        type: "str"
+        description: "obsidian-livesync GitHub release tag to install"
+        default: "1.0.24"
+      obsidian_livesync_endpoint:
+        type: "str"
+        description: "S3-compatible endpoint URL (e.g. 'https://s3.internal') — must be HTTPS for Obsidian Mobile"
+        required: true
+      obsidian_livesync_bucket:
+        type: "str"
+        description: "Bucket name to sync against"
+        default: "obsidian"
+      obsidian_livesync_region:
+        type: "str"
+        description: "S3 region to sign requests with (e.g. required by Garage)"
+        default: "garage"
+      obsidian_livesync_bucket_prefix:
+        type: "str"
+        description: >-
+          Prefix within the bucket, acting like a folder (e.g. 'vault-name/').
+          Empty syncs at the bucket root.
+        default: ""
+      obsidian_livesync_access_key:
+        type: "str"
+        description: "S3 access key ID"
+        required: true
+      obsidian_livesync_secret_key:
+        type: "str"
+        description: "S3 secret access key"
+        required: true
+      obsidian_livesync_use_custom_request_handler:
+        type: "bool"
+        description: >-
+          Use Obsidian's internal API instead of browser fetch for S3 requests,
+          bypassing CORS. Turn off only if the bucket has CORS configured.
+        default: true
+      obsidian_livesync_passphrase:
+        type: "str"
+        description: >-
+          End-to-end encryption passphrase. Always enabled by this role — the
+          remote only ever sees ciphertext, including file/folder names
+          (usePathObfuscation is also always enabled alongside it).
+        required: true

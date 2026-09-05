@@ -44,6 +44,7 @@
     - role: "claude"
     - role: "firefox"
     - role: "obsidian"
+    - role: "obsidian-livesync"
     - role: "localsend"
     - role: "gnome-calendar"
     - role: "gnome-newsflash"
