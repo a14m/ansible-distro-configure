@@ -1,6 +1,0 @@
----
-obsidian_livesync_plugin_version: "1.0.24"
-obsidian_livesync_bucket: "obsidian"
-obsidian_livesync_region: "garage"
-obsidian_livesync_bucket_prefix: ""
-obsidian_livesync_use_custom_request_handler: true

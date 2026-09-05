@@ -76,12 +76,6 @@ kanshi_profiles: |
 
 logind_lid_ac_action: "ignore"
 
-obsidian_livesync_vault_path: "{{ ansible_facts.env.HOME }}/obsidian"
-obsidian_livesync_endpoint: "https://{{ hostvars['rpi5.local'].garage_hostname }}"
-obsidian_livesync_access_key: "{{ hostvars['rpi5.local'].obsidian_access_key_id }}"
-obsidian_livesync_secret_key: "{{ hostvars['rpi5.local'].obsidian_secret_key }}"
-obsidian_livesync_passphrase: "changeme"
-
 ufw_rules:
   - rule: "allow"
     port: "{{ ssh_port }}"
