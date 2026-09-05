@@ -81,6 +81,7 @@ gateway_router_interface: "{{ network_interface }}"
 gateway_local_ipv4_subnet: "10.0.0.0/24"
 
 mount_device: "PARTLABEL=backup"
+garage_s3_port: 3900
 garage_admin_port: 3903
 garage_rpc_secret: "changeme"
 garage_metrics_token: "changeme"
