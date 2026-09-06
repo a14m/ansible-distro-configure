@@ -39,6 +39,20 @@
       encrypt: true
       passphrase: "{{ obsidian_livesync_passphrase }}"
       usePathObfuscation: true
+      # PREFERRED_SETTING_SELF_HOSTED (+ PREFERRED_BASE) from livesync-commonlib's
+      # setting.const.preferred.ts - the plugin's own canonical preset for a
+      # self-hosted CouchDB remote (as opposed to IBM Cloudant or journal/S3 sync,
+      # which get different values here). Matches what the in-app config doctor
+      # otherwise prompts to fix, one setting at a time, on every new device.
+      syncMaxSizeInMB: 50
+      chunkSplitterVersion: "v3-rabin-karp"
+      usePluginSyncV2: true
+      handleFilenameCaseSensitive: false
+      E2EEAlgorithm: "v2"
+      customChunkSize: 60
+      sendChunksBulkMaxSize: 1
+      concurrencyOfReadChunksOnline: 30
+      minimumIntervalOfReadChunksOnline: 25
   ansible.builtin.copy:
     content: "{{ obsidian_livesync_settings | to_nice_json }}\n"
     dest: "{{ obsidian_livesync_vault_path }}/.obsidian/plugins/obsidian-livesync/data.json"

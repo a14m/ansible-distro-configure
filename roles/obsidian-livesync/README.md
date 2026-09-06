@@ -9,10 +9,10 @@ install path for it, so this role doesn't either).
 
 - Downloads `main.js`/`manifest.json`/`styles.css` from a pinned GitHub release into
   `<vault>/.obsidian/plugins/obsidian-livesync/`.
-- Seeds `<vault>/.obsidian/plugins/obsidian-livesync/data.json` with the CouchDB connection and encryption settings -
-  **once only**. After the plugin has run, it owns that file and rewrites it with its own state (sync checkpoints,
-  etc.); this role never overwrites it again once it exists. To reconfigure, delete `data.json` (or hand-edit it)
-  first.
+- Seeds `<vault>/.obsidian/plugins/obsidian-livesync/data.json` with the CouchDB connection, encryption, and
+  recommended-tweak settings - **once only**. After the plugin has run, it owns that file and rewrites it with its
+  own state (sync checkpoints, etc.); this role never overwrites it again once it exists. To reconfigure, delete
+  `data.json` (or hand-edit it) first.
 
 The settings field names (`couchDB_URI`, `couchDB_USER`, `remoteType`, etc.) were confirmed against the plugin's
 actual source - `CouchDBConnection`/`EncryptionSettings` in
@@ -20,6 +20,17 @@ actual source - `CouchDBConnection`/`EncryptionSettings` in
 and the `REMOTE_COUCHDB` constant (an empty string, not a `"COUCHDB"` literal) in
 [`setting.const.ts`](https://github.com/vrtmrz/livesync-commonlib/blob/main/src/common/models/setting.const.ts) - not
 the settings UI docs, which describe the same fields under different labels.
+
+The remaining seeded fields (`syncMaxSizeInMB`, `chunkSplitterVersion`, `usePluginSyncV2`, `handleFilenameCaseSensitive`,
+`E2EEAlgorithm`, `customChunkSize`, `sendChunksBulkMaxSize`, `concurrencyOfReadChunksOnline`,
+`minimumIntervalOfReadChunksOnline`) are `PREFERRED_BASE` + `PREFERRED_SETTING_SELF_HOSTED` from
+[`setting.const.preferred.ts`](https://github.com/vrtmrz/livesync-commonlib/blob/main/src/common/models/setting.const.preferred.ts) -
+the plugin's own canonical preset for a self-hosted CouchDB remote specifically (`PREFERRED_SETTING_CLOUDANT` and
+`PREFERRED_JOURNAL_SYNC` use different values for IBM Cloudant and journal/S3 sync respectively - notably a
+different `customChunkSize`, since chunk-size economics differ per backend). This is exactly what the plugin's own
+in-app "Config doctor" prompts you to fix, one setting at a time, on every new device otherwise (e.g. "Per-file-saved
+customization sync" for `usePluginSyncV2`, "Enhance chunk size" for `customChunkSize`) - seeding the whole preset up
+front means new devices should converge with drastically fewer doctor prompts.
 
 ## Role Variables
 
