@@ -1,0 +1,9 @@
+http://{{ inventory_hostname }} {
+	handle /certificate {
+		root * {{ caddy_ca_root_cert_source | dirname }}
+		rewrite * /root.crt
+		file_server
+		header Content-Type "application/x-x509-ca-cert"
+		header Content-Disposition "attachment; filename=root.crt"
+	}
+}

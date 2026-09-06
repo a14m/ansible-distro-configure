@@ -1,0 +1,15 @@
+---
+- name: "Include OS-specific variables"
+  ansible.builtin.include_vars: "{{ ansible_facts.os_family | lower }}.yml"
+
+- name: "Create caddy-ca site configuration"
+  become: true
+  ansible.builtin.template:
+    src: "caddy-ca.caddy.j2"
+    dest: "/etc/caddy/sites/caddy-ca.caddy"
+    owner: "root"
+    group: "caddy"
+    mode: "0640"
+    backup: true
+    validate: "caddy validate --config %s --adapter caddyfile"
+  notify: "Restart caddy"

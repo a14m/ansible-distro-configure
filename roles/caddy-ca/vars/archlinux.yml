@@ -1,0 +1,2 @@
+---
+caddy_ca_root_cert_source: "/var/lib/caddy/pki/authorities/local/root.crt"

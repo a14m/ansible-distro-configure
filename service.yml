@@ -5,6 +5,7 @@
     - proxy.home.arpa
   roles:
     - role: "caddy"
+    - role: "caddy-ca"
     - role: "cloudflared"
     - role: "alloy"
     - role: "ufw"
