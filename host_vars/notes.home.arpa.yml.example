@@ -1,0 +1,65 @@
+---
+network_ipv4_address: "10.0.0.109"
+network_ipv4_gateway: "10.0.0.254"
+network_ipv4_dns: "10.0.0.254"
+
+pve_lxc_id: 109
+pve_lxc_hostname: "notes"
+pve_lxc_template: "debian-13-standard_13.6-1_amd64.tar.zst"
+pve_lxc_disk: "local-lvm:4" # storage:sizeGB
+pve_lxc_cores: 1
+pve_lxc_memory: 512
+pve_lxc_ip: "{{ network_ipv4_address }}/24"
+pve_lxc_gateway: "{{ network_ipv4_gateway }}"
+pve_lxc_dns: "{{ network_ipv4_dns }}"
+pve_lxc_ssh_port: 2222
+pve_lxc_ssh_public_key: "ssh-ed25519 AAAA...fMo"
+pve_lxc_ssh_private_key: |
+      -----BEGIN OPENSSH PRIVATE KEY-----
+      b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
+      QyNTUxOQAAACAQ0GydCVLVXnXpzBxM6MbmRIDHNjC8dqZoFHgx1PiSgQAAAJi7TmCqu05g
+      qgAAAAtzc2gtZWQyNTUxOQAAACAQ0GydCVLVXnXpzBxM6MbmRIDHNjC8dqZoFHgx1PiSgQ
+      AAAEBgO+cOwV2j8gNZ/EugDk+vbi0eGrK125vRcE3FOtJJMRDQbJ0JUtVedenMHEzoxuZE
+      gMc2MLx2pmgUeDHU+JKBAAAAEm1vbGVjdWxlLXRlc3Qtb25seQECAw==
+      -----END OPENSSH PRIVATE KEY-----
+
+couchdb_hostname: "notes.internal"
+# Generate with: openssl rand -hex 16
+couchdb_cookie: "CHANGEME"
+couchdb_admin_password: "CHANGEME"
+# Required by obsidian-livesync (check obsidian-livesync README for more information)
+couchdb_cors_origins:
+  - "app://obsidian.md"
+  - "capacitor://localhost"
+  - "http://localhost"
+couchdb_users:
+  - name: "alice"
+    password: "CHANGEME"
+    database: "obsidian"
+
+backup_name: "notes"
+backup_paths:
+  - "/opt/couchdb/data"
+backup_cron_schedule: "0 0 * * 0"
+backup_systemd_schedule: "Sun *-*-*"
+backup_repo: "s3:http://10.0.0.254:3900/backups"
+backup_s3_region: "garage"
+backup_access_key_id: "GK_CHANGEME"
+backup_secret_access_key: "CHANGEME"
+backup_password: "changeme"
+
+alloy_file_scrape_targets:
+  - name: "notes-backup"
+    path: "/var/log/notes-backup.log"
+
+ufw_rules:
+  - rule: "allow"
+    port: "{{ ssh_port }}"
+    protocol: "tcp"
+    direction: "in"
+    from: "10.0.0.0/24"
+  - rule: "allow"
+    port: "{{ couchdb_port }}"
+    protocol: "tcp"
+    direction: "in"
+    from: "{{ hostvars['proxy.home.arpa'].network_ipv4_address }}"

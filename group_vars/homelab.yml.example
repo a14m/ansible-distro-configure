@@ -59,6 +59,13 @@ zen_browser_is_default: true
 
 alloy_loki_host: "{{ hostvars['logs.home.arpa'].network_ipv4_address }}:{{ hostvars['logs.home.arpa'].loki_port }}"
 
+# Same vault/user/passphrase on every device syncing together - see obsidian-livesync's README for more info.
+obsidian_livesync_vault_path: "{{ ansible_facts.env.HOME }}/obsidian"
+obsidian_livesync_uri: "https://notes.internal"
+obsidian_livesync_user: "alice"
+obsidian_livesync_password: "CHANGEME"
+obsidian_livesync_passphrase: "CHANGEME"
+
 wireguard_autostart_connection: "vpn0"
 wireguard_connections:
   # All wireguard config files are prefixed with wg-

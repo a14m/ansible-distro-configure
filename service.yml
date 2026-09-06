@@ -74,3 +74,13 @@
     - role: "backup"
     - role: "alloy"
     - role: "ufw"
+
+- name: "Notes configure"
+  gather_facts: true
+  hosts:
+    - notes.home.arpa
+  roles:
+    - role: "couchdb"
+    - role: "backup"
+    - role: "alloy"
+    - role: "ufw"
