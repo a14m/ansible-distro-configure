@@ -70,6 +70,11 @@
     password_store_repo_url: "https://github.com/octocat/Spoon-Knife"
     firefox_install_browserpass: true
     firefox_install_passff: true
+    obsidian_livesync_vault_path: "{{ ansible_facts.env.HOME }}/obsidian"
+    obsidian_livesync_uri: "https://notes.internal"
+    obsidian_livesync_user: "alice"
+    obsidian_livesync_password: "CHANGEME"
+    obsidian_livesync_passphrase: "CHANGEME"
     awscli_profile_name: "example"
     awscli_region: "eu-central-1"
     awscli_access_key_id: "CHANGEME"
@@ -128,6 +133,7 @@
     - role: "firefox"
     - role: "chromium"
     - role: "obsidian"
+    - role: "obsidian-livesync"
     - role: "microsoft-teams"
     - role: "font"
     - role: "alacritty"

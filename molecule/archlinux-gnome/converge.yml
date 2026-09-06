@@ -122,6 +122,7 @@
     - role: "firefox"
     - role: "chromium"
     - role: "obsidian"
+    - role: "obsidian-livesync"
     - role: "microsoft-teams"
     - role: "steam"
     - role: "usbutils"
