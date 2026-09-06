@@ -1,0 +1,45 @@
+---
+- name: "Add CouchDB apt repository"
+  become: true
+  ansible.builtin.deb822_repository:
+    name: "couchdb"
+    types: "deb"
+    uris: "https://apache.jfrog.io/artifactory/couchdb-deb/"
+    suites: "{{ ansible_facts.distribution_release }}"
+    components: "main"
+    signed_by: "https://couchdb.apache.org/repo/keys.asc"
+    install_python_debian: true
+    state: "present"
+  notify: "Update couchdb apt cache"
+
+- name: "Flush handlers before installing couchdb"
+  ansible.builtin.meta: "flush_handlers"
+
+# The .deb postinst only ever reads these on the package's *first* configure -
+# a later run with different values here updates the debconf database but
+# never reconfigures the already-running node (see couchdb_admin_password's
+# and couchdb_cookie's descriptions in meta/argument_specs.yml).
+- name: "Preseed CouchDB debconf selections"
+  become: true
+  ansible.builtin.debconf:
+    name: "couchdb"
+    question: "{{ item.question }}"
+    vtype: "{{ item.vtype }}"
+    value: "{{ item.value }}"
+  loop:
+    - { question: "couchdb/mode", vtype: "select", value: "standalone" }
+    - { question: "couchdb/bindaddress", vtype: "string", value: "{{ couchdb_bind_address }}" }
+    - { question: "couchdb/cookie", vtype: "string", value: "{{ couchdb_cookie }}" }
+    - { question: "couchdb/adminpass", vtype: "password", value: "{{ couchdb_admin_password }}" }
+    - { question: "couchdb/adminpass_again", vtype: "password", value: "{{ couchdb_admin_password }}" }
+  loop_control:
+    label: "{{ item.question }}"
+  no_log: true
+
+- name: "Install couchdb"
+  become: true
+  environment:
+    DEBIAN_FRONTEND: "noninteractive"
+  ansible.builtin.package:
+    name: "couchdb"
+    state: "present"

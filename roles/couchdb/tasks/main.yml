@@ -1,0 +1,96 @@
+---
+- name: "Include OS-specific installation tasks"
+  ansible.builtin.include_tasks: "install-{{ ansible_facts.os_family | lower }}.yml"
+
+- name: "Deploy CouchDB local.ini configuration"
+  become: true
+  ansible.builtin.template:
+    src: "local.ini.j2"
+    dest: "/opt/couchdb/etc/local.ini"
+    owner: "couchdb"
+    group: "couchdb"
+    mode: "0640"
+  notify: "Restart couchdb"
+
+- name: "Start and enable couchdb"
+  become: true
+  ansible.builtin.service:
+    name: "couchdb"
+    state: "started"
+    enabled: true
+
+- name: "Flush handlers before managing users/databases"
+  ansible.builtin.meta: "flush_handlers"
+
+- name: "Manage CouchDB users and databases over its HTTP API"
+  vars:
+    couchdb_base_url: "http://{{ couchdb_bind_address }}:{{ couchdb_port }}"
+  module_defaults:
+    ansible.builtin.uri:
+      url_username: "admin"
+      url_password: "{{ couchdb_admin_password }}"
+      force_basic_auth: true
+  block:
+    - name: "Wait for CouchDB API to be reachable"
+      ansible.builtin.uri:
+        url: "{{ couchdb_base_url }}/_up"
+        status_code: [200]
+      register: couchdb_up_check
+      until: couchdb_up_check.status == 200
+      retries: 10
+      delay: 2
+
+    # A 409 means the user doc already exists - this role never updates an
+    # existing user's password, see couchdb_users in meta/argument_specs.yml.
+    - name: "Create CouchDB users"
+      ansible.builtin.uri:
+        url: "{{ couchdb_base_url }}/_users/org.couchdb.user:{{ item.name }}"
+        method: "PUT"
+        body_format: "json"
+        body:
+          name: "{{ item.name }}"
+          password: "{{ item.password }}"
+          roles: []
+          type: "user"
+        status_code: [201, 409]
+      loop: "{{ couchdb_users }}"
+      loop_control:
+        label: "{{ item.name }}"
+      no_log: true
+
+    - name: "Create per-user databases"
+      ansible.builtin.uri:
+        url: "{{ couchdb_base_url }}/{{ item.database }}"
+        method: "PUT"
+        status_code: [201, 412]
+      loop: "{{ couchdb_users }}"
+      loop_control:
+        label: "{{ item.database }}"
+      no_log: true
+
+    - name: "Restrict database access to its owning user"
+      ansible.builtin.uri:
+        url: "{{ couchdb_base_url }}/{{ item.database }}/_security"
+        method: "PUT"
+        body_format: "json"
+        body:
+          admins:
+            names: []
+            roles: ["_admin"]
+          members:
+            names: ["{{ item.name }}"]
+            roles: []
+        status_code: [200]
+      loop: "{{ couchdb_users }}"
+      loop_control:
+        label: "{{ item.database }}"
+      no_log: true
+
+- name: "Create couchdb proxy vhost"
+  when: couchdb_hostname is defined
+  ansible.builtin.include_role:
+    name: "vhost"
+  vars:
+    vhost_name: "couchdb"
+    vhost_nginx_content: "{{ lookup('template', 'couchdb.nginx.conf.j2') }}"
+    vhost_caddy_content: "{{ lookup('template', 'couchdb.caddy.j2') }}"

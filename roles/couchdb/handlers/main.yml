@@ -1,0 +1,11 @@
+---
+- name: "Update couchdb apt cache"
+  become: true
+  ansible.builtin.apt:
+    update_cache: true
+
+- name: "Restart couchdb"
+  become: true
+  ansible.builtin.service:
+    name: "couchdb"
+    state: "restarted"

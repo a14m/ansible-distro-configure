@@ -1,0 +1,71 @@
+---
+argument_specs:
+  main:
+    options:
+      couchdb_hostname:
+        type: "str"
+        description: >-
+          FQDN for CouchDB (e.g. couchdb.internal).
+          Leave undefined to skip vhost creation entirely.
+      couchdb_bind_address:
+        type: "str"
+        description: "Address CouchDB's HTTP API binds on"
+        default: "{{ network_ipv4_address }}"
+      couchdb_port:
+        type: "int"
+        description: "Port CouchDB's HTTP API binds on"
+        default: 5984
+      couchdb_cookie:
+        type: "str"
+        description: >-
+          Erlang distribution cookie. Only meaningful for clustering, but the
+          .deb installer always asks for one — set once at first install via
+          debconf, changing it afterwards has no effect on a running node.
+        required: true
+      couchdb_admin_password:
+        type: "str"
+        description: >-
+          Password for the fixed "admin" user, set once at first install via
+          debconf. The .deb installer hardcodes the bootstrap admin's username
+          to "admin" - there is no debconf question to change it. Changing this
+          var after install has no effect on the running node's password;
+          rotate it through CouchDB itself (e.g. the _config/admins API) or by
+          purging and reinstalling the package.
+        required: true
+      couchdb_cors_origins:
+        type: "list"
+        elements: "str"
+        description: >-
+          Origins allowed through CORS. Empty (default) leaves CORS disabled -
+          only needed if some client talks to CouchDB directly from a
+          browser/app origin (a cross-origin request from that client's
+          point of view).
+        default: []
+      couchdb_max_document_size:
+        type: "int"
+        description: "Maximum document size in bytes (large vault attachments need headroom)"
+        default: 50000000
+      couchdb_users:
+        type: "list"
+        elements: "dict"
+        description: >-
+          List of {name, password, database} dicts. For each entry this role
+          creates a CouchDB user, the named database, and restricts that
+          database's _security to only that user (plus admins). Creating a
+          user that already exists is a no-op - this role never updates an
+          existing user's password; delete the user doc first (or use the
+          CouchDB API yourself) to rotate it.
+        default: []
+        options:
+          name:
+            type: "str"
+            required: true
+            description: "CouchDB user name"
+          password:
+            type: "str"
+            required: true
+            description: "CouchDB user password"
+          database:
+            type: "str"
+            required: true
+            description: "Database name granted to this user"

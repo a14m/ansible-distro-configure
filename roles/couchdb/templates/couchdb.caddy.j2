@@ -1,0 +1,3 @@
+{{ couchdb_hostname }} {
+	reverse_proxy {{ couchdb_bind_address }}:{{ couchdb_port }}
+}

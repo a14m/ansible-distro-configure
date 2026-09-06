@@ -1,0 +1,23 @@
+[couchdb]
+single_node = true
+max_document_size = {{ couchdb_max_document_size }}
+
+[chttpd]
+bind_address = {{ couchdb_bind_address }}
+port = {{ couchdb_port }}
+{% if couchdb_cors_origins %}
+enable_cors = true
+{% endif %}
+
+[httpd]
+{% if couchdb_cors_origins %}
+enable_cors = true
+{% endif %}
+
+{% if couchdb_cors_origins %}
+[cors]
+origins = {{ couchdb_cors_origins | join(',') }}
+credentials = true
+methods = GET, PUT, POST, HEAD, DELETE
+headers = accept, authorization, content-type, origin, referer
+{% endif %}

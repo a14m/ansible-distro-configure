@@ -1,0 +1,8 @@
+---
+couchdb_bind_address: "{{ network_ipv4_address }}"
+couchdb_port: 5984
+couchdb_cors_origins: []
+couchdb_max_document_size: 50000000
+# list of {name, password, database} dicts; each user is granted membership
+# on only their own database.
+couchdb_users: []
