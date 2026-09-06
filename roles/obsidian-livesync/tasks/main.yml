@@ -1,0 +1,46 @@
+---
+- name: "Ensure obsidian-livesync plugin directory exists"
+  ansible.builtin.file:
+    path: "{{ obsidian_livesync_vault_path }}/.obsidian/plugins/obsidian-livesync"
+    state: "directory"
+    mode: "0755"
+
+- name: "Download obsidian-livesync plugin files"
+  ansible.builtin.get_url:
+    url: "https://github.com/vrtmrz/obsidian-livesync/releases/download/\
+      {{ obsidian_livesync_plugin_version }}/{{ item }}"
+    dest: "{{ obsidian_livesync_vault_path }}/.obsidian/plugins/obsidian-livesync/{{ item }}"
+    mode: "0644"
+  loop:
+    - "main.js"
+    - "manifest.json"
+    - "styles.css"
+
+- name: "Check if obsidian-livesync is already configured"
+  ansible.builtin.stat:
+    path: "{{ obsidian_livesync_vault_path }}/.obsidian/plugins/obsidian-livesync/data.json"
+  register: obsidian_livesync_data_check
+
+# Seeded once only. Once loaded, the plugin owns this file and rewrites it
+# with its own runtime state (sync checkpoints, etc.) - overwriting it on
+# every converge would clobber that, so this never re-applies after the
+# first run. To reconfigure, remove data.json (or edit it by hand) first.
+- name: "Seed initial obsidian-livesync configuration"
+  when: not obsidian_livesync_data_check.stat.exists
+  vars:
+    obsidian_livesync_settings:
+      # REMOTE_COUCHDB is "" (empty string), not a "COUCHDB" literal - see
+      # RemoteTypes in livesync-commonlib's setting.const.ts.
+      remoteType: ""
+      couchDB_URI: "{{ obsidian_livesync_uri }}"
+      couchDB_USER: "{{ obsidian_livesync_user }}"
+      couchDB_PASSWORD: "{{ obsidian_livesync_password }}"
+      couchDB_DBNAME: "{{ obsidian_livesync_dbname }}"
+      encrypt: true
+      passphrase: "{{ obsidian_livesync_passphrase }}"
+      usePathObfuscation: true
+  ansible.builtin.copy:
+    content: "{{ obsidian_livesync_settings | to_nice_json }}\n"
+    dest: "{{ obsidian_livesync_vault_path }}/.obsidian/plugins/obsidian-livesync/data.json"
+    mode: "0600"
+  no_log: true

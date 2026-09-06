@@ -1,0 +1,37 @@
+---
+argument_specs:
+  main:
+    options:
+      obsidian_livesync_vault_path:
+        type: "str"
+        description: "Filesystem path to the vault to configure (e.g. '{{ ansible_facts.env.HOME }}/obsidian')"
+        required: true
+      obsidian_livesync_plugin_version:
+        type: "str"
+        description: "obsidian-livesync GitHub release tag to install"
+        default: "1.0.24"
+      obsidian_livesync_uri:
+        type: "str"
+        description: >-
+          CouchDB URI (e.g. 'https://notes.internal') - must be HTTPS for Obsidian Mobile.
+          This is the couchdb role's proxied hostname, not couchdb_bind_address directly.
+        required: true
+      obsidian_livesync_user:
+        type: "str"
+        description: "CouchDB user to authenticate as - one entry of the couchdb role's couchdb_users"
+        required: true
+      obsidian_livesync_password:
+        type: "str"
+        description: "Password for obsidian_livesync_user"
+        required: true
+      obsidian_livesync_dbname:
+        type: "str"
+        description: "CouchDB database name to sync against - that user's own database"
+        default: "obsidian"
+      obsidian_livesync_passphrase:
+        type: "str"
+        description: >-
+          End-to-end encryption passphrase. Always enabled by this role - the
+          remote only ever sees ciphertext, including file/folder names
+          (usePathObfuscation is also always enabled alongside it).
+        required: true
