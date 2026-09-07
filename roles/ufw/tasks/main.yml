@@ -12,7 +12,7 @@
   become: true
   community.general.ufw:
     direction: "incoming"
-    policy: "{{ ufw_default_incoming_policy }}"
+    policy: "deny"
   # The module's "default" command has no real pre-check outside check-mode; it
   # diffs full `ufw status verbose` text before/after, which can shift (rule
   # renumbering) even when the policy itself is unchanged.
@@ -22,7 +22,7 @@
   become: true
   community.general.ufw:
     direction: "outgoing"
-    policy: "{{ ufw_default_outgoing_policy }}"
+    policy: "allow"
 
 - name: "Apply rules"
   become: true

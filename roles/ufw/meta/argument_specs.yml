@@ -2,14 +2,6 @@
 argument_specs:
   main:
     options:
-      ufw_default_incoming_policy:
-        description: "Default incoming policy: deny"
-        type: "str"
-        default: "deny"
-      ufw_default_outgoing_policy:
-        description: "Default outgoing policy: allow"
-        type: "str"
-        default: "allow"
       ufw_rules:
         type: "list"
         elements: "dict"
