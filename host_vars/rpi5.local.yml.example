@@ -109,6 +109,10 @@ fritzbox_6660_exporter_gateway_url: "http://{{ network_ipv4_gateway }}:49000"
 fritzbox_6660_exporter_username: "monitoring"
 fritzbox_6660_exporter_password: "changeme"
 
+alloy_file_scrape_targets:
+  - name: "fritzbox-events"
+    path: "{{ fritzbox_6660_exporter_log_file }}"
+
 awscli_profile_name: "garage"
 awscli_region: "garage"
 awscli_endpoint_url: "http://127.0.0.1:{{ garage_s3_port }}"

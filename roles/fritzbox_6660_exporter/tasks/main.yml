@@ -82,3 +82,49 @@
     state: "started"
     enabled: true
     daemon_reload: true
+
+- name: "Create fritzbox_6660_exporter log directory"
+  become: true
+  ansible.builtin.file:
+    path: "{{ fritzbox_6660_exporter_log_dir }}"
+    state: "directory"
+    owner: "fritzbox_6660_exporter"
+    group: "fritzbox_6660_exporter"
+    mode: "0750"
+
+- name: "Deploy Fritz!Box event log shipper script"
+  become: true
+  ansible.builtin.copy:
+    src: "fritzbox_log_shipper.py"
+    dest: "{{ fritzbox_6660_exporter_install_dir }}/fritzbox_log_shipper.py"
+    owner: "root"
+    group: "root"
+    mode: "0755"
+
+- name: "Deploy Fritz!Box event log shipper service"
+  become: true
+  ansible.builtin.template:
+    src: "fritzbox_6660_exporter_log_shipper.service.j2"
+    dest: "/etc/systemd/system/fritzbox_6660_exporter_log_shipper.service"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+  notify: "Restart fritzbox_6660_exporter log shipper timer"
+
+- name: "Deploy Fritz!Box event log shipper timer"
+  become: true
+  ansible.builtin.template:
+    src: "fritzbox_6660_exporter_log_shipper.timer.j2"
+    dest: "/etc/systemd/system/fritzbox_6660_exporter_log_shipper.timer"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+  notify: "Restart fritzbox_6660_exporter log shipper timer"
+
+- name: "Start and enable Fritz!Box event log shipper timer"
+  become: true
+  ansible.builtin.systemd_service:
+    name: "fritzbox_6660_exporter_log_shipper.timer"
+    state: "started"
+    enabled: true
+    daemon_reload: true

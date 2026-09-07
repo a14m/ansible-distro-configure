@@ -1,3 +1,4 @@
 .ansible
 CLAUDE.md
 .claude
+__pycache__/

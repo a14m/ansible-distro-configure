@@ -29,3 +29,17 @@ argument_specs:
         type: "str"
         required: true
         description: "Password for the Fritz!Box user"
+      fritzbox_6660_exporter_log_dir:
+        type: "str"
+        default: "/var/log/fritzbox_6660_exporter"
+        description: "Directory the Fritz!Box event log is shipped into"
+      fritzbox_6660_exporter_log_file:
+        type: "str"
+        description: "Path of the shipped event log file (tail this with alloy_file_scrape_targets)"
+      fritzbox_6660_exporter_log_state_file:
+        type: "str"
+        description: "Path storing the last-shipped log line, to avoid re-shipping on each poll"
+      fritzbox_6660_exporter_log_poll_interval:
+        type: "str"
+        default: "1min"
+        description: "systemd OnUnitActiveSec interval for polling the Fritz!Box event log"

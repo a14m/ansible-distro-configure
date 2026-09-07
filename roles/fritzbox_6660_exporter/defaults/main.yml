@@ -6,3 +6,8 @@ fritzbox_6660_exporter_listen_address: "0.0.0.0:{{ fritzbox_6660_exporter_port }
 # Base UI URL for the lua API (cable/DOCSIS metrics); derived from the TR-064
 # URL by dropping the port.
 fritzbox_6660_exporter_gateway_luaurl: "{{ fritzbox_6660_exporter_gateway_url | regex_replace(':[0-9]+$', '') }}"
+
+fritzbox_6660_exporter_log_dir: "/var/log/fritzbox_6660_exporter"
+fritzbox_6660_exporter_log_file: "{{ fritzbox_6660_exporter_log_dir }}/events.log"
+fritzbox_6660_exporter_log_state_file: "{{ fritzbox_6660_exporter_log_dir }}/events.state"
+fritzbox_6660_exporter_log_poll_interval: "1min"
