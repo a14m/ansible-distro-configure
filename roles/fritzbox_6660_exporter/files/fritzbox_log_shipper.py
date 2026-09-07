@@ -12,6 +12,11 @@ SOAP_BODY = b"""<?xml version="1.0" encoding="utf-8"?>
 </s:Envelope>
 """
 
+# How many recently-shipped lines to remember, so a line Fritz!Box happens to
+# return again in a later call doesn't get shipped twice. Comfortably bigger
+# than the number of lines Fritz!Box returns in a single call.
+HISTORY_SIZE = 200
+
 
 def fetch_log(gateway_url, username, password):
     url = gateway_url.rstrip("/") + "/upnp/control/deviceinfo"
@@ -32,8 +37,12 @@ def fetch_log(gateway_url, username, password):
     log_element = root.find(".//NewDeviceLog")
     if log_element is None or log_element.text is None:
         return []
-    # Fritz!Box returns newest-first; reverse to append in chronological order.
-    return [line for line in reversed(log_element.text.splitlines()) if line.strip()]
+    # Fritz!Box returns newest-first; reverse for a chronological log file.
+    lines = []
+    for line in reversed(log_element.text.splitlines()):
+        if line.strip():
+            lines.append(line)
+    return lines
 
 
 def main():
@@ -47,20 +56,24 @@ def main():
 
     try:
         with open(args.state_file) as state_file:
-            last_seen = state_file.read().strip()
+            recent = state_file.read().splitlines()
     except FileNotFoundError:
-        last_seen = ""
+        recent = []
 
-    new_lines = lines[lines.index(last_seen) + 1:] if last_seen in lines else lines
+    new_lines = []
+    for line in lines:
+        if line not in recent:
+            new_lines.append(line)
+    if not new_lines:
+        return
 
-    if new_lines:
-        with open(args.log_file, "a") as log_file:
-            for line in new_lines:
-                log_file.write(line + "\n")
+    with open(args.log_file, "a") as log_file:
+        for line in new_lines:
+            log_file.write(line + "\n")
 
-    if lines:
-        with open(args.state_file, "w") as state_file:
-            state_file.write(lines[-1])
+    recent = (recent + new_lines)[-HISTORY_SIZE:]
+    with open(args.state_file, "w") as state_file:
+        state_file.write("\n".join(recent))
 
 
 if __name__ == "__main__":
