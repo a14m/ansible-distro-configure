@@ -45,7 +45,7 @@ ansible-playbook site.yml --ask-become-pass --limit ${HOSTNAME}
 
 Pi-hole and WireGuard Portal run directly on `rpi5.local`:
 
-| Service | `*.home.arpa` (direct, no TLS) | `*.internal` (via proxy, TLS) | Description |
+| Service | `*.home.arpa` (direct, no TLS) | `*.internal` (proxied, with TLS) | Description |
 |---|---|---|---|
 | Pi-hole | [`dns.home.arpa`](http://dns.home.arpa:8081/) | [`dns.internal`](https://dns.internal) | DNS filtering and ad blocking |
 | WireGuard Portal | [`vpn.home.arpa`](http://vpn.home.arpa:8080/) | [`vpn.internal`](https://vpn.internal) | WireGuard VPN management UI |
@@ -58,7 +58,7 @@ Override the `*.internal` names with `pihole_hostname`/`wg_portal_hostname`/`gar
 
 LXC containers on `pve.local`. FQDNs resolve via Pi-hole (`pihole_dns_hosts` in `host_vars/rpi5.local.yml`).
 
-| Service | `*.home.arpa` (direct, no TLS) | `*.internal` (via proxy, TLS) | Description |
+| Service | `*.home.arpa` (direct, no TLS) | `*.internal` (proxied, with TLS) | Description |
 |---|---|---|---|
 | Grafana | [`monitor.home.arpa`](http://monitor.home.arpa:3000/) | [`monitor.internal`](https://monitor.internal) | Metrics dashboards |
 | Prometheus | [`metrics.home.arpa`](http://metrics.home.arpa:9090/) | [`metrics.internal`](https://metrics.internal) | Metrics collection |
@@ -68,7 +68,7 @@ LXC containers on `pve.local`. FQDNs resolve via Pi-hole (`pihole_dns_hosts` in 
 | Loki | `logs.home.arpa` | - | Log aggregation (no HTTP vhost; queried directly on port 3100) |
 | Wallos | [`subscriptions.home.arpa`](http://subscriptions.home.arpa:8282/) | [`subscriptions.internal`](https://subscriptions.internal) | Subscription/recurring-cost tracker |
 | CouchDB | `notes.home.arpa` | [`notes.internal`](https://notes.internal) | Backend for Obsidian LiveSync (`obsidian-livesync` role, on `desktop`/`laptop`/`macbook`) |
-| Proxmox VE | - | [`vm.internal`](https://vm.internal) | PVE hypervisor web UI (runs on `pve.local` itself, not an LXC; override with `pve_hostname`) |
+| Proxmox VE | [`pve.local`](https://pve.local:8006/) | [`vm.internal`](https://vm.internal) | PVE hypervisor web UI (runs on `pve.local` itself, not an LXC; override with `pve_hostname`) |
 
 `*.home.arpa` always resolves straight to a container's own IP - direct, plain HTTP, no vhost. `*.internal` goes
 through the centralized Caddy on `proxy.home.arpa` instead: no port, self-signed TLS via Caddy's internal CA
