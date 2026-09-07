@@ -13,9 +13,9 @@ pve_lxc_ip: "{{ network_ipv4_address }}/24"
 pve_lxc_gateway: "{{ network_ipv4_gateway }}"
 pve_lxc_dns: "{{ network_ipv4_dns }}"
 # Required for Tailscale (or any WireGuard-based tool) to create its tun interface
-pve_lxc_raw_config: |
-  lxc.cgroup2.devices.allow: c 10:200 rwm
-  lxc.mount.entry: /dev/net/tun dev/net/tun none bind,create=file
+pve_lxc_configs:
+  - "lxc.cgroup2.devices.allow: c 10:200 rwm"
+  - "lxc.mount.entry: /dev/net/tun dev/net/tun none bind,create=file"
 pve_lxc_ssh_port: 2222
 pve_lxc_ssh_public_key: "ssh-ed25519 AAAA...fMo"
 pve_lxc_ssh_private_key: |

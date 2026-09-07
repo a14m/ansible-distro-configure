@@ -15,8 +15,8 @@ pve_lxc_gateway: "{{ network_ipv4_gateway }}"
 pve_lxc_dns: "{{ network_ipv4_dns }}"
 # Note: The following config is required for systemd systems (debian, ubuntu, etc.) to run inside LXC.
 # Alpine does not require it.
-# pve_lxc_raw_config: |
-  # features: nesting=1
+# pve_lxc_configs:
+#   - "features: nesting=1"
 pve_lxc_ssh_port: 2222
 pve_lxc_ssh_public_key: "ssh-ed25519 AAAA...fMo"
 pve_lxc_ssh_private_key: |

@@ -157,7 +157,7 @@
         pve_lxc_ip: "{{ hostvars[service_host].pve_lxc_ip }}"
         pve_lxc_gateway: "{{ hostvars[service_host].pve_lxc_gateway }}"
         pve_lxc_dns: "{{ hostvars[service_host].pve_lxc_dns }}"
-        pve_lxc_raw_config: "{{ hostvars[service_host].pve_lxc_raw_config | default(omit) }}"
+        pve_lxc_configs: "{{ hostvars[service_host].pve_lxc_configs | default([]) }}"
       loop: "{{ groups['containers'] }}"
       loop_control:
         loop_var: "service_host"

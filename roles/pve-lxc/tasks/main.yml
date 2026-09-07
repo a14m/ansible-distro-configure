@@ -39,14 +39,16 @@
     # PVE API not available in containers — requires proxmox-ve package
     - "molecule-notest"
 
+# lineinfile, not blockinfile: PVE's API rewrites this file and strips
+# comment markers, so a marker-based block re-duplicates every run.
 - name: "Append raw LXC config ({{ pve_lxc_id }})"
   become: true
-  ansible.builtin.blockinfile:
+  ansible.builtin.lineinfile:
     path: "/etc/pve/lxc/{{ pve_lxc_id }}.conf"
-    block: "{{ pve_lxc_raw_config }}"
-    marker: "# {mark} ANSIBLE MANAGED BLOCK - pve_lxc_raw_config"
-  when: pve_lxc_raw_config is defined
-  register: pve_lxc_raw_config_result
+    line: "{{ item }}"
+    regexp: "^{{ item | regex_escape }}$"
+  loop: "{{ pve_lxc_configs | default([]) }}"
+  register: pve_lxc_configs_result
   tags:
     # PVE API not available in containers — requires proxmox-ve package
     - "molecule-notest"
@@ -82,7 +84,7 @@
     vmid: "{{ pve_lxc_id }}"
     hostname: "{{ pve_lxc_hostname }}"
     state: restarted
-  when: pve_lxc_raw_config_result is changed
+  when: pve_lxc_configs_result is changed
   tags:
     # PVE API not available in containers — requires proxmox-ve package
     - "molecule-notest"
