@@ -15,10 +15,6 @@ fritzbox_6660_exporter_password: "..."                          # required
 fritzbox_6660_exporter_gateway_luaurl: "http://<router_ip>"     # derived from gateway_url
 fritzbox_6660_exporter_port: 9042
 fritzbox_6660_exporter_listen_address: "0.0.0.0:9042"
-fritzbox_6660_exporter_log_dir: "/var/log/fritzbox_6660_exporter"
-fritzbox_6660_exporter_log_file: "{{ fritzbox_6660_exporter_log_dir }}/events.log"
-fritzbox_6660_exporter_log_state_file: "{{ fritzbox_6660_exporter_log_dir }}/events.state"
-fritzbox_6660_exporter_log_poll_interval: "1min"
 ```
 
 Upstream only publishes a rolling `latest` release asset, so the binary is
@@ -41,26 +37,6 @@ downloaded once (guarded by a stat check) and not re-fetched on later runs.
 
 Plus TR-064 WAN status, uptime, negotiated bitrate, and byte/packet counters
 from `metrics.json`.
-
-## Event log shipping
-
-A `fritzbox_6660_exporter_log_shipper.timer` polls the Fritz!Box's own event
-log (TR-064 `DeviceInfo:1#GetDeviceLog` — the "Ereignisse" page) once a minute
-using the same `monitoring` user, and appends new lines to
-`fritzbox_6660_exporter_log_file`. It tracks the last-shipped line in
-`fritzbox_6660_exporter_log_state_file` so restarts don't re-ship history.
-
-Point `alloy_file_scrape_targets` at the log file to get it into Loki:
-
-```yaml
-alloy_file_scrape_targets:
-  - name: "fritzbox-events"
-    path: "{{ fritzbox_6660_exporter_log_file }}"
-```
-
-This is what actually confirms a WAN/DOCSIS outage — the log records
-"Cable internet not responding (no synchronization)" / re-sync / re-established
-events with exact timestamps, independent of Prometheus scrape resolution.
 
 ## Scraping
 
