@@ -2,6 +2,10 @@
 argument_specs:
   main:
     options:
+      ufw_enabled:
+        description: "Whether ufw should be configured and enabled. When false, ufw is disabled instead."
+        type: "bool"
+        default: true
       ufw_rules:
         type: "list"
         elements: "dict"

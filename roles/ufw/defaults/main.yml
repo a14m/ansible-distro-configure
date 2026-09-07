@@ -1,2 +1,3 @@
 ---
+ufw_enabled: true
 ufw_rules: []
