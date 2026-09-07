@@ -71,6 +71,7 @@ zen_browser_install_passff: false
 firefox_install_browserpass: false
 firefox_install_passff: true
 
+ufw_enabled: true
 ufw_rules:
   - rule: "allow"
     port: "{{ ssh_port }}"

@@ -119,6 +119,7 @@ awscli_endpoint_url: "http://127.0.0.1:{{ garage_s3_port }}"
 awscli_access_key_id: *backup_access_key_id
 awscli_secret_access_key: *backup_secret_key
 
+ufw_enabled: true
 ufw_rules:
   - rule: "allow"
     port: "{{ ssh_port }}"

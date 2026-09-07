@@ -76,6 +76,7 @@ kanshi_profiles: |
 
 logind_lid_ac_action: "ignore"
 
+ufw_enabled: true
 ufw_rules:
   - rule: "allow"
     port: "{{ ssh_port }}"
