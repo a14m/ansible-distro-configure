@@ -30,9 +30,6 @@ zen_browser_default_extensions:
   "woop-NoopscooPsnSXQ@jetpack":
     installation_mode: "normal_installed"
     install_url: "https://addons.mozilla.org/firefox/downloads/latest/privacy-possum/latest.xpi"
-  "languagetool-webextension@languagetool.org":
-    installation_mode: "normal_installed"
-    install_url: "https://addons.mozilla.org/firefox/downloads/latest/languagetool/latest.xpi"
 
 # Default (sensible) policies for Zen Browser.
 zen_browser_default_policies:
