@@ -55,6 +55,11 @@ ufw_rules:
 #     protocol: "udp"
 #     route: true
 #     from: "100.64.0.0/10"
+#   - rule: "allow"
+#     port: 443
+#     protocol: "tcp"
+#     route: true
+#     from: "100.64.0.0/10"
 #
 # Tailscale's own peer/relay UDP port, pinned via tailscale_port so direct
 # (non-DERP-relayed) peer connections can reach it.
