@@ -1,35 +1,31 @@
 # Ansible Role: caddy-ca
 
-Exposes Caddy's own local CA root certificate at `http://{{ inventory_hostname }}/certificate`,
-to trust `*.internal` domains.
+Serves Caddy's local CA root certificate at `http://{{ inventory_hostname }}/certificate` so clients can trust
+`*.internal` domains.
 
 ## What it does
 
-Writes `/etc/caddy/sites/caddy-ca.caddy`:
+Writes `/etc/caddy/sites/caddy-ca.caddy`, serving `root.crt` in place over **plain HTTP** (trust has to bootstrap
+before HTTPS works):
 
-- Served over **plain HTTP only** - fetching the root cert has to work before anything is trusted yet.
-- `/certificate` serves `root.crt` in place via `file_server`, never copied elsewhere. The `rewrite * /root.crt` is
-  unconditional, so `root.key` (the CA's private key, same directory) is never reachable through this route.
-- `Content-Type: application/x-x509-ca-cert` forced on the response, so mobile browsers treat it as an installable
-  certificate rather than a plain download. `Content-Disposition: attachment; filename=root.crt` forces a proper
-  filename/extension too - the URL is extensionless (`/certificate`), so without this some browsers save it as a
-  bare `certificate` file with no `.crt` suffix, which import dialogs (e.g. Firefox's) then refuse to select.
-- Reads the file rather than Caddy's admin API (`GET /pki/ca/local/certificates`) because that endpoint bundles
-  root+intermediate into one PEM blob, which iOS can't parse as a single installable cert.
+- `rewrite * /root.crt` is unconditional, so the sibling `root.key` is never reachable.
+- `Content-Type: application/x-x509-ca-cert` + `Content-Disposition: attachment; filename=root.crt` so browsers
+  treat it as an installable cert with a `.crt` name (the URL is extensionless).
+- Serves the file, not the admin API (`/pki/ca/local/certificates`) - that bundles root+intermediate, which iOS
+  can't install as one cert.
 
 ## Notes
 
-- Caddy generates its CA lazily, on first use - `/certificate` 404s on a brand-new `proxy.home.arpa` until some
-  `*.internal` site elsewhere has converged. Resolves itself once that happens.
-- **Trusting it - desktop Linux** (system-wide trust store, covers curl/wget/Chromium/most apps):
+- Caddy generates its CA on first use - `/certificate` 404s until some `*.internal` site has converged.
+- **Linux** (system store - curl/wget/Chromium):
   - Arch: `sudo trust anchor --store root.crt`
   - Debian/Ubuntu/Alpine: `sudo cp root.crt /usr/local/share/ca-certificates/ && sudo update-ca-certificates`
   - Fedora/RHEL: `sudo cp root.crt /etc/pki/ca-trust/source/anchors/ && sudo update-ca-trust extract`
-  - **Firefox** (any OS/distro) uses its own NSS store, not the system one, regardless of the above:
-    `about:preferences#privacy` -> Certificates -> View Certificates -> Authorities -> Import -> check "Trust this
-    CA to identify websites".
-- **Trusting it - macOS/Windows**: import the file into Keychain Access / `certutil`-Group Policy respectively.
-- **Trusting it - mobile**: the browser prompts to install a profile - iOS needs Safari specifically (not Chrome) to
-  trigger this, plus a separate manual step afterward (Settings -> General -> About -> Certificate Trust Settings ->
-  enable full trust); if nothing prompts, try opening the downloaded file from Files, or AirDrop/Mail it instead of
-  downloading in-browser.
+- **Firefox** (any OS) uses its own store: Settings -> Certificates -> Authorities -> Import -> trust for websites.
+- **macOS**: a plain Keychain import isn't trusted by Chrome/Safari (`ERR_CERT_AUTHORITY_INVALID`); set explicit
+  trust: `sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain root.crt`, then
+  restart the browser. Homebrew `curl` may pass without this (own CA bundle). With corporate TLS inspection
+  (e.g. Netskope) it can still fail - needs an IT steering bypass for `*.internal`.
+- **Windows**: `certutil` / Group Policy.
+- **Mobile**: install via the browser's profile prompt (iOS: Safari only, then Settings -> General -> About ->
+  Certificate Trust Settings -> enable full trust). If nothing prompts, open the file from Files or send it by mail.
