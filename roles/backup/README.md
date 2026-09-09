@@ -1,107 +1,61 @@
 # Ansible Role: backup
 
-This role backs up a set of paths to an S3-compatible restic repository, on a schedule,
-and can restore a snapshot back on demand.
+Backs up a set of paths to an S3-compatible restic repository on a schedule, and restores a snapshot on demand
+(explicit `--tags restore` only). The scheduled job runs as an unprivileged `backup_user`; restore runs as root.
 
 ## Role Variables
 
 ### Identity
 
-- `backup_name` **Required for multiple jobs** unique name for this backup job — used
-  for the systemd unit/cron entry, script name, and as a sub-path in the restic
-  repository so multiple jobs can share one bucket (default: `"backup"`).
-- `backup_user` / `backup_group` unprivileged system account the scheduled backup job
-  runs as (default: `"backup"` / `"backup"`). Restore does not use this account — see
-  Restore Process below.
+- `backup_name` unique job name - used for the unit/cron entry, script name, and a sub-path in the repo so multiple
+  jobs share one bucket (default: `"backup"`). **Required if a host runs more than one job.**
+- `backup_user` / `backup_group` system account the scheduled job runs as (default: `"backup"`).
 
-### What to back up
+### What / when / retention
 
 - `backup_paths` **Required** list of paths to back up.
-
-### Schedule
-
-- `backup_systemd_schedule` systemd `OnCalendar` schedule (e.g. `daily`, `weekly`,
-  `*-*-* 02:00`) — used on systemd hosts (default: `"daily"`).
-- `backup_cron_schedule` cron schedule (e.g. `0 0 * * *`) — used on OpenRC hosts,
-  since there's no systemd timer there (default: `"0 0 * * *"`).
-
-### Retention
-
-- `backup_retention_daily` number of daily snapshots to keep (default: `7`).
-- `backup_retention_weekly` number of weekly snapshots to keep (default: `4`).
-- `backup_retention_monthly` number of monthly snapshots to keep (default: `6`).
+- `backup_systemd_schedule` `OnCalendar` value on systemd hosts (default: `"daily"`).
+- `backup_cron_schedule` cron value on OpenRC hosts (default: `"0 0 * * *"`).
+- `backup_retention_daily` / `_weekly` / `_monthly` snapshots to keep (default: `7` / `4` / `6`).
 
 ### Restic repository
 
-- `backup_repo` **Required** restic repository URL (e.g.
-  `s3:http://machine.local:3900/backups`). The role appends `/{{ backup_name }}` to
-  this automatically, so multiple jobs can share one bucket.
-- `backup_access_key_id` **Required** S3 access key ID.
-- `backup_secret_access_key` **Required** S3 secret access key.
-- `backup_password` **Required** restic repository encryption password. Losing this
-  makes existing snapshots unrecoverable — it's not stored anywhere except the target
-  host's credential file.
+- `backup_repo` **Required** repo URL, e.g. `s3:http://machine.local:3900/backups`. The role appends
+  `/{{ backup_name }}`.
+- `backup_access_key_id` / `backup_secret_access_key` **Required** S3 credentials.
+- `backup_password` **Required** restic encryption password. Losing it makes every snapshot unrecoverable - it's
+  stored only in the target host's credential file.
 
-### Restore (only used with `--tags restore`, see below)
+### Restore (`--tags restore` only)
 
-- `restore_target` **Required for restore** directory to restore snapshot contents
-  into.
-- `backup_restore_id` snapshot ID to restore, or `"latest"` (default: `"latest"`).
+- `restore_target` **Required for restore** directory to restore into.
+- `backup_restore_id` snapshot ID or `"latest"` (default: `"latest"`).
 
-## Backup Process
+## Backup process
 
-- Creates the `backup_user`/`backup_group` system account (`nologin` shell, no home
-  directory) — restic never runs as root.
-- Deploys credentials to `/etc/credstore/{{ backup_name }}-backup.env`, root:root,
-  mode `0600`. Values are quoted so `source`-ing the file can't be broken or exploited
-  by special characters in a password. Variable names are `BACKUP_*`, not `RESTIC_*`/
-  `AWS_*` — those are ambient names every S3/restic-aware tool auto-picks up from the
-  environment, so keeping the on-disk file under inert names avoids a stray `source`
-  elsewhere on the host silently redirecting some other tool's credentials.
-- Creates a dedicated restic cache directory (`/var/cache/{{ backup_name }}-backup`),
-  owned by `backup_user`, since that account has no home directory for restic to use
-  by default.
-- Schedules the actual backup job, split by init system:
-  - **systemd**: a `LoadCredential=`-based service + timer. `LoadCredential` copies
-    the credential file into a private, tmpfs-backed, per-run directory — the secret
-    never lands in the unit's own tracked environment (unlike `EnvironmentFile=`,
-    which would make it visible via `systemctl show`).
-  - **OpenRC**: a `blockinfile`-managed entry in `/etc/crontabs/root` (append-only —
-    won't clobber Alpine's default periodic maintenance jobs already in that file).
-    Since there's no systemd credential broker, the script itself runs as root,
-    reads the credential file directly, then drops to `backup_user` via `su -p`
-    before ever touching restic or the backup paths.
-- The backup script itself: `restic snapshots` (init the repo if this is the first
-  run), `restic backup <paths>`, then `restic forget --prune` using the configured
-  retention.
+- Creates the `backup_user` system account (`nologin`, no home); restic never runs as root for backups.
+- Writes credentials to `/etc/credstore/{{ backup_name }}-backup.env` (root:root, `0600`), quoted, under inert
+  `BACKUP_*` names - not the ambient `RESTIC_*`/`AWS_*` names, so a stray `source` elsewhere can't hijack them.
+- Dedicated restic cache at `/var/cache/{{ backup_name }}-backup` (no home dir for the account).
+- Scheduling:
+  - **systemd**: `LoadCredential=` service + timer - the secret never lands in the unit's tracked environment.
+  - **OpenRC**: append-only `blockinfile` entry in `/etc/crontabs/root`; script runs as root, reads the credential
+    file, drops to `backup_user` via `su -p` before touching restic.
+- Script: `restic snapshots` (init on first run), `restic backup`, `restic forget --prune` per retention.
 
-## Manual Backup
+## Manual backup
 
-The scheduled timer/cron calls the same script deployed to
-`/usr/local/bin/{{ backup_name }}-backup`, but how you trigger it by hand differs by init
-system:
+**systemd** - run the *service*, not the script (the script needs `$CREDENTIALS_DIRECTORY`, set only by the unit):
 
-- **systemd**: run the service directly, not the script — the script reads its
-  credentials from `$CREDENTIALS_DIRECTORY`, a variable systemd only sets up when it
-  runs the unit itself via `LoadCredential=`. Invoking the script path directly skips
-  that and fails with `CREDENTIALS_DIRECTORY: unbound variable`.
+```bash
+sudo systemctl start {{ backup_name }}-backup.service   # blocks until done
+journalctl -u {{ backup_name }}-backup.service -n 50
+```
 
-  ```bash
-  sudo systemctl start {{ backup_name }}-backup.service
-  journalctl -u {{ backup_name }}-backup.service -n 50
-  ```
+**OpenRC** - the script reads the fixed credential path, so run it directly:
+`sudo /usr/local/bin/{{ backup_name }}-backup`
 
-  (`systemctl start` blocks until this oneshot service finishes, so it returns once
-  the backup's done.)
-
-- **OpenRC**: the script reads its credentials from the fixed path
-  `/etc/credstore/{{ backup_name }}-backup.env` instead, so running it directly works:
-
-  ```bash
-  sudo /usr/local/bin/{{ backup_name }}-backup
-  ```
-
-To verify the snapshot landed, via restic:
+Verify a snapshot landed:
 
 ```bash
 source /etc/credstore/{{ backup_name }}-backup.env
@@ -110,58 +64,24 @@ export RESTIC_REPOSITORY="$BACKUP_REPO" RESTIC_PASSWORD="$BACKUP_PASSWORD" \
 restic --cache-dir "/var/cache/{{ backup_name }}-backup" snapshots
 ```
 
-Or via the S3 backend directly, from a host with `awscli` configured against it —
-restic prefixes every job's objects under `{{ backup_name }}` within the bucket:
+## Restore process
+
+Every restore task is tagged `["never", "restore"]` - a normal run doesn't even deploy the restore script.
 
 ```bash
-aws s3 ls s3://<bucket>/{{ backup_name }}/ --recursive
-```
-
-## Restore Process
-
-Restore never runs automatically — every restore-related task is tagged
-`["never", "restore"]`, Ansible's idiom for "only run when explicitly asked." A normal
-`ansible-playbook` run touches none of it, not even deploying the restore script.
-
-Restore always runs `restic restore --delete`, so `restore_target` ends up matching
-the restored snapshot exactly — anything under the backed-up paths that was added
-since the snapshot was taken gets removed, not just overlaid. `--delete` only prunes
-within the backed-up paths themselves (e.g. `/srv/git`), not the rest of
-`restore_target` even when that's `/`.
-
-To restore, run the play with `--tags restore` and supply `restore_target`:
-
-```bash
+# latest snapshot
 ansible-playbook service.yml --tags restore -e restore_target=/var/restore/git
-```
-
-To restore a specific snapshot instead of the latest one, also pass
-`backup_restore_id`. To find available snapshot IDs, on the target host:
-
-```bash
-source /etc/credstore/{{ backup_name }}-backup.env
-export RESTIC_REPOSITORY="$BACKUP_REPO" RESTIC_PASSWORD="$BACKUP_PASSWORD" \
-       AWS_ACCESS_KEY_ID="$BACKUP_ACCESS_KEY_ID" AWS_SECRET_ACCESS_KEY="$BACKUP_SECRET_ACCESS_KEY"
-restic --cache-dir "/var/cache/{{ backup_name }}-backup" snapshots
-```
-
-Then:
-
-```bash
+# specific snapshot (find IDs with the restic snapshots command above)
 ansible-playbook service.yml --tags restore \
   -e restore_target=/var/restore/git -e backup_restore_id=<snapshot-id>
 ```
 
 ### Caveats
 
-- Unlike backup, restore runs as root rather than dropping to `backup_user`. It needs
-  to write into paths owned by other service accounts and restore their original
-  ownership/permissions (restic records each file's original UID/GID and restores it
-  by default, which requires root). This is a deliberately different privilege model
-  from the scheduled, unattended backup job — restore only ever runs when explicitly
-  invoked via `--tags restore`, a human decision each time, not something that runs
-  on its own.
-- `restore_target` is always required explicitly — there's no default. This is
-  deliberate: restore is destructive if pointed at the wrong place, so the target
-  must be a conscious choice every time, not something that silently falls back to
-  a default path.
+- Restore runs `restic restore --delete`: `restore_target` ends up matching the snapshot exactly - anything added
+  under the backed-up paths since is removed. `--delete` only prunes within the backed-up paths, not the rest of
+  `restore_target`.
+- Restore runs as root (not `backup_user`) - it must write into other service accounts' paths and restore their
+  original UID/GID/permissions.
+- `restore_target` has no default - restore is destructive if misdirected, so the target is a conscious choice
+  every time.

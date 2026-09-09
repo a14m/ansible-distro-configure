@@ -1,53 +1,33 @@
 # Ansible Role: wireguard
 
-This role configures WireGuard VPN connections on the target host.
+Deploys WireGuard configs and manages their services. Needs the WireGuard kernel module and systemd.
 
 ## Role Variables
 
-- `wireguard_connections` a dictionary of WireGuard connection configurations (default: `{}`).
-- `wireguard_autostart_connection` the name of the connection to automatically start on boot (default: `""`).
+- `wireguard_connections` dict of `name: config` (raw `wg-quick` file contents) (default: `{}`).
+- `wireguard_autostart_connection` name of the connection to start on boot; empty starts none (default: `""`).
 
-## Example Configuration
+## Example
 
 ```yaml
 wireguard_connections:
   protonvpn-ch-1: |
     [Interface]
-    PrivateKey = your_private_key_here
+    PrivateKey = <key>
     Address = 10.2.0.2/32
     DNS = 10.2.0.1
 
     [Peer]
-    PublicKey = server_public_key_here
+    PublicKey = <server key>
     AllowedIPs = 0.0.0.0/0
     Endpoint = server.endpoint:51820
 
 wireguard_autostart_connection: "protonvpn-ch-1"
 ```
 
-## Dependencies
-
-This role requires:
-
-- WireGuard kernel module support
-- systemd for service management
-
-## Usage
-
-1. Define your WireGuard connection configurations in `wireguard_connections`
-1. Optionally set `wireguard_autostart_connection` to auto-start a connection on boot
-1. Run the role to deploy configurations and manage services
-
-The role will:
-
-- Install WireGuard packages
-- Create configuration files in `/etc/wireguard/`
-- Stop all existing connections
-- Enable and start the autostart connection (if configured)
-
 ## Notes
 
-- Configuration files are backed up before being overwritten
-- Only one connection can be set to autostart
-- All connections are stopped before starting the autostart connection
-- If no autostart connection is configured, no connections will be automatically started
+- The role owns `/etc/wireguard/wg-*.conf` entirely: files are overwritten in place (no backup), and any
+  `wg-<name>.conf` not present in `wireguard_connections` is deleted.
+- All connections are brought down on every run; only `wireguard_autostart_connection` is then enabled and started.
+- `wireguard_autostart_connection` must name a key in `wireguard_connections` or the run fails.

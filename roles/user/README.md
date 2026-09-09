@@ -1,30 +1,17 @@
-# Ansible Role: User
+# Ansible Role: user
 
-This role creates the user and configures the `sudo` group for the user
+Creates the user, grants the `sudo` group full sudo, and installs the user's `authorized_keys`.
 
 ## Role Variables
 
-- `username` **Required** name of the user to be created.
-- `user_default_password` default password (`changeme`) if used required to be changed on first `sudo` usage.
-- `user_password` if provided, it will be used instead of the default password (and doesn't require change).
-- `user_login_shell` the path to default user login shell (default: `/bin/bash`)
-- `user_public_keys` the list of ssh public keys to be added to user authorized_keys
-- `user_groups` extra groups to be created and user added to them (default: [])
+- `username` **Required** name of the user to create.
+- `user_default_password` fallback password (`changeme`), forced to change on first `sudo` use.
+- `user_password` if set, used instead of `user_default_password` and not forced to change.
+- `user_login_shell` login shell (default: `/bin/bash`).
+- `user_public_keys` ssh public keys for `authorized_keys`.
+- `user_groups` extra groups to create and add the user to (default: `[]`).
 
-## Internals
+## Caveats
 
-- ensure `sudo` installed.
-- configure `sudoers` file to grant `%sudo ALL=(ALL:ALL) ALL` for `sudo` group.
-- create user and add to the `username`, `sudo`, extra `user_groups` groups.
-- if `user_password` is provided, it's used as user password otherwise `user_default_password` is used.
-- if `user_default_password` is used, it requires to be changed on first `sudo` usage.
-- configure the user authorized keys to allow public key authentication (if configured).
-
-### Caveats
-
-If no public key authentication is configured by this role,
-the user won't be able to login (since the hardened ssh role disable root and password authentication).
-
-For this reason, if you want to enable the insecure password authentication,
-please update the ssh role `"Configure authentication policy"` manually to
-allow for password/root authentication, These features are disabled by default.
+With no `user_public_keys`, the user can't log in - the hardened `ssh` role disables root and password auth. To use
+password auth, edit the `ssh` role's `"Configure authentication policy"` task manually.

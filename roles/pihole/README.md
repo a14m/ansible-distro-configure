@@ -1,18 +1,17 @@
 # Ansible Role: pihole
 
-This role configure the [pihole](https://github.com/pi-hole/pi-hole) DNS Sinkhole.
+Configures the [Pi-hole](https://github.com/pi-hole/pi-hole) DNS sinkhole.
 
 ## Role Variables
 
-- `pihole_admin_password` double-SHA256 hash of the pi-hole web-server password. Compute inline,
-  e.g. `{{ ('yourpassword' | hash('sha256') | hash('sha256'))[:64] }}` — never store the plaintext
-  as a separate value (default: hash of `changeme`).
-- `pihole_totp_secret` the pi-hole TOTP 2FA secret (default: `CHANGEME`).
-- `pihole_interface` the interface to bind the pi-hole on (default: "{{ ansible_default_ipv4.interface }}").
-- `pihole_dns` the list of DNS servers to use as upstreams (default: `[9.9.9.9, 1.1.1.1, 8.8.8.8]`).
-- `pihole_dns_blocking_enabled` the boolean flag to toggle DNS blocking (default: true).
-- `pihole_dhcp_enabled` the boolean flag to toggle DHCP on the pi-hole (default: false).
-- `pihole_domain` the domain name to be configured when the pi is exposed over the internet (default: "").
+- `pihole_admin_password` double-SHA256 hash of the web password. Compute inline, never store the plaintext:
+  `{{ ('yourpassword' | hash('sha256') | hash('sha256'))[:64] }}` (default: hash of `changeme`).
+- `pihole_totp_secret` TOTP 2FA secret (default: `CHANGEME`).
+- `pihole_interface` bind interface (default: `{{ ansible_default_ipv4.interface }}`).
+- `pihole_dns` upstream DNS servers (default: `[9.9.9.9, 1.1.1.1, 8.8.8.8]`).
+- `pihole_dns_blocking_enabled` toggle DNS blocking (default: `true`).
+- `pihole_dhcp_enabled` toggle the Pi-hole DHCP server (default: `false`).
+- `pihole_domain` domain to configure when the Pi is exposed to the internet (default: `""`).
 
 ## Router Setup
 
