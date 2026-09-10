@@ -19,6 +19,64 @@
   "templating": {
     "list": []
   },
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus"
+        },
+        "enable": true,
+        "iconColor": "red",
+        "name": "Cable link flap",
+        "titleFormat": "Cable link flap",
+        "target": {
+          "expr": "changes(gateway_connection_status{connection=\"Physical Link\", interface=\"WAN\"}[2m]) > 0",
+          "refId": "anno_flap"
+        }
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus"
+        },
+        "enable": true,
+        "iconColor": "orange",
+        "name": "Provisioned rate change",
+        "titleFormat": "Provisioned rate change",
+        "target": {
+          "expr": "changes(gateway_max_bitrate{interface=\"WAN\"}[2m]) > 0",
+          "refId": "anno_prov"
+        }
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus"
+        },
+        "enable": true,
+        "iconColor": "yellow",
+        "name": "FritzBox reboot",
+        "titleFormat": "FritzBox reboot",
+        "target": {
+          "expr": "resets(gateway_uptime_seconds[5m]) > 0",
+          "refId": "anno_reboot"
+        }
+      }
+    ]
+  },
   "panels": [
     {
       "type": "row",
@@ -612,6 +670,63 @@
       ]
     },
     {
+      "type": "stat",
+      "title": "Uncorrectables in view",
+      "description": "Total uncorrectable codewords over the selected time range. Set the range to an incident window: ~0 here means the cable delivered every packet and the fault is elsewhere.",
+      "gridPos": {
+        "x": 0,
+        "y": 28,
+        "w": 6,
+        "h": 4
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 1
+              },
+              {
+                "color": "red",
+                "value": 100
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "reduceOptions": {
+          "calc": "lastNotNull",
+          "fields": "",
+          "values": false
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "sum(increase(gateway_cable_uncorrectables_downstream[$__range]))",
+          "refId": "A"
+        }
+      ]
+    },
+    {
       "type": "timeseries",
       "title": "Correctable codewords /s",
       "description": "FEC is repairing these. A steady climb still means the line is degrading.",
@@ -978,6 +1093,94 @@
           "refId": "A"
         }
       ]
+    },
+    {
+      "type": "row",
+      "title": "Daily pattern",
+      "collapsed": false,
+      "gridPos": {
+        "x": 0,
+        "y": 42,
+        "w": 24,
+        "h": 1
+      },
+      "panels": []
+    },
+    {
+      "type": "heatmap",
+      "title": "WAN upstream by hour (14 days)",
+      "description": "Peak upstream throughput per hour over the last two weeks, independent of the dashboard time range. Recurring bright vertical bands = a daily congestion window (yours is weekday mornings). Once a WAN-latency exporter is running, add a probe_icmp_duration_seconds query here for the same view of latency.",
+      "gridPos": {
+        "x": 0,
+        "y": 43,
+        "w": 24,
+        "h": 9
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "timeFrom": "14d",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "max_over_time(gateway_traffic_rate{direction=\"Sent\", interface=\"WAN\", unit=\"Bytes\"}[1h]) * 8",
+          "format": "time_series",
+          "refId": "A"
+        }
+      ],
+      "options": {
+        "calculate": true,
+        "calculation": {
+          "xBuckets": {
+            "mode": "size",
+            "value": "1h"
+          }
+        },
+        "cellGap": 1,
+        "color": {
+          "mode": "scheme",
+          "scheme": "Oranges",
+          "steps": 64,
+          "exponent": 0.5,
+          "fill": "dark-orange",
+          "reverse": false
+        },
+        "yAxis": {
+          "axisPlacement": "left",
+          "unit": "bps"
+        },
+        "tooltip": {
+          "mode": "single",
+          "showColorScale": true
+        },
+        "legend": {
+          "show": true
+        },
+        "rowsFrame": {
+          "layout": "auto"
+        },
+        "cellValues": {},
+        "filterValues": {
+          "le": 1e-9
+        },
+        "exemplars": {
+          "color": "rgba(255,0,255,0.7)"
+        }
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "scaleDistribution": {
+              "type": "linear"
+            }
+          }
+        },
+        "overrides": []
+      }
     }
   ]
 }
