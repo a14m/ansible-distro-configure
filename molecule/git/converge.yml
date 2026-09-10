@@ -30,6 +30,9 @@
     - metrics.home.arpa
   vars:
     network_ipv4_address: "{{ ansible_facts.default_ipv4.address }}"
+    # pasta (rootless podman's default net) gives the container the host's IP,
+    # which isn't bindable inside the netns - bind localhost in tests instead.
+    prometheus_host: "localhost"
     prometheus_hostname: "metrics.example.com"
     prometheus_node_exporter_targets:
       - "10.0.0.201:9100"
