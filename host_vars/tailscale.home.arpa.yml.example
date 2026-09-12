@@ -27,7 +27,7 @@ pve_lxc_ssh_private_key: |
       gMc2MLx2pmgUeDHU+JKBAAAAEm1vbGVjdWxlLXRlc3Qtb25seQECAw==
       -----END OPENSSH PRIVATE KEY-----
 
-# Generate at: https://login.tailscale.com/admin/settings/keys
+tailscale_login_server: "https://login.tailscale.com"
 tailscale_auth_key: "CHANGEME"
 tailscale_exit_node: true
 tailscale_advertise_routes:

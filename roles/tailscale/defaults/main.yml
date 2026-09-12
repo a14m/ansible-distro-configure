@@ -1,4 +1,5 @@
 ---
+tailscale_login_server: "https://login.tailscale.com"
 tailscale_advertise_routes: []
 tailscale_exit_node: false
 tailscale_port: 41641

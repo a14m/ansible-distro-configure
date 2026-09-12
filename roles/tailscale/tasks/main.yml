@@ -36,6 +36,7 @@
       - "up"
       - "--reset"
       - "--auth-key={{ tailscale_auth_key }}"
+      - "--login-server={{ tailscale_login_server }}"
       - "--accept-dns=false"
       - "--advertise-routes={{ tailscale_advertise_routes | join(',') }}"
       - "{{ '--advertise-exit-node' if tailscale_exit_node else omit }}"

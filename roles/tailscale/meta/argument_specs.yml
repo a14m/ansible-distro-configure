@@ -2,6 +2,10 @@
 argument_specs:
   main:
     options:
+      tailscale_login_server:
+        type: "str"
+        description: "Control server URL (e.g. https://headscale.example.com)."
+        default: "https://login.tailscale.com"
       tailscale_advertise_routes:
         type: "list"
         elements: "str"
