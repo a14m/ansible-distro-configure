@@ -32,7 +32,7 @@
         name: "garage"
         group: "garage"
         system: true
-        shell: "/usr/sbin/nologin"
+        shell: "/sbin/nologin"
         create_home: false
 
     - name: "Create garage data and meta directories"

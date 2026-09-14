@@ -1,6 +1,5 @@
 ---
 wallos_php_bin: "php"
-wallos_shell: "/usr/sbin/nologin"
 wallos_php_packages:
   - "php-cli"
   - "php-calendar"

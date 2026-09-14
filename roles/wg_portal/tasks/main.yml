@@ -11,7 +11,7 @@
     name: "wg-portal"
     group: "wg-portal"
     system: true
-    shell: "/usr/sbin/nologin"
+    shell: "/sbin/nologin"
     create_home: false
 
 - name: "Check if wg-portal is already installed"
