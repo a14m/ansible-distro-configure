@@ -1108,8 +1108,8 @@
     },
     {
       "type": "heatmap",
-      "title": "WAN upstream by hour (14 days)",
-      "description": "Peak upstream throughput per hour over the last two weeks, independent of the dashboard time range. Recurring bright vertical bands = a daily congestion window (yours is weekday mornings). Once a WAN-latency exporter is running, add a probe_icmp_duration_seconds query here for the same view of latency.",
+      "title": "WAN upstream by hour",
+      "description": "Peak upstream throughput per hour over the dashboard's time range. Recurring bright vertical bands = a daily congestion window (yours is weekday mornings). Once a WAN-latency exporter is running, add a probe_icmp_duration_seconds query here for the same view of latency.",
       "gridPos": {
         "x": 0,
         "y": 43,
@@ -1120,7 +1120,6 @@
         "type": "prometheus",
         "uid": "prometheus"
       },
-      "timeFrom": "14d",
       "targets": [
         {
           "datasource": {
