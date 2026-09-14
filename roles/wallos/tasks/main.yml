@@ -55,8 +55,19 @@
     state: "directory"
     owner: "wallos"
     group: "wallos"
-    mode: "0750"
     recurse: true
+  loop:
+    - "{{ wallos_install_dir }}/db"
+    - "{{ wallos_install_dir }}/images/uploads/logos"
+
+# mode is not recursed: db/ and images/uploads/logos/ are live app data, recursing
+# mode fights the app's own file writes (SQLite journal files, uploads) every run
+- name: "Set wallos data directory permissions"
+  become: true
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: "directory"
+    mode: "0750"
   loop:
     - "{{ wallos_install_dir }}/db"
     - "{{ wallos_install_dir }}/images/uploads/logos"
