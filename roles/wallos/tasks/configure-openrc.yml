@@ -35,6 +35,7 @@
     owner: "root"
     group: "root"
     mode: "0600"
+  notify: "Restart crond"
   loop: "{{ wallos_jobs }}"
   loop_control:
     label: "{{ item.name }}"
