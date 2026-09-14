@@ -32,8 +32,8 @@
       {{ item.cron_schedule }} cd {{ wallos_install_dir }}/endpoints/cronjobs && {{ wallos_php_bin }} {{ item.script }}
       >> /var/log/wallos/{{ item.name }}.log 2>&1
     create: true
-    owner: "wallos"
-    group: "wallos"
+    owner: "root"
+    group: "root"
     mode: "0600"
   loop: "{{ wallos_jobs }}"
   loop_control:
