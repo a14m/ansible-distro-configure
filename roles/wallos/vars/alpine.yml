@@ -1,5 +1,6 @@
 ---
 wallos_php_bin: "php85"
+wallos_shell: "/sbin/nologin"
 wallos_php_packages:
   - "php85"
   - "php85-calendar"

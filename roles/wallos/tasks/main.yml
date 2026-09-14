@@ -17,7 +17,7 @@
     name: "wallos"
     group: "wallos"
     system: true
-    shell: "/usr/sbin/nologin"
+    shell: "{{ wallos_shell }}"
     create_home: false
 
 - name: "Clone wallos"
