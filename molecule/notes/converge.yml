@@ -15,8 +15,9 @@
   vars:
     network_ipv4_address: "{{ ansible_facts.default_ipv4.address }}"
     # pasta (rootless podman's default net) gives the container the host's IP,
-    # which isn't bindable inside the netns - bind localhost in tests instead.
-    couchdb_bind_address: "localhost"
+    # which isn't bindable inside the netns - bind loopback in tests instead.
+    # CouchDB's Erlang HTTP listener needs a literal IP here, not a hostname.
+    couchdb_bind_address: "127.0.0.1"
     backup_repo: "s3:https://example.com/backups"
   roles:
     - role: "couchdb"

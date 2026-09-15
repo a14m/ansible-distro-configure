@@ -41,6 +41,12 @@
     - { question: "couchdb/adminpass_again", vtype: "password", value: "{{ couchdb_admin_password }}" }
   loop_control:
     label: "{{ item.question }}"
+  register: couchdb_preseed_result
+  # debconf-get-selections masks password vtype answers, so the module can
+  # never confirm they're unchanged and always reports changed for them.
+  # Ref: https://docs.ansible.com/projects/ansible/latest/collections/ansible/builtin/debconf_module.html
+  # Ref: https://github.com/ansible/ansible/issues/47676
+  changed_when: couchdb_preseed_result is changed and item.vtype != "password"
   no_log: true
 
 - name: "Install couchdb"
