@@ -23,7 +23,7 @@
 - name: "Check tailscale connection status"
   become: true
   ansible.builtin.command:
-    cmd: "tailscale status"
+    cmd: "tailscale status --json"
   register: tailscale_status_check
   changed_when: false
   failed_when: false
@@ -40,7 +40,7 @@
       - "--accept-dns=false"
       - "--advertise-routes={{ tailscale_advertise_routes | join(',') }}"
       - "{{ '--advertise-exit-node' if tailscale_exit_node else omit }}"
-  when: '"Logged in" not in tailscale_status_check.stdout'
+  when: (tailscale_status_check.stdout | from_json).BackendState != "Running"
   changed_when: true
   no_log: true
   tags:
