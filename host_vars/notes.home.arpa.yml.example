@@ -12,6 +12,9 @@ pve_lxc_memory: 512
 pve_lxc_ip: "{{ network_ipv4_address }}/24"
 pve_lxc_gateway: "{{ network_ipv4_gateway }}"
 pve_lxc_dns: "{{ network_ipv4_dns }}"
+# Required for systemd's credential loading (LoadCredential/ImportCredential) to work.
+pve_lxc_configs:
+  - "features: nesting=1,keyctl=1"
 pve_lxc_ssh_port: 2222
 pve_lxc_ssh_public_key: "ssh-ed25519 AAAA...fMo"
 pve_lxc_ssh_private_key: |
