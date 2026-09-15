@@ -18,3 +18,4 @@ containers:
     metrics.home.arpa: {}
     monitor.home.arpa: {}
     notes.home.arpa: {}
+    subscriptions.home.arpa: {}
