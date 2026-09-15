@@ -51,10 +51,6 @@ backup_access_key_id: "GK_CHANGEME"
 backup_secret_access_key: "CHANGEME"
 backup_password: "changeme"
 
-alloy_file_scrape_targets:
-  - name: "notes-backup"
-    path: "/var/log/notes-backup.log"
-
 ufw_rules:
   - rule: "allow"
     port: "{{ ssh_port }}"
