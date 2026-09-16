@@ -1,0 +1,105 @@
+#!/usr/bin/env python3
+
+"""Keep a Cloudflare DNS A record pointed at the home WAN IP.
+
+The IP is read from the Fritz!Box itself over TR-064
+Avoid using curl -4 ifconfig.co to avoid getting wrong IP when VPN is on
+"""
+
+import json
+import os
+import sys
+import urllib.error
+import urllib.request
+
+TTL = {{ cloudflare_ddns_ttl }}
+
+SOAP_URI = "/upnp/control/wanipconnection1"
+SOAP_ACTION = "urn:dslforum-org:service:WANIPConnection:1#GetExternalIPAddress"
+# AVM's TR-064 uses the dslforum-org namespace/control path, not the generic
+# UPnP IGD one (urn:schemas-upnp-org:service:WANIPConnection:1).
+SOAP_BODY = b"""<?xml version="1.0" encoding="utf-8"?>
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+  <s:Body>
+    <u:GetExternalIPAddress xmlns:u="urn:dslforum-org:service:WANIPConnection:1"/>
+  </s:Body>
+</s:Envelope>"""
+
+
+def get_wan_ip(fritzbox_url, username, password):
+    password_mgr = urllib.request.HTTPPasswordMgrWithDefaultRealm()
+    password_mgr.add_password(None, fritzbox_url, username, password)
+    opener = urllib.request.build_opener(urllib.request.HTTPDigestAuthHandler(password_mgr))
+    request = urllib.request.Request(
+        fritzbox_url + SOAP_URI,
+        data=SOAP_BODY,
+        method="POST",
+        headers={
+            "Content-Type": 'text/xml; charset="utf-8"',
+            "SOAPAction": SOAP_ACTION,
+        },
+    )
+    with opener.open(request, timeout=10) as response:
+        body = response.read().decode()
+
+    start = body.find("<NewExternalIPAddress>")
+    end = body.find("</NewExternalIPAddress>")
+    if start == -1 or end == -1:
+        sys.exit(f"Could not read WAN IP from Fritz!Box TR-064 response: {body}")
+    return body[start + len("<NewExternalIPAddress>") : end]
+
+
+def cloudflare_request(zone_id, api_token, method, path, data=None):
+    url = f"https://api.cloudflare.com/client/v4/zones/{zone_id}/dns_records{path}"
+    headers = {
+        "Authorization": f"Bearer {api_token}",
+        "Content-Type": "application/json",
+    }
+    body = json.dumps(data).encode() if data is not None else None
+    request = urllib.request.Request(url, data=body, method=method, headers=headers)
+    with urllib.request.urlopen(request, timeout=10) as response:
+        return json.load(response)
+
+
+def main():
+    zone_id = os.environ["CLOUDFLARE_DDNS_ZONE_ID"]
+    api_token = os.environ["CLOUDFLARE_DDNS_API_TOKEN"]
+    record_name = os.environ["CLOUDFLARE_DDNS_RECORD_NAME"]
+
+    current_ip = get_wan_ip(
+        os.environ["FRITZBOX_URL"], os.environ["FRITZBOX_USERNAME"], os.environ["FRITZBOX_PASSWORD"]
+    )
+
+    result = cloudflare_request(zone_id, api_token, "GET", f"?type=A&name={record_name}")
+    records = result.get("result") or []
+    if not records:
+        sys.exit(f"No A record found for {record_name} in zone {zone_id}")
+    record_id, record_ip = records[0]["id"], records[0]["content"]
+
+    if current_ip == record_ip:
+        print(f"IP unchanged ({current_ip}), skipping update")
+        return
+
+    # proxied is always forced false: an orange-clouded record breaks
+    # anything needing raw TCP/WebSocket to this host (e.g. headscale), so
+    # this role never assumes proxied is meant to stay on.
+    update = cloudflare_request(
+        zone_id,
+        api_token,
+        "PATCH",
+        f"/{record_id}",
+        {"type": "A", "name": record_name, "content": current_ip, "ttl": TTL, "proxied": False},
+    )
+    if not update.get("success"):
+        sys.exit(f"Cloudflare update failed: {update}")
+
+    print(f"Updated {record_name} to {current_ip}")
+
+
+if __name__ == "__main__":
+    try:
+        main()
+    except urllib.error.HTTPError as e:
+        sys.exit(f"HTTP {e.code} from {e.url}: {e.read().decode(errors='replace')}")
+    except urllib.error.URLError as e:
+        sys.exit(f"Request failed: {e.reason}")

@@ -1,0 +1,9 @@
+[Unit]
+Description=Cloudflare DDNS update timer
+
+[Timer]
+OnCalendar={{ cloudflare_ddns_systemd_schedule }}
+Persistent=true
+
+[Install]
+WantedBy=timers.target
