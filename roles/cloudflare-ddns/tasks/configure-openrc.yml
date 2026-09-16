@@ -1,0 +1,24 @@
+---
+- name: "Deploy cloudflare-ddns crontab entry"
+  become: true
+  ansible.builtin.blockinfile:
+    path: "/etc/crontabs/root"
+    marker: "# {mark} ANSIBLE CLOUDFLARE-DDNS CRON"
+    # set -a exports every var the sourced file sets, so plain KEY="value" lines
+    # (no "export" needed) still reach cloudflare-ddns's environment - the
+    # same file format systemd's EnvironmentFile= consumes directly.
+    block: >-
+      {{ cloudflare_ddns_cron_schedule }} set -a; . /etc/credstore/cloudflare-ddns.env; set +a;
+      /usr/local/bin/cloudflare-ddns >> /var/log/cloudflare-ddns.log 2>&1
+    create: true
+    owner: "root"
+    group: "root"
+    mode: "0600"
+  notify: "Restart crond"
+
+- name: "Enable and start crond"
+  become: true
+  ansible.builtin.service:
+    name: "crond"
+    enabled: true
+    state: "started"

@@ -46,3 +46,16 @@ ufw_rules:
     protocol: "tcp"
     direction: "in"
     from: "{{ hostvars['metrics.home.arpa'].network_ipv4_address }}"
+
+alloy_file_scrape_targets:
+  - name: "caddy"
+    path: "/var/log/caddy/caddy.log"
+  - name: "cloudflare-ddns"
+    path: "/var/log/cloudflare-ddns.log"
+
+cloudflare_ddns_api_token: "CHANGEME"
+cloudflare_ddns_zone_id: "CHANGEME"
+cloudflare_ddns_record_name: "hs.example.com"
+cloudflare_ddns_fritzbox_url: "http://10.0.0.1:49000"
+cloudflare_ddns_fritzbox_username: "dns_updater"
+cloudflare_ddns_fritzbox_password: "CHANGEME"

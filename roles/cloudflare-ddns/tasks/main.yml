@@ -1,0 +1,31 @@
+---
+- name: "Create credential store directory"
+  become: true
+  ansible.builtin.file:
+    path: "/etc/credstore"
+    state: "directory"
+    owner: "root"
+    group: "root"
+    mode: "0700"
+
+- name: "Deploy cloudflare-ddns credentials"
+  become: true
+  ansible.builtin.template:
+    src: "cloudflare-ddns.env.j2"
+    dest: "/etc/credstore/cloudflare-ddns.env"
+    owner: "root"
+    group: "root"
+    mode: "0600"
+  no_log: true
+
+- name: "Deploy cloudflare-ddns script"
+  become: true
+  ansible.builtin.template:
+    src: "cloudflare-ddns.py.j2"
+    dest: "/usr/local/bin/cloudflare-ddns"
+    owner: "root"
+    group: "root"
+    mode: "0755"
+
+- name: "Include service-manager-specific scheduling tasks"
+  ansible.builtin.include_tasks: "configure-{{ ansible_facts.service_mgr }}.yml"
