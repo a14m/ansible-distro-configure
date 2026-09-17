@@ -1,5 +1,7 @@
 {
-	local_certs
+	cert_issuer internal {
+		lifetime 720h
+	}
 	log {
 		output file /var/log/caddy/caddy.log {
 			roll_size 10mb
