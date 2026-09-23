@@ -33,6 +33,14 @@
     state: "started"
     enabled: true
 
+- name: "Create headscale proxy vhost"
+  ansible.builtin.include_role:
+    name: "vhost"
+  vars:
+    vhost_name: "headscale"
+    vhost_nginx_content: "{{ lookup('template', 'headscale.nginx.conf.j2') }}"
+    vhost_caddy_content: "{{ lookup('template', 'headscale.caddy.j2') }}"
+
 - name: "Flush handlers before managing users"
   # headscale users/list talk to the running daemon over its local socket,
   # not the database directly - the service must already be up.

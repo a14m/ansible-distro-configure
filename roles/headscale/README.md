@@ -7,11 +7,12 @@ control protocol; Caddy works fine).
 ## Required Variables
 
 ```yaml
-headscale_server_url: "https://hs.example.com"
+headscale_hostname: "hs.example.com"
 ```
 
 ## Notes
 
+- `headscale_hostname` drives both `server_url` and the proxy vhost that terminates TLS for it.
 - DERP uses Tailscale's public mesh - no port forward needed.
 - MagicDNS is off - clients here run `--accept-dns=false`, use Pi-hole instead.
 - `headscale_users` are created if missing; mint preauth keys manually:

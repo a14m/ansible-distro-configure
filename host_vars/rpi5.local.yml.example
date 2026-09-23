@@ -47,6 +47,9 @@ pihole_dns_hosts:
   - "{{ hostvars['subscriptions.home.arpa'].network_ipv4_address }} subscriptions.home.arpa"
   - "{{ hostvars['notes.home.arpa'].network_ipv4_address }} notes.home.arpa"
   - "{{ hostvars['headscale.home.arpa'].network_ipv4_address }} headscale.home.arpa"
+  # hs.example.com is fronted by the centralized proxy (Caddy) - on-LAN, resolve
+  # it directly there instead of hairpinning back out through the router.
+  - "{{ hostvars['proxy.home.arpa'].network_ipv4_address }} hs.example.com"
   # *.internal, always through the centralized proxy, with TLS
   - "{{ hostvars['proxy.home.arpa'].network_ipv4_address }} {{ pihole_hostname }}"
   - "{{ hostvars['proxy.home.arpa'].network_ipv4_address }} {{ wg_portal_hostname }}"

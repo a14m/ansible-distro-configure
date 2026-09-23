@@ -2,11 +2,12 @@
 argument_specs:
   main:
     options:
-      headscale_server_url:
+      headscale_hostname:
         type: "str"
         description: >-
-          Public URL clients connect to (e.g. https://hs.example.com). headscale itself serves
-          plain HTTP on headscale_port - something in front of it terminates real TLS.
+          FQDN clients connect to (e.g. hs.example.com). Drives server_url (always https://) and
+          the proxy vhost fronting headscale_port - headscale itself serves plain HTTP, this is
+          what terminates real TLS.
         required: true
       headscale_version:
         type: "str"

@@ -23,7 +23,7 @@ pve_lxc_ssh_private_key: |
       gMc2MLx2pmgUeDHU+JKBAAAAEm1vbGVjdWxlLXRlc3Qtb25seQECAw==
       -----END OPENSSH PRIVATE KEY-----
 
-headscale_server_url: "https://hs.example.com"
+headscale_hostname: "hs.example.com"
 headscale_metrics_port: 9090
 headscale_users:
   - "alice"
@@ -61,6 +61,11 @@ ufw_rules:
     protocol: "tcp"
     direction: "in"
     from: "10.0.0.0/24"
+  - rule: "allow"
+    port: "{{ headscale_port }}"
+    protocol: "tcp"
+    direction: "in"
+    from: "{{ hostvars['proxy.home.arpa'].network_ipv4_address }}"
   - rule: "allow"
     port: "{{ headscale_metrics_port }}"
     protocol: "tcp"

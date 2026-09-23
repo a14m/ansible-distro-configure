@@ -3,7 +3,7 @@
 # No gRPC remote admin enabled.
 # No MagicDNS, DNS resolution via Pi-hole.
 
-server_url: "{{ headscale_server_url }}"
+server_url: "https://{{ headscale_hostname }}"
 listen_addr: "0.0.0.0:{{ headscale_port }}"
 metrics_listen_addr: "0.0.0.0:{{ headscale_metrics_port }}"
 
