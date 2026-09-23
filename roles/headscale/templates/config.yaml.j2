@@ -1,0 +1,54 @@
+---
+# No TLS here - plain HTTP on listen_addr, terminated by a reverse proxy.
+# No gRPC remote admin enabled.
+# No MagicDNS, DNS resoulution via Pi-hole.
+
+server_url: "{{ headscale_server_url }}"
+listen_addr: "0.0.0.0:{{ headscale_port }}"
+metrics_listen_addr: "0.0.0.0:{{ headscale_metrics_port }}"
+
+noise:
+  private_key_path: "/var/lib/headscale/noise_private.key"
+
+prefixes:
+  v4: "{{ headscale_prefix_v4 }}"
+  v6: "{{ headscale_prefix_v6 }}"
+  allocation: sequential
+
+# Embedded DERP server stays disabled - relies on Tailscale's public DERP
+# mesh instead, which needs no inbound port forward of its own.
+derp:
+  server:
+    enabled: false
+  urls:
+{% for url in headscale_derp_urls %}
+    - "{{ url }}"
+{% endfor %}
+  paths: []
+  auto_update_enabled: true
+  update_frequency: 3h
+
+node:
+  expiry: "{{ headscale_node_expiry }}"
+  ephemeral:
+    inactivity_timeout: 30m
+
+database:
+  type: sqlite
+  sqlite:
+    path: "/var/lib/headscale/db.sqlite"
+    write_ahead_log: true
+
+log:
+  level: info
+
+policy:
+  mode: file
+  path: ""
+
+dns:
+  magic_dns: false
+  override_local_dns: false
+
+unix_socket: "/var/run/headscale/headscale.sock"
+unix_socket_permission: "0770"

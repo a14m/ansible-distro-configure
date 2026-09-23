@@ -1,0 +1,44 @@
+---
+- name: "Include OS-specific installation tasks"
+  ansible.builtin.include_tasks: "install-{{ ansible_facts.os_family | lower }}.yml"
+
+# /var/lib/headscale ownership is (re)established by the package itself on
+# every start - OpenRC's init script via checkpath, systemd's unit via
+# StateDirectory= - so this role does not manage that directory directly.
+
+- name: "Deploy headscale configuration"
+  become: true
+  ansible.builtin.template:
+    src: "config.yaml.j2"
+    dest: "/etc/headscale/config.yaml"
+    owner: "headscale"
+    group: "headscale"
+    mode: "0644"
+  notify: "Restart headscale"
+
+- name: "Start and enable headscale"
+  become: true
+  ansible.builtin.service:
+    name: "headscale"
+    state: "started"
+    enabled: true
+
+- name: "Flush handlers before managing users"
+  # headscale users/list talk to the running daemon over its local socket,
+  # not the database directly - the service must already be up.
+  ansible.builtin.meta: "flush_handlers"
+
+- name: "List existing headscale users"
+  become: true
+  ansible.builtin.command:
+    cmd: "headscale users list --output json"
+  register: headscale_existing_users
+  changed_when: false
+
+- name: "Create headscale users"
+  become: true
+  ansible.builtin.command:
+    cmd: "headscale users create {{ item }}"
+  loop: "{{ headscale_users }}"
+  when: item not in (headscale_existing_users.stdout | from_json | map(attribute='name') | list)
+  changed_when: true

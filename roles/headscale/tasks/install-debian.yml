@@ -1,0 +1,19 @@
+---
+- name: "Determine headscale package architecture"
+  ansible.builtin.set_fact:
+    headscale_arch: "{{ 'arm64' if ansible_facts.architecture == 'aarch64' else 'amd64' }}"
+
+- name: "Download headscale package"
+  become: true
+  vars:
+    headscale_release_url: "https://github.com/juanfont/headscale/releases/download/v{{ headscale_version }}"
+  ansible.builtin.get_url:
+    url: "{{ headscale_release_url }}/headscale_{{ headscale_version }}_linux_{{ headscale_arch }}.deb"
+    dest: "/tmp/headscale_{{ headscale_version }}_linux_{{ headscale_arch }}.deb"
+    checksum: "sha256:{{ headscale_release_url }}/checksums.txt"
+    mode: "0644"
+
+- name: "Install headscale package"
+  become: true
+  ansible.builtin.apt:
+    deb: "/tmp/headscale_{{ headscale_version }}_linux_{{ headscale_arch }}.deb"

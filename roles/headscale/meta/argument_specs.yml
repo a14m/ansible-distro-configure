@@ -1,0 +1,53 @@
+---
+argument_specs:
+  main:
+    options:
+      headscale_server_url:
+        type: "str"
+        description: >-
+          Public URL clients connect to (e.g. https://hs.example.com). headscale itself serves
+          plain HTTP on headscale_port - something in front of it terminates real TLS.
+        required: true
+      headscale_version:
+        type: "str"
+        description: >-
+          Pins the Debian/Ubuntu .deb download only - Alpine tracks whatever
+          apk's edge/community repo currently has.
+        default: "0.29.3"
+      headscale_port:
+        type: "int"
+        description: >-
+          Port headscale's plain-HTTP control API binds on, all interfaces - no TLS here,
+          and no address to set: same "port only, ufw gates access" shape as caddy_metrics_port.
+        default: 8080
+      headscale_metrics_port:
+        type: "int"
+        description: "Port for /metrics and /debug, all interfaces - ufw gates actual access"
+        default: 9090
+      headscale_prefix_v4:
+        type: "str"
+        description: "IPv4 CIDR to allocate tailnet addresses from"
+        default: "100.64.0.0/10"
+      headscale_prefix_v6:
+        type: "str"
+        description: "IPv6 CIDR to allocate tailnet addresses from"
+        default: "fd7a:115c:a1e0::/48"
+      headscale_derp_urls:
+        type: "list"
+        elements: "str"
+        description: "External DERP maps to use - default relies on Tailscale's public relay mesh"
+        default:
+          - "https://controlplane.tailscale.com/derpmap/default"
+      headscale_node_expiry:
+        type: "str"
+        description: "Default key expiry for non-tagged nodes (e.g. '0' for never, '180d')"
+        default: "0"
+      headscale_users:
+        type: "list"
+        elements: "str"
+        description: >-
+          Usernames to create. Creating a user that already exists is a no-op.
+          Preauth keys are not managed by this role - mint them manually with
+          `headscale preauthkeys create --user <numeric id> --reusable --expiration <duration>`
+          (--user takes the numeric ID from `headscale users list`, not the name).
+        default: []

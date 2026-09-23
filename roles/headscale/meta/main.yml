@@ -1,0 +1,18 @@
+---
+dependencies: []
+galaxy_info:
+  author: "a14m"
+  description: "Self-hosted Tailscale control server (Headscale)"
+  license: "MIT"
+  min_ansible_version: "2.18"
+  platforms:
+    - name: "Alpine"
+      versions:
+        - "all"
+    - name: "Ubuntu"
+      versions:
+        - "noble"
+    - name: "Debian"
+      versions:
+        - "bookworm"
+        - "trixie"
