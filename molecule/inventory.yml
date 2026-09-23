@@ -12,6 +12,7 @@ containers:
   hosts:
     git.home.arpa: {}
     proxy.home.arpa: {}
+    headscale.home.arpa: {}
     tailscale.home.arpa: {}
     caldav.home.arpa: {}
     logs.home.arpa: {}

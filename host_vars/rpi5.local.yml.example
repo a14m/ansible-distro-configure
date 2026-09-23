@@ -46,6 +46,7 @@ pihole_dns_hosts:
   - "{{ hostvars['metrics.home.arpa'].network_ipv4_address }} metrics.home.arpa"
   - "{{ hostvars['subscriptions.home.arpa'].network_ipv4_address }} subscriptions.home.arpa"
   - "{{ hostvars['notes.home.arpa'].network_ipv4_address }} notes.home.arpa"
+  - "{{ hostvars['headscale.home.arpa'].network_ipv4_address }} headscale.home.arpa"
   # *.internal, always through the centralized proxy, with TLS
   - "{{ hostvars['proxy.home.arpa'].network_ipv4_address }} {{ pihole_hostname }}"
   - "{{ hostvars['proxy.home.arpa'].network_ipv4_address }} {{ wg_portal_hostname }}"

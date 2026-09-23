@@ -1,0 +1,68 @@
+---
+network_ipv4_address: "10.0.0.110"
+network_ipv4_gateway: "10.0.0.1"
+network_ipv4_dns: "10.0.0.254"
+
+pve_lxc_id: 110
+pve_lxc_hostname: "headscale"
+pve_lxc_template: "alpine-3.23-default_20260116_amd64.tar.xz"
+pve_lxc_disk: "local-lvm:2" # storage:sizeGB
+pve_lxc_cores: 1
+pve_lxc_memory: 256
+pve_lxc_ip: "{{ network_ipv4_address }}/24"
+pve_lxc_gateway: "{{ network_ipv4_gateway }}"
+pve_lxc_dns: "{{ network_ipv4_dns }}"
+pve_lxc_ssh_port: 2222
+pve_lxc_ssh_public_key: "ssh-ed25519 AAAA...fMo"
+pve_lxc_ssh_private_key: |
+      -----BEGIN OPENSSH PRIVATE KEY-----
+      b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
+      QyNTUxOQAAACAQ0GydCVLVXnXpzBxM6MbmRIDHNjC8dqZoFHgx1PiSgQAAAJi7TmCqu05g
+      qgAAAAtzc2gtZWQyNTUxOQAAACAQ0GydCVLVXnXpzBxM6MbmRIDHNjC8dqZoFHgx1PiSgQ
+      AAAEBgO+cOwV2j8gNZ/EugDk+vbi0eGrK125vRcE3FOtJJMRDQbJ0JUtVedenMHEzoxuZE
+      gMc2MLx2pmgUeDHU+JKBAAAAEm1vbGVjdWxlLXRlc3Qtb25seQECAw==
+      -----END OPENSSH PRIVATE KEY-----
+
+headscale_server_url: "https://hs.example.com"
+headscale_metrics_port: 9090
+headscale_users:
+  - "alice"
+  - "bob"
+headscale_policy_auto_approve_routes:
+  - "10.0.0.0/24"
+
+backup_name: "headscale"
+backup_paths:
+  - "/var/lib/headscale"
+backup_cron_schedule: "0 0 * * 0"
+backup_systemd_schedule: "Sun *-*-*"
+backup_repo: "s3:http://10.0.0.254:3900/backups"
+backup_s3_region: "garage"
+backup_access_key_id: "GK_CHANGEME"
+backup_secret_access_key: "CHANGEME"
+backup_password: "CHANGEME"
+
+alloy_file_scrape_targets:
+  - name: "headscale-backup"
+    path: "/var/log/headscale-backup.log"
+  - name: "cloudflare-ddns"
+    path: "/var/log/cloudflare-ddns.log"
+
+cloudflare_ddns_api_token: "CHANGEME"
+cloudflare_ddns_zone_id: "CHANGEME"
+cloudflare_ddns_record_name: "hs.example.com"
+cloudflare_ddns_fritzbox_url: "http://10.0.0.1:49000"
+cloudflare_ddns_fritzbox_username: "dns_updater"
+cloudflare_ddns_fritzbox_password: "CHANGEME"
+
+ufw_rules:
+  - rule: "allow"
+    port: "{{ ssh_port }}"
+    protocol: "tcp"
+    direction: "in"
+    from: "10.0.0.0/24"
+  - rule: "allow"
+    port: "{{ headscale_metrics_port }}"
+    protocol: "tcp"
+    direction: "in"
+    from: "{{ hostvars['metrics.home.arpa'].network_ipv4_address }}"

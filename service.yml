@@ -7,7 +7,17 @@
     - role: "caddy"
     - role: "caddy-ca"
     - role: "cloudflared"
+    - role: "alloy"
+    - role: "ufw"
+
+- name: "Headscale configure"
+  gather_facts: true
+  hosts:
+    - headscale.home.arpa
+  roles:
+    - role: "headscale"
     - role: "cloudflare-ddns"
+    - role: "backup"
     - role: "alloy"
     - role: "ufw"
 

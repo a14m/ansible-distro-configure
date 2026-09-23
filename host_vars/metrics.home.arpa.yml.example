@@ -48,6 +48,10 @@ prometheus_extra_scrape_configs:
     targets:
       - "{{ hostvars['logs.home.arpa'].network_ipv4_address }}:{{ hostvars['logs.home.arpa'].loki_port }}"
     metrics_path: "/metrics"
+  - name: "headscale"
+    targets:
+      - "{{ hostvars['headscale.home.arpa'].network_ipv4_address }}:9090"
+    metrics_path: "/metrics"
   - name: "fritzbox"
     targets:
       - "{{ hostvars['rpi5.local'].network_ipv4_address }}:9042"
