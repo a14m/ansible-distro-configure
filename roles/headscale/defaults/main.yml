@@ -11,3 +11,4 @@ headscale_derp_urls:
   - "https://controlplane.tailscale.com/derpmap/default"
 headscale_node_expiry: "0"
 headscale_users: []
+headscale_policy_auto_approve_routes: []

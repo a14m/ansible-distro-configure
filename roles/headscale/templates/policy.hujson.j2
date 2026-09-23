@@ -1,0 +1,16 @@
+{
+  // Default allow-all
+  "acls": [
+    {"action": "accept", "src": ["*"], "dst": ["*:*"]},
+  ],
+  // Required to auto-approve routes and exit-node
+  // "headscale" is a reserved user this role always creates
+  "autoApprovers": {
+    "routes": {
+{% for route in headscale_policy_auto_approve_routes %}
+      "{{ route }}": ["headscale@"],
+{% endfor %}
+    },
+    "exitNode": ["headscale@"],
+  },
+}

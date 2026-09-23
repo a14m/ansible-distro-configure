@@ -12,8 +12,9 @@ headscale_server_url: "https://hs.example.com"
 
 ## Notes
 
-- DERP relay uses Tailscale's public mesh - no port forward needed for it.
-- MagicDNS is off (every `tailscale` client here runs `--accept-dns=false`, uses Pi-hole instead).
-- `headscale_users` are created if missing; preauth keys aren't - mint manually:
+- DERP uses Tailscale's public mesh - no port forward needed.
+- MagicDNS is off - clients here run `--accept-dns=false`, use Pi-hole instead.
+- `headscale_users` are created if missing; mint preauth keys manually:
   `headscale preauthkeys create --user <numeric id> --reusable --expiration 90d`.
-- Point `tailscale` clients at it via `tailscale_login_server` + a preauth key.
+- `headscale_policy_auto_approve_routes` auto-approves subnet routes + exit-node for a reserved
+  "headscale" user this role always creates.

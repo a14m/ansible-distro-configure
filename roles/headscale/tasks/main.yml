@@ -16,6 +16,16 @@
     mode: "0644"
   notify: "Restart headscale"
 
+- name: "Deploy headscale ACL policy"
+  become: true
+  ansible.builtin.template:
+    src: "policy.hujson.j2"
+    dest: "/etc/headscale/policy.hujson"
+    owner: "headscale"
+    group: "headscale"
+    mode: "0644"
+  notify: "Restart headscale"
+
 - name: "Start and enable headscale"
   become: true
   ansible.builtin.service:
@@ -34,6 +44,14 @@
     cmd: "headscale users list --output json"
   register: headscale_existing_users
   changed_when: false
+
+# Owns auto-approved routes/exit-node - reserved, not part of headscale_users
+- name: "Create reserved headscale user"
+  become: true
+  ansible.builtin.command:
+    cmd: "headscale users create headscale"
+  when: "'headscale' not in (headscale_existing_users.stdout | from_json | map(attribute='name') | list)"
+  changed_when: true
 
 - name: "Create headscale users"
   become: true

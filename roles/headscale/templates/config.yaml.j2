@@ -1,7 +1,7 @@
 ---
 # No TLS here - plain HTTP on listen_addr, terminated by a reverse proxy.
 # No gRPC remote admin enabled.
-# No MagicDNS, DNS resoulution via Pi-hole.
+# No MagicDNS, DNS resolution via Pi-hole.
 
 server_url: "{{ headscale_server_url }}"
 listen_addr: "0.0.0.0:{{ headscale_port }}"
@@ -44,7 +44,7 @@ log:
 
 policy:
   mode: file
-  path: ""
+  path: "/etc/headscale/policy.hujson"
 
 dns:
   magic_dns: false

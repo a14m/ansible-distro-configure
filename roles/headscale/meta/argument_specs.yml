@@ -51,3 +51,12 @@ argument_specs:
           `headscale preauthkeys create --user <numeric id> --reusable --expiration <duration>`
           (--user takes the numeric ID from `headscale users list`, not the name).
         default: []
+      headscale_policy_auto_approve_routes:
+        type: "list"
+        elements: "str"
+        description: >-
+          Subnet routes (CIDRs) auto-approved the moment a matching node first advertises them, no
+          manual `headscale nodes approve-routes` needed - same mechanism Tailscale SaaS calls
+          autoApprovers. Owned by a reserved "headscale" user this role always creates (not one of
+          headscale_users), which is also always auto-approved for exit-node advertisement.
+        default: []
