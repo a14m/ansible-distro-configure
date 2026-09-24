@@ -10,3 +10,9 @@ argument_specs:
           localhost-only, untouched) so nothing beyond metrics is exposed.
           When empty (default), no metrics endpoint is created.
         default: ""
+      caddy_acme_email:
+        type: "str"
+        description: >-
+          Email for Let's Encrypt account registration/expiry notices - only used by vhosts that
+          override the default internal CA with a real ACME issuer. Empty (default) omits it.
+        default: ""

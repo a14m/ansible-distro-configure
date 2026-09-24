@@ -1,4 +1,7 @@
 {
+{% if caddy_acme_email | length > 0 %}
+	email {{ caddy_acme_email }}
+{% endif %}
 	cert_issuer internal {
 		lifetime 720h
 	}
