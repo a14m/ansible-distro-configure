@@ -25,3 +25,13 @@ argument_specs:
         type: "str"
         description: "Physical NIC to enslave as vmbr0 bridge port"
         required: false
+      network_ipv6_method:
+        type: "str"
+        description: >-
+          NetworkManager [ipv6] method - "disabled" by default, since a device that gets a real
+          IPv6 via SLAAC ("auto") routes it directly, bypassing the gateway role's IPv4-only
+          VPN-mode tunnel and leaking traffic outside it. Only set to "auto" on hosts that aren't
+          meant to be privacy-routed through that gateway.
+        choices: ["disabled", "auto"]
+        required: false
+        default: "disabled"

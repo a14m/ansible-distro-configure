@@ -3,6 +3,7 @@
 network_ipv4_address: "10.0.0.203"
 network_ipv4_gateway: "10.0.0.254"
 network_ipv4_dns: "10.0.0.254"
+network_ipv6_method: "disabled"
 
 # Generate with: ssh-keygen -t ed25519 -f host_key -C '' -N ''
 ssh_public_key: "ssh-ed25519 AAAA...fMo"
