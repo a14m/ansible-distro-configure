@@ -1,5 +1,6 @@
 ---
 network_ipv4_address: "10.0.0.110"
+# Use router directly, not to break the return path if VPN mode is on.
 network_ipv4_gateway: "10.0.0.1"
 network_ipv4_dns: "10.0.0.254"
 
