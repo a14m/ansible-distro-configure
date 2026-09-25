@@ -4,22 +4,15 @@ argument_specs:
     options:
       headscale_hostname:
         type: "str"
-        description: >-
-          FQDN clients connect to (e.g. hs.example.com). Drives server_url (always https://) and
-          the proxy vhost fronting headscale_port - headscale itself serves plain HTTP, this is
-          what terminates real TLS.
+        description: "FQDN clients connect to - drives server_url and the proxy vhost"
         required: true
       headscale_version:
         type: "str"
-        description: >-
-          Pins the Debian/Ubuntu .deb download only - Alpine tracks whatever
-          apk's edge/community repo currently has.
+        description: "Pins the Debian/Ubuntu .deb download - Alpine tracks apk's edge/community repo"
         default: "0.29.3"
       headscale_port:
         type: "int"
-        description: >-
-          Port headscale's plain-HTTP control API binds on, all interfaces - no TLS here,
-          and no address to set: same "port only, ufw gates access" shape as caddy_metrics_port.
+        description: "Port headscale's plain-HTTP control API binds on, all interfaces"
         default: 8080
       headscale_metrics_port:
         type: "int"
@@ -27,11 +20,7 @@ argument_specs:
         default: 9090
       headscale_vhost_port:
         type: "int"
-        description: >-
-          Port the proxy vhost listens on for headscale specifically - not 443, which the same
-          Caddy also fronts for other vhosts. Keeps this the only one reachable externally (over
-          IPv6 - no NAT to hide behind, so a dedicated port is what keeps everything else on that
-          Caddy LAN-only) without opening the rest of the proxy's vhosts to the internet too.
+        description: "Port the proxy vhost uses for headscale, not 443 (shared by other vhosts)"
         default: 8443
       headscale_prefix_v4:
         type: "str"
@@ -54,18 +43,19 @@ argument_specs:
       headscale_users:
         type: "list"
         elements: "str"
-        description: >-
-          Usernames to create. Creating a user that already exists is a no-op.
-          Preauth keys are not managed by this role - mint them manually with
-          `headscale preauthkeys create --user <numeric id> --reusable --expiration <duration>`
-          (--user takes the numeric ID from `headscale users list`, not the name).
+        description: "Usernames to create (no-op if existing) - preauth keys aren't managed here"
         default: []
       headscale_policy_auto_approve_routes:
         type: "list"
         elements: "str"
-        description: >-
-          Subnet routes (CIDRs) auto-approved the moment a matching node first advertises them, no
-          manual `headscale nodes approve-routes` needed - same mechanism Tailscale SaaS calls
-          autoApprovers. Owned by a reserved "headscale" user this role always creates (not one of
-          headscale_users), which is also always auto-approved for exit-node advertisement.
+        description: "Subnet routes auto-approved on first advertisement, no manual approval needed"
         default: []
+      headscale_acme_email:
+        type: "str"
+        description: "Let's Encrypt account email, passed to the acme role"
+        required: true
+      headscale_acme_cloudflare_api_token:
+        type: "str"
+        description: "Cloudflare API token, scoped to Zone.DNS:Edit on the zone owning headscale_hostname"
+        required: true
+        no_log: true

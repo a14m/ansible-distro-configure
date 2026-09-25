@@ -1,3 +1,4 @@
 {{ headscale_hostname }}:{{ headscale_vhost_port }} {
+	tls /etc/ssl/acme/{{ headscale_hostname }}.fullchain.pem /etc/ssl/acme/{{ headscale_hostname }}.key.pem
 	reverse_proxy {{ network_ipv4_address }}:{{ headscale_port }}
 }

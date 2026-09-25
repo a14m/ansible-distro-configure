@@ -33,5 +33,6 @@ argument_specs:
         required: true
       acme_reload_command:
         type: "str"
-        description: "Command run after every issue/renewal to reload the consuming service"
-        required: true
+        description: >-
+          Command to reload the consuming service - auto-derived from vhost_proxy_type, override
+          for a non-vhost consumer.

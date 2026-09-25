@@ -8,12 +8,15 @@ the control protocol's `Upgrade` header).
 
 ```yaml
 headscale_hostname: "hs.example.com"
+headscale_acme_email: "you@example.com"
+headscale_acme_cloudflare_api_token: "..."   # Zone.DNS:Edit scoped to the zone owning headscale_hostname
 ```
 
 ## Notes
 
-- `headscale_hostname` drives both `server_url` and the proxy vhost that terminates TLS for it,
-  using Caddy's default internal CA - clients must trust that CA.
+- `headscale_hostname` drives both `server_url` and the proxy vhost that terminates TLS for it. The
+  vhost uses a real Let's Encrypt cert (via the `acme` role, DNS-01 - no inbound port needed), not
+  Caddy's internal CA, so clients trust it with no manual step.
 - Reachable from outside the LAN over IPv6 only. IPv4 port-forwarding hit a Fritzbox NAT bug
   (return packets get re-sourced to a random port after the handshake, in every forwarding mode
   tried, on current firmware) - IPv6 has no NAT to hit that bug in, so the vhost's AAAA record

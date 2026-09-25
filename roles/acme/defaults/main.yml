@@ -2,3 +2,7 @@
 acme_version: "3.1.6"
 acme_home: "/opt/acme.sh"
 acme_cert_dir: "/etc/ssl/acme"
+acme_reload_commands:
+  caddy: "caddy reload --config /etc/caddy/Caddyfile"
+  nginx: "nginx -s reload"
+acme_reload_command: "{{ acme_reload_commands[vhost_proxy_type] }}"

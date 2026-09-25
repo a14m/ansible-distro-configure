@@ -33,6 +33,16 @@
     state: "started"
     enabled: true
 
+- name: "Provision Let's Encrypt certificate for headscale"
+  # Runs before the vhost to have the certificates correct for vhost tls to work
+  ansible.builtin.include_role:
+    name: "acme"
+  vars:
+    acme_domain: "{{ headscale_hostname }}"
+    acme_email: "{{ headscale_acme_email }}"
+    acme_cloudflare_api_token: "{{ headscale_acme_cloudflare_api_token }}"
+    acme_cert_group: "caddy"
+
 - name: "Create headscale proxy vhost"
   ansible.builtin.include_role:
     name: "vhost"
