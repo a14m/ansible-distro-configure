@@ -38,6 +38,14 @@ argument_specs:
         type: "int"
         description: "TTL (seconds) set on the record with every update"
         default: 120
+      cloudflare_ddns_ipv6_interface:
+        type: "str"
+        description: >-
+          Interface to read this host's own global IPv6 address from (e.g. "eth0") and keep
+          an AAAA record for cloudflare_ddns_record_name in sync with. Unlike IPv4, IPv6 has
+          no NAT to hide the real address behind, so no Fritz!Box round-trip is needed - empty
+          skips AAAA entirely.
+        default: ""
       cloudflare_ddns_cron_schedule:
         type: "str"
         description: "cron schedule (e.g. */5 * * * *) - used on OpenRC hosts"
