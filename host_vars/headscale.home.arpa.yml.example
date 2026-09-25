@@ -27,6 +27,8 @@ pve_lxc_ssh_private_key: |
 headscale_hostname: "hs.example.com"
 headscale_metrics_port: 9090
 headscale_vhost_port: 8443
+headscale_acme_email: "changeme@example.com"
+headscale_acme_cloudflare_api_token: "CHANGEME"
 headscale_users:
   - "alice"
   - "bob"
