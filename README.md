@@ -62,6 +62,7 @@ for this, RFC 9476). Override any `*.internal` name with the role's `*_hostname`
 | cgit | [`git.home.arpa`](http://git.home.arpa:3000/) | - | Git browsing and SSH push/clone |
 | Radicale | [`caldav.home.arpa`](http://caldav.home.arpa:5232/.web/) | - | CalDAV/CardDAV server |
 | Tailscale | `tailscale.home.arpa` | - | Tailscale subnet router (no HTTP vhost) |
+| Headscale | `headscale.home.arpa` | - | Self-hosted Tailscale control server (public over IPv6, LAN-only on IPv4) |
 | Loki | `logs.home.arpa` | - | Log aggregation (queried directly on port 3100) |
 | Wallos | [`subscriptions.home.arpa`](http://subscriptions.home.arpa:8282/) | [`subscriptions.internal`](https://subscriptions.internal) | Subscription/recurring-cost tracker |
 | CouchDB | `notes.home.arpa` | [`notes.internal`](https://notes.internal) | Backend for Obsidian LiveSync |
