@@ -1,0 +1,4 @@
+---
+acme_version: "3.1.6"
+acme_home: "/opt/acme.sh"
+acme_cert_dir: "/etc/ssl/acme"

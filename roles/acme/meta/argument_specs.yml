@@ -1,0 +1,37 @@
+---
+argument_specs:
+  main:
+    options:
+      acme_domain:
+        type: "str"
+        description: "Domain to obtain a Let's Encrypt certificate for"
+        required: true
+      acme_email:
+        type: "str"
+        description: "Let's Encrypt account email"
+        required: true
+      acme_cloudflare_api_token:
+        type: "str"
+        description: "Cloudflare API token, scoped to Zone.DNS:Edit on the zone owning acme_domain"
+        required: true
+        no_log: true
+      acme_version:
+        type: "str"
+        description: "acme.sh release tag to clone"
+        default: "3.1.6"
+      acme_home:
+        type: "str"
+        description: "Where acme.sh installs itself"
+        default: "/opt/acme.sh"
+      acme_cert_dir:
+        type: "str"
+        description: "Shared directory certs land in, as acme_cert_dir/acme_domain.{fullchain,key}.pem"
+        default: "/etc/ssl/acme"
+      acme_cert_group:
+        type: "str"
+        description: "Group ownership on the cert files - the consuming service's group, not root"
+        required: true
+      acme_reload_command:
+        type: "str"
+        description: "Command run after every issue/renewal to reload the consuming service"
+        required: true

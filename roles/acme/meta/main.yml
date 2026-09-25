@@ -1,0 +1,23 @@
+---
+# git/cron are included explicitly in tasks/main.yml instead of declared here -
+# meta dependencies wouldn't inherit this role's delegate_to.
+dependencies: []
+galaxy_info:
+  author: "a14m"
+  description: "Obtain and auto-renew a Let's Encrypt certificate for a domain via Cloudflare DNS-01"
+  license: "MIT"
+  min_ansible_version: "2.18"
+  platforms:
+    - name: "Alpine"
+      versions:
+        - "all"
+    - name: "ArchLinux"
+      versions:
+        - "all"
+    - name: "Ubuntu"
+      versions:
+        - "noble"
+    - name: "Debian"
+      versions:
+        - "bookworm"
+        - "trixie"

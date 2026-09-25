@@ -1,0 +1,105 @@
+---
+- name: "Provision Let's Encrypt certificate for {{ acme_domain }}"
+  delegate_to: "{{ vhost_proxy_host }}"
+  block:
+    - name: "Ensure git is installed"
+      ansible.builtin.include_role:
+        name: "git"
+
+    - name: "Ensure cron is installed"
+      ansible.builtin.include_role:
+        name: "cron"
+
+    - name: "Ensure openssl is installed"
+      ansible.builtin.include_role:
+        name: "openssl"
+
+    - name: "Ensure curl is installed"
+      ansible.builtin.include_role:
+        name: "curl"
+
+    - name: "Clone acme.sh at a pinned version"
+      become: true
+      ansible.builtin.git:
+        repo: "https://github.com/acmesh-official/acme.sh.git"
+        dest: "/opt/acme.sh-src"
+        version: "{{ acme_version }}"
+        depth: 1
+
+    - name: "Install acme.sh"
+      become: true
+      ansible.builtin.command:
+        cmd: "./acme.sh --install --home {{ acme_home }} --email {{ acme_email }} --noprofile"
+        chdir: "/opt/acme.sh-src"
+        creates: "{{ acme_home }}/acme.sh"
+
+    - name: "Create credential store directory"
+      become: true
+      ansible.builtin.file:
+        path: "/etc/credstore"
+        state: "directory"
+        owner: "root"
+        group: "root"
+        mode: "0700"
+
+    - name: "Deploy Cloudflare DNS API credentials"
+      become: true
+      ansible.builtin.template:
+        src: "acme-cloudflare.env.j2"
+        dest: "/etc/credstore/acme-cloudflare-{{ acme_domain }}.env"
+        owner: "root"
+        group: "root"
+        mode: "0600"
+      no_log: true
+
+    - name: "Create certificate output directory"
+      # Root owned, world-traversable, different domains have different group ownership.
+      # Only domain names are public (file names)
+      become: true
+      ansible.builtin.file:
+        path: "{{ acme_cert_dir }}"
+        state: "directory"
+        owner: "root"
+        group: "root"
+        mode: "0755"
+
+    - name: "Issue certificate via DNS-01 (Cloudflare)"
+      become: true
+      ansible.builtin.shell:
+        cmd: >-
+          set -a; . /etc/credstore/acme-cloudflare-{{ acme_domain }}.env; set +a;
+          {{ acme_home }}/acme.sh --issue --dns dns_cf -d {{ acme_domain | quote }} --server letsencrypt
+      register: acme_issue
+      # acme.sh exits 2 (not 0) when the cert is already valid and not yet due for
+      # renewal - a no-op, not a failure. Real errors exit with anything else.
+      changed_when: acme_issue.rc == 0
+      failed_when: acme_issue.rc not in [0, 2]
+
+    - name: "Check whether the certificate is already installed"
+      ansible.builtin.stat:
+        path: "{{ acme_cert_dir }}/{{ acme_domain }}.fullchain.pem"
+      register: acme_installed_cert
+
+    - name: "Install certificate and reload consumer"
+      become: true
+      ansible.builtin.command:
+        cmd: >-
+          {{ acme_home }}/acme.sh --install-cert -d {{ acme_domain }}
+          --key-file {{ acme_cert_dir }}/{{ acme_domain }}.key.pem
+          --fullchain-file {{ acme_cert_dir }}/{{ acme_domain }}.fullchain.pem
+          --reloadcmd {{ acme_reload_command | quote }}
+      # A fresh issue (rc 0) always needs installing. A valid-but-not-due cert
+      # (rc 2) still needs installing the first time - e.g. acme_cert_dir just
+      # changed, or this is a new consumer for an already-issued certificate.
+      when: acme_issue.rc == 0 or not acme_installed_cert.stat.exists
+      changed_when: true
+
+    - name: "Grant the consuming service group read access to the certificate"
+      become: true
+      ansible.builtin.file:
+        path: "{{ acme_cert_dir }}/{{ acme_domain }}.{{ item }}"
+        group: "{{ acme_cert_group }}"
+        mode: "0640"
+      loop:
+        - "fullchain.pem"
+        - "key.pem"
