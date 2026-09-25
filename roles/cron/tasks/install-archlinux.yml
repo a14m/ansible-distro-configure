@@ -1,0 +1,13 @@
+---
+- name: "Ensure cronie is installed"
+  become: true
+  ansible.builtin.package:
+    name: "cronie"
+    state: "present"
+
+- name: "Enable and start cronie"
+  become: true
+  ansible.builtin.systemd_service:
+    name: "cronie"
+    enabled: true
+    state: "started"

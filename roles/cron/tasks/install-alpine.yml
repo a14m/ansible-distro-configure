@@ -1,0 +1,7 @@
+---
+- name: "Enable and start crond"
+  become: true
+  ansible.builtin.service:
+    name: "crond"
+    enabled: true
+    state: "started"
