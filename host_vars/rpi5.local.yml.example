@@ -58,7 +58,6 @@ pihole_dns_hosts:
   - "{{ hostvars['proxy.home.arpa'].network_ipv4_address }} metrics.internal"
   - "{{ hostvars['proxy.home.arpa'].network_ipv4_address }} {{ garage_hostname }}"
   - "{{ hostvars['proxy.home.arpa'].network_ipv4_address }} {{ garage_webui_hostname }}"
-  - "{{ hostvars['proxy.home.arpa'].network_ipv4_address }} vm.internal"
   - "{{ hostvars['proxy.home.arpa'].network_ipv4_address }} subscriptions.internal"
   - "{{ hostvars['proxy.home.arpa'].network_ipv4_address }} notes.internal"
 

@@ -65,7 +65,7 @@ for this, RFC 9476). Override any `*.internal` name with the role's `*_hostname`
 | Loki | `logs.home.arpa` | - | Log aggregation (queried directly on port 3100) |
 | Wallos | [`subscriptions.home.arpa`](http://subscriptions.home.arpa:8282/) | [`subscriptions.internal`](https://subscriptions.internal) | Subscription/recurring-cost tracker |
 | CouchDB | `notes.home.arpa` | [`notes.internal`](https://notes.internal) | Backend for Obsidian LiveSync |
-| Proxmox VE | [`pve.local`](https://pve.local:8006/) | [`vm.internal`](https://vm.internal) | PVE hypervisor web UI (on `pve.local` itself) |
+| Proxmox VE | [`pve.local`](https://pve.local:8006/) | - | PVE hypervisor web UI (on `pve.local` itself) |
 
 `cgit_hostname` / `radicale_hostname` can instead be a public domain, for access outside the LAN via the
 `cloudflared` tunnel (`cgit_clone_prefix` keeps the LAN clone URL separate).
