@@ -1,6 +1,6 @@
 server {
-    listen 80;
-    listen [::]:80;
+    listen {{ headscale_vhost_port }};
+    listen [::]:{{ headscale_vhost_port }};
 
     server_name {{ headscale_hostname }};
 

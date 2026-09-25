@@ -41,6 +41,18 @@ ufw_rules:
     protocol: "tcp"
     direction: "in"
     from: "10.0.0.0/24"
+  # Headscale's own vhost, not 443 - keeps the rest of this Caddy LAN-only.
+  - rule: "allow"
+    port: "{{ hostvars['headscale.home.arpa'].headscale_vhost_port }}"
+    protocol: "tcp"
+    direction: "in"
+    from: "10.0.0.0/24"
+  # No NAT on IPv6 to hide behind, so "::/0" opens this one port to the internet.
+  - rule: "allow"
+    port: "{{ hostvars['headscale.home.arpa'].headscale_vhost_port }}"
+    protocol: "tcp"
+    direction: "in"
+    from: "::/0"
   - rule: "allow"
     port: "{{ caddy_metrics_port }}"
     protocol: "tcp"

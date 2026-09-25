@@ -25,6 +25,14 @@ argument_specs:
         type: "int"
         description: "Port for /metrics and /debug, all interfaces - ufw gates actual access"
         default: 9090
+      headscale_vhost_port:
+        type: "int"
+        description: >-
+          Port the proxy vhost listens on for headscale specifically - not 443, which the same
+          Caddy also fronts for other vhosts. Keeps this the only one reachable externally (over
+          IPv6 - no NAT to hide behind, so a dedicated port is what keeps everything else on that
+          Caddy LAN-only) without opening the rest of the proxy's vhosts to the internet too.
+        default: 8443
       headscale_prefix_v4:
         type: "str"
         description: "IPv4 CIDR to allocate tailnet addresses from"

@@ -5,6 +5,7 @@
 headscale_version: "0.29.3"
 headscale_port: 8080
 headscale_metrics_port: 9090
+headscale_vhost_port: 8443
 headscale_prefix_v4: "100.64.0.0/10"
 headscale_prefix_v6: "fd7a:115c:a1e0::/48"
 headscale_derp_urls:
