@@ -35,6 +35,7 @@
 
 - name: "Provision Let's Encrypt certificate for headscale"
   # Runs before the vhost to have the certificates correct for vhost tls to work
+  # Needs a real domain/Cloudflare API access - not available/desired in molecule
   ansible.builtin.include_role:
     name: "acme"
   vars:
@@ -42,6 +43,8 @@
     acme_email: "{{ headscale_acme_email }}"
     acme_cloudflare_api_token: "{{ headscale_acme_cloudflare_api_token }}"
     acme_cert_group: "caddy"
+  tags:
+    - "molecule-notest"
 
 - name: "Create headscale proxy vhost"
   ansible.builtin.include_role:

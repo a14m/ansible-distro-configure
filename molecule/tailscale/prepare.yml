@@ -1,0 +1,30 @@
+---
+- name: "Fake the certificate acme would normally provision for headscale"
+  # acme's own task is tagged molecule-notest (needs a real domain/Cloudflare
+  # API) - a throwaway self-signed cert at the same path lets the real vhost
+  # role still render and validate against Caddy for real in converge.yml.
+  # Lands on proxy.home.arpa - that's where Caddy (and vhost_proxy_host)
+  # actually reads it from, not on headscale.home.arpa itself.
+  gather_facts: false
+  hosts:
+    - proxy.home.arpa
+  vars:
+    headscale_hostname: "hs.example.com"
+  tasks:
+    - name: "Ensure openssl is installed"
+      become: true
+      ansible.builtin.package:
+        name: "openssl"
+        state: "present"
+
+    - name: "Generate a self-signed certificate"
+      become: true
+      ansible.builtin.shell:
+        cmd: >-
+          mkdir -p /etc/ssl/acme &&
+          openssl req -x509 -newkey rsa:2048 -nodes -days 1
+          -subj "/CN={{ headscale_hostname }}"
+          -keyout /etc/ssl/acme/{{ headscale_hostname }}.key.pem
+          -out /etc/ssl/acme/{{ headscale_hostname }}.fullchain.pem
+        creates: "/etc/ssl/acme/{{ headscale_hostname }}.fullchain.pem"
+      changed_when: true

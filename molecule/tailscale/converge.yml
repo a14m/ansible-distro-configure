@@ -10,3 +10,41 @@
   roles:
     - role: "tailscale"
     - role: "alloy"
+
+- name: "Proxy configure"
+  gather_facts: true
+  hosts:
+    - proxy.home.arpa
+  vars:
+    network_ipv4_address: "{{ ansible_facts.default_ipv4.address }}"
+  roles:
+    - role: "caddy"
+  post_tasks:
+    - name: "Match the real permissions acme's own role would set"
+      # caddy (and its group) exists now, having just been installed above.
+      become: true
+      ansible.builtin.file:
+        path: "/etc/ssl/acme/hs.example.com.{{ item }}"
+        group: "caddy"
+        mode: "0640"
+      loop:
+        - "fullchain.pem"
+        - "key.pem"
+
+- name: "Headscale configure"
+  gather_facts: true
+  hosts:
+    - headscale.home.arpa
+  vars:
+    network_ipv4_address: "{{ ansible_facts.default_ipv4.address }}"
+    headscale_hostname: "hs.example.com"
+    headscale_users:
+      - "alice"
+      - "bob"
+    # Never used - the task that reads these is tagged molecule-notest - but
+    # still required by headscale's own argument spec.
+    headscale_acme_email: "test@example.com"
+    headscale_acme_cloudflare_api_token: "CHANGEME"
+  roles:
+    - role: "headscale"
+    - role: "alloy"
