@@ -18,8 +18,8 @@ cloudflare_ddns_fritzbox_password: "..."
 
 ## Notes
 
-- The A record must already exist - this role only updates it, never creates it. Same for AAAA if
-  `cloudflare_ddns_ipv6_interface` is set.
+- Only updates existing records, never creates them - a missing A or AAAA record is skipped with a
+  log line, so an IPv6-only setup just doesn't have an A record.
 - `cloudflare_ddns_ipv6_interface` (e.g. `"eth0"`) also keeps an AAAA record in sync - unset (default)
   skips IPv6 entirely.
 - Every update forces `proxied: false`.

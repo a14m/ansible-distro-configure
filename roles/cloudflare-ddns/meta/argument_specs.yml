@@ -6,7 +6,7 @@ argument_specs:
         type: "str"
         description: >-
           Cloudflare API token, scoped to Zone.DNS:Edit on cloudflare_ddns_zone_id only.
-          The record itself is never created by this role - point it at an existing A record.
+          Records are never created by this role, and missing ones are skipped.
         required: true
         no_log: true
       cloudflare_ddns_zone_id:

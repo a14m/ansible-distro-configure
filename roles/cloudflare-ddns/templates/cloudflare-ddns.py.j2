@@ -92,7 +92,8 @@ class CloudflareDNS:
         result = self._request("GET", f"?{query}")
         records = result.get("result") or []
         if not records:
-            sys.exit(f"No {record_type} record found for {self.record_name} in zone {self.zone_id}")
+            print(f"No {record_type} record for {self.record_name}, skipping")
+            return
         record_id, current_value = records[0]["id"], records[0]["content"]
 
         # Compare via ipaddress, not raw strings - Cloudflare stores IPv6 compressed,
