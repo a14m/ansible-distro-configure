@@ -21,7 +21,7 @@
       - "ip6tables"
     state: "present"
 
-- name: "Set tailscaled UDP port"
+- name: "Set tailscaled UDP port and disable log upload"
   become: true
   ansible.builtin.copy:
     dest: "/etc/conf.d/tailscale"
@@ -30,6 +30,7 @@
     mode: "0644"
     content: |
       port="{{ tailscale_port }}"
+      no_logs_no_support=yes
   notify: "Restart tailscale (openrc)"
 
 - name: "Enable and start tailscale"

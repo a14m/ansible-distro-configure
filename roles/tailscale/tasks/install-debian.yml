@@ -27,7 +27,7 @@
     name: "tailscale"
     state: "present"
 
-- name: "Set tailscaled UDP port"
+- name: "Set tailscaled UDP port and disable log upload"
   become: true
   ansible.builtin.copy:
     dest: "/etc/default/tailscaled"
@@ -36,6 +36,7 @@
     mode: "0644"
     content: |
       PORT={{ tailscale_port }}
+      FLAGS="--no-logs-no-support"
   notify: "Restart tailscaled (systemd)"
 
 - name: "Enable and start tailscale"
