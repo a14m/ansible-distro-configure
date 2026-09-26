@@ -29,7 +29,7 @@
     memory: "{{ pve_lxc_memory }}"
     pubkey: "{{ user_public_keys | join('\n') }}"
     netif:
-      net0: "name=eth0,ip={{ pve_lxc_ip }},gw={{ pve_lxc_gateway }},bridge=vmbr0"
+      net0: "name=eth0,hwaddr={{ pve_lxc_mac }},ip={{ pve_lxc_ip }},gw={{ pve_lxc_gateway }},bridge=vmbr0"
     nameserver: "{{ pve_lxc_dns }}"
     onboot: true
     unprivileged: true

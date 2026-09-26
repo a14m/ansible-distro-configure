@@ -9,6 +9,7 @@ pve_lxc_template: "alpine-3.23-default_20260116_amd64.tar.xz"
 pve_lxc_disk: "local-lvm:2" # storage:sizeGB
 pve_lxc_cores: 1
 pve_lxc_memory: 128
+pve_lxc_mac: "BC:24:11:00:00:03"
 pve_lxc_ip: "{{ network_ipv4_address }}/24"
 pve_lxc_gateway: "{{ network_ipv4_gateway }}"
 pve_lxc_dns: "{{ network_ipv4_dns }}"

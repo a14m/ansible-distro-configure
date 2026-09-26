@@ -26,6 +26,10 @@ argument_specs:
         type: "int"
         description: "RAM in MB"
         default: 512
+      pve_lxc_mac:
+        type: "str"
+        description: "Pinned MAC - the IPv6 SLAAC address derives from it, so rebuilds keep the same address"
+        required: true
       pve_lxc_ip:
         type: "str"
         description: "Container IP in CIDR notation (e.g. 10.0.0.100/24)"
