@@ -6,7 +6,7 @@ network_ipv4_dns: "10.0.0.254"
 pve_lxc_id: 106
 pve_lxc_hostname: "metrics"
 pve_lxc_template: "alpine-3.23-default_20260116_amd64.tar.xz"
-pve_lxc_disk: "local-lvm:8" # storage:sizeGB
+pve_lxc_disk: "local-lvm:16" # storage:sizeGB
 pve_lxc_cores: 1
 pve_lxc_memory: 512
 pve_lxc_ip: "{{ network_ipv4_address }}/24"
