@@ -7,20 +7,31 @@
     mode: "0755"
 
 - name: "Install kernel-install sync/prune script"
-  # kernel-install add-all only ever adds entries - it never removes ones for
-  # kernel versions pacman has already deleted from /usr/lib/modules/, so a
-  # small ESP (this desktop's is 1GiB) fills up with stale entries over a few
-  # kernel upgrades and the next kernel-install add then silently fails,
-  # leaving the system unable to boot the newly installed kernel.
+  # kernel-install add-all never removes entries for kernels pacman already deleted from /usr/lib/modules/,
+  # so the 1GiB ESP fills up and the next add fails; prune before adding.
   become: true
   ansible.builtin.copy:
-    src: "pacman-hooks/kernel-install-sync"
+    src: "kernel-install-sync"
     dest: "/usr/local/bin/kernel-install-sync"
     mode: "0755"
 
-- name: "Ensure systemd-boot entries are regenerated on kernel upgrades"
+- name: "Ensure systemd-boot entries are regenerated on kernel/initramfs input upgrades"
+  # Triggers copied from mkinitcpio 42's 90-mkinitcpio-install.hook: nvidia/firmware/modprobe.d upgrades
+  # without a kernel upgrade otherwise leave a stale initrd on the ESP.
   become: true
   ansible.builtin.copy:
     src: "pacman-hooks/91-kernel-install.hook"
     dest: "/etc/pacman.d/hooks/91-kernel-install.hook"
     mode: "0644"
+
+- name: "Mask mkinitcpio pacman hooks"
+  # They only build/remove /boot/*-linux images that systemd-boot never reads; kernel-install builds the ESP initrd.
+  become: true
+  ansible.builtin.file:
+    src: "/dev/null"
+    dest: "/etc/pacman.d/hooks/{{ item }}"
+    state: "link"
+    force: true
+  loop:
+    - "60-mkinitcpio-remove.hook"
+    - "90-mkinitcpio-install.hook"

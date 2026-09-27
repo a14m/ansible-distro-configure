@@ -1,3 +1,0 @@
-#!/bin/sh
-set -eu
-kernel-install add "$1" "/boot/vmlinuz-$1"

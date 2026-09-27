@@ -2,11 +2,12 @@
 - name: "Include OS-specific variables"
   ansible.builtin.include_vars: "{{ ansible_facts.os_family | lower }}.yml"
 
+- name: "Include OS-specific configuration"
+  # Hooks and masks first, so the package install below already syncs the ESP.
+  ansible.builtin.include_tasks: "configure-{{ ansible_facts.os_family | lower }}.yml"
+
 - name: "Ensure linux-headers is installed"
   become: true
   ansible.builtin.package:
     name: "{{ linux_headers_pkg }}"
     state: "{{ linux_headers_state }}"
-
-- name: "Include OS-specific configuration"
-  ansible.builtin.include_tasks: "configure-{{ ansible_facts.os_family | lower }}.yml"

@@ -1,0 +1,13 @@
+#!/bin/sh
+set -eu
+boot=$(bootctl --print-boot-path 2>/dev/null) || {
+  echo "kernel-install-sync: no ESP/XBOOTLDR found, skipping" >&2
+  exit 0
+}
+token=$(cat /etc/kernel/entry-token 2>/dev/null || cat /etc/machine-id)
+for entry in "$boot"/loader/entries/"$token"-*.conf; do
+  [ -e "$entry" ] || continue
+  version=$(sed -n 's/^version *//p' "$entry")
+  [ -d "/usr/lib/modules/$version" ] || kernel-install remove "$version"
+done
+kernel-install add-all

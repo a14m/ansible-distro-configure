@@ -1,18 +1,8 @@
 ---
 - name: "Rebuild initramfs"
+  # systemd-boot reads the initramfs from the ESP; kernel-install-sync prunes,
+  # then add-all rebuilds it via 50-mkinitcpio.install.
   become: true
   ansible.builtin.command:
-    cmd: "mkinitcpio -P"
-  changed_when: true
-  notify: "Sync kernel to EFI partition"
-
-- name: "Sync kernel to EFI partition"
-  # This desktop boots via systemd-boot, reading the kernel/initramfs straight from the ESP
-  # (see ansible-distro-install roles/bootstrap). kernel-install's pacman hook only re-syncs
-  # the ESP on `linux` package upgrades, not on a manual mkinitcpio rebuild like this one, so
-  # skipping this step leaves systemd-boot booting a stale initramfs (e.g. missing this role's
-  # nouveau blacklist) until the next kernel upgrade happens to trigger the hook.
-  become: true
-  ansible.builtin.command:
-    cmd: "kernel-install add-all"
+    cmd: "/usr/local/bin/kernel-install-sync"
   changed_when: true

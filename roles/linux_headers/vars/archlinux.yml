@@ -1,9 +1,7 @@
 ---
-# linux and linux-headers must be upgraded together: Arch repos only ever
-# carry the latest kernel build, so installing linux-headers alone can pull
-# headers for a kernel newer than the one actually installed, breaking DKMS
-# builds (nvidia_gt750m, nvidia_gtx1060) until the next full upgrade.
+# linux and linux-headers are installed together so DKMS (nvidia_gtx1060) always builds against the installed kernel.
+# Kept at "present": upgrading them alone is an unsupported partial upgrade, leave upgrades to pacman -Syu.
 linux_headers_pkg:
   - "linux"
   - "linux-headers"
-linux_headers_state: "latest"
+linux_headers_state: "present"
