@@ -1,0 +1,7 @@
+---
+- name: "Sync boot entries"
+  # Catches up hosts whose ESP missed kernel upgrades before the hook was installed.
+  become: true
+  ansible.builtin.command:
+    cmd: "/usr/local/bin/kernel-install-sync"
+  changed_when: true

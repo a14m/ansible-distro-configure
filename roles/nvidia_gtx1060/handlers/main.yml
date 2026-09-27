@@ -1,8 +1,13 @@
 ---
 - name: "Rebuild initramfs"
-  # systemd-boot reads the initramfs from the ESP; kernel-install-sync prunes,
-  # then add-all rebuilds it via 50-mkinitcpio.install.
+  # kernel-install-sync (from distro-install or the kernel_install role) rebuilds the ESP initrd systemd-boot reads;
+  # without it this is a plain mkinitcpio setup.
   become: true
-  ansible.builtin.command:
-    cmd: "/usr/local/bin/kernel-install-sync"
+  ansible.builtin.shell:
+    cmd: |
+      if [ -x /usr/local/bin/kernel-install-sync ]; then
+        exec /usr/local/bin/kernel-install-sync
+      else
+        exec mkinitcpio -P
+      fi
   changed_when: true

@@ -67,6 +67,7 @@
         apply:
           tags: "{{ role.tags | default([]) }}"
       loop:
+        - { name: "kernel_install", distro: "Archlinux" }
         - { name: "yay", distro: "Archlinux" }
         - { name: "mpv", distro: "Archlinux" }
         - { name: "hyprland", distro: "Archlinux" }

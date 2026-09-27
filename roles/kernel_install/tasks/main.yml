@@ -1,0 +1,55 @@
+---
+- name: "Check for kernel-install managed systemd-boot entries"
+  # Only hosts booting kernel-install entries from the ESP (as set up by distro-install) are managed;
+  # on plain mkinitcpio setups masking its hooks would stop initramfs rebuilds.
+  become: true
+  ansible.builtin.shell:
+    cmd: |
+      set -eu
+      token=$(cat /etc/kernel/entry-token 2>/dev/null || cat /etc/machine-id)
+      ls "$(bootctl --print-boot-path)"/loader/entries/"$token"-*.conf
+  register: kernel_install_entries
+  changed_when: false
+  failed_when: false
+
+- name: "Configure kernel-install ESP sync"
+  when: kernel_install_entries.rc == 0
+  block:
+    - name: "Ensure custom pacman hooks directory exists"
+      become: true
+      ansible.builtin.file:
+        path: "/etc/pacman.d/hooks"
+        state: "directory"
+        mode: "0755"
+
+    - name: "Install kernel-install sync/prune script"
+      # kernel-install add-all never removes entries for kernels pacman already deleted from /usr/lib/modules/,
+      # so the 1GiB ESP fills up and the next add fails; prune before adding.
+      become: true
+      ansible.builtin.copy:
+        src: "kernel-install-sync"
+        dest: "/usr/local/bin/kernel-install-sync"
+        mode: "0755"
+      notify: "Sync boot entries"
+
+    - name: "Ensure systemd-boot entries are synced on kernel/initramfs input changes"
+      # Arch ships no kernel-install pacman hook. Triggers copied from mkinitcpio 42's 90-mkinitcpio-install.hook,
+      # so kernel/nvidia/firmware/modprobe.d upgrades rebuild the ESP initrd too.
+      become: true
+      ansible.builtin.copy:
+        src: "91-kernel-install.hook"
+        dest: "/etc/pacman.d/hooks/91-kernel-install.hook"
+        mode: "0644"
+      notify: "Sync boot entries"
+
+    - name: "Mask mkinitcpio pacman hooks"
+      # They only build/remove /boot/*-linux images that systemd-boot never reads; kernel-install builds the ESP initrd.
+      become: true
+      ansible.builtin.file:
+        src: "/dev/null"
+        dest: "/etc/pacman.d/hooks/{{ item }}"
+        state: "link"
+        force: true
+      loop:
+        - "60-mkinitcpio-remove.hook"
+        - "90-mkinitcpio-install.hook"

@@ -77,6 +77,7 @@
     - role: "locales"
     - role: "timezone"
     - role: "yay"
+    - role: "kernel_install"
     - role: "font"
     - role: "which"
     - role: "logind"
