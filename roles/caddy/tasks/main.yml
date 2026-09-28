@@ -1,4 +1,13 @@
 ---
+- name: "Assert pinned CA root certificate and key are set together"
+  when: caddy_pki_root_cert is defined or caddy_pki_root_key is defined
+  ansible.builtin.assert:
+    that:
+      - caddy_pki_root_cert is defined
+      - caddy_pki_root_key is defined
+    fail_msg: "caddy_pki_root_cert and caddy_pki_root_key are required together"
+    quiet: true
+
 - name: "Stop and disable nginx"
   become: true
   ansible.builtin.service:
@@ -6,6 +15,9 @@
     state: "stopped"
     enabled: false
   failed_when: false
+
+- name: "Include OS-specific variables"
+  ansible.builtin.include_vars: "{{ ansible_facts.os_family | lower }}.yml"
 
 - name: "Include OS-specific installation tasks"
   ansible.builtin.include_tasks: "install-{{ ansible_facts.os_family | lower }}.yml"
@@ -28,6 +40,56 @@
     group: "caddy"
     mode: "0750"
 
+- name: "Configure pinned internal CA root"
+  when: caddy_pki_root_cert is defined
+  become: true
+  notify: "Restart caddy"
+  block:
+    - name: "Ensure caddy pki directory exists"
+      ansible.builtin.file:
+        path: "/etc/caddy/pki"
+        state: "directory"
+        owner: "root"
+        group: "caddy"
+        mode: "0750"
+
+    - name: "Deploy internal CA root certificate"
+      ansible.builtin.copy:
+        content: "{{ caddy_pki_root_cert }}"
+        dest: "/etc/caddy/pki/root.crt"
+        owner: "root"
+        group: "caddy"
+        mode: "0640"
+
+    - name: "Deploy internal CA root key"
+      ansible.builtin.copy:
+        content: "{{ caddy_pki_root_key }}"
+        dest: "/etc/caddy/pki/root.key"
+        owner: "root"
+        group: "caddy"
+        mode: "0640"
+      no_log: true
+
+- name: "Remove pinned internal CA root when not pinned"
+  when: caddy_pki_root_cert is not defined
+  become: true
+  ansible.builtin.file:
+    path: "/etc/caddy/pki"
+    state: "absent"
+  notify: "Restart caddy"
+
+- name: "Create CA root certificate vhost configuration"
+  become: true
+  ansible.builtin.template:
+    src: "ca.caddy.j2"
+    dest: "/etc/caddy/sites/ca.caddy"
+    owner: "root"
+    group: "caddy"
+    mode: "0640"
+    backup: true
+    validate: "caddy validate --config %s --adapter caddyfile"
+  notify: "Restart caddy"
+
 - name: "Create Caddyfile"
   become: true
   ansible.builtin.template:
@@ -36,6 +98,8 @@
     owner: "root"
     group: "caddy"
     mode: "0640"
+    backup: true
+    validate: "caddy validate --config %s --adapter caddyfile"
   notify: "Restart caddy"
 
 - name: "Configure metrics-only vhost"

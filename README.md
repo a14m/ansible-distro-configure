@@ -73,10 +73,10 @@ for this, RFC 9476). Override any `*.internal` name with the role's `*_hostname`
 
 ## Trusting the Internal CA
 
-`*.internal` certs come from Caddy's local CA, so devices warn until they trust it once. The `caddy-ca` role serves
+`*.internal` certs come from Caddy's local CA, so devices warn until they trust it once. The `caddy` role serves
 it at `http://proxy.home.arpa/certificate` (plain HTTP - it has to work before anything is trusted). Open that URL
 on the device (LAN or via the `tailscale.home.arpa` subnet router) and import it; on macOS an explicit
-"Always Trust" is required. Full per-platform steps in `roles/caddy-ca/README.md`.
+"Always Trust" is required. Full per-platform steps in `roles/caddy/README.md`.
 
 ## Firewall
 

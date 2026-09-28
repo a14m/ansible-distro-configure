@@ -2,7 +2,7 @@
 dependencies: []
 galaxy_info:
   author: "a14m"
-  description: "Configure Caddy reverse proxy"
+  description: "Configure Caddy reverse proxy and serve its internal CA root, optionally pinned"
   license: "MIT"
   min_ansible_version: "2.18"
   platforms:

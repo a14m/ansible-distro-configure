@@ -5,6 +5,17 @@
 	cert_issuer internal {
 		lifetime 720h
 	}
+{% if caddy_pki_root_cert is defined %}
+	pki {
+		ca local {
+			root {
+				format pem_file
+				cert /etc/caddy/pki/root.crt
+				key /etc/caddy/pki/root.key
+			}
+		}
+	}
+{% endif %}
 	log {
 		output file /var/log/caddy/caddy.log {
 			roll_size 10mb

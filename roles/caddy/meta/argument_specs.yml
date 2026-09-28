@@ -16,3 +16,13 @@ argument_specs:
           Email for Let's Encrypt account registration/expiry notices - only used by vhosts that
           override the default internal CA with a real ACME issuer. Empty (default) omits it.
         default: ""
+      caddy_pki_root_cert:
+        type: "str"
+        description: >-
+          PEM root pinned for the internal CA (with caddy_pki_root_key), so rebuilds keep it.
+          Undefined lets Caddy generate its own.
+        required: false
+      caddy_pki_root_key:
+        type: "str"
+        description: "PEM private key for caddy_pki_root_cert"
+        required: false

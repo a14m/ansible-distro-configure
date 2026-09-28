@@ -1,0 +1,2 @@
+---
+caddy_ca_dir: "/var/lib/caddy/.local/share/caddy/pki/authorities/local"
