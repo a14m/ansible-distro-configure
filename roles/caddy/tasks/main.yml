@@ -40,6 +40,19 @@
     group: "caddy"
     mode: "0750"
 
+# Caddyfile validation runs as root and opens this log as root (as a side effect)
+- name: "Ensure caddy log file exists"
+  # noqa: risky-file-permissions
+  # Reason: ACL mask sets by alloy conflicts with setting the mode here
+  become: true
+  ansible.builtin.file:
+    path: "/var/log/caddy/caddy.log"
+    state: "touch"
+    owner: "caddy"
+    group: "caddy"
+    access_time: "preserve"
+    modification_time: "preserve"
+
 - name: "Configure pinned internal CA root"
   when: caddy_pki_root_cert is defined
   become: true
