@@ -23,9 +23,7 @@
 		}
 	}
 {% if caddy_metrics_port | length > 0 %}
-	servers {
-		metrics
-	}
+	metrics
 {% endif %}
 }
 

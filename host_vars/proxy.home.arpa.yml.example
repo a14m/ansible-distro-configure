@@ -25,14 +25,15 @@ pve_lxc_ssh_private_key: |
       -----END OPENSSH PRIVATE KEY-----
 
 caddy_metrics_port: "9091"
-caddy_pki_root_cert: |
-  -----BEGIN CERTIFICATE-----
-  CHANGEME
-  -----END CERTIFICATE-----
-caddy_pki_root_key: |
-  -----BEGIN EC PRIVATE KEY-----
-  CHANGEME
-  -----END EC PRIVATE KEY-----
+# Optional: pin the internal CA root (see roles/caddy/README.md to generate a pair)
+# caddy_pki_root_cert: |
+#   -----BEGIN CERTIFICATE-----
+#   ...
+#   -----END CERTIFICATE-----
+# caddy_pki_root_key: |
+#   -----BEGIN EC PRIVATE KEY-----
+#   ...
+#   -----END EC PRIVATE KEY-----
 
 ufw_rules:
   - rule: "allow"
