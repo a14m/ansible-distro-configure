@@ -8,6 +8,24 @@
     name: "prometheus-node-exporter"
     state: "present"
 
+# Recommended via collectors -> ipmitool; its service fails on every boot without a BMC
+- name: "Ensure openipmi is removed"
+  become: true
+  when: ansible_facts.os_family == "Debian"
+  ansible.builtin.apt:
+    name: "openipmi"
+    state: "absent"
+    purge: true
+
+# Recommended via collectors -> nvme-cli; NVMe-over-Fabrics autoconnect is unused
+# and fails on kernels without nvme-fabrics (e.g. Raspberry Pi)
+- name: "Ensure nvmf-autoconnect is masked"
+  become: true
+  when: ansible_facts.os_family == "Debian"
+  ansible.builtin.systemd_service:
+    name: "nvmf-autoconnect"
+    masked: true
+
 - name: "Configure node-exporter host/port via environment file"
   become: true
   ansible.builtin.copy:
