@@ -1,0 +1,17 @@
+---
+- name: "Install chrony"
+  become: true
+  ansible.builtin.apt:
+    name: "chrony"
+    state: "present"
+
+- name: "Start and enable chrony"
+  become: true
+  ansible.builtin.service:
+    name: "chrony"
+    state: "started"
+    enabled: true
+  tags:
+    # test containers are privileged and share the host kernel's clock;
+    # chrony would adjust the test machine's time
+    - "molecule-notest"

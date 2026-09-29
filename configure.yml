@@ -124,6 +124,7 @@
     - role: "pve-storage"
     - role: "locales"
     - role: "timezone"
+    - role: "chrony"
     - role: "logind"
     - role: "bash"
     - role: "man"
