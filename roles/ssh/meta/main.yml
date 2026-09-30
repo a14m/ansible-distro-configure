@@ -13,3 +13,7 @@ galaxy_info:
     - name: "Ubuntu"
       versions:
         - "noble"
+    - name: "Debian"
+      versions:
+        - "bookworm"
+        - "trixie"

@@ -18,6 +18,7 @@ galaxy_info:
     - name: "Debian"
       versions:
         - "bookworm"
+        - "trixie"
     - name: "Alpine"
       versions:
         - "all"
