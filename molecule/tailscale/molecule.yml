@@ -43,8 +43,8 @@ provisioner:
   name: ansible
   inventory:
     links:
-      host_vars: "../../host_vars/"
-      group_vars: "../../group_vars/"
+      host_vars: "../host_vars/"
+      group_vars: "../group_vars/"
       inventory: "../inventory.yml"
   env:
     ANSIBLE_ROLES_PATH: "../../roles"

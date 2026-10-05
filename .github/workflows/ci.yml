@@ -18,8 +18,8 @@ jobs:
       - name: Copy example files
         run: |
           # Use example files for testing instead of encrypted files
-          for f in group_vars/*.example; do mv "$f" "$(echo "$f" | sed s/\.example//)"; done
-          for f in host_vars/*.example; do mv "$f" "$(echo "$f" | sed s/\.example//)"; done
+          for f in group_vars/*.example; do cp "$f" "$(echo "$f" | sed s/\.example//)"; done
+          for f in host_vars/*.example; do cp "$f" "$(echo "$f" | sed s/\.example//)"; done
       - name: Run
         run: |
           yamllint .
@@ -78,15 +78,6 @@ jobs:
           python-version: "3.13"
       - name: Install dependencies
         run: pip3 install ansible-core==2.21.2 molecule==26.4.0 molecule-plugins[docker,podman]==26.7.15
-      - name: Remove encrypted var files
-        run: |
-          rm host_vars/*.yml
-          rm group_vars/*.yml
-      - name: Copy group_vars example files
-        run: |
-          # Use example group_vars files for testing instead of encrypted files
-          for f in group_vars/*.example; do mv "$f" "$(echo "$f" | sed s/\.example//)"; done
-          for f in host_vars/*.example; do mv "$f" "$(echo "$f" | sed s/\.example//)"; done
       - name: Run
         env:
           PY_COLORS: 1
