@@ -7,7 +7,7 @@ name: "CI"
     - cron: '0 12 * * 5'
 jobs:
   lint:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-python@v6
@@ -33,43 +33,43 @@ jobs:
         molecule_distro:
           - name: archlinux
             category: machine
-            runs_on: "ubuntu-latest"
+            runs_on: "ubuntu-26.04"
           - name: archlinux-gnome
             category: machine
-            runs_on: "ubuntu-latest"
+            runs_on: "ubuntu-26.04"
           - name: ubuntu
             category: machine
-            runs_on: "ubuntu-latest"
+            runs_on: "ubuntu-26.04"
           - name: debian
             category: machine
-            runs_on: "ubuntu-latest"
+            runs_on: "ubuntu-26.04"
           - name: proxmox
             category: machine
-            runs_on: "ubuntu-latest"
+            runs_on: "ubuntu-26.04"
           - name: raspberrypi
             category: machine
-            runs_on: "ubuntu-24.04-arm"
+            runs_on: "ubuntu-26.04-arm"
           - name: git
             category: service
-            runs_on: "ubuntu-latest"
+            runs_on: "ubuntu-26.04"
           - name: caldav
             category: service
-            runs_on: "ubuntu-latest"
+            runs_on: "ubuntu-26.04"
           - name: tailscale
             category: service
-            runs_on: "ubuntu-latest"
+            runs_on: "ubuntu-26.04"
           - name: logs
             category: service
-            runs_on: "ubuntu-latest"
+            runs_on: "ubuntu-26.04"
           - name: monitor
             category: service
-            runs_on: "ubuntu-latest"
+            runs_on: "ubuntu-26.04"
           - name: notes
             category: service
-            runs_on: "ubuntu-latest"
+            runs_on: "ubuntu-26.04"
           - name: subscriptions
             category: service
-            runs_on: "ubuntu-latest"
+            runs_on: "ubuntu-26.04"
     runs-on: ${{ matrix.molecule_distro.runs_on }}
     steps:
       - uses: actions/checkout@v6
