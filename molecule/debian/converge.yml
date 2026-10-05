@@ -106,6 +106,7 @@
     - role: "gum"
     - role: "usbutils"
     - role: "solaar"
+    - role: "zsa"
     - role: "docker"
     - role: "podman"
     - role: "ansible"

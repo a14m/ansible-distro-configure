@@ -56,6 +56,7 @@
     - role: "alloy"
     - role: "gpu_driver"
     - role: "openlogi"
+    - role: "zsa"
     - role: "backup"
       when: inventory_hostname == "desktop.local"
   tasks:

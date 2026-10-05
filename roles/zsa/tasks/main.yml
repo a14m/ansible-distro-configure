@@ -1,0 +1,24 @@
+---
+- name: "Ensure plugdev group is created"
+  become: true
+  ansible.builtin.group:
+    name: "plugdev"
+    state: "present"
+    system: true
+
+- name: "Ensure $USER is added to plugdev group"
+  become: true
+  ansible.builtin.user:
+    name: "{{ username }}"
+    groups: "plugdev"
+    append: true
+
+- name: "Create udev rules for ZSA keyboards"
+  # Ref: https://github.com/zsa/wally/wiki/Linux-install/7e5e7f6b1a2407ab6fbe5a95b2760e96168ebe2a
+  become: true
+  ansible.builtin.copy:
+    src: "50-zsa.rules"
+    dest: "/etc/udev/rules.d/50-zsa.rules"
+    mode: "0644"
+  notify:
+    - "Reload rules"

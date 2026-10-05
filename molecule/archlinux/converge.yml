@@ -134,6 +134,7 @@
     - role: "hyprland"
     - role: "usbutils"
     - role: "openlogi"
+    - role: "zsa"
     - role: "nginx"
     - role: "prometheus"
     - role: "prometheus-node-exporter"
