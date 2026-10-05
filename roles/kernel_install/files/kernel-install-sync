@@ -11,3 +11,6 @@ for entry in "$boot"/loader/entries/"$token"-*.conf; do
   [ -d "/usr/lib/modules/$version" ] || kernel-install remove "$version"
 done
 kernel-install add-all
+
+# Also update systemd-boot binaries on ESP to same version.
+bootctl --no-variables --graceful update
