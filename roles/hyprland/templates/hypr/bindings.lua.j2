@@ -93,6 +93,10 @@ hl.bind("XF86MonBrightnessUp", hl.dsp.exec_cmd("/etc/hypr/scripts/brightness.sh 
   { locked = true, repeating = true, description = "Increase brightness" })
 hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("/etc/hypr/scripts/brightness.sh --dec 5"),
   { locked = true, repeating = true, description = "Decrease brightness" })
+hl.bind("SUPER + XF86MonBrightnessUp", hl.dsp.exec_cmd("/etc/hypr/scripts/sunset.sh --inc 250"),
+  { locked = true, repeating = true, description = "Increase screen temperature" })
+hl.bind("SUPER + XF86MonBrightnessDown", hl.dsp.exec_cmd("/etc/hypr/scripts/sunset.sh --dec 250"),
+  { locked = true, repeating = true, description = "Decrease screen temperature" })
 
 -- Requires playerctl
 hl.bind("XF86AudioNext", hl.dsp.exec_cmd("playerctl next"), { locked = true, description = "Next track" })
