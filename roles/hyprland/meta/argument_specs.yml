@@ -14,3 +14,15 @@ argument_specs:
           Pins workspaces to monitors, matched by `desc:<monitor description>` (see `hyprctl monitors`,
           same description strings used in kanshi_profiles). Each item: monitor (string), workspaces
           (list of strings, first one is the monitor's default workspace).
+      hyprland_idle_lock_timeout:
+        type: "int"
+        default: 300
+        description: "Idle seconds before locking the session"
+      hyprland_idle_dpms_timeout:
+        type: "int"
+        default: 330
+        description: "Idle seconds before turning the screen off"
+      hyprland_idle_suspend_timeout:
+        type: "int"
+        default: 900
+        description: "Idle seconds before suspending (deferred while ssh connections are active)"

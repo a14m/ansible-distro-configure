@@ -1,3 +1,6 @@
 ---
 hyprland_gdk_scale: 1
 hyprland_workspace_monitors: []
+hyprland_idle_lock_timeout: 300
+hyprland_idle_dpms_timeout: 330
+hyprland_idle_suspend_timeout: 900
