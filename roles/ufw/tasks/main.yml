@@ -49,3 +49,20 @@
       become: true
       community.general.ufw:
         state: "enabled"
+
+- name: "Allow the openrc service to start with ufw disabled"
+  become: true
+  ansible.builtin.copy:
+    dest: "/etc/conf.d/ufw"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+    content: |
+      ufw_nonfatal_if_disabled="yes"
+  when: ansible_facts.os_family == "Alpine"
+
+- name: "Enable ufw service at boot"
+  become: true
+  ansible.builtin.service:
+    name: "ufw"
+    enabled: true
