@@ -12,6 +12,7 @@
   ansible.posix.sysctl:
     name: "{{ item }}"
     value: "1"
+    sysctl_file: "/etc/sysctl.d/99-tailscale.conf"
     sysctl_set: true
     state: "present"
     reload: true

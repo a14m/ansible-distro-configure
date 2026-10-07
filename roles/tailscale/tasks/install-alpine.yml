@@ -33,6 +33,13 @@
       no_logs_no_support=yes
   notify: "Restart tailscale (openrc)"
 
+- name: "Apply sysctl configuration at boot"
+  become: true
+  ansible.builtin.service:
+    name: "sysctl"
+    enabled: true
+    runlevel: "boot"
+
 - name: "Enable and start tailscale"
   become: true
   ansible.builtin.service:
