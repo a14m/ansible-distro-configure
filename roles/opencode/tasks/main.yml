@@ -1,0 +1,31 @@
+---
+- name: "Check if opencode binary exists"
+  ansible.builtin.stat:
+    path: "{{ ansible_facts.env.HOME }}/.opencode/bin/opencode"
+  register: opencode_binary
+
+- name: "Download opencode installer"
+  ansible.builtin.get_url:
+    url: "https://opencode.ai/install"
+    dest: "/tmp/install_opencode.sh"
+    mode: "0755"
+  when: not opencode_binary.stat.exists
+
+- name: "Run opencode installer"
+  ansible.builtin.command:
+    cmd: "/tmp/install_opencode.sh --no-modify-path"
+  args:
+    creates: "{{ ansible_facts.env.HOME }}/.opencode/bin/opencode"
+  when: not opencode_binary.stat.exists
+
+- name: "Ensure ~/.local/bin exists"
+  ansible.builtin.file:
+    path: "{{ ansible_facts.env.HOME }}/.local/bin"
+    state: "directory"
+    mode: "0755"
+
+- name: "Link opencode into ~/.local/bin"
+  ansible.builtin.file:
+    src: "{{ ansible_facts.env.HOME }}/.opencode/bin/opencode"
+    dest: "{{ ansible_facts.env.HOME }}/.local/bin/opencode"
+    state: "link"

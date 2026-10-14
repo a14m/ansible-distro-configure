@@ -162,6 +162,7 @@
     - role: "btop"
     - role: "pipewire"
     - role: "claude"
+    - role: "opencode"
     - role: "localsend"
     - role: "restic"
     - role: "ethtool"

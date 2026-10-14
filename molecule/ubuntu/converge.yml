@@ -134,6 +134,7 @@
     - role: "btop"
     - role: "pipewire"
     - role: "claude"
+    - role: "opencode"
     - role: "awscli"
     - role: "steam"
     - role: "localsend"

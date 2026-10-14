@@ -118,6 +118,7 @@
     - role: "podman"
     - role: "ansible"
     - role: "claude"
+    - role: "opencode"
     - role: "awscli"
     - role: "firefox"
     - role: "chromium"
