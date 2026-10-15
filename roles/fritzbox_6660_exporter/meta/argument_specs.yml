@@ -10,10 +10,6 @@ argument_specs:
         type: "int"
         default: 9042
         description: "Port the exporter serves /metrics on"
-      fritzbox_6660_exporter_listen_address:
-        type: "str"
-        default: "0.0.0.0:9042"
-        description: "host:port the exporter binds to"
       fritzbox_6660_exporter_gateway_url:
         type: "str"
         required: true

@@ -12,7 +12,6 @@ fritzbox_6660_exporter_username: "monitoring"                   # required
 fritzbox_6660_exporter_password: "..."                          # required
 fritzbox_6660_exporter_gateway_luaurl: "http://<router_ip>"     # derived from gateway_url
 fritzbox_6660_exporter_port: 9042
-fritzbox_6660_exporter_listen_address: "0.0.0.0:9042"
 ```
 
 ## Fritz!Box setup (manual, one-time)

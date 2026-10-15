@@ -6,7 +6,7 @@ Wants=network-online.target
 [Service]
 EnvironmentFile=/etc/fritzbox_6660_exporter.env
 ExecStart={{ fritzbox_6660_exporter_install_dir }}/fritzbox_exporter \
-    -listen-address {{ fritzbox_6660_exporter_listen_address }} \
+    -listen-address 0.0.0.0:{{ fritzbox_6660_exporter_port }} \
     -gateway-url {{ fritzbox_6660_exporter_gateway_url }} \
     -gateway-luaurl {{ fritzbox_6660_exporter_gateway_luaurl }} \
     -metrics-file {{ fritzbox_6660_exporter_install_dir }}/metrics.json \
