@@ -1,0 +1,28 @@
+---
+argument_specs:
+  main:
+    options:
+      prometheus_pve_exporter_version:
+        type: "str"
+        default: "3.10.1"
+        description: "prometheus-pve-exporter PyPI version"
+      prometheus_pve_exporter_install_dir:
+        type: "str"
+        default: "/opt/prometheus-pve-exporter"
+        description: "Virtualenv directory"
+      prometheus_pve_exporter_port:
+        type: "int"
+        default: 9221
+        description: "Port the exporter serves /pve on"
+      prometheus_pve_exporter_user:
+        type: "str"
+        default: "prometheus@pve"
+        description: "PVE user the exporter authenticates as (granted PVEAuditor)"
+      prometheus_pve_exporter_password:
+        type: "str"
+        required: true
+        description: "Password for the PVE exporter user"
+      prometheus_pve_exporter_verify_ssl:
+        type: "bool"
+        default: false
+        description: "Verify the PVE API TLS certificate"

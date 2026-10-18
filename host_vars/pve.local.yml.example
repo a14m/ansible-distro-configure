@@ -19,6 +19,7 @@ ssh_private_key: |
 
 pve_admin_user: "admin"
 pve_admin_password: "changeme"
+prometheus_pve_exporter_password: "changeme"
 pve_storage_device: "/dev/sda4"
 
 restic_version: "0.19.0"
@@ -40,6 +41,11 @@ ufw_rules:
     from: "10.0.0.0/24"
   - rule: "allow"
     port: "{{ node_exporter_port }}"
+    protocol: "tcp"
+    direction: "in"
+    from: "10.0.0.106"
+  - rule: "allow"
+    port: "{{ prometheus_pve_exporter_port }}"
     protocol: "tcp"
     direction: "in"
     from: "10.0.0.106"

@@ -1,0 +1,6 @@
+---
+prometheus_pve_exporter_version: "3.10.1"
+prometheus_pve_exporter_install_dir: "/opt/prometheus-pve-exporter"
+prometheus_pve_exporter_port: 9221
+prometheus_pve_exporter_user: "prometheus@pve"
+prometheus_pve_exporter_verify_ssl: false

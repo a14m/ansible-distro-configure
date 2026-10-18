@@ -141,6 +141,7 @@
     - role: "password_store"
     - role: "vim"
     - role: "prometheus-node-exporter"
+    - role: "prometheus-pve-exporter"
     - role: "alloy"
     - role: "restic"
     - role: "ethtool"

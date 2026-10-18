@@ -58,6 +58,10 @@ prometheus_extra_scrape_configs:
       - "{{ hostvars['rpi5.local'].network_ipv4_address }}:9042"
     metrics_path: "/metrics"
     scrape_interval: "60s"
+  - name: "pve"
+    targets:
+      - "{{ hostvars['pve.local'].network_ipv4_address }}:9221"
+    metrics_path: "/pve"
 
 ufw_rules:
   - rule: "allow"

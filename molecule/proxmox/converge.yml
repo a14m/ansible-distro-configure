@@ -55,6 +55,7 @@
     network_ipv4_address: "10.0.0.253"
     network_ipv4_gateway: "10.0.0.1"
     network_bridge_interface: "eth0"
+    prometheus_pve_exporter_password: "changeme"
   pre_tasks:
     - name: "Override is_chroot fact for container environment"
       ansible.builtin.set_fact:
@@ -82,5 +83,6 @@
     - role: "vim"
     - role: "restic"
     - role: "proxmoxer"
+    - role: "prometheus-pve-exporter"
     - role: "ethtool"
     - role: "alloy"

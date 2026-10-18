@@ -1,0 +1,90 @@
+---
+- name: "Create PVE exporter user"
+  become: true
+  ansible.builtin.command:
+    cmd: "pveum user add {{ prometheus_pve_exporter_user }}"
+  register: prometheus_pve_exporter_user_add
+  changed_when: prometheus_pve_exporter_user_add.rc == 0
+  failed_when: >-
+    prometheus_pve_exporter_user_add.rc != 0 and
+    'already exists' not in prometheus_pve_exporter_user_add.stderr
+  tags:
+    # pveum binary not available in containers — requires proxmox-ve package
+    - "molecule-notest"
+
+- name: "Set PVE exporter user password"
+  become: true
+  no_log: true
+  ansible.builtin.command:
+    cmd: "pveum passwd {{ prometheus_pve_exporter_user }} --password {{ prometheus_pve_exporter_password }}"
+  changed_when: true
+  tags:
+    # pveum binary not available in containers — requires proxmox-ve package
+    - "molecule-notest"
+
+- name: "Grant PVE exporter user PVEAuditor role"
+  become: true
+  ansible.builtin.command:
+    cmd: "pveum acl modify / --roles PVEAuditor --users {{ prometheus_pve_exporter_user }}"
+  changed_when: true
+  tags:
+    # pveum binary not available in containers — requires proxmox-ve package
+    - "molecule-notest"
+
+- name: "Create prometheus-pve-exporter group"
+  become: true
+  ansible.builtin.group:
+    name: "prometheus-pve-exporter"
+    system: true
+
+- name: "Create prometheus-pve-exporter user"
+  become: true
+  ansible.builtin.user:
+    name: "prometheus-pve-exporter"
+    group: "prometheus-pve-exporter"
+    system: true
+    shell: "/sbin/nologin"
+    create_home: false
+
+- name: "Ensure python3-venv is installed"
+  become: true
+  ansible.builtin.apt:
+    name: "python3-venv"
+    state: "present"
+
+- name: "Install prometheus-pve-exporter"
+  become: true
+  ansible.builtin.pip:
+    name: "prometheus-pve-exporter=={{ prometheus_pve_exporter_version }}"
+    virtualenv: "{{ prometheus_pve_exporter_install_dir }}"
+    virtualenv_command: "python3 -m venv"
+  notify: "Restart prometheus-pve-exporter"
+
+- name: "Create prometheus-pve-exporter config"
+  become: true
+  ansible.builtin.template:
+    src: "prometheus-pve-exporter.yml.j2"
+    dest: "/etc/prometheus-pve-exporter.yml"
+    owner: "root"
+    group: "prometheus-pve-exporter"
+    mode: "0640"
+  no_log: true
+  notify: "Restart prometheus-pve-exporter"
+
+- name: "Deploy prometheus-pve-exporter service"
+  become: true
+  ansible.builtin.template:
+    src: "prometheus-pve-exporter.service.j2"
+    dest: "/etc/systemd/system/prometheus-pve-exporter.service"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+  notify: "Restart prometheus-pve-exporter"
+
+- name: "Start and enable prometheus-pve-exporter"
+  become: true
+  ansible.builtin.systemd_service:
+    name: "prometheus-pve-exporter"
+    state: "started"
+    enabled: true
+    daemon_reload: true

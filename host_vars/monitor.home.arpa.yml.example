@@ -73,6 +73,11 @@ grafana_dashboards:
         value: "prometheus"
   - name: "fritzbox"
     source: "roles/fritzbox_6660_exporter/files/grafana-dashboard.json"
+  - name: "proxmox"
+    source: "https://grafana.com/api/dashboards/24070/revisions/2/download"
+    datasource_mappings:
+      - key: "${DS_PROMETHEUS}"
+        value: "prometheus"
 
 ufw_rules:
   - rule: "allow"
