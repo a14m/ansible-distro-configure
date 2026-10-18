@@ -1,6 +1,8 @@
 ---
 network_ipv4_address: "10.0.0.101"
-network_ipv4_gateway: "10.0.0.254"
+# Internet-facing host: route via the router, not the VPN gateway (rpi5), so replies
+# to port-forwarded connections leave the way they came in.
+network_ipv4_gateway: "10.0.0.1"
 network_ipv4_dns: "10.0.0.254"
 
 pve_lxc_id: 101
@@ -57,12 +59,12 @@ ufw_rules:
     protocol: "tcp"
     direction: "in"
     from: "10.0.0.0/24"
-  # No NAT on IPv6 to hide behind, so "::/0" opens this one port to the internet.
+  # IPv4 arrives via the Fritz!Box port forward, which keeps the client's source IP.
   - rule: "allow"
     port: "{{ hostvars['headscale.home.arpa'].headscale_vhost_port }}"
     protocol: "tcp"
     direction: "in"
-    from: "::/0"
+    from: "0.0.0.0/0"
   - rule: "allow"
     port: "{{ caddy_metrics_port }}"
     protocol: "tcp"
@@ -81,4 +83,3 @@ cloudflare_ddns_record_name: "hs.example.com"
 cloudflare_ddns_fritzbox_url: "http://10.0.0.1:49000"
 cloudflare_ddns_fritzbox_username: "dns_updater"
 cloudflare_ddns_fritzbox_password: "CHANGEME"
-cloudflare_ddns_ipv6_interface: "eth0"
