@@ -39,7 +39,13 @@ couchdb_cors_origins:
 couchdb_users:
   - name: "alice"
     password: "CHANGEME"
-    database: "obsidian"
+  - name: "bob"
+    password: "CHANGEME"
+couchdb_databases:
+  - name: "alice_notes"
+    members: ["alice"]
+  - name: "bobsidian"
+    members: ["alice", "bob"]
 
 backup_name: "notes"
 backup_paths:

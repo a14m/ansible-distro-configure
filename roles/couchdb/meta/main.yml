@@ -2,7 +2,7 @@
 dependencies: []
 galaxy_info:
   author: "a14m"
-  description: "Install and configure Apache CouchDB, with per-user databases"
+  description: "Install and configure Apache CouchDB, with users and member-scoped databases"
   license: "MIT"
   min_ansible_version: "2.18"
   platforms:

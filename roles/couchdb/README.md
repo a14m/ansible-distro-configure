@@ -1,7 +1,7 @@
 # Ansible Role: couchdb
 
 Installs [Apache CouchDB](https://couchdb.apache.org/) from the project's apt repo (Debian's own repos don't
-reliably carry it) as a single standalone node, provisions users each scoped to their own database, and optionally
+reliably carry it) as a single standalone node, provisions users and databases scoped to their members, and optionally
 puts a reverse-proxy vhost in front (via the `vhost` role). Generic - knows nothing about what talks to it.
 
 ## Role Variables
@@ -14,7 +14,9 @@ puts a reverse-proxy vhost in front (via the `vhost` role). Generic - knows noth
 - `couchdb_cors_origins` origins allowed through CORS (default: `[]` - CORS off). Needed only for browser/app
   clients, e.g. `obsidian-livesync`.
 - `couchdb_max_document_size` bytes (default: `50000000`) - headroom over CouchDB's default for large attachments.
-- `couchdb_users` list of `{name, password, database}` dicts (default: `[]`), all fields required.
+- `couchdb_users` list of `{name, password}` dicts (default: `[]`), all fields required.
+- `couchdb_databases` list of `{name, members}` dicts (default: `[]`), all fields required. `members` is a list of
+  `couchdb_users` names; it replaces the database's `_security` members on every converge.
 
 ## Notes
 

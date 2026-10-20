@@ -58,19 +58,18 @@
         label: "{{ item.name }}"
       no_log: true
 
-    - name: "Create per-user databases"
+    - name: "Create CouchDB databases"
       ansible.builtin.uri:
-        url: "{{ couchdb_base_url }}/{{ item.database }}"
+        url: "{{ couchdb_base_url }}/{{ item.name }}"
         method: "PUT"
         status_code: [201, 412]
-      loop: "{{ couchdb_users }}"
+      loop: "{{ couchdb_databases }}"
       loop_control:
-        label: "{{ item.database }}"
-      no_log: true
+        label: "{{ item.name }}"
 
-    - name: "Restrict database access to its owning user"
+    - name: "Restrict database access to its members"
       ansible.builtin.uri:
-        url: "{{ couchdb_base_url }}/{{ item.database }}/_security"
+        url: "{{ couchdb_base_url }}/{{ item.name }}/_security"
         method: "PUT"
         body_format: "json"
         body:
@@ -78,13 +77,12 @@
             names: []
             roles: ["_admin"]
           members:
-            names: ["{{ item.name }}"]
+            names: "{{ item.members }}"
             roles: []
         status_code: [200]
-      loop: "{{ couchdb_users }}"
+      loop: "{{ couchdb_databases }}"
       loop_control:
-        label: "{{ item.database }}"
-      no_log: true
+        label: "{{ item.name }}"
 
 - name: "Create couchdb proxy vhost"
   when: couchdb_hostname is defined

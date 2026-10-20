@@ -49,9 +49,7 @@ argument_specs:
         type: "list"
         elements: "dict"
         description: >-
-          List of {name, password, database} dicts. For each entry this role
-          creates a CouchDB user, the named database, and restricts that
-          database's _security to only that user (plus admins). Creating a
+          List of {name, password} dicts, one CouchDB user each. Creating a
           user that already exists is a no-op - this role never updates an
           existing user's password; delete the user doc first (or use the
           CouchDB API yourself) to rotate it.
@@ -65,7 +63,21 @@ argument_specs:
             type: "str"
             required: true
             description: "CouchDB user password"
-          database:
+      couchdb_databases:
+        type: "list"
+        elements: "dict"
+        description: >-
+          List of {name, members} dicts. For each entry this role creates the
+          database and sets its _security members to exactly those users
+          (plus admins), replacing any members set outside this role.
+        default: []
+        options:
+          name:
             type: "str"
             required: true
-            description: "Database name granted to this user"
+            description: "Database name"
+          members:
+            type: "list"
+            elements: "str"
+            required: true
+            description: "couchdb_users names granted access to this database"
