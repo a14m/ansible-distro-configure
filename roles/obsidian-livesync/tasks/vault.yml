@@ -33,6 +33,7 @@
       encrypt: true
       passphrase: "{{ obsidian_livesync_passphrase }}"
       usePathObfuscation: true
+      encryptInternalMetadata: true
       # PREFERRED_SETTING_SELF_HOSTED (+ PREFERRED_BASE) from livesync-commonlib's
       # setting.const.preferred.ts - the plugin's own canonical preset for a
       # self-hosted CouchDB remote (as opposed to IBM Cloudant or journal/S3 sync,
