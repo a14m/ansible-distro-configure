@@ -10,18 +10,18 @@ converge with far fewer in-app "Config doctor" prompts.
 
 ## Role Variables
 
-- `obsidian_livesync_vault_path` vault path (required, per-host).
+- `obsidian_livesync_vaults` list of `{path, dbname}` dicts (required), one per vault, both fields required.
 - `obsidian_livesync_uri` CouchDB URI, e.g. `https://notes.internal` (required). Must be HTTPS for Obsidian Mobile -
   the reverse-proxied hostname, not `couchdb_bind_address`.
 - `obsidian_livesync_user` / `obsidian_livesync_password` CouchDB credentials (required) - one `couchdb_users` entry.
-- `obsidian_livesync_dbname` database to sync against (default: `obsidian`) - that user's own database.
 - `obsidian_livesync_passphrase` E2EE passphrase (required). Encryption + path obfuscation are always on; the remote
   only ever sees ciphertext, including file/folder names.
 - `obsidian_livesync_plugin_version` release tag (default: `1.0.24`).
 
 ## CouchDB-side requirements
 
-- A user + database from `couchdb_users` matching the credentials above.
+- A `couchdb_users` entry matching the credentials above, and a `couchdb_databases` entry per vault `dbname` with
+  that user in `members`.
 - **CORS enabled** - set `couchdb_cors_origins` to `app://obsidian.md`, `capacitor://localhost`, `http://localhost`.
   The `couchdb` role doesn't know LiveSync exists, so this lives in `host_vars/notes.home.arpa.yml.example`.
 
@@ -35,8 +35,7 @@ converge with far fewer in-app "Config doctor" prompts.
 - No `become` - manages files under a user's vault, not a system service.
 - The role doesn't enable the plugin or disable Restricted Mode (Obsidian settings UI only): Settings → Community
   plugins → disable Restricted Mode → enable "Self-hosted LiveSync".
-- Devices meant to sync the same vault must authenticate as the *same* CouchDB user - the per-user-database model
-  means different users never share a database.
+- Devices meant to sync the same vault must authenticate as a CouchDB user listed in that database's `members`.
 
 [^preset]: Seeded field names and values were taken from the plugin's source, not the settings-UI docs (which label
     the same fields differently). Connection/encryption fields (`couchDB_URI`, `couchDB_USER`, `remoteType`, …) are

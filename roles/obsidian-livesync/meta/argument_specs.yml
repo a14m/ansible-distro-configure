@@ -2,10 +2,20 @@
 argument_specs:
   main:
     options:
-      obsidian_livesync_vault_path:
-        type: "str"
-        description: "Filesystem path to the vault to configure (e.g. '{{ ansible_facts.env.HOME }}/obsidian')"
+      obsidian_livesync_vaults:
+        type: "list"
+        elements: "dict"
+        description: "Vaults to configure, each synced against its own CouchDB database"
         required: true
+        options:
+          path:
+            type: "str"
+            required: true
+            description: "Filesystem path to the vault (e.g. '{{ ansible_facts.env.HOME }}/obsidian')"
+          dbname:
+            type: "str"
+            required: true
+            description: "CouchDB database to sync against - obsidian_livesync_user must be one of its members"
       obsidian_livesync_plugin_version:
         type: "str"
         description: "obsidian-livesync GitHub release tag to install"
@@ -24,10 +34,6 @@ argument_specs:
         type: "str"
         description: "Password for obsidian_livesync_user"
         required: true
-      obsidian_livesync_dbname:
-        type: "str"
-        description: "CouchDB database name to sync against - that user's own database"
-        default: "obsidian"
       obsidian_livesync_passphrase:
         type: "str"
         description: >-
