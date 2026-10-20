@@ -3,10 +3,10 @@
 Installs the [Self-hosted LiveSync](https://github.com/vrtmrz/obsidian-livesync) plugin into an existing vault,
 syncing against this repo's `couchdb` role. Depends on the `obsidian` role - Arch and Ubuntu/Debian only (no macOS).
 
-Downloads the pinned plugin release, then seeds `data.json` with the CouchDB connection, E2EE, and the plugin's own
-self-hosted-CouchDB preset (`PREFERRED_BASE` + `PREFERRED_SETTING_SELF_HOSTED`[^preset]) **once** - after first run
-the plugin owns that file. To reconfigure, delete `data.json` first. Seeding the full preset means new devices
-converge with far fewer in-app "Config doctor" prompts.
+Downloads the latest plugin release once (Obsidian keeps it updated after that), then seeds `data.json` with the
+CouchDB connection, E2EE, and the plugin's own self-hosted-CouchDB preset (`PREFERRED_BASE` +
+`PREFERRED_SETTING_SELF_HOSTED`[^preset]) **once** - after first run the plugin owns that file. To reconfigure, delete
+`data.json` first. Seeding the full preset means new devices converge with far fewer in-app "Config doctor" prompts.
 
 ## Role Variables
 
@@ -16,7 +16,6 @@ converge with far fewer in-app "Config doctor" prompts.
 - `obsidian_livesync_user` / `obsidian_livesync_password` CouchDB credentials (required) - one `couchdb_users` entry.
 - `obsidian_livesync_passphrase` E2EE passphrase (required). Encryption + path obfuscation are always on; the remote
   only ever sees ciphertext, including file/folder names.
-- `obsidian_livesync_plugin_version` release tag (default: `1.0.24`).
 
 ## CouchDB-side requirements
 

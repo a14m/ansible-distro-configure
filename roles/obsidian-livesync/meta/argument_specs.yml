@@ -16,10 +16,6 @@ argument_specs:
             type: "str"
             required: true
             description: "CouchDB database to sync against - obsidian_livesync_user must be one of its members"
-      obsidian_livesync_plugin_version:
-        type: "str"
-        description: "obsidian-livesync GitHub release tag to install"
-        default: "1.0.24"
       obsidian_livesync_uri:
         type: "str"
         description: >-
