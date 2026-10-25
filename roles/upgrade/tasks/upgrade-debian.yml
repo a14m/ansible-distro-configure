@@ -1,0 +1,16 @@
+---
+- name: "Upgrade apt packages"
+  become: true
+  ansible.builtin.apt:
+    update_cache: true
+    upgrade: "dist"
+
+- name: "Check reboot-required flag"
+  ansible.builtin.stat:
+    path: "/var/run/reboot-required"
+  register: upgrade_reboot_required
+
+- name: "Report reboot required"
+  when: upgrade_reboot_required.stat.exists
+  ansible.builtin.debug:
+    msg: "Reboot required"

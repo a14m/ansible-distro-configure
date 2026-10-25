@@ -1,0 +1,14 @@
+---
+- name: "Upgrade apk packages"
+  become: true
+  community.general.apk:
+    update_cache: true
+    upgrade: true
+  register: upgrade_apk
+
+# No reboot-required flag on Alpine; running daemons keep old binaries
+- name: "Report reboot required"
+  # noqa: no-handler
+  when: upgrade_apk is changed
+  ansible.builtin.debug:
+    msg: "Packages upgraded, reboot required"

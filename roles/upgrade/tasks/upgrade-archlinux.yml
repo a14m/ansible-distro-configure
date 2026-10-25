@@ -1,0 +1,24 @@
+---
+- name: "Upgrade repo packages"
+  become: true
+  community.general.pacman:
+    update_cache: true
+    upgrade: true
+
+- name: "Upgrade AUR packages"
+  become: true
+  become_user: "aur_builder"
+  kewlfft.aur.aur:
+    upgrade: true
+    use: "yay"
+
+# pacman deletes the old kernel's modules on upgrade
+- name: "Check running kernel modules exist"
+  ansible.builtin.stat:
+    path: "/usr/lib/modules/{{ ansible_facts.kernel }}"
+  register: upgrade_running_kernel
+
+- name: "Report reboot required"
+  when: not upgrade_running_kernel.stat.exists
+  ansible.builtin.debug:
+    msg: "Kernel upgraded, reboot required"
