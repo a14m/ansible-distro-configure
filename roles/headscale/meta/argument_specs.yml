@@ -52,7 +52,7 @@ argument_specs:
         default: []
       headscale_acme_email:
         type: "str"
-        description: "Let's Encrypt account email, passed to the acme role"
+        description: "Let's Encrypt account email, passed to the acme-certificate role"
         required: true
       headscale_acme_cloudflare_api_token:
         type: "str"

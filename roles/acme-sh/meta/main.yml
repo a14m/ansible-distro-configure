@@ -1,0 +1,25 @@
+---
+dependencies:
+  - role: "git"
+  - role: "cron"
+  - role: "openssl"
+  - role: "curl"
+galaxy_info:
+  author: "a14m"
+  description: "Install acme.sh with its daily renewal cron job"
+  license: "MIT"
+  min_ansible_version: "2.18"
+  platforms:
+    - name: "Alpine"
+      versions:
+        - "all"
+    - name: "ArchLinux"
+      versions:
+        - "all"
+    - name: "Ubuntu"
+      versions:
+        - "noble"
+    - name: "Debian"
+      versions:
+        - "bookworm"
+        - "trixie"

@@ -1,0 +1,24 @@
+---
+# Install source only, never pulled again (update: false) - auto-upgrade
+# keeps the installed copy current
+- name: "Clone acme.sh"
+  become: true
+  ansible.builtin.git:
+    repo: "https://github.com/acmesh-official/acme.sh.git"
+    dest: "/opt/acme.sh-src"
+    version: "master"
+    depth: 1
+    update: false
+
+# --install adds the daily cron job; --auto-upgrade makes that job upgrade
+# acme.sh before renewing. Runs once (creates:), so an existing install needs
+# `acme.sh --upgrade --auto-upgrade` by hand. No --email: acme-certificate
+# registers the account on first issue.
+- name: "Install acme.sh with auto-upgrade"
+  become: true
+  ansible.builtin.shell:
+    cmd: >-
+      ./acme.sh --install --home {{ acme_sh_home }} --noprofile &&
+      {{ acme_sh_home }}/acme.sh --upgrade --auto-upgrade
+    chdir: "/opt/acme.sh-src"
+    creates: "{{ acme_sh_home }}/acme.sh"

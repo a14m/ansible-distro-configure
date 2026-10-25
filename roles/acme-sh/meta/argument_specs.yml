@@ -1,0 +1,8 @@
+---
+argument_specs:
+  main:
+    options:
+      acme_sh_home:
+        type: "str"
+        description: "Where acme.sh installs itself"
+        default: "/opt/acme.sh"

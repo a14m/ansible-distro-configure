@@ -1,0 +1,32 @@
+---
+argument_specs:
+  main:
+    options:
+      acme_certificate_domain:
+        type: "str"
+        description: "Domain to obtain a Let's Encrypt certificate for"
+        required: true
+      acme_certificate_email:
+        type: "str"
+        description: "Let's Encrypt account email"
+        required: true
+      acme_certificate_cloudflare_api_token:
+        type: "str"
+        description: "Cloudflare API token, scoped to Zone.DNS:Edit on the zone owning the domain"
+        required: true
+        no_log: true
+      acme_certificate_group:
+        type: "str"
+        description: "Group ownership on the cert files - the consuming service's group, not root"
+        required: true
+      acme_certificate_acme_sh_home:
+        type: "str"
+        description: "acme.sh home on the proxy, as installed by acme-sh"
+        default: "/opt/acme.sh"
+      acme_certificate_dir:
+        type: "str"
+        description: "Shared directory certs land in, as <dir>/<domain>.{fullchain,key}.pem"
+        default: "/etc/ssl/acme"
+      acme_certificate_reload_command:
+        type: "str"
+        description: "Command to reload the consumer - derived from vhost_proxy_type, override for non-vhost use"

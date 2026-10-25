@@ -1,0 +1,7 @@
+---
+acme_certificate_acme_sh_home: "/opt/acme.sh"
+acme_certificate_dir: "/etc/ssl/acme"
+acme_certificate_reload_commands:
+  caddy: "caddy reload --config /etc/caddy/Caddyfile"
+  nginx: "nginx -s reload"
+acme_certificate_reload_command: "{{ acme_certificate_reload_commands[vhost_proxy_type] }}"

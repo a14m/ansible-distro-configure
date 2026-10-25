@@ -1,10 +1,10 @@
 ---
-# git/cron are included explicitly in tasks/main.yml instead of declared here -
-# meta dependencies wouldn't inherit this role's delegate_to.
+# Runs delegated to vhost_proxy_host; acme.sh itself comes from the acme-sh
+# role in the proxy's own play (checked at runtime)
 dependencies: []
 galaxy_info:
   author: "a14m"
-  description: "Obtain and auto-renew a Let's Encrypt certificate for a domain via Cloudflare DNS-01"
+  description: "Obtain a Let's Encrypt certificate for a domain via Cloudflare DNS-01 on the proxy"
   license: "MIT"
   min_ansible_version: "2.18"
   platforms:

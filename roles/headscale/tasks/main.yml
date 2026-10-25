@@ -37,12 +37,12 @@
   # Runs before the vhost to have the certificates correct for vhost tls to work
   # Needs a real domain/Cloudflare API access - not available/desired in molecule
   ansible.builtin.include_role:
-    name: "acme"
+    name: "acme-certificate"
   vars:
-    acme_domain: "{{ headscale_hostname }}"
-    acme_email: "{{ headscale_acme_email }}"
-    acme_cloudflare_api_token: "{{ headscale_acme_cloudflare_api_token }}"
-    acme_cert_group: "caddy"
+    acme_certificate_domain: "{{ headscale_hostname }}"
+    acme_certificate_email: "{{ headscale_acme_email }}"
+    acme_certificate_cloudflare_api_token: "{{ headscale_acme_cloudflare_api_token }}"
+    acme_certificate_group: "caddy"
   tags:
     - "molecule-notest"
 

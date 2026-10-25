@@ -20,7 +20,7 @@
   roles:
     - role: "caddy"
   post_tasks:
-    - name: "Match the real permissions acme's own role would set"
+    - name: "Match the real permissions acme-certificate would set"
       # caddy (and its group) exists now, having just been installed above.
       become: true
       ansible.builtin.file:
