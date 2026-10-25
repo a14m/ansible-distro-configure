@@ -1,0 +1,31 @@
+---
+- name: "Proxmox VE snapshot"
+  gather_facts: true
+  hosts:
+    - pve.local
+  tasks:
+    - name: "Snapshot LXC containers"
+      ansible.builtin.include_role:
+        name: "pve-lxc-snapshot"
+      vars:
+        pve_lxc_id: "{{ hostvars[service_host].pve_lxc_id }}"
+      loop: "{{ groups['containers'] }}"
+      loop_control:
+        loop_var: "service_host"
+
+- name: "Machine upgrade"
+  gather_facts: true
+  hosts:
+    - desktop.local
+    - laptop.local
+    - rpi5.local
+    - pve.local
+  roles:
+    - role: "upgrade"
+
+- name: "Container upgrade"
+  gather_facts: true
+  hosts:
+    - containers
+  roles:
+    - role: "upgrade"
