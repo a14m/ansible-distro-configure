@@ -7,10 +7,10 @@ network_ipv4_dns: "10.0.0.254"
 
 pve_lxc_id: 101
 pve_lxc_hostname: "proxy"
-pve_lxc_template: "alpine-3.24-default_20260714_amd64.tar.xz"
-pve_lxc_disk: "local-lvm:2" # storage:sizeGB
+pve_lxc_template: "debian-13-standard_13.6-1_amd64.tar.zst"
+pve_lxc_disk: "local-lvm:4" # storage:sizeGB
 pve_lxc_cores: 1
-pve_lxc_memory: 128
+pve_lxc_memory: 512
 pve_lxc_mac: "BC:24:11:00:00:01"
 pve_lxc_ip: "{{ network_ipv4_address }}/24"
 pve_lxc_gateway: "{{ network_ipv4_gateway }}"
