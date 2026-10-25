@@ -1,0 +1,12 @@
+---
+argument_specs:
+  main:
+    options:
+      pve_lxc_id:
+        type: "int"
+        required: true
+        description: "PVE LXC container ID"
+      pve_lxc_snapshot_retention:
+        type: "int"
+        default: 3
+        description: "Snapshots kept per container, oldest deleted first (manual ones included)"

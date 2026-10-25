@@ -1,0 +1,12 @@
+---
+# retention counts every snapshot of the container, including manual ones
+- name: "Snapshot LXC container ({{ pve_lxc_id }})"
+  community.proxmox.proxmox_snap:
+    api_host: "{{ ansible_facts.hostname }}"
+    api_user: "{{ pve_admin_user }}@pve"
+    api_password: "{{ pve_admin_password }}"
+    validate_certs: false
+    vmid: "{{ pve_lxc_id }}"
+    snapname: "pre_upgrade_{{ now(fmt='%Y%m%d%H%M') }}"
+    retention: "{{ pve_lxc_snapshot_retention }}"
+    state: "present"
