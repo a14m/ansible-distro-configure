@@ -3,11 +3,7 @@
   ansible.builtin.set_fact:
     _cloudflared_arch: "{{ 'arm64' if ansible_facts.architecture == 'aarch64' else 'amd64' }}"
 
-- name: "Check if cloudflared binary exists"
-  ansible.builtin.stat:
-    path: "/usr/local/bin/cloudflared"
-  register: cloudflared_binary
-
+# Not packaged for Alpine; force re-downloads latest, changed only when it differs
 - name: "Download cloudflared binary"
   become: true
   ansible.builtin.get_url:
@@ -16,7 +12,8 @@
     mode: "0755"
     owner: "root"
     group: "root"
-  when: not cloudflared_binary.stat.exists
+    force: true
+  notify: "Restart cloudflared"
 
 - name: "Deploy cloudflared OpenRC service"
   become: true
