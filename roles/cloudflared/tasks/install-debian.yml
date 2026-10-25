@@ -1,9 +1,23 @@
 ---
+# Not in Debian/Ubuntu repos; Cloudflare's "any" suite covers all releases
+- name: "Add cloudflared APT repository"
+  become: true
+  ansible.builtin.deb822_repository:
+    name: "cloudflared"
+    types: "deb"
+    uris: "https://pkg.cloudflare.com/cloudflared"
+    suites: "any"
+    components: "main"
+    signed_by: "https://pkg.cloudflare.com/cloudflare-main.gpg"
+    state: "present"
+    install_python_debian: true
+
 - name: "Install cloudflared"
   become: true
   ansible.builtin.package:
     name: "cloudflared"
     state: "present"
+    update_cache: true
 
 - name: "Deploy cloudflared systemd service"
   become: true
