@@ -41,7 +41,7 @@ select_theme() {
 
   pkill -SIGUSR2 btop || true
 
-  makoctl reload
+  qs ipc call theme reload >/dev/null 2>&1 || true
 
   if [[ -f ~/.config/alacritty/alacritty.toml ]]; then
     touch ~/.config/alacritty/alacritty.toml

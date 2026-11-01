@@ -1,5 +1,7 @@
 ---
 hyprtheme_default_mono_font: "JetBrainsMono Nerd Font"
+hyprtheme_default_font: "sans-serif"
+hyprtheme_default_critical_color: "#E74C3C"
 hyprtheme_default_theme: "everforest"
 hyprtheme_themes:
   - "catppuccin"

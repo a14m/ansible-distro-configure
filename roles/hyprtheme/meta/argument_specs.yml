@@ -10,6 +10,14 @@ argument_specs:
         description: "The default theme mono font to be used"
         type: "str"
         default: "JetBrainsMono Nerd Font"
+      hyprtheme_default_font:
+        description: "The default theme font to be used"
+        type: "str"
+        default: "sans-serif"
+      hyprtheme_default_critical_color:
+        description: "The default theme critical color to be used"
+        type: "str"
+        default: "#E74C3C"
       hyprtheme_themes:
         description: "Themes to install"
         type: "list"

@@ -1,0 +1,16 @@
+---
+- name: "Ensure quickshell is installed"
+  become: true
+  ansible.builtin.package:
+    name:
+      - "libnotify"
+      - "quickshell"
+    state: "present"
+
+- name: "Copy shell config"
+  become: true
+  ansible.builtin.copy:
+    src: "quickshell/"
+    dest: "/etc/xdg/quickshell/"
+    mode: "0644"
+    directory_mode: "0755"

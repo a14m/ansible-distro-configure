@@ -4,7 +4,7 @@ dependencies:
   - role: "greetd"
   - role: "nautilus"
   - role: "alacritty"
-  - role: "mako"
+  - role: "quickshell"
   - role: "pipewire"
   - role: "brightnessctl"
   - role: "ddcutil"

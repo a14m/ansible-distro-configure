@@ -13,6 +13,7 @@
       - "clipse.json"
       - "tofi.config"
       - "mako.ini"
+      - "quickshell.json"
 
 - name: "Template theme files for: {{ hyprtheme_name }}"
   ansible.builtin.template:
