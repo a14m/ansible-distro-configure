@@ -1,35 +1,29 @@
 import QtQuick
 import QtQuick.Layouts
-import Quickshell
 import Quickshell.Widgets
-import Quickshell.Services.Notifications
 import qs
 
 Rectangle {
   id: root
 
-  required property Notification notification
-  readonly property bool critical: notification.urgency === NotificationUrgency.Critical
-  readonly property string icon: {
-    if (notification.image) return notification.image;
-    const appIcon = notification.appIcon;
-    if (!appIcon) return "";
-    if (appIcon.startsWith("/") || appIcon.includes("://")) return appIcon;
-    return Quickshell.iconPath(appIcon, true);
-  }
+  // An Entry from Notifications.qml; `entry.notification` is null once closed.
+  required property var entry
+
+  signal timedOut
+  signal dismissed
 
   implicitHeight: Math.min(content.implicitHeight + 20, 110)
   clip: true
   radius: 5
   color: Theme.background
   border.width: 2
-  border.color: root.critical ? Theme.critical : Theme.accent
+  border.color: root.entry.critical ? Theme.critical : Theme.accent
 
   // Critical notifications stay until dismissed; hovering pauses the timeout.
   Timer {
-    running: !root.critical && !hover.hovered
+    running: !root.entry.critical && !hover.hovered
     interval: 5000
-    onTriggered: root.notification.expire()
+    onTriggered: root.timedOut()
   }
 
   HoverHandler {
@@ -40,19 +34,22 @@ Rectangle {
   TapHandler {
     acceptedButtons: Qt.LeftButton
     onTapped: {
-      for (const action of root.notification.actions) {
-        if (action.identifier === "default") {
-          action.invoke();
-          return;
+      const notification = root.entry.notification;
+      if (notification) {
+        for (const action of notification.actions) {
+          if (action.identifier === "default") {
+            action.invoke();
+            return;
+          }
         }
       }
-      root.notification.dismiss();
+      root.dismissed();
     }
   }
 
   TapHandler {
     acceptedButtons: Qt.RightButton
-    onTapped: root.notification.dismiss()
+    onTapped: root.dismissed()
   }
 
   RowLayout {
@@ -68,8 +65,8 @@ Rectangle {
     spacing: 10
 
     IconImage {
-      visible: root.icon !== ""
-      source: root.icon
+      visible: root.entry.icon !== ""
+      source: root.entry.icon
       implicitSize: 32
       Layout.alignment: Qt.AlignTop
     }
@@ -80,7 +77,7 @@ Rectangle {
 
       Text {
         Layout.fillWidth: true
-        text: root.notification.summary
+        text: root.entry.summary
         color: Theme.foreground
         font.family: Theme.font
         font.pixelSize: 14
@@ -93,7 +90,7 @@ Rectangle {
         visible: text !== ""
         // StyledText collapses whitespace like HTML; keep spaces and newlines
         // as sent (scripts pad nerd font icons with spaces).
-        text: root.notification.body
+        text: root.entry.body
           .replace(/\n/g, "<br>")
           .replace(/ {2,}/g, spaces => "&nbsp;".repeat(spaces.length))
         textFormat: Text.StyledText

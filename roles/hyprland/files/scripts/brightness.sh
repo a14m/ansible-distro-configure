@@ -78,18 +78,13 @@ set_brightness() {
     else
         return
     fi
-    notify "$display_serial" "$display_name" "$value"
+    notify "$value"
 }
 
 notify() {
-    local serial="$1"
-    local name="$2"
-    local value="$3"
-    notify-send -e \
-        -h string:x-canonical-private-synchronous:brightness-"$serial" \
-        -u low \
-        "Brightness" \
-        "   $name: ${value}%"
+    local value="$1"
+    [[ "$value" =~ ^[0-9]+$ ]] || return
+    qs ipc call osd brightness "$value" >/dev/null 2>&1
 }
 
 STEP="${2:-1}"
