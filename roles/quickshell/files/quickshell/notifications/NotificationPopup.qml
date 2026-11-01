@@ -91,7 +91,11 @@ Rectangle {
       Text {
         Layout.fillWidth: true
         visible: text !== ""
+        // StyledText collapses whitespace like HTML; keep spaces and newlines
+        // as sent (scripts pad nerd font icons with spaces).
         text: root.notification.body
+          .replace(/\n/g, "<br>")
+          .replace(/ {2,}/g, spaces => "&nbsp;".repeat(spaces.length))
         textFormat: Text.StyledText
         color: Theme.foreground
         font.family: Theme.font
