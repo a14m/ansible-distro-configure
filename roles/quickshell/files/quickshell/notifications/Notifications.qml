@@ -19,14 +19,16 @@ Scope {
 
     onNotification: notification => {
       // Scripts (volume, brightness, ...) send this hint to replace their previous popup.
+      // The new one joins trackedNotifications only after this handler returns, so
+      // expire the old ones later; otherwise the list empties and the window flickers.
       const tag = notification.hints["x-canonical-private-synchronous"];
+      const replaced = [];
       if (tag) {
-        const replaced = [];
         for (const old of server.trackedNotifications.values)
           if (old.hints["x-canonical-private-synchronous"] === tag) replaced.push(old);
-        replaced.forEach(old => old.expire());
       }
       notification.tracked = true;
+      Qt.callLater(() => replaced.forEach(old => old.expire()));
     }
   }
 
