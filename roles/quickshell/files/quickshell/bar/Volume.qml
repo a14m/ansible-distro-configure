@@ -1,8 +1,10 @@
 import QtQuick
+import Quickshell
 import Quickshell.Services.Pipewire
+import qs
 
-// Output volume. Click toggles mute, scroll changes it by 5%, right click
-// opens wiremix.
+// Output volume. Click toggles mute, right click opens the mixer popup: every
+// output and input, plus apps playing audio.
 BarItem {
   id: root
 
@@ -10,21 +12,88 @@ BarItem {
   readonly property real volume: sink?.audio?.volume ?? 0
   readonly property bool muted: sink?.audio?.muted ?? false
 
-  readonly property string levelIcon: ["", "", ""][Math.min(2, Math.floor(volume * 3))]
+  readonly property string levelIcon: ["", "", ""][Math.min(2, Math.floor(volume * 3))]
 
   text: muted ? "\ueee8" : levelIcon
-  tooltip: `Volume: ${Math.round(volume * 100)}% ${levelIcon}`
+  tooltip: popup.open ? "" : `Volume: ${Math.round(volume * 100)}% ${levelIcon}`
+  baseColor: popup.open ? Theme.accent : Theme.foreground
   onClicked: sink.audio.muted = !muted
-  onRightClicked: tui("wiremix")
+  onRightClicked: popup.open = !popup.open
+
+  // Audio nodes, split into devices and app streams.
+  readonly property var nodes: [...Pipewire.nodes.values].filter(node => node.audio)
+  readonly property var outputs: nodes.filter(node => !node.isStream && node.isSink)
+  readonly property var inputs: nodes.filter(node => !node.isStream && !node.isSink)
+  // Playback streams count as sinks too.
+  readonly property var apps: nodes.filter(node => node.isStream && node.isSink)
 
   PwObjectTracker {
-    objects: [root.sink]
+    objects: popup.open ? root.nodes : [root.sink]
   }
 
-  WheelHandler {
-    onWheel: event => {
-      const step = event.angleDelta.y > 0 ? 0.05 : -0.05;
-      root.sink.audio.volume = Math.max(0, Math.min(1, root.volume + step));
+  BarPopup {
+    id: popup
+    item: root
+
+    PopupText {
+      text: "Output"
+      highlighted: true
+    }
+
+    Repeater {
+      model: root.outputs
+
+      VolumeSlider {
+        required property PwNode modelData
+        node: modelData
+        label: modelData.nickname || modelData.description
+        current: modelData === Pipewire.defaultAudioSink
+        onSelected: Pipewire.preferredDefaultAudioSink = modelData
+      }
+    }
+
+    PopupText {
+      text: "Input"
+      highlighted: true
+    }
+
+    Repeater {
+      model: root.inputs
+
+      VolumeSlider {
+        required property PwNode modelData
+        node: modelData
+        label: modelData.nickname || modelData.description
+        current: modelData === Pipewire.defaultAudioSource
+        icon: "\ued03"
+        mutedIcon: "\uefc6"
+        onSelected: Pipewire.preferredDefaultAudioSource = modelData
+      }
+    }
+
+    PopupText {
+      visible: root.apps.length > 0
+      text: "Apps"
+      highlighted: true
+    }
+
+    Repeater {
+      model: root.apps
+
+      VolumeSlider {
+        required property PwNode modelData
+        node: modelData
+        label: modelData.properties["application.name"] || modelData.name
+      }
+    }
+
+    PopupText {
+      text: "Open wiremix"
+      clickable: true
+      onClicked: {
+        popup.open = false;
+        root.tui("wiremix");
+      }
     }
   }
 }
