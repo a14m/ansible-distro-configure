@@ -8,7 +8,9 @@ Column {
   id: root
 
   required property PwNode node
-  required property string label
+  // App streams carry their app's name; devices their short nickname.
+  readonly property string label: node.properties["application.name"]
+    || node.nickname || node.description || node.name
   property bool current: false
   property string icon: "\uf028"
   property string mutedIcon: "\ueee8"

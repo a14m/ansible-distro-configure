@@ -38,12 +38,8 @@ PanelWindow {
   onOpenChanged: if (open) itemCenter = bar.margins.left + item.mapToItem(null, item.width / 2, 0).x
   onVisibleChanged: grab.active = visible
 
-  Rectangle {
+  Panel {
     anchors.fill: parent
-    radius: 5
-    color: Theme.background
-    border.width: 2
-    border.color: Theme.accent
 
     Column {
       id: column

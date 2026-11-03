@@ -61,12 +61,9 @@ Text {
     color: "transparent"
     mask: Region {}
 
-    Rectangle {
+    Panel {
       anchors.fill: parent
-      radius: 5
-      color: Theme.background
       border.width: 1
-      border.color: Theme.accent
 
       Text {
         id: label

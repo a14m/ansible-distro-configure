@@ -69,15 +69,11 @@ Singleton {
         onClicked: root.open = false
       }
 
-      Rectangle {
+      Panel {
         visible: window.hasMenu
         anchors.centerIn: parent
         width: 450
         height: 300
-        radius: 5
-        color: Theme.background
-        border.width: 2
-        border.color: Theme.accent
 
         // Keeps clicks inside the box from closing the menu.
         MouseArea {

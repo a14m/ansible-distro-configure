@@ -3,7 +3,7 @@ import QtQuick.Layouts
 import Quickshell.Widgets
 import qs
 
-Rectangle {
+Panel {
   id: root
 
   // An Entry from Notifications.qml; `entry.notification` is null once closed.
@@ -14,9 +14,6 @@ Rectangle {
 
   implicitHeight: Math.min(content.implicitHeight + 20, 110)
   clip: true
-  radius: 5
-  color: Theme.background
-  border.width: 2
   border.color: root.entry.critical ? Theme.critical : Theme.accent
 
   // Critical notifications stay until dismissed; hovering pauses the timeout.

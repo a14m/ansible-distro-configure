@@ -35,13 +35,18 @@ BarItem {
     : discharging && level <= 20 ? "#F1C40F"
     : discharging ? Theme.foreground
     : Theme.accent
-  tooltip: popup.open ? "" : summary
-  readonly property string summary: {
-    const watts = Math.abs(battery.changeRate).toFixed(0);
-    if (discharging) return `${watts}W\u2193 ${level}%`;
-    if (status === UPowerDeviceState.Charging) return `${watts}W\u2191 ${level}%`;
-    return `${level}%`;
-  }
+  readonly property string stateName: ({
+    [UPowerDeviceState.Charging]: "charging",
+    [UPowerDeviceState.Discharging]: "discharging",
+    [UPowerDeviceState.FullyCharged]: "full",
+    [UPowerDeviceState.PendingCharge]: "plugged in",
+  })[status] ?? ""
+  readonly property string watts: Math.abs(battery.changeRate).toFixed(0)
+
+  tooltip: popup.open ? ""
+    : discharging ? `${watts}W\u2193 ${level}%`
+    : status === UPowerDeviceState.Charging ? `${watts}W\u2191 ${level}%`
+    : `${level}%`
   onRightClicked: popup.open = !popup.open
 
   function duration(seconds) {
@@ -59,15 +64,7 @@ BarItem {
     }
 
     PopupText {
-      text: {
-        switch (root.status) {
-        case UPowerDeviceState.Charging: return `${root.level}%, charging`;
-        case UPowerDeviceState.Discharging: return `${root.level}%, discharging`;
-        case UPowerDeviceState.FullyCharged: return `${root.level}%, full`;
-        case UPowerDeviceState.PendingCharge: return `${root.level}%, plugged in`;
-        default: return `${root.level}%`;
-        }
-      }
+      text: root.stateName ? `${root.level}%, ${root.stateName}` : `${root.level}%`
     }
 
     PopupText {

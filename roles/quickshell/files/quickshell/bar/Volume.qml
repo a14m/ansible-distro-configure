@@ -46,7 +46,6 @@ BarItem {
       VolumeSlider {
         required property PwNode modelData
         node: modelData
-        label: modelData.nickname || modelData.description
         current: modelData === Pipewire.defaultAudioSink
         onSelected: Pipewire.preferredDefaultAudioSink = modelData
       }
@@ -63,7 +62,6 @@ BarItem {
       VolumeSlider {
         required property PwNode modelData
         node: modelData
-        label: modelData.nickname || modelData.description
         current: modelData === Pipewire.defaultAudioSource
         icon: "\ued03"
         mutedIcon: "\uefc6"
@@ -83,7 +81,6 @@ BarItem {
       VolumeSlider {
         required property PwNode modelData
         node: modelData
-        label: modelData.properties["application.name"] || modelData.name
       }
     }
 

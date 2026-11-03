@@ -54,6 +54,7 @@ Scope {
 
   Timer {
     id: armTimer
+    running: true
     interval: 500
     onTriggered: root.armed = true
   }
@@ -101,12 +102,8 @@ Scope {
     // Click-through.
     mask: Region {}
 
-    Rectangle {
+    Panel {
       anchors.fill: parent
-      radius: 5
-      color: Theme.background
-      border.width: 2
-      border.color: Theme.accent
 
       RowLayout {
         anchors {
