@@ -2,11 +2,13 @@ import QtQuick
 import Quickshell
 import qs
 
-// Clickable bar text, highlighted on hover, with an optional tooltip.
+// Bar text with an optional tooltip. Unless `interactive` is false, it is
+// clickable and highlighted on hover.
 Text {
   id: root
 
   property int padding: 10
+  property bool interactive: true
   property color baseColor: Theme.foreground
   property string tooltip: ""
   readonly property bool tooltipShown: tooltipWindow.visible
@@ -23,21 +25,23 @@ Text {
   leftPadding: padding
   rightPadding: padding
   verticalAlignment: Text.AlignVCenter
-  color: hover.hovered ? Theme.accent : baseColor
+  color: interactive && hover.hovered ? Theme.accent : baseColor
   font.family: Theme.monoFont
   font.pixelSize: 14
 
   HoverHandler {
     id: hover
-    cursorShape: Qt.PointingHandCursor
+    cursorShape: root.interactive ? Qt.PointingHandCursor : Qt.ArrowCursor
   }
 
   TapHandler {
+    enabled: root.interactive
     acceptedButtons: Qt.LeftButton
     onTapped: root.clicked()
   }
 
   TapHandler {
+    enabled: root.interactive
     acceptedButtons: Qt.RightButton
     onTapped: root.rightClicked()
   }
