@@ -41,6 +41,11 @@ Scope {
 
       Group {
         anchors.right: parent.right
+        Network {}
+        Bluetooth {}
+        Volume {}
+        Backlight {}
+        Battery {}
         Power {}
       }
     }

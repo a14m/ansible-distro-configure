@@ -1,4 +1,5 @@
 import QtQuick
+import Quickshell
 import qs
 
 // Clickable bar text, highlighted on hover.
@@ -10,6 +11,11 @@ Text {
 
   signal clicked
   signal rightClicked
+
+  // Opens a terminal app (wlctl, bluetui, ...) in its own floating window.
+  function tui(app) {
+    Quickshell.execDetached(["/etc/xdg/waybar/scripts/launch-tui", app]);
+  }
 
   height: parent.height
   leftPadding: padding
