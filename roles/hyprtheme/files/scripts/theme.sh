@@ -34,9 +34,6 @@ select_theme() {
   # Prompt wallpaper selection
   "$HOME/.config/hyprtheme/scripts/wallpaper.sh" #$(find "$current_theme_path/wallpapers" -type f | head -1)
 
-  pkill -x waybar || true
-  setsid uwsm-app -- waybar >/dev/null 2>&1 &
-
   hyprctl reload >/dev/null 2>&1
 
   pkill -SIGUSR2 btop || true

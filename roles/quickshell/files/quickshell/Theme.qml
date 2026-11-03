@@ -10,6 +10,7 @@ Singleton {
   id: root
 
   readonly property color accent: json.accent
+  readonly property color inactive: json.inactive
   readonly property color foreground: json.foreground
   readonly property color background: json.background
   readonly property color critical: json.critical
@@ -25,6 +26,7 @@ Singleton {
     adapter: JsonAdapter {
       id: json
       property string accent: "#888888"
+      property string inactive: "#444444"
       property string foreground: "#ffffff"
       property string background: "#000000"
       property string critical: "#ff0000"
