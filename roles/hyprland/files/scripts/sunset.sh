@@ -12,22 +12,11 @@ get_temp() {
     echo "$temp"
 }
 
-get_status() {
-    read -r temp <<< "$(get_temp)"
-    local waybar_status=""
-    if [[ -n "$temp" && "$temp" -lt "$TEMP_OFF" ]]; then
-        waybar_status=$(printf '{"alt": "on", "tooltip": "Nightshift On (temp: %s)"}' "$temp")
-    else
-        waybar_status=$(printf '{"alt": "off", "tooltip": "Nightshift Off (temp: %s)"}' "$temp")
-    fi
-    echo "${waybar_status}"
-}
-
 set_temp() {
     local temp=$1
     hyprctl hyprsunset temperature $temp 2>/dev/null 1>&2
     notify "" "" "$temp"
-    pkill -x -SIGRTMIN+6 waybar
+    qs ipc call hyprsunset refresh >/dev/null 2>&1
 }
 
 step_temp() {
@@ -54,7 +43,7 @@ toggle_nightshift() {
         icon=""
     fi
     notify "$class" "$icon" "$temp"
-    pkill -x -SIGRTMIN+6 waybar
+    qs ipc call hyprsunset refresh >/dev/null 2>&1
 }
 
 notify() {
@@ -83,9 +72,6 @@ case "$1" in
     "--dec")
         step_temp "-${2:-250}"
         ;;
-    "--status")
-        get_status
-        ;;
     "--toggle")
         toggle_nightshift
         ;;
@@ -96,7 +82,6 @@ case "$1" in
         echo -e "  --inc [arg]    to increment current screen temprature by [arg]K"
         echo -e "  --dec [arg]    to decrement current screen temprature by [arg]K"
         echo -e "  --toggle       to toggle sunset/nightshift"
-        echo -e " --staus         to get the (waybar) JSON staus"
         exit 0
         ;;
 esac

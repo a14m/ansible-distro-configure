@@ -133,7 +133,6 @@
     - role: "obsidian-livesync"
     - role: "microsoft-teams"
     - role: "steam"
-    - role: "waybar"
     - role: "hyprland"
     - role: "usbutils"
     - role: "openlogi"

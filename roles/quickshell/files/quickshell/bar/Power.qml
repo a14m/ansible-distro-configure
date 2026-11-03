@@ -4,5 +4,5 @@ import Quickshell
 BarItem {
   text: ""
   onClicked: Quickshell.execDetached(["hyprlock"])
-  onRightClicked: Quickshell.execDetached(["/etc/xdg/waybar/scripts/power-menu"])
+  onRightClicked: Quickshell.execDetached(["/etc/hypr/scripts/power-menu"])
 }

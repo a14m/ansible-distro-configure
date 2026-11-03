@@ -14,7 +14,6 @@ dependencies:
   - role: "battop"
   - role: "bluetui"
   - role: "wiremix"
-  - role: "waybar"
   - role: "clipse"
   - role: "tofi"
   - role: "xdg-desktop-portal"

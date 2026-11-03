@@ -35,6 +35,12 @@ BarItem {
     : discharging && level <= 20 ? "#F1C40F"
     : discharging ? Theme.foreground
     : Theme.accent
+  tooltip: {
+    const watts = Math.abs(battery.changeRate).toFixed(0);
+    if (discharging) return `${watts}W\u2193 ${level}%`;
+    if (status === UPowerDeviceState.Charging) return `${watts}W\u2191 ${level}%`;
+    return `${level}%`;
+  }
   onRightClicked: tui("battop")
 
   Timer {

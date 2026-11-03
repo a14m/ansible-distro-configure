@@ -10,7 +10,10 @@ BarItem {
   readonly property real volume: sink?.audio?.volume ?? 0
   readonly property bool muted: sink?.audio?.muted ?? false
 
-  text: muted ? "" : ["", "", ""][Math.min(2, Math.floor(volume * 3))]
+  readonly property string levelIcon: ["", "", ""][Math.min(2, Math.floor(volume * 3))]
+
+  text: muted ? "\ueee8" : levelIcon
+  tooltip: `Volume: ${Math.round(volume * 100)}% ${levelIcon}`
   onClicked: sink.audio.muted = !muted
   onRightClicked: tui("wiremix")
 

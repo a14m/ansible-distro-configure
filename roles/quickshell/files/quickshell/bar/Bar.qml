@@ -2,7 +2,7 @@ import QtQuick
 import Quickshell
 import Quickshell.Wayland
 
-// Top bar (replaces waybar) on every monitor: three floating groups.
+// Top bar on every monitor: three floating groups.
 Scope {
   Variants {
     model: Quickshell.screens
@@ -45,6 +45,9 @@ Scope {
         Bluetooth {}
         Volume {}
         Backlight {}
+        Sunset {}
+        Language {}
+        CapsLock {}
         Battery {}
         Power {}
       }
