@@ -16,49 +16,6 @@ lock_screen() {
   loginctl lock-session
 }
 
-interactive() {
-  # Use the commented styling to get tofi fullscreen theme instead of
-  # using the hpyrland windowrule workaround to get the dimming effect
-  # --width 100% \
-  # --height 120% \
-  # --font-size 20 \
-  # --anchor center \
-  # --border-width 0 \
-  # --outline-width 0 \
-  # --padding-top 50% \
-  # --padding-left 42% \
-  # --result-spacing 10 \
-  # --placeholder-text "" \
-  # --prompt-text "Power:" \
-  # --background-color "#000B"
-  ACTION=$(printf ' Shutdown\n󰑙 Reboot\n󰤄 Suspend\n Lock Session' | tofi \
-    --width 450 \
-    --height 300 \
-    --font-size 20 \
-    --anchor center \
-    --prompt-text "Power:" \
-    --placeholder-text "" \
-    --result-spacing 10
-  )
-
-
-  case "$ACTION" in
-    *Shutdown*)
-      shutdown
-      ;;
-    *Reboot*)
-      reboot
-      ;;
-    *Suspend*)
-      lock_screen
-      hibernate
-      ;;
-    *Lock*)
-      lock_screen
-      ;;
-  esac
-}
-
 case "$1" in
     "--shutdown")
         shutdown
@@ -74,6 +31,11 @@ case "$1" in
         lock_screen
         ;;
     *)
-        interactive
+        echo -e "Usage:"
+        echo -e "  --shutdown    to shut down"
+        echo -e "  --reboot      to reboot"
+        echo -e "  --hibernate   to lock and suspend"
+        echo -e "  --lock        to lock the session"
+        exit 0
         ;;
 esac

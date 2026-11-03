@@ -73,15 +73,3 @@ hl.window_rule({
   match = { class = "steam", title = "Friends List" },
   size = "460 800",
 })
-
--- Power menu
--- Workaround dimming, by creating a 1x1 behind the tofi menu and configure dimming around that window
-hl.window_rule({
-  name = "power-menu",
-  match = { class = "work.kartoffln.power\\-menu" },
-  float = true,
-  center = true,
-  size = "1 1",
-  stay_focused = true,
-  dim_around = true,
-})

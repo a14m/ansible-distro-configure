@@ -129,5 +129,3 @@
       dest: "/etc/hypr/scripts/screenshot.sh"
     - src: "scripts/launch-tui"
       dest: "/etc/hypr/scripts/launch-tui"
-    - src: "scripts/power-menu"
-      dest: "/etc/hypr/scripts/power-menu"
