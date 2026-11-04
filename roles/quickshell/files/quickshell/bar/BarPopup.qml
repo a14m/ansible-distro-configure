@@ -25,14 +25,16 @@ PanelWindow {
     top: true
     left: true
   }
-  margins.top: 5
+  // Right under the bar like the tooltips, above where windows start.
+  margins.top: 0
   exclusiveZone: 0
   WlrLayershell.namespace: "quickshell-popup"
   // The focus grab routes the keyboard here, so accept it (for Escape) instead
   // of swallowing keys, e.g. when the mouse just went away with bluetooth.
   WlrLayershell.keyboardFocus: WlrKeyboardFocus.OnDemand
-  implicitWidth: column.implicitWidth + 30
-  implicitHeight: column.implicitHeight + 30
+  // Same padding as the bar tooltips.
+  implicitWidth: column.implicitWidth + 20
+  implicitHeight: column.implicitHeight + 12
   color: "transparent"
 
   // Centered under the item and kept on screen, also when the content changes
@@ -44,13 +46,14 @@ PanelWindow {
 
   Panel {
     anchors.fill: parent
+    border.width: 1
     focus: true
     Keys.onEscapePressed: root.open = false
 
     Column {
       id: column
-      x: 15
-      y: 15
+      x: 10
+      y: 6
       spacing: 10
     }
   }
