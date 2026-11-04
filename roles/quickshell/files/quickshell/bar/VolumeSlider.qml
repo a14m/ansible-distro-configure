@@ -21,10 +21,6 @@ Column {
   width: 300
   spacing: 4
 
-  function setVolume(volume) {
-    audio.volume = Math.max(0, Math.min(1, volume));
-  }
-
   PopupText {
     width: parent.width
     text: root.label
@@ -43,33 +39,11 @@ Column {
       onClicked: root.audio.muted = !root.audio.muted
     }
 
-    Item {
-      width: 220
-      height: 16
+    Slider {
       anchors.verticalCenter: parent.verticalCenter
-
-      Rectangle {
-        anchors.verticalCenter: parent.verticalCenter
-        width: parent.width
-        height: 4
-        radius: 2
-        color: Qt.alpha(Theme.foreground, 0.2)
-
-        Rectangle {
-          width: parent.width * Math.min(root.audio.volume, 1)
-          height: parent.height
-          radius: parent.radius
-          color: root.audio.muted ? Theme.inactive : Theme.accent
-        }
-      }
-
-      MouseArea {
-        anchors.fill: parent
-        cursorShape: Qt.PointingHandCursor
-        onPressed: mouse => root.setVolume(mouse.x / width)
-        onPositionChanged: mouse => root.setVolume(mouse.x / width)
-        onWheel: wheel => root.setVolume(root.audio.volume + (wheel.angleDelta.y > 0 ? 0.01 : -0.01))
-      }
+      value: root.audio.volume
+      dimmed: root.audio.muted
+      onMoved: value => root.audio.volume = value
     }
 
     PopupText {

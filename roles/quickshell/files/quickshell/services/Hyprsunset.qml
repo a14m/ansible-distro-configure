@@ -18,6 +18,19 @@ Singleton {
     query.running = true;
   }
 
+  // Sets the temperature at most every 100ms, so dragging a slider doesn't
+  // start a process per pixel.
+  function set(value) {
+    temperature = value;
+    if (!throttle.running) throttle.start();
+  }
+
+  Timer {
+    id: throttle
+    interval: 100
+    onTriggered: Quickshell.execDetached(["hyprctl", "hyprsunset", "temperature", `${root.temperature}`])
+  }
+
   Process {
     id: query
     command: ["hyprctl", "hyprsunset", "temperature"]
