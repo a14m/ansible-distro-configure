@@ -49,6 +49,7 @@ Scope {
         Language {}
         CapsLock {}
         Battery {}
+        NotificationCenter {}
         Power {}
       }
     }

@@ -1,3 +1,5 @@
+pragma Singleton
+
 import QtQuick
 import Quickshell
 import Quickshell.Io
@@ -10,7 +12,9 @@ import Quickshell.Services.Notifications
 //   qs ipc call notifications toggleDnd
 //   qs ipc call notifications restore      # re-show the last closed notification
 //   qs ipc call notifications dismissAll
-Scope {
+//
+// A singleton so the bar's notification center can show the history.
+Singleton {
   id: root
 
   readonly property int popupWidth: 300
@@ -18,6 +22,9 @@ Scope {
   readonly property string syncHint: "x-canonical-private-synchronous"
 
   property bool dnd: false
+  // Popups hide while the notification center (same corner) is open; they
+  // keep timing out into history meanwhile.
+  property bool centerOpen: false
   // Entries copy what a popup needs, so they outlive their Notification and
   // can be restored from history. Both lists are newest first.
   property var popups: []
@@ -29,6 +36,8 @@ Scope {
     property string summary
     property string body
     property string icon
+    property string appName
+    property date time
     property bool critical
     property bool isTransient
   }
@@ -82,6 +91,17 @@ Scope {
     else hide(entry);
   }
 
+  // Removes closed notifications from history (the notification center).
+  function forget(entry) {
+    history = history.filter(e => e !== entry);
+    entry.destroy();
+  }
+
+  function clearHistory() {
+    history.forEach(entry => entry.destroy());
+    history = [];
+  }
+
   function dismiss(entry) {
     if (entry.notification) entry.notification.dismiss();
     else hide(entry);
@@ -103,14 +123,15 @@ Scope {
         summary: notification.summary,
         body: notification.body,
         icon: root.iconFor(notification),
+        appName: notification.appName,
+        time: new Date(),
         critical: notification.urgency === NotificationUrgency.Critical,
         isTransient: notification.transient
       });
       notification.closed.connect(() => root.hide(entry));
 
-      // Like the old mako config: do-not-disturb still shows critical
-      // notifications and the ones scripts send with notify-send.
-      if (root.dnd && !entry.critical && notification.appName !== "notify-send") {
+      // Do-not-disturb only lets critical notifications through.
+      if (root.dnd && !entry.critical) {
         notification.expire();
         root.retire(entry);
       } else {
@@ -148,7 +169,7 @@ Scope {
   }
 
   PanelWindow {
-    visible: root.popups.length > 0
+    visible: root.popups.length > 0 && !root.centerOpen
     anchors {
       top: true
       right: true
