@@ -1,6 +1,5 @@
 import QtQuick
 import Quickshell
-import qs
 import qs.services
 
 // Keyboard layout. Click switches to the next one, right click opens a popup
@@ -9,18 +8,13 @@ BarItem {
   id: root
 
   text: `\uf11c ${Keyboard.shortLayout}`
-  baseColor: popup.open ? Theme.accent : Theme.foreground
   onClicked: Quickshell.execDetached(["hyprctl", "switchxkblayout", "all", "next"])
-  onRightClicked: popup.open = !popup.open
+  popup: popup
 
   BarPopup {
     id: popup
     item: root
-
-    PopupText {
-      text: "Keyboard layout"
-      highlighted: true
-    }
+    title: "Keyboard layout"
 
     Repeater {
       model: Keyboard.layouts

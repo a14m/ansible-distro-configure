@@ -5,7 +5,8 @@ import Quickshell.Wayland
 import qs
 
 // Panel under a bar item. Escape or a click anywhere outside it (or the bar)
-// closes it.
+// closes it. `title` adds a heading, `tui` an "Open <tui>" link at the bottom
+// that launches that terminal app instead.
 //
 // It is a layer window rather than a PopupWindow: Hyprland's focus grab only
 // works with layer windows, and a popup's own grab is lost whenever another
@@ -15,6 +16,8 @@ PanelWindow {
 
   required property Item item
   property bool open: false
+  property string title: ""
+  property string tui: ""
   default property alias content: column.data
 
   readonly property var bar: item.QsWindow.window
@@ -33,8 +36,8 @@ PanelWindow {
   // of swallowing keys, e.g. when the mouse just went away with bluetooth.
   WlrLayershell.keyboardFocus: WlrKeyboardFocus.OnDemand
   // Same padding as the bar tooltips.
-  implicitWidth: column.implicitWidth + 20
-  implicitHeight: column.implicitHeight + 12
+  implicitWidth: layout.implicitWidth + 20
+  implicitHeight: layout.implicitHeight + 12
   color: "transparent"
 
   // Centered under the item and kept on screen, also when the content changes
@@ -51,10 +54,31 @@ PanelWindow {
     Keys.onEscapePressed: root.open = false
 
     Column {
-      id: column
+      id: layout
       x: 10
       y: 6
       spacing: 10
+
+      PopupText {
+        visible: root.title !== ""
+        text: root.title
+        highlighted: true
+      }
+
+      Column {
+        id: column
+        spacing: 10
+      }
+
+      PopupText {
+        visible: root.tui !== ""
+        text: `Open ${root.tui}`
+        clickable: true
+        onClicked: {
+          root.open = false;
+          root.item.tui(root.tui);
+        }
+      }
     }
   }
 

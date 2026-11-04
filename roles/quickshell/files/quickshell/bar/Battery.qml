@@ -43,11 +43,10 @@ BarItem {
   })[status] ?? ""
   readonly property string watts: Math.abs(battery.changeRate).toFixed(0)
 
-  tooltip: popup.open ? ""
-    : discharging ? `${watts}W\u2193 ${level}%`
+  tooltip: discharging ? `${watts}W\u2193 ${level}%`
     : status === UPowerDeviceState.Charging ? `${watts}W\u2191 ${level}%`
     : `${level}%`
-  onRightClicked: popup.open = !popup.open
+  popup: popup
 
   function duration(seconds) {
     const minutes = Math.round(seconds / 60);
@@ -57,11 +56,8 @@ BarItem {
   BarPopup {
     id: popup
     item: root
-
-    PopupText {
-      text: "Battery"
-      highlighted: true
-    }
+    title: "Battery"
+    tui: "battop"
 
     PopupText {
       text: root.stateName ? `${root.level}%, ${root.stateName}` : `${root.level}%`
@@ -85,15 +81,6 @@ BarItem {
     PopupText {
       visible: root.battery.healthSupported
       text: `Health: ${Math.round(root.battery.healthPercentage)}%`
-    }
-
-    PopupText {
-      text: "Open battop"
-      clickable: true
-      onClicked: {
-        popup.open = false;
-        root.tui("battop");
-      }
     }
   }
 

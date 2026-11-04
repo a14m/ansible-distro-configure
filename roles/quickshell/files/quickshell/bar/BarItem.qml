@@ -3,7 +3,8 @@ import Quickshell
 import qs
 
 // Bar text with an optional tooltip. Unless `interactive` is false, it is
-// clickable and highlighted on hover.
+// clickable and highlighted on hover. Setting `popup` makes right click toggle
+// that BarPopup; the item stays highlighted and its tooltip hidden while open.
 Text {
   id: root
 
@@ -11,6 +12,7 @@ Text {
   property bool interactive: true
   property color baseColor: Theme.foreground
   property string tooltip: ""
+  property var popup: null
   readonly property bool tooltipShown: tooltipWindow.visible
 
   signal clicked
@@ -25,7 +27,7 @@ Text {
   leftPadding: padding
   rightPadding: padding
   verticalAlignment: Text.AlignVCenter
-  color: interactive && hover.hovered ? Theme.accent : baseColor
+  color: interactive && hover.hovered || popup?.open ? Theme.accent : baseColor
   font.family: Theme.monoFont
   font.pixelSize: 14
 
@@ -43,7 +45,10 @@ Text {
   TapHandler {
     enabled: root.interactive
     acceptedButtons: Qt.RightButton
-    onTapped: root.rightClicked()
+    onTapped: {
+      if (root.popup) root.popup.open = !root.popup.open;
+      root.rightClicked();
+    }
   }
 
   // Shown below the item after hovering for a moment.
@@ -55,7 +60,7 @@ Text {
 
   PopupWindow {
     id: tooltipWindow
-    visible: hover.hovered && !tooltipDelay.running && root.tooltip !== ""
+    visible: hover.hovered && !tooltipDelay.running && root.tooltip !== "" && !root.popup?.open
     anchor.item: root
     anchor.edges: Edges.Bottom
     anchor.gravity: Edges.Bottom

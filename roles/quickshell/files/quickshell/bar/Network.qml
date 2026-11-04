@@ -2,7 +2,6 @@ import QtQuick
 import Quickshell
 import Quickshell.Io
 import Quickshell.Networking
-import qs
 
 // Ethernet icon when wired, else the wifi signal strength. Click toggles wifi,
 // right click opens a popup to switch wifi and pick a network. The tooltip
@@ -54,16 +53,14 @@ BarItem {
   text: wired ? "󰈀"
     : wifi ? signalIcon(wifi)
     : "󰤮"
-  baseColor: popup.open ? Theme.accent : Theme.foreground
-  tooltip: popup.open ? "" : tooltipText
-  readonly property string tooltipText: {
+  tooltip: {
     const traffic = `\u21e3${speed(down)}  \u21e1${speed(up)}`;
     if (wired) return traffic;
     if (wifi) return `${wifi.name} (${frequency} GHz)\n${traffic}`;
     return "Disconnected";
   }
   onClicked: Quickshell.execDetached(["/etc/hypr/scripts/wifi.sh", "--toggle"])
-  onRightClicked: popup.open = !popup.open
+  popup: popup
 
   function signalIcon(network) {
     return signalIcons[Math.min(4, Math.floor(network.signalStrength * 5))];
@@ -86,12 +83,9 @@ BarItem {
   BarPopup {
     id: popup
     item: root
+    title: "Wi-Fi"
+    tui: "wlctl"
     onOpenChanged: root.wifiDevices.forEach(device => device.scannerEnabled = open)
-
-    PopupText {
-      text: "Wi-Fi"
-      highlighted: true
-    }
 
     PopupText {
       text: Networking.wifiEnabled ? "Turn off" : "Turn on"
@@ -116,15 +110,6 @@ BarItem {
         highlighted: modelData.connected
         clickable: !modelData.stateChanging
         onClicked: root.choose(modelData)
-      }
-    }
-
-    PopupText {
-      text: "Open wlctl"
-      clickable: true
-      onClicked: {
-        popup.open = false;
-        root.tui("wlctl");
       }
     }
   }

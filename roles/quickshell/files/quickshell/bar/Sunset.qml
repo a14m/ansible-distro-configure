@@ -1,6 +1,5 @@
 import QtQuick
 import Quickshell
-import qs
 import qs.services
 
 // Night shift (hyprsunset). Click toggles it, right click opens a popup with a
@@ -12,18 +11,13 @@ BarItem {
   readonly property int maximum: 6500
 
   text: Hyprsunset.on ? "\uf186" : "\uf185"
-  baseColor: popup.open ? Theme.accent : Theme.foreground
   onClicked: Quickshell.execDetached(["/etc/hypr/scripts/sunset.sh", "--toggle"])
-  onRightClicked: popup.open = !popup.open
+  popup: popup
 
   BarPopup {
     id: popup
     item: root
-
-    PopupText {
-      text: "Night shift"
-      highlighted: true
-    }
+    title: "Night shift"
 
     PopupText {
       text: Hyprsunset.on ? "Turn off" : "Turn on"

@@ -1,7 +1,6 @@
 import QtQuick
 import Quickshell
 import Quickshell.Services.Pipewire
-import qs
 
 // Output volume. Click toggles mute, right click opens the mixer popup: every
 // output and input, plus apps playing audio.
@@ -15,10 +14,9 @@ BarItem {
   readonly property string levelIcon: ["", "", ""][Math.min(2, Math.floor(volume * 3))]
 
   text: muted ? "\ueee8" : levelIcon
-  tooltip: popup.open ? "" : `Volume: ${Math.round(volume * 100)}% ${levelIcon}`
-  baseColor: popup.open ? Theme.accent : Theme.foreground
+  tooltip: `Volume: ${Math.round(volume * 100)}% ${levelIcon}`
   onClicked: sink.audio.muted = !muted
-  onRightClicked: popup.open = !popup.open
+  popup: popup
 
   // Audio nodes, split into devices and app streams.
   readonly property var nodes: [...Pipewire.nodes.values].filter(node => node.audio)
@@ -34,11 +32,8 @@ BarItem {
   BarPopup {
     id: popup
     item: root
-
-    PopupText {
-      text: "Output"
-      highlighted: true
-    }
+    title: "Output"
+    tui: "wiremix"
 
     Repeater {
       model: root.outputs
@@ -81,15 +76,6 @@ BarItem {
       VolumeSlider {
         required property PwNode modelData
         node: modelData
-      }
-    }
-
-    PopupText {
-      text: "Open wiremix"
-      clickable: true
-      onClicked: {
-        popup.open = false;
-        root.tui("wiremix");
       }
     }
   }

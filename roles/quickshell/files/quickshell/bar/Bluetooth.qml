@@ -1,7 +1,6 @@
 import QtQuick
 import Quickshell
 import Quickshell.Bluetooth
-import qs
 
 // Hidden without an adapter. Click toggles bluetooth, right click opens a popup
 // to switch it and connect paired devices (pairing new ones is left to bluetui).
@@ -18,24 +17,19 @@ BarItem {
 
   visible: adapter !== null
   text: !adapter?.enabled ? "󰂲" : connected.length ? "󰂴" : "󰂯"
-  baseColor: popup.open ? Theme.accent : Theme.foreground
-  tooltip: popup.open ? ""
-    : connected.length
+  tooltip: connected.length
     ? `Devices connected: ${connected.length}\n` + connected
       .map(device => `- ${device.name}` + (device.batteryAvailable ? `\t${Math.round(device.battery * 100)}% 󰂁` : ""))
       .join("\n")
     : `Bluetooth ${adapter?.enabled ? "on" : "off"}`
   onClicked: Quickshell.execDetached(["/etc/hypr/scripts/bluetooth.sh", "--toggle"])
-  onRightClicked: popup.open = !popup.open
+  popup: popup
 
   BarPopup {
     id: popup
     item: root
-
-    PopupText {
-      text: "Bluetooth"
-      highlighted: true
-    }
+    title: "Bluetooth"
+    tui: "bluetui"
 
     PopupText {
       text: root.adapter?.enabled ? "Turn off" : "Turn on"
@@ -62,15 +56,6 @@ BarItem {
         highlighted: modelData.connected
         clickable: !busy
         onClicked: modelData.connected = !modelData.connected
-      }
-    }
-
-    PopupText {
-      text: "Open bluetui"
-      clickable: true
-      onClicked: {
-        popup.open = false;
-        root.tui("bluetui");
       }
     }
   }

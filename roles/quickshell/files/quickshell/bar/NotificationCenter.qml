@@ -11,19 +11,14 @@ BarItem {
   readonly property int count: Notifications.history.length
 
   text: (Notifications.dnd ? "" : "") + (count ? ` ${count}` : "")
-  baseColor: popup.open ? Theme.accent : Theme.foreground
   onClicked: Notifications.dnd = !Notifications.dnd
-  onRightClicked: popup.open = !popup.open
+  popup: popup
 
   BarPopup {
     id: popup
     item: root
+    title: "Notifications"
     onOpenChanged: Notifications.centerOpen = open
-
-    PopupText {
-      text: "Notifications"
-      highlighted: true
-    }
 
     PopupText {
       text: `Do not disturb: ${Notifications.dnd ? "on" : "off"}`
