@@ -17,7 +17,7 @@ BarItem {
   // Qt abbreviates with dots ("Di. Nov."), waybar didn't.
   readonly property string day: long
     ? `${Qt.locale().toString(clock.date, "dddd dd MMMM yyyy")} (W${week(clock.date)})`
-    : Qt.locale().toString(clock.date, "ddd MMM dd")
+    : Qt.locale().toString(clock.date, "ddd MMM dd").replace(/\./g, "")
 
   padding: 5
   text: `󰸘 ${day} - \uf017 ${Qt.formatTime(clock.date, "HH:mm")}`
