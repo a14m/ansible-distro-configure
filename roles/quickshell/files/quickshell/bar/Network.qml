@@ -2,9 +2,11 @@ import QtQuick
 import Quickshell
 import Quickshell.Io
 import Quickshell.Networking
+import qs
 
 // Ethernet icon when wired, else the wifi signal strength. Click toggles wifi,
-// right click opens wlctl. The tooltip shows the network and its traffic.
+// right click opens a popup to switch wifi and pick a network. The tooltip
+// shows the network and its traffic.
 BarItem {
   id: root
 
@@ -18,6 +20,19 @@ BarItem {
       if (network.connected) return network;
     }
     return null;
+  }
+  // Wifi networks in range (scanned while the popup is open), connected one
+  // first, then by signal; hidden networks have no name and are skipped.
+  readonly property var wifiDevices: [...Networking.devices.values].filter(device => device.type === DeviceType.Wifi)
+  readonly property var networks: {
+    const all = [];
+    for (const device of wifiDevices) all.push(...device.networks.values);
+    const seen = new Set();
+    return all
+      .filter(network => network.name)
+      .sort((a, b) => b.connected - a.connected || b.signalStrength - a.signalStrength)
+      .filter(network => !seen.has(network.name) && seen.add(network.name))
+      .slice(0, 8);
   }
   readonly property var signalIcons: ["󰤯", "󰤟", "󰤢", "󰤥", "󰤨"]
 
@@ -37,16 +52,82 @@ BarItem {
   }
 
   text: wired ? "󰈀"
-    : wifi ? signalIcons[Math.min(4, Math.floor(wifi.signalStrength * 5))]
+    : wifi ? signalIcon(wifi)
     : "󰤮"
-  tooltip: {
+  baseColor: popup.open ? Theme.accent : Theme.foreground
+  tooltip: popup.open ? "" : tooltipText
+  readonly property string tooltipText: {
     const traffic = `\u21e3${speed(down)}  \u21e1${speed(up)}`;
     if (wired) return traffic;
     if (wifi) return `${wifi.name} (${frequency} GHz)\n${traffic}`;
     return "Disconnected";
   }
   onClicked: Quickshell.execDetached(["/etc/hypr/scripts/wifi.sh", "--toggle"])
-  onRightClicked: tui("wlctl")
+  onRightClicked: popup.open = !popup.open
+
+  function signalIcon(network) {
+    return signalIcons[Math.min(4, Math.floor(network.signalStrength * 5))];
+  }
+
+  // Connected: disconnect. Known or open: connect. New secured: needs a
+  // password, so hand over to wlctl.
+  function choose(network) {
+    const open = network.security === WifiSecurityType.Open || network.security === WifiSecurityType.Owe;
+    if (network.connected) {
+      network.disconnect();
+    } else if (network.known || open) {
+      network.connect();
+    } else {
+      popup.open = false;
+      tui("wlctl");
+    }
+  }
+
+  BarPopup {
+    id: popup
+    item: root
+    onOpenChanged: root.wifiDevices.forEach(device => device.scannerEnabled = open)
+
+    PopupText {
+      text: "Wi-Fi"
+      highlighted: true
+    }
+
+    PopupText {
+      text: Networking.wifiEnabled ? "Turn off" : "Turn on"
+      clickable: true
+      onClicked: Networking.wifiEnabled = !Networking.wifiEnabled
+    }
+
+    PopupText {
+      visible: root.wired
+      text: "Ethernet connected"
+    }
+
+    Repeater {
+      model: Networking.wifiEnabled ? root.networks : []
+
+      PopupText {
+        required property var modelData
+        readonly property bool secured: modelData.security !== WifiSecurityType.Open
+          && modelData.security !== WifiSecurityType.Owe
+
+        text: `${root.signalIcon(modelData)} ${modelData.name}${secured ? " \uf023" : ""}${modelData.stateChanging ? "  ..." : ""}`
+        highlighted: modelData.connected
+        clickable: !modelData.stateChanging
+        onClicked: root.choose(modelData)
+      }
+    }
+
+    PopupText {
+      text: "Open wlctl"
+      clickable: true
+      onClicked: {
+        popup.open = false;
+        root.tui("wlctl");
+      }
+    }
+  }
   onTooltipShownChanged: if (tooltipShown && wifi) frequencyQuery.running = true
 
   FileView {
