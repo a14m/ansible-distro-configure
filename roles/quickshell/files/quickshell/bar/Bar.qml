@@ -46,6 +46,7 @@ Scope {
         Volume {}
         Backlight {}
         Sunset {}
+        SystemLocale {}
         Language {}
         CapsLock {}
         Battery {}
