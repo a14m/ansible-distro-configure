@@ -4,7 +4,8 @@ import Quickshell.Hyprland
 import Quickshell.Wayland
 import qs
 
-// Panel under a bar item. Clicking anywhere outside it (or the bar) closes it.
+// Panel under a bar item. Escape or a click anywhere outside it (or the bar)
+// closes it.
 //
 // It is a layer window rather than a PopupWindow: Hyprland's focus grab only
 // works with layer windows, and a popup's own grab is lost whenever another
@@ -27,6 +28,9 @@ PanelWindow {
   margins.top: 5
   exclusiveZone: 0
   WlrLayershell.namespace: "quickshell-popup"
+  // The focus grab routes the keyboard here, so accept it (for Escape) instead
+  // of swallowing keys, e.g. when the mouse just went away with bluetooth.
+  WlrLayershell.keyboardFocus: WlrKeyboardFocus.OnDemand
   implicitWidth: column.implicitWidth + 30
   implicitHeight: column.implicitHeight + 30
   color: "transparent"
@@ -40,6 +44,8 @@ PanelWindow {
 
   Panel {
     anchors.fill: parent
+    focus: true
+    Keys.onEscapePressed: root.open = false
 
     Column {
       id: column
