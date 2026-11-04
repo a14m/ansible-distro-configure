@@ -106,7 +106,8 @@ BarItem {
         readonly property bool secured: modelData.security !== WifiSecurityType.Open
           && modelData.security !== WifiSecurityType.Owe
 
-        text: `${root.signalIcon(modelData)} ${modelData.name}${secured ? " \uf023" : ""}${modelData.stateChanging ? "  ..." : ""}`
+        text: `${root.signalIcon(modelData)} ${modelData.name}`
+          + (secured ? " \uf023" : "") + (modelData.stateChanging ? "  ..." : "")
         highlighted: modelData.connected
         clickable: !modelData.stateChanging
         onClicked: root.choose(modelData)
@@ -152,7 +153,9 @@ BarItem {
   // The networking service has no frequency, so ask NetworkManager.
   Process {
     id: frequencyQuery
-    command: ["nmcli", "-g", "IN-USE,FREQ", "device", "wifi", "list", "ifname", root.device?.name ?? "", "--rescan", "no"]
+    command: [
+      "nmcli", "-g", "IN-USE,FREQ", "device", "wifi", "list", "ifname", root.device?.name ?? "", "--rescan", "no",
+    ]
     stdout: StdioCollector {
       onStreamFinished: {
         const line = text.split("\n").find(line => line.startsWith("*:"));

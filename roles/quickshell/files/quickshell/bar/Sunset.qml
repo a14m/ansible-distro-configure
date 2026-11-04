@@ -39,7 +39,10 @@ BarItem {
         value: (Hyprsunset.temperature - root.minimum) / (root.maximum - root.minimum)
         step: 100 / (root.maximum - root.minimum)
         dimmed: !Hyprsunset.on
-        onMoved: value => Hyprsunset.set(Math.round((root.minimum + value * (root.maximum - root.minimum)) / 100) * 100)
+        onMoved: value => {
+          const temperature = root.minimum + value * (root.maximum - root.minimum);
+          Hyprsunset.set(Math.round(temperature / 100) * 100);
+        }
       }
 
       PopupText {
