@@ -14,3 +14,34 @@
     dest: "/etc/xdg/quickshell/"
     mode: "0644"
     directory_mode: "0755"
+
+- name: "Create applications override directory"
+  become: true
+  ansible.builtin.file:
+    path: "/usr/local/share/applications"
+    state: "directory"
+    mode: "0755"
+
+- name: "Hide applications from the launcher"
+  become: true
+  ansible.builtin.copy:
+    dest: "/usr/local/share/applications/{{ item }}.desktop"
+    mode: "0644"
+    # Type and Name make it a valid entry, which quickshell needs to honour Hidden.
+    content: |
+      [Desktop Entry]
+      Type=Application
+      Name={{ item }}
+      Hidden=true
+  loop:
+    - "avahi-discover"
+    - "bssh"
+    - "bvnc"
+    - "gscriptor"
+    - "gvim"
+    - "lstopo"
+    - "qv4l2"
+    - "qvidcap"
+    - "uuctl"
+    - "xgps"
+    - "xgpsspeed"

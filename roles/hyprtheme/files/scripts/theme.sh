@@ -1,15 +1,8 @@
 #!/bin/bash
 
 show_themes() {
-  local available_themes=$(ls -1p $HOME/.config/hyprtheme/themes/ | grep "/" | cut -f1 -d'/')
-  local selected_theme=$(printf "$available_themes" | tofi \
-    --prompt-text "Select: " \
-    --placeholder-text "Theme"
-  )
-
-  if [[ -n "$selected_theme" ]]; then
-    select_theme "$selected_theme"
-  fi
+  # The quickshell launcher lists the themes and runs `theme.sh <name>` on pick.
+  qs ipc call launcher themes
 }
 
 select_theme() {

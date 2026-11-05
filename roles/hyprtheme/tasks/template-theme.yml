@@ -10,7 +10,6 @@
       - "hyprland.lua"
       - "hyprlock.conf"
       - "clipse.json"
-      - "tofi.config"
       - "quickshell.json"
 
 - name: "Template theme files for: {{ hyprtheme_name }}"

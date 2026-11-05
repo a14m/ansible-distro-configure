@@ -8,7 +8,7 @@ hl.bind("SUPER + CTRL + Q", hl.dsp.exec_cmd("hyprlock"), { description = "Lock S
 hl.bind("SUPER + SHIFT + Q", hl.dsp.exit(), { description = "Logout" })
 
 -- Launcher
-hl.bind("SUPER + SPACE", hl.dsp.exec_cmd("uwsm app -- $(tofi-drun)"), { description = "App Launcher" })
+hl.bind("SUPER + SPACE", hl.dsp.exec_cmd("qs ipc call launcher apps"), { description = "App Launcher" })
 
 -- Clipboard managers
 hl.bind("SUPER + C", hl.dsp.send_shortcut({ mods = "CTRL", key = "INSERT" }), { description = "MacOS Copy" })

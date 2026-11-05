@@ -15,7 +15,6 @@ dependencies:
   - role: "bluetui"
   - role: "wiremix"
   - role: "clipse"
-  - role: "tofi"
   - role: "xdg-desktop-portal"
   - role: "kanshi"
   - role: "hyprcursor"

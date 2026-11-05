@@ -1,13 +1,14 @@
 import QtQuick
 import Quickshell
 import qs.bar
+import qs.launcher
 import qs.notifications
 import qs.osd
 
 ShellRoot {
-  // The notification daemon is a singleton (the bar shows its history);
-  // reading it here starts it with the shell.
-  Component.onCompleted: Notifications.dnd
+  // Singletons start on first use; read them here so the notification daemon
+  // and the launcher's IPC commands are up with the shell.
+  Component.onCompleted: [Notifications.dnd, Launcher.open]
 
   Bar {}
   Osd {}

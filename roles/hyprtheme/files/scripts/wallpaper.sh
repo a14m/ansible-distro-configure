@@ -15,13 +15,8 @@ show_wallpapers() {
     exit 0
   fi
 
-  local selected_wallpaper=$(printf "$wallpapers" | tofi \
-    --prompt-text "Select: " \
-    --placeholder-text "Wallpaper"
-  )
-  if [[ -n $selected_wallpaper ]]; then
-    select_wallpaper "$wallpapers_path/$selected_wallpaper"
-  fi
+  # The quickshell launcher shows the wallpapers and runs `wallpaper.sh <file>` on pick.
+  qs ipc call launcher wallpapers
 }
 
 select_wallpaper() {
