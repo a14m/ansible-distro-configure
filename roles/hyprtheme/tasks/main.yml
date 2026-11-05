@@ -33,6 +33,35 @@
     - "scripts/theme.sh"
     - "scripts/wallpaper.sh"
 
+- name: "Create applications directory"
+  ansible.builtin.file:
+    path: "{{ ansible_facts.env.HOME }}/.local/share/applications"
+    state: "directory"
+    mode: "0755"
+
+# Launcher entries that open the theme and wallpaper pickers (the scripts without arguments). The icons are
+# file paths since quickshell only finds icon names installed in hicolor.
+- name: "Add theme and wallpaper launcher entries"
+  ansible.builtin.copy:
+    dest: "{{ ansible_facts.env.HOME }}/.local/share/applications/hyprtheme-{{ item.script }}.desktop"
+    mode: "0644"
+    content: |
+      [Desktop Entry]
+      Type=Application
+      Name={{ item.name }}
+      GenericName={{ item.description }}
+      Icon={{ item.icon }}
+      Exec={{ ansible_facts.env.HOME }}/.config/hyprtheme/scripts/{{ item.script }}.sh
+  loop:
+    - script: "theme"
+      name: "Theme"
+      description: "Switch the desktop theme"
+      icon: "/usr/share/icons/AdwaitaLegacy/48x48/legacy/preferences-desktop-theme.png"
+    - script: "wallpaper"
+      name: "Wallpaper"
+      description: "Pick a wallpaper"
+      icon: "/usr/share/icons/AdwaitaLegacy/48x48/legacy/preferences-desktop-wallpaper.png"
+
 - name: "Set default theme"
   ansible.builtin.command:
     # Running the command creates the symlinks for the current themes, using the hyprland.lua file to avoid rerunning
