@@ -80,6 +80,11 @@ Singleton {
     selected = Math.max(0, Math.min(items.length - 1, selected + delta));
   }
 
+  // Like move(), but wraps around at the ends (Tab and Shift+Tab).
+  function cycle(delta) {
+    if (items.length) selected = (selected + delta + items.length) % items.length;
+  }
+
   function run(item) {
     if (!item) return;
     open = false;
@@ -198,8 +203,8 @@ Singleton {
               Keys.onEnterPressed: root.run(root.items[root.selected])
               Keys.onUpPressed: root.move(root.mode === "wallpapers" ? -root.columns : -1)
               Keys.onDownPressed: root.move(root.mode === "wallpapers" ? root.columns : 1)
-              Keys.onTabPressed: root.move(1)
-              Keys.onBacktabPressed: root.move(-1)
+              Keys.onTabPressed: root.cycle(1)
+              Keys.onBacktabPressed: root.cycle(-1)
             }
           }
 
