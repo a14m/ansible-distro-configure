@@ -55,9 +55,9 @@ Row {
 
       padding: 3
       text: active ? "" : ""
-      // Accent only on the focused monitor; elsewhere the shown workspace stays filled but dim.
+      // Accent for the active workspace on the focused monitor, faded foreground otherwise.
       // (HyprlandMonitor.focused never updates here; focusedMonitor does.)
-      baseColor: active && Hyprland.focusedMonitor === root.monitor ? Theme.accent : Theme.inactive
+      baseColor: active && Hyprland.focusedMonitor === root.monitor ? Theme.accent : Qt.alpha(Theme.foreground, 0.5)
       // Focusing a workspace also moves focus to its monitor.
       onClicked: Hyprland.dispatch(`hl.dsp.focus({ workspace = ${modelData} })`)
     }
