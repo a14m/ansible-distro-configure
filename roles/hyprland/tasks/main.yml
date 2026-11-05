@@ -10,7 +10,6 @@
   become: true
   ansible.builtin.package:
     name:
-      - "swaybg"
       - "hyprlock"
       - "hypridle"
       - "hyprpicker"

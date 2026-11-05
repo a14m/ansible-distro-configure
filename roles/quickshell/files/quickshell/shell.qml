@@ -4,6 +4,7 @@ import qs.bar
 import qs.launcher
 import qs.notifications
 import qs.osd
+import qs.wallpaper
 
 ShellRoot {
   // Singletons start on first use; read them here so the notification daemon
@@ -12,4 +13,5 @@ ShellRoot {
 
   Bar {}
   Osd {}
+  Wallpaper {}
 }

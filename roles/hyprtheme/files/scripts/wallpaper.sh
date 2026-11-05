@@ -10,8 +10,6 @@ show_wallpapers() {
         -u normal \
         "Wallpapers" \
         "No wallpapers found for current theme"
-    pkill -x swaybg
-    setsid uwsm-app -- swaybg --color '#000000' >/dev/null 2>&1 &
     exit 0
   fi
 
@@ -29,14 +27,11 @@ select_wallpaper() {
         -u critical \
         "Wallpapers" \
         "Wallpaper '$selected_wallpaper' doesn't exist"
-    pkill -x swaybg
-    setsid uwsm-app -- swaybg --color '#000000' >/dev/null 2>&1 &
     exit 0
   fi
 
   ln -nsf "$selected_wallpaper" "$wallpaper_link"
-  pkill -x swaybg
-  setsid uwsm-app -- swaybg -i "$wallpaper_link" -m fill >/dev/null 2>&1 &
+  qs ipc call wallpaper set "$selected_wallpaper"
 }
 
 if [[ -z "$1" ]]; then
