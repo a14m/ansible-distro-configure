@@ -10,7 +10,6 @@
   become: true
   ansible.builtin.package:
     name:
-      - "hyprlock"
       - "hypridle"
       - "hyprpicker"
       - "hyprsunset"
@@ -77,8 +76,6 @@
       dest: "/etc/hypr/looknfeel.lua"
     - src: "hypr/rules.lua.j2"
       dest: "/etc/hypr/rules.lua"
-    - src: "hypr/hyprlock.conf.j2"
-      dest: "/etc/hypr/hyprlock.conf"
     - src: "hypr/hypridle.conf.j2"
       dest: "/etc/hypr/hypridle.conf"
     - src: "hypr/hyprland.lua.j2"

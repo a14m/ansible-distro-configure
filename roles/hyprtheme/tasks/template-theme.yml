@@ -8,7 +8,6 @@
       - "alacritty.toml"
       - "btop.theme"
       - "hyprland.lua"
-      - "hyprlock.conf"
       - "quickshell.json"
 
 - name: "Template theme files for: {{ hyprtheme_name }}"

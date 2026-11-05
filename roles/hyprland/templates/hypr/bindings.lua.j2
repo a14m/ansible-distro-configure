@@ -4,7 +4,7 @@
 -- See https://wiki.hypr.land/Configuring/Binds/
 
 hl.bind("SUPER + Q", hl.dsp.window.close(), { description = "Quit active window" })
-hl.bind("SUPER + CTRL + Q", hl.dsp.exec_cmd("hyprlock"), { description = "Lock System" })
+hl.bind("SUPER + CTRL + Q", hl.dsp.exec_cmd("qs ipc call lock lock"), { description = "Lock System" })
 hl.bind("SUPER + SHIFT + Q", hl.dsp.exit(), { description = "Logout" })
 
 -- Launcher
