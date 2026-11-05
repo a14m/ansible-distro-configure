@@ -9,7 +9,6 @@
       - "btop.theme"
       - "hyprland.lua"
       - "hyprlock.conf"
-      - "clipse.json"
       - "quickshell.json"
 
 - name: "Template theme files for: {{ hyprtheme_name }}"

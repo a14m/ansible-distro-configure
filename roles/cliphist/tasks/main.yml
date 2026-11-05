@@ -1,0 +1,8 @@
+---
+- name: "Ensure cliphist is installed"
+  become: true
+  ansible.builtin.package:
+    name:
+      - "cliphist"
+      - "wl-clipboard"
+    state: "present"

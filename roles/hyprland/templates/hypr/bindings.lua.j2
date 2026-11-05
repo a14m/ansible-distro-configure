@@ -14,10 +14,7 @@ hl.bind("SUPER + SPACE", hl.dsp.exec_cmd("qs ipc call launcher apps"), { descrip
 hl.bind("SUPER + C", hl.dsp.send_shortcut({ mods = "CTRL", key = "INSERT" }), { description = "MacOS Copy" })
 hl.bind("SUPER + V", hl.dsp.send_shortcut({ mods = "SHIFT", key = "INSERT" }), { description = "MacOS Paste" })
 hl.bind("SUPER + X", hl.dsp.send_shortcut({ mods = "CTRL", key = "X" }), { description = "MacOS Cut" })
-hl.bind(
-  "SUPER + SHIFT + V", hl.dsp.exec_cmd("alacritty --class work.kartoffln.clipse -e 'clipse'"),
-  { description = "Clipboard Manager" }
-)
+hl.bind("SUPER + SHIFT + V", hl.dsp.exec_cmd("qs ipc call launcher clipboard"), { description = "Clipboard Manager" })
 
 -- Switch workspaces with ctrl + [0-9] (MacOS-like)
 hl.bind("CTRL + 1", hl.dsp.focus({ workspace = 1 }), { description = "Switch to workspace 1" })

@@ -8,33 +8,37 @@ import Quickshell.Wayland
 import Quickshell.Widgets
 import qs
 
-// Launcher: apps, hyprtheme themes or wallpapers in a search box
+// Launcher: apps, hyprtheme themes, wallpapers or the clipboard history in a search box
 // on the focused monitor, with every monitor dimmed. Type to filter, arrows to
 // pick, Enter to run, Esc or a click outside to close.
 //
 //   qs ipc call launcher apps
 //   qs ipc call launcher themes
 //   qs ipc call launcher wallpapers
+//   qs ipc call launcher clipboard    # Enter copies, Shift+Delete removes
 Singleton {
   id: root
 
   readonly property string hyprtheme: Quickshell.env("HOME") + "/.config/hyprtheme"
+  readonly property string clipboard: Quickshell.shellDir + "/launcher/clipboard.sh"
 
   property bool open: false
   property string mode: "apps"
   property ShellScreen screen
   property string query: ""
   property int selected: 0
-  // Filled when the themes or wallpapers mode opens; `current` is the active one.
+  // Filled when the themes, wallpapers or clipboard mode opens; `current` is the active one.
   property var themes: []
   property var wallpapers: []
+  property var clips: []
   property string current: ""
 
-  readonly property var prompts: ({ apps: "Run:", themes: "Theme:", wallpapers: "Wallpaper:" })
+  readonly property var prompts: ({ apps: "Run:", themes: "Theme:", wallpapers: "Wallpaper:", clipboard: "Clip:" })
   readonly property int columns: 3
   readonly property int rowHeight: 48
 
-  // Rows of the active mode, filtered by the query; names starting with it first.
+  // Rows of the active mode, filtered by the query. Apps are sorted, names starting with
+  // the query first; the other modes keep their order (clips newest first).
   readonly property var items: {
     const text = query.toLowerCase();
     let list = [];
@@ -48,13 +52,15 @@ Singleton {
       }));
     } else if (mode === "themes") {
       list = themes.map(theme => ({ title: theme.name, colors: theme.colors, value: theme.name }));
-    } else {
+    } else if (mode === "wallpapers") {
       list = wallpapers.map(file => ({ title: file, image: `${hyprtheme}/current/wallpapers/${file}`, value: file }));
+    } else {
+      list = clips;
     }
+    list = list.filter(item => (item.search ?? item.title.toLowerCase()).includes(text));
+    if (mode !== "apps") return list;
     const prefixed = item => item.title.toLowerCase().startsWith(text);
-    return list
-      .filter(item => (item.search ?? item.title.toLowerCase()).includes(text))
-      .sort((a, b) => prefixed(b) - prefixed(a) || a.title.localeCompare(b.title));
+    return list.sort((a, b) => prefixed(b) - prefixed(a) || a.title.localeCompare(b.title));
   }
 
   function show(newMode) {
@@ -68,6 +74,7 @@ Singleton {
     screen = Quickshell.screens.find(screen => screen.name === Hyprland.focusedMonitor?.name) ?? null;
     if (mode === "themes") themeQuery.running = true;
     if (mode === "wallpapers") wallpaperQuery.running = true;
+    if (mode === "clipboard") clipQuery.running = true;
     open = true;
   }
 
@@ -91,6 +98,15 @@ Singleton {
     if (mode === "apps") Quickshell.execDetached(["uwsm", "app", "--", `${item.value}.desktop`]);
     if (mode === "themes") Quickshell.execDetached([`${hyprtheme}/scripts/theme.sh`, item.value]);
     if (mode === "wallpapers") Quickshell.execDetached([`${hyprtheme}/scripts/wallpaper.sh`, item.image]);
+    if (mode === "clipboard") Quickshell.execDetached(["sh", clipboard, "copy", item.value]);
+  }
+
+  // Shift+Delete in the clipboard mode.
+  function remove(item) {
+    if (!item || mode !== "clipboard") return;
+    Quickshell.execDetached(["sh", clipboard, "delete", item.value]);
+    clips = clips.filter(clip => clip.value !== item.value);
+    selected = Math.min(selected, items.length - 1);
   }
 
   IpcHandler {
@@ -98,6 +114,7 @@ Singleton {
     function apps(): void { root.show("apps"); }
     function themes(): void { root.show("themes"); }
     function wallpapers(): void { root.show("wallpapers"); }
+    function clipboard(): void { root.show("clipboard"); }
   }
 
   // First line: the active theme; then "<name>\t<quickshell.json>" per theme.
@@ -115,6 +132,18 @@ Singleton {
           return { name: name, colors: [theme.background, theme.foreground, theme.accent] };
         });
       }
+    }
+  }
+
+  // "<id>\t<preview>\t<image file>" per clip, newest first.
+  Process {
+    id: clipQuery
+    command: ["sh", root.clipboard, "list"]
+    stdout: StdioCollector {
+      onStreamFinished: root.clips = text.split("\n").filter(line => line).map(line => {
+        const [id, preview, image] = line.split("\t");
+        return { title: image ? "Image" : preview, detail: image ? preview : "", image: image, value: id };
+      })
     }
   }
 
@@ -203,6 +232,10 @@ Singleton {
               Keys.onEnterPressed: root.run(root.items[root.selected])
               Keys.onUpPressed: root.move(root.mode === "wallpapers" ? -root.columns : -1)
               Keys.onDownPressed: root.move(root.mode === "wallpapers" ? root.columns : 1)
+              Keys.onDeletePressed: event => {
+                if (event.modifiers & Qt.ShiftModifier) root.remove(root.items[root.selected]);
+                else event.accepted = false;
+              }
               Keys.onTabPressed: root.cycle(1)
               Keys.onBacktabPressed: root.cycle(-1)
             }
@@ -237,6 +270,18 @@ Singleton {
                   source: root.iconSource(modelData.icon ?? "")
                 }
 
+                // Image clips: a thumbnail.
+                Image {
+                  visible: !!modelData.image && root.mode === "clipboard"
+                  anchors.verticalCenter: parent.verticalCenter
+                  width: 64
+                  height: root.rowHeight - 8
+                  source: visible ? `file://${modelData.image}` : ""
+                  sourceSize.width: 128
+                  fillMode: Image.PreserveAspectCrop
+                  asynchronous: true
+                }
+
                 // Theme colors: background, foreground, accent.
                 Repeater {
                   model: modelData.colors ?? []
@@ -255,6 +300,8 @@ Singleton {
 
                 Text {
                   anchors.verticalCenter: parent.verticalCenter
+                  width: Math.min(implicitWidth, content.width - 160)
+                  elide: Text.ElideRight
                   text: modelData.title
                     + (root.mode === "themes" && modelData.value === root.current ? "  (current)" : "")
                   color: selected ? Theme.accent : Theme.foreground

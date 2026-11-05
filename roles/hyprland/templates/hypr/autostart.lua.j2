@@ -1,6 +1,8 @@
 hl.on("hyprland.start", function()
   hl.exec_cmd("uwsm-app -- qs")
-  hl.exec_cmd("uwsm-app -- clipse -listen")
+  -- Clipboard history (text and images), shown by the launcher on SUPER+SHIFT+V
+  hl.exec_cmd("uwsm-app -- wl-paste --type text --watch cliphist -max-items 50 store")
+  hl.exec_cmd("uwsm-app -- wl-paste --type image --watch cliphist -max-items 50 store")
   hl.exec_cmd("uwsm-app -- hyprsunset")
   hl.exec_cmd("uwsm-app -- hypridle -c /etc/hypr/hypridle.conf")
 end)

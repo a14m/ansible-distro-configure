@@ -14,7 +14,7 @@ dependencies:
   - role: "battop"
   - role: "bluetui"
   - role: "wiremix"
-  - role: "clipse"
+  - role: "cliphist"
   - role: "xdg-desktop-portal"
   - role: "kanshi"
   - role: "hyprcursor"

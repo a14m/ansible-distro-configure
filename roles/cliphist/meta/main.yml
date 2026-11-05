@@ -1,9 +1,8 @@
 ---
-dependencies:
-  - role: "yay"
+dependencies: []
 galaxy_info:
   author: "a14m"
-  description: "Install clipse on ArchLinux"
+  description: "Install cliphist clipboard history on ArchLinux"
   license: "MIT"
   min_ansible_version: "2.18"
   platforms:
