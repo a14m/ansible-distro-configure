@@ -1,3 +1,4 @@
 ---
 wireguard_packages:
   - "wireguard"
+  - "systemd-resolved"
