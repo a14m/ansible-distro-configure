@@ -18,13 +18,13 @@ pve_lxc_dns: "{{ network_ipv4_dns }}"
 pve_lxc_ssh_port: 2222
 pve_lxc_ssh_public_key: "ssh-ed25519 AAAA...fMo"
 pve_lxc_ssh_private_key: |
-      -----BEGIN OPENSSH PRIVATE KEY-----
-      b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
-      QyNTUxOQAAACAQ0GydCVLVXnXpzBxM6MbmRIDHNjC8dqZoFHgx1PiSgQAAAJi7TmCqu05g
-      qgAAAAtzc2gtZWQyNTUxOQAAACAQ0GydCVLVXnXpzBxM6MbmRIDHNjC8dqZoFHgx1PiSgQ
-      AAAEBgO+cOwV2j8gNZ/EugDk+vbi0eGrK125vRcE3FOtJJMRDQbJ0JUtVedenMHEzoxuZE
-      gMc2MLx2pmgUeDHU+JKBAAAAEm1vbGVjdWxlLXRlc3Qtb25seQECAw==
-      -----END OPENSSH PRIVATE KEY-----
+  -----BEGIN OPENSSH PRIVATE KEY-----
+  b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
+  QyNTUxOQAAACAQ0GydCVLVXnXpzBxM6MbmRIDHNjC8dqZoFHgx1PiSgQAAAJi7TmCqu05g
+  qgAAAAtzc2gtZWQyNTUxOQAAACAQ0GydCVLVXnXpzBxM6MbmRIDHNjC8dqZoFHgx1PiSgQ
+  AAAEBgO+cOwV2j8gNZ/EugDk+vbi0eGrK125vRcE3FOtJJMRDQbJ0JUtVedenMHEzoxuZE
+  gMc2MLx2pmgUeDHU+JKBAAAAEm1vbGVjdWxlLXRlc3Qtb25seQECAw==
+  -----END OPENSSH PRIVATE KEY-----
 
 caddy_metrics_port: "9091"
 # Optional: pin the internal CA root (see roles/caddy/README.md to generate a pair)
