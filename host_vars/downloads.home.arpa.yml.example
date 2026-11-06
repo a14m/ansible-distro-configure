@@ -38,6 +38,8 @@ wireguard_connections:
     AllowedIPs = 0.0.0.0/0
     Endpoint = 100.0.0.113:51820
 
+wireguard_autostart_connection: "vpn"
+
 # Kill switch: all egress is denied except through the tunnel and to its endpoint (must match Endpoint above)
 ufw_default_outgoing_policy: "deny"
 ufw_rules:

@@ -6,3 +6,7 @@ argument_specs:
         description: "Dictionary of WireGuard connection configurations"
         type: "dict"
         default: {}
+      wireguard_autostart_connection:
+        description: "Connection (a key of wireguard_connections) to enable at boot and start. Unset starts none."
+        type: "str"
+        required: false

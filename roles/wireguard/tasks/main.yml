@@ -40,3 +40,11 @@
     # 1st run: wg_portal updates the (ACL) file permissions /etc/wireguard
     # 2nd run: wireguard sees the file changed, deploys again (changed)
     - molecule-idempotence-notest
+
+- name: "Enable and start the autostart connection"
+  become: true
+  ansible.builtin.systemd_service:
+    name: "wg-quick@wg-{{ wireguard_autostart_connection }}"
+    enabled: true
+    state: "started"
+  when: wireguard_autostart_connection is defined
