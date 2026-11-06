@@ -8,3 +8,11 @@
     name: "systemd-resolved"
     enabled: true
     state: "started"
+  when: not ansible_facts.is_chroot
+
+- name: "(chroot): Ensure systemd-resolved is enabled"
+  ansible.builtin.command:
+    cmd: "systemctl enable systemd-resolved"
+  changed_when: true
+  when: ansible_facts.is_chroot
+  # noqa: command-instead-of-module module doesn't work inside chroot

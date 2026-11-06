@@ -102,7 +102,8 @@
         # NOTE: drop-in needed to override vendor drop-ins (e.g. Ubuntu 26.04 ships
         # /usr/lib/systemd/resolved.conf.d/ with MulticastDNS=no) which take precedence
         # over /etc/systemd/resolved.conf
-        dest: "/etc/systemd/resolved.conf.d/99-custom.conf"
+        # 90-: read before the pihole role's 91-pihole.conf, which overrides it on Pi-hole hosts
+        dest: "/etc/systemd/resolved.conf.d/90-network.conf"
         mode: "0644"
 
     - name: "Configure NetworkManager"

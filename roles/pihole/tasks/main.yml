@@ -113,20 +113,29 @@
 
     - name: "Configure systemd-resolved for Pi-hole"
       ansible.builtin.copy:
-        # NOTE: overwrites the network role's drop-in so DNSStubListener=no wins
-        # (drop-ins beat /etc/systemd/resolved.conf, so writing here is required)
-        dest: "/etc/systemd/resolved.conf.d/99-custom.conf"
+        # NOTE: its own drop-in, read after the network role's 90-network.conf, so these settings win.
+        # Written only once Pi-hole is installed, so the host keeps working DNS until then (e.g. first boot).
+        # Pins every setting 90-network.conf sets, so it doesn't depend on that file's values.
+        # Empty DNS=/FallbackDNS=/Domains= clear the lists set by 90-network.conf.
+        dest: "/etc/systemd/resolved.conf.d/91-pihole.conf"
         owner: "root"
         group: "root"
         mode: "0644"
         content: |
           [Resolve]
+          DNS=
           DNS=127.0.0.1#53
+          FallbackDNS=
+          Domains=
+          DNSOverTLS=no
+          DNSSEC=no
           DNSStubListener=no
           MulticastDNS=yes
           LLMNR=no
           Cache=yes
+          CacheFromLocalhost=no
           ReadEtcHosts=yes
+          ResolveUnicastSingleLabel=no
 
     - name: "Configure system DNS"
       ansible.builtin.file:
