@@ -6,6 +6,22 @@ argument_specs:
         description: "Whether ufw should be configured and enabled. When false, ufw is disabled instead."
         type: "bool"
         default: true
+      ufw_default_incoming_policy:
+        description: "Policy for incoming traffic not matched by ufw_rules."
+        type: "str"
+        default: "deny"
+        choices:
+          - "allow"
+          - "deny"
+          - "reject"
+      ufw_default_outgoing_policy:
+        description: "Policy for outgoing traffic not matched by ufw_rules (e.g. 'deny' for a VPN kill switch)."
+        type: "str"
+        default: "allow"
+        choices:
+          - "allow"
+          - "deny"
+          - "reject"
       ufw_rules:
         type: "list"
         elements: "dict"
@@ -24,8 +40,8 @@ argument_specs:
             description: "Same choices as community.general.ufw's own 'rule' argument."
           port:
             type: "int"
-            required: true
-            description: "Destination port to allow."
+            required: false
+            description: "Destination port. Omit to match any port."
           protocol:
             type: "str"
             required: true
@@ -61,10 +77,14 @@ argument_specs:
           from:
             type: "str"
             required: false
-            description: "Source IP/CIDR, or 'any'. Required unless 'interface' is set."
+            description: "Source IP/CIDR, or 'any'. Required unless 'interface' or 'to' is set."
+          to:
+            type: "str"
+            required: false
+            description: "Destination IP/CIDR, or 'any'."
           interface:
             type: "str"
             required: false
             description: >-
-              Restrict the rule to this inbound interface instead of a source IP
-              (e.g. DHCP broadcast). Mutually exclusive with 'from'.
+              Restrict the rule to this interface, inbound or outbound following 'direction',
+              instead of a source IP (e.g. DHCP broadcast in, a VPN tunnel out). Mutually exclusive with 'from'.
