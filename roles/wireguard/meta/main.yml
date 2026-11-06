@@ -2,6 +2,7 @@
 dependencies:
   - role: "bash"
   - role: "systemd"
+  - role: "systemd-resolved"
   - role: "sed"
 galaxy_info:
   author: "a14m"

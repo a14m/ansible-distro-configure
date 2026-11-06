@@ -1,0 +1,10 @@
+---
+- name: "Include OS-specific installation tasks"
+  ansible.builtin.include_tasks: "install-{{ ansible_facts.os_family | lower }}.yml"
+
+- name: "Ensure systemd-resolved is enabled and running"
+  become: true
+  ansible.builtin.systemd_service:
+    name: "systemd-resolved"
+    enabled: true
+    state: "started"

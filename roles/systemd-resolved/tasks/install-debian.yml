@@ -1,0 +1,19 @@
+---
+# Install the package without starting the service; main.yml starts it afterwards.
+#
+# Why: on a fresh install, the package starts systemd-resolved too early, before D-Bus knows about its new
+# `systemd-resolve` user. D-Bus logs `Unknown username "systemd-resolve"` and refuses to give resolved its
+# bus name. Resolved never retries, so it keeps running but nothing can talk to it:
+# - systemd shows it as active, so `state: started` does nothing.
+# - `resolvectl` and `resolvconf` (used by wg-quick for `DNS =`) time out after 25s.
+# Only a restart fixes it.
+#
+# How: `policy_rc_d: 101` creates /usr/sbin/policy-rc.d for this install only. Exit code 101 means
+# "don't start services", which Debian's install scripts respect. The service is installed and enabled,
+# but not started.
+- name: "Ensure systemd-resolved is installed"
+  become: true
+  ansible.builtin.apt:
+    name: "systemd-resolved"
+    state: "present"
+    policy_rc_d: 101

@@ -3,8 +3,6 @@
 - name: "Ensure wireguard is installed"
   become: true
   ansible.builtin.apt:
-    name:
-      - "wireguard-tools"
-      - "systemd-resolved"
+    name: "wireguard-tools"
     state: "present"
     install_recommends: false
