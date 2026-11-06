@@ -107,3 +107,19 @@
   tags:
     # PVE API not available in containers — requires proxmox-ve package
     - "molecule-notest"
+
+# PVE rewrites the container's /etc/resolv.conf on every start unless this file exists
+- name: "Stop PVE from managing /etc/resolv.conf ({{ pve_lxc_id }})"
+  become: true
+  ansible.builtin.command:
+    cmd: >
+      pct exec {{ pve_lxc_id }} -- sh -c
+      'test -e /etc/.pve-ignore.resolv.conf && exit 0;
+      touch /etc/.pve-ignore.resolv.conf;
+      echo "created"'
+  register: pve_lxc_ignore_resolv_conf_result
+  changed_when: "'created' in pve_lxc_ignore_resolv_conf_result.stdout"
+  when: pve_lxc_ignore_resolv_conf
+  tags:
+    # PVE API not available in containers — requires proxmox-ve package
+    - "molecule-notest"

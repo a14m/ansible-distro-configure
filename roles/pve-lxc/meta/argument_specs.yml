@@ -47,3 +47,9 @@ argument_specs:
         elements: "str"
         description: "Individual raw lxc.conf lines to ensure are present (e.g. device passthrough)"
         required: false
+      pve_lxc_ignore_resolv_conf:
+        type: "bool"
+        description: >-
+          Stop PVE from rewriting /etc/resolv.conf (with pve_lxc_dns) on every container start, for containers
+          whose DNS is managed inside them (e.g. systemd-resolved with a VPN's DNS)
+        default: false
