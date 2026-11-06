@@ -69,9 +69,8 @@ obsidian_livesync_password: "CHANGEME"
 obsidian_livesync_passphrase: "CHANGEME"
 
 wireguard_connections:
-  # All wireguard config files are prefixed with wg-
-  # The following connection will be named wg-vpn0
-  vpn0: |
+  # Each key is used as is for /etc/wireguard/<key>.conf and the interface name
+  wg-vpn0: |
     [Interface]
     PrivateKey = your_private_key_here
     Address = 10.2.0.2/32

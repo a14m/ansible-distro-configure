@@ -3,7 +3,7 @@ argument_specs:
   main:
     options:
       wireguard_connections:
-        description: "Dictionary of WireGuard connection configurations"
+        description: "Dictionary of WireGuard connection configurations; each key is the config file and interface name"
         type: "dict"
         default: {}
       wireguard_autostart_connection:

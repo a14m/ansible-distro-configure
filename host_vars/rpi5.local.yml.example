@@ -63,9 +63,8 @@ pihole_dns_hosts:
   - "{{ hostvars['proxy.home.arpa'].network_ipv4_address }} notes.internal"
 
 wireguard_connections:
-  # All wireguard config files are prefixed (internally) with wg-
-  # The following connection/interface will be named wg-vpn2
-  vpn2: |
+  # Each key is used as is for /etc/wireguard/<key>.conf and the interface name
+  wg-vpn2: |
     [Interface]
     PrivateKey = your_private_key_here
     Address = 10.2.0.2/32
