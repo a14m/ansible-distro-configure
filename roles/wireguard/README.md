@@ -29,5 +29,6 @@ wireguard_autostart_connection: "protonvpn-ch-1"
 
 - The role owns `/etc/wireguard/wg-*.conf` entirely: files are overwritten in place (no backup), and any
   `wg-<name>.conf` not present in `wireguard_connections` is deleted.
-- All connections are brought down on every run; only `wireguard_autostart_connection` is then enabled and started.
+- Only `wireguard_autostart_connection` is enabled and running; all other connections are disabled and stopped on
+  every run. The autostart connection restarts when any config changes.
 - `wireguard_autostart_connection` must name a key in `wireguard_connections` or the run fails.

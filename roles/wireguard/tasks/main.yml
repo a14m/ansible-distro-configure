@@ -40,6 +40,7 @@
     mode: "0600"
   loop: "{{ wireguard_connections.keys() }}"
   when: wireguard_connections | length > 0
+  notify: "Restart wireguard autostart connection"
   tags:
     # The reason the test is ignored is the following:
     # 1st run: wireguard role deploys all the configured VPN connections
@@ -47,35 +48,18 @@
     # 2nd run: wireguard sees the file changed, deploys again (changed)
     - molecule-idempotence-notest
 
-- name: "Ensure all wireguard interfaces are disabled on startup"
+- name: "Validate wireguard_autostart_connection"
+  when: wireguard_autostart_connection != ""
+  ansible.builtin.assert:
+    that:
+      - wireguard_autostart_connection in wireguard_connections.keys()
+    fail_msg: "wireguard_autostart_connection '{{ wireguard_autostart_connection }}'
+      is not defined in wireguard_connections"
+
+- name: "Ensure only the autostart connection is enabled and running"
   become: true
   ansible.builtin.systemd_service:
     name: "wg-quick@wg-{{ item }}"
-    enabled: false
-    state: "stopped"
-  when: wireguard_autostart_connection == ""
+    enabled: "{{ item == wireguard_autostart_connection }}"
+    state: "{{ 'started' if item == wireguard_autostart_connection else 'stopped' }}"
   loop: "{{ wireguard_connections.keys() | list }}"
-
-- name: "Configure autostart connection"
-  become: true
-  when: wireguard_autostart_connection != ""
-  block:
-    - name: "Validate wireguard_autostart_connection"
-      ansible.builtin.assert:
-        that:
-          - wireguard_autostart_connection in wireguard_connections.keys()
-        fail_msg: "wireguard_autostart_connection '{{ wireguard_autostart_connection }}'
-          is not defined in wireguard_connections"
-
-    - name: "Ensure all wireguard interfaces are down"
-      ansible.builtin.command:
-        cmd: "wg-quick down wg-{{ item }}"
-      loop: "{{ wireguard_connections.keys() | list }}"
-      changed_when: false
-      failed_when: false
-
-    - name: "Enable and start wg-quick service for connection {{ wireguard_autostart_connection }}"
-      ansible.builtin.systemd_service:
-        name: "wg-quick@wg-{{ wireguard_autostart_connection }}"
-        enabled: true
-        state: "started"
