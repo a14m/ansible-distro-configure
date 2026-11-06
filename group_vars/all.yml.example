@@ -22,3 +22,4 @@ ssh_known_hosts:
   - "[monitor.home.arpa]:2222 ssh-ed25519 AAAA...fMu"
   - "[subscriptions.home.arpa]:2222 ssh-ed25519 AAAA...fMv"
   - "[notes.home.arpa]:2222 ssh-ed25519 AAAA...fMw"
+  - "[downloads.home.arpa]:2222 ssh-ed25519 AAAA...fMx"
