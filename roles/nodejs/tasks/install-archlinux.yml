@@ -1,0 +1,7 @@
+---
+# Node's prebuilt binaries link against libatomic.so.1, shipped by gcc-libs on Arch
+- name: "Ensure libatomic is installed"
+  become: true
+  ansible.builtin.package:
+    name: "gcc-libs"
+    state: "present"

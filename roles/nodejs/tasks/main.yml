@@ -1,4 +1,7 @@
 ---
+- name: "Include OS-specific installation tasks"
+  ansible.builtin.include_tasks: "install-{{ ansible_facts.os_family | lower }}.yml"
+
 - name: "Check installed node versions"
   ansible.builtin.command:
     cmd: "mise ls node"

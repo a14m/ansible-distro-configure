@@ -1,0 +1,7 @@
+---
+# Node's prebuilt binaries link against libatomic.so.1, which minimal Debian-based images lack
+- name: "Ensure libatomic is installed"
+  become: true
+  ansible.builtin.package:
+    name: "libatomic1"
+    state: "present"
