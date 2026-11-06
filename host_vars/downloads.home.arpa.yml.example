@@ -37,3 +37,21 @@ wireguard_connections:
     PublicKey = server_public_key
     AllowedIPs = 0.0.0.0/0
     Endpoint = 100.0.0.113:51820
+
+# Kill switch: all egress is denied except through the tunnel and to its endpoint (must match Endpoint above)
+ufw_default_outgoing_policy: "deny"
+ufw_rules:
+  - rule: "allow"
+    port: "{{ ssh_port }}"
+    protocol: "tcp"
+    direction: "in"
+    from: "10.0.0.0/24"
+  - rule: "allow"
+    protocol: "any"
+    direction: "out"
+    interface: "wg-vpn"
+  - rule: "allow"
+    port: 51820
+    protocol: "udp"
+    direction: "out"
+    to: "100.0.0.113"
