@@ -1,12 +1,6 @@
 ---
-- name: "Include OS-specific variables"
-  ansible.builtin.include_vars: "{{ ansible_facts.os_family | lower }}.yml"
-
-- name: "Ensure wireguard is installed"
-  become: true
-  ansible.builtin.package:
-    name: "{{ wireguard_packages }}"
-    state: "present"
+- name: "Include OS-specific installation tasks"
+  ansible.builtin.include_tasks: "install-{{ ansible_facts.os_family | lower }}.yml"
 
 - name: "Find existing WireGuard connections"
   become: true

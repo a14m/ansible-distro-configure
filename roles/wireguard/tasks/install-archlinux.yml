@@ -1,0 +1,8 @@
+---
+- name: "Ensure wireguard is installed"
+  become: true
+  ansible.builtin.package:
+    name:
+      - "wireguard-tools"
+      - "systemd-resolvconf"
+    state: "present"

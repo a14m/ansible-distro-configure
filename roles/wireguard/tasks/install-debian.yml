@@ -1,0 +1,10 @@
+---
+# wireguard-tools recommends wireguard-modules, which apt satisfies by installing a kernel
+- name: "Ensure wireguard is installed"
+  become: true
+  ansible.builtin.apt:
+    name:
+      - "wireguard-tools"
+      - "systemd-resolved"
+    state: "present"
+    install_recommends: false
