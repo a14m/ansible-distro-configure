@@ -5,6 +5,7 @@ network_packages:
   - "iwd"
 
 network_enabled_services:
+  - "systemd-resolved"
   - "NetworkManager"
 
 network_disabled_services:

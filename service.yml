@@ -103,3 +103,4 @@
     - downloads.home.arpa
   roles:
     - role: "wireguard"
+    - role: "ufw"

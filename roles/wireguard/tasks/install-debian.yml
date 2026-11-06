@@ -1,8 +1,14 @@
 ---
-# wireguard-tools recommends wireguard-modules, which apt satisfies by installing a kernel
+# One apt call: all packages are downloaded before systemd-resolved takes over /etc/resolv.conf.
+# wireguard-tools recommends wireguard-modules, which apt satisfies by installing a kernel.
+# policy_rc_d 101 stops the package from starting resolved mid-install, before D-Bus knows its
+# `systemd-resolve` user (resolved then runs without its bus name); it's started after the install.
 - name: "Ensure wireguard is installed"
   become: true
   ansible.builtin.apt:
-    name: "wireguard-tools"
+    name:
+      - "wireguard-tools"
+      - "systemd-resolved"
     state: "present"
     install_recommends: false
+    policy_rc_d: 101

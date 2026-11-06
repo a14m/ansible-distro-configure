@@ -2,7 +2,6 @@
 dependencies:
   - role: "systemd"
   - role: "coreutils"
-  - role: "systemd-resolved"
 galaxy_info:
   author: "a14m"
   description: "Configure basic distro networking features"
