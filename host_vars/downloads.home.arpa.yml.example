@@ -25,3 +25,15 @@ pve_lxc_ssh_private_key: |
   AAAEBgO+cOwV2j8gNZ/EugDk+vbi0eGrK125vRcE3FOtJJMRDQbJ0JUtVedenMHEzoxuZE
   gMc2MLx2pmgUeDHU+JKBAAAAEm1vbGVjdWxlLXRlc3Qtb25seQECAw==
   -----END OPENSSH PRIVATE KEY-----
+
+wireguard_connections:
+  vpn: |
+    [Interface]
+    PrivateKey = your_private_key_here
+    Address = 10.2.0.2/32
+    DNS = 10.2.0.1
+
+    [Peer]
+    PublicKey = server_public_key
+    AllowedIPs = 0.0.0.0/0
+    Endpoint = 100.0.0.113:51820

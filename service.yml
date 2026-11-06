@@ -96,3 +96,10 @@
     - role: "backup"
     - role: "alloy"
     - role: "ufw"
+
+- name: "Downloads configure"
+  gather_facts: true
+  hosts:
+    - downloads.home.arpa
+  roles:
+    - role: "wireguard"
