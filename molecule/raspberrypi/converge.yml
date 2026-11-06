@@ -67,7 +67,6 @@
     pihole_totp_secret: "CHANGEME"
     pihole_admin_password: "{{ ('changeme' | hash('sha256') | hash('sha256'))[:64] }}"
     pihole_dhcp_enabled: false
-    wireguard_autostart_connection: ""
     wg_portal_hostname: "vpn.example.com"
     grafana_hostname: "monitor.example.com"
     gateway_enabled: true

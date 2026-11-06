@@ -6,7 +6,3 @@ argument_specs:
         description: "Dictionary of WireGuard connection configurations"
         type: "dict"
         default: {}
-      wireguard_autostart_connection:
-        description: "Name of connection to automatically start on boot"
-        type: "str"
-        default: ""

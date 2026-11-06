@@ -1,7 +1,0 @@
----
-- name: "Restart wireguard autostart connection"
-  become: true
-  ansible.builtin.systemd_service:
-    name: "wg-quick@wg-{{ wireguard_autostart_connection }}"
-    state: "restarted"
-  when: wireguard_autostart_connection != ""

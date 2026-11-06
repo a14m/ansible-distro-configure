@@ -40,26 +40,9 @@
     mode: "0600"
   loop: "{{ wireguard_connections.keys() }}"
   when: wireguard_connections | length > 0
-  notify: "Restart wireguard autostart connection"
   tags:
     # The reason the test is ignored is the following:
     # 1st run: wireguard role deploys all the configured VPN connections
     # 1st run: wg_portal updates the (ACL) file permissions /etc/wireguard
     # 2nd run: wireguard sees the file changed, deploys again (changed)
     - molecule-idempotence-notest
-
-- name: "Validate wireguard_autostart_connection"
-  when: wireguard_autostart_connection != ""
-  ansible.builtin.assert:
-    that:
-      - wireguard_autostart_connection in wireguard_connections.keys()
-    fail_msg: "wireguard_autostart_connection '{{ wireguard_autostart_connection }}'
-      is not defined in wireguard_connections"
-
-- name: "Ensure only the autostart connection is enabled and running"
-  become: true
-  ansible.builtin.systemd_service:
-    name: "wg-quick@wg-{{ item }}"
-    enabled: "{{ item == wireguard_autostart_connection }}"
-    state: "{{ 'started' if item == wireguard_autostart_connection else 'stopped' }}"
-  loop: "{{ wireguard_connections.keys() | list }}"

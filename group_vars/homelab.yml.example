@@ -68,7 +68,6 @@ obsidian_livesync_user: "alice"
 obsidian_livesync_password: "CHANGEME"
 obsidian_livesync_passphrase: "CHANGEME"
 
-wireguard_autostart_connection: "vpn0"
 wireguard_connections:
   # All wireguard config files are prefixed with wg-
   # The following connection will be named wg-vpn0

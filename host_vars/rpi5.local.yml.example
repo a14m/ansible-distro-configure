@@ -61,7 +61,6 @@ pihole_dns_hosts:
   - "{{ hostvars['proxy.home.arpa'].network_ipv4_address }} subscriptions.internal"
   - "{{ hostvars['proxy.home.arpa'].network_ipv4_address }} notes.internal"
 
-wireguard_autostart_connection: "vpn2"
 wireguard_connections:
   # All wireguard config files are prefixed (internally) with wg-
   # The following connection/interface will be named wg-vpn2
