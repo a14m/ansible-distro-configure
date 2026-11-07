@@ -19,4 +19,5 @@ containers:
     metrics.home.arpa: {}
     monitor.home.arpa: {}
     notes.home.arpa: {}
+    downloads.home.arpa: {}
     subscriptions.home.arpa: {}

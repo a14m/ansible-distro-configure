@@ -1,0 +1,24 @@
+---
+- name: "Proxy configure"
+  gather_facts: true
+  hosts:
+    - proxy.home.arpa
+  vars:
+    network_ipv4_address: "{{ ansible_facts.default_ipv4.address }}"
+  roles:
+    - role: "caddy"
+
+# Differs from service.yml: no VPN can come up in CI (its default route would also cut the container off), so the
+# kill switch is applied last, after qbittorrent's install still had internet access
+- name: "Downloads configure"
+  gather_facts: true
+  hosts:
+    - downloads.home.arpa
+  vars:
+    # pasta (rootless podman's default net) gives the container the host's IP,
+    # which isn't bindable inside the netns - bind localhost in tests instead.
+    network_ipv4_address: "127.0.0.1"
+  roles:
+    - role: "wireguard"
+    - role: "qbittorrent"
+    - role: "ufw"

@@ -1,0 +1,40 @@
+---
+# Not linked to host_vars/downloads.home.arpa.yml.example: no autostart, the example's tunnel can't come up in CI
+wireguard_connections:
+  wg-vpn: |
+    [Interface]
+    PrivateKey = your_private_key_here
+    Address = 10.2.0.2/32
+    DNS = 10.2.0.1
+
+    [Peer]
+    PublicKey = server_public_key
+    AllowedIPs = 0.0.0.0/0
+    Endpoint = 100.0.0.113:51820
+
+qbittorrent_vpn_connection: "wg-vpn"
+qbittorrent_hostname: "downloads.example.com"
+# yamllint disable-line rule:line-length
+qbittorrent_webui_password_pbkdf2: "YzQwZGZjZWFkMTliNmU3OWExNjg1N2JjYjRiMWI1Nzk=:AyKXFFqGpzFti6M88Ytg09v31D50mPpM3sXElW9iS8rSVpl4Nl2yov9jNxwwjoYeIg4dThOhAyYJZNgIOAscPA=="
+
+ufw_default_outgoing_policy: "deny"
+ufw_rules:
+  - rule: "allow"
+    port: "{{ ssh_port }}"
+    protocol: "tcp"
+    direction: "in"
+    from: "10.0.0.0/24"
+  - rule: "allow"
+    protocol: "any"
+    direction: "out"
+    interface: "wg-vpn"
+  - rule: "allow"
+    port: 51820
+    protocol: "udp"
+    direction: "out"
+    to: "100.0.0.113"
+  - rule: "allow"
+    port: "{{ qbittorrent_webui_port }}"
+    protocol: "tcp"
+    direction: "in"
+    from: "{{ hostvars['proxy.home.arpa'].network_ipv4_address }}"

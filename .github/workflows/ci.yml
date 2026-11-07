@@ -67,6 +67,9 @@ jobs:
           - name: notes
             category: service
             runs_on: "ubuntu-26.04"
+          - name: downloads
+            category: service
+            runs_on: "ubuntu-26.04"
           - name: subscriptions
             category: service
             runs_on: "ubuntu-26.04"
