@@ -1,5 +1,8 @@
 ---
 username: "test_user"
+user_password:
+  # mkpasswd -S mDMEZBDEPxYJKwYB -m sha-512 password123
+  "$6$mDMEZBDEPxYJKwYB$slv6DnpSW9OHdaXidRIxsBws926S6pBmH/3Ahm0LQ2praswygL1jpjI6E6gb75kjFxOxAg8S5fR2HaCyeWNAW0"
 network_wifi_ssid: "TEST_WIFI_SSID"
 network_wifi_pass: "TEST_WIFI_PASS"
 gpg_public_keys:

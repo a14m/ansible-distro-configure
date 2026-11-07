@@ -4,7 +4,7 @@ network_ipv4_address: "10.0.0.254"
 network_ipv4_gateway: "10.0.0.1"
 network_ipv6_method: "disabled"
 
-# Generate with: ssh-keygen -t ed25519 -f host_key -C '' -N ''
+# ssh-keygen -t ed25519 -f host_key -C '' -N ''
 ssh_public_key: "ssh-ed25519 AAAA...fMo"
 ssh_private_key: |
   -----BEGIN OPENSSH PRIVATE KEY-----
@@ -18,7 +18,7 @@ alloy_journal_drop_expressions:
   - "UFW BLOCK.*DST=224.0.0."
   - "UFW BLOCK.*DPT=5353"
 
-# TOTP generator: `openssl rand -base64 32 | head -c "20" | base32`
+# openssl rand -base64 32 | head -c "20" | base32
 pihole_totp_secret: "CHANGEME"
 pihole_port: 8081
 pihole_admin_password: "{{ ('changeme' | hash('sha256') | hash('sha256'))[:64] }}"
@@ -101,8 +101,8 @@ garage_hostname: "s3.internal"
 
 garage_webui_hostname: "web.s3.internal"
 garage_webui_auth_user: "changeme"
-# generate with: htpasswd -nbBC 10 user password
-garage_webui_auth_password_hash: "changeme"
+# htpasswd -nbBC 10 user changeme | cut -d: -f2
+garage_webui_auth_password_hash: "$2y$10$IjJTA6rZBV6Gkss7c4ZCCuhV2rbBgteGgMHiUmQsVO28faMfiGT7y"
 
 # Dedicated Fritz!Box user with the "FRITZ!Box Settings" permission; also enable
 # "Transmit status information over UPnP" (Home Network > Network > Network Settings).
