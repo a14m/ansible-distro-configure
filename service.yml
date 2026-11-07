@@ -118,3 +118,4 @@
   roles:
     - role: "wireguard"
     - role: "ufw"
+    - role: "qbittorrent"

@@ -1,0 +1,101 @@
+---
+- name: "Ensure qbittorrent-nox is installed"
+  become: true
+  ansible.builtin.apt:
+    name: "qbittorrent-nox"
+    state: "present"
+    install_recommends: false
+
+- name: "Create qbittorrent user"
+  become: true
+  ansible.builtin.user:
+    name: "qbittorrent"
+    system: true
+    shell: "/usr/sbin/nologin"
+    home: "/var/lib/qbittorrent"
+    create_home: true
+
+# Created here so they're owned by qbittorrent
+- name: "Ensure qbittorrent config directories exist"
+  become: true
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: "directory"
+    owner: "qbittorrent"
+    group: "qbittorrent"
+    mode: "0700"
+  loop:
+    - "/var/lib/qbittorrent/.config"
+    - "/var/lib/qbittorrent/.config/qBittorrent"
+
+# qBittorrent rewrites its config on exit, so settings are only written while it's stopped
+- name: "Check qbittorrent settings"
+  become: true
+  community.general.ini_file:
+    path: "/var/lib/qbittorrent/.config/qBittorrent/qBittorrent.conf"
+    section: "{{ item.section }}"
+    option: "{{ item.option }}"
+    value: "{{ item.value }}"
+    no_extra_spaces: true
+    owner: "qbittorrent"
+    group: "qbittorrent"
+    mode: "0600"
+  loop: &qbittorrent_settings
+    - { section: "LegalNotice", option: "Accepted", value: "true" }
+    - { section: "BitTorrent", option: 'Session\Interface', value: "{{ qbittorrent_vpn_connection }}" }
+    - { section: "BitTorrent", option: 'Session\InterfaceName', value: "{{ qbittorrent_vpn_connection }}" }
+    - { section: "BitTorrent", option: 'Session\LSDEnabled', value: "false" }   # Local Service Discovery on the LAN
+    - { section: "Preferences", option: 'WebUI\Address', value: "{{ network_ipv4_address }}" }
+    - { section: "Preferences", option: 'WebUI\Port', value: "{{ qbittorrent_webui_port }}" }
+    - { section: "Preferences", option: 'WebUI\Username', value: "{{ qbittorrent_webui_username }}" }
+    - section: "Preferences"
+      option: 'WebUI\Password_PBKDF2'
+      value: '"@ByteArray({{ qbittorrent_webui_password_pbkdf2 }})"'
+    # Logins arrive from the proxy: trust its X-Forwarded-For so failed logins ban the client, not the proxy
+    - { section: "Preferences", option: 'WebUI\ReverseProxySupportEnabled', value: "true" }
+    - { section: "Preferences", option: 'WebUI\TrustedReverseProxiesList', value: "{{ qbittorrent_trusted_proxy }}" }
+  loop_control:
+    label: "{{ item.section }}/{{ item.option }}"
+  check_mode: true
+  register: qbittorrent_settings_check
+
+- name: "Stop qbittorrent before changing its settings"
+  become: true
+  ansible.builtin.systemd_service:
+    name: "qbittorrent-nox@qbittorrent"
+    state: "stopped"
+  when: qbittorrent_settings_check is changed
+  # noqa: no-handler stop, apply and start must run in this order, before the role continues
+
+- name: "Apply qbittorrent settings"
+  become: true
+  community.general.ini_file:
+    path: "/var/lib/qbittorrent/.config/qBittorrent/qBittorrent.conf"
+    section: "{{ item.section }}"
+    option: "{{ item.option }}"
+    value: "{{ item.value }}"
+    no_extra_spaces: true
+    owner: "qbittorrent"
+    group: "qbittorrent"
+    mode: "0600"
+  loop: *qbittorrent_settings
+  loop_control:
+    label: "{{ item.section }}/{{ item.option }}"
+  when: qbittorrent_settings_check is changed
+  # noqa: no-handler stop, apply and start must run in this order, before the role continues
+
+- name: "Ensure qbittorrent is enabled and running"
+  become: true
+  ansible.builtin.systemd_service:
+    name: "qbittorrent-nox@qbittorrent"
+    enabled: true
+    state: "started"
+
+- name: "Create qbittorrent proxy vhost"
+  when: qbittorrent_hostname is defined
+  ansible.builtin.include_role:
+    name: "vhost"
+  vars:
+    vhost_name: "qbittorrent"
+    vhost_nginx_content: "{{ lookup('template', 'qbittorrent.nginx.conf.j2') }}"
+    vhost_caddy_content: "{{ lookup('template', 'qbittorrent.caddy.j2') }}"
