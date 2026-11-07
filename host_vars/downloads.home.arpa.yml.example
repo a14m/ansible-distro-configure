@@ -28,6 +28,7 @@ pve_lxc_ssh_private_key: |
   gMc2MLx2pmgUeDHU+JKBAAAAEm1vbGVjdWxlLXRlc3Qtb25seQECAw==
   -----END OPENSSH PRIVATE KEY-----
 
+wireguard_autostart_connection: "wg-vpn"
 wireguard_connections:
   wg-vpn: |
     [Interface]
