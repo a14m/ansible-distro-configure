@@ -72,10 +72,10 @@
     obsidian_livesync_vaults:
       - path: "{{ ansible_facts.env.HOME }}/obsidian"
         dbname: "obsidian"
+        passphrase: "CHANGEME"
     obsidian_livesync_uri: "https://notes.internal"
     obsidian_livesync_user: "alice"
     obsidian_livesync_password: "CHANGEME"
-    obsidian_livesync_passphrase: "CHANGEME"
     awscli_profile_name: "example"
     awscli_region: "eu-central-1"
     awscli_access_key_id: "CHANGEME"

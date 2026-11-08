@@ -16,6 +16,10 @@ argument_specs:
             type: "str"
             required: true
             description: "CouchDB database to sync against - obsidian_livesync_user must be one of its members"
+          passphrase:
+            type: "str"
+            required: true
+            description: "This vault's E2EE passphrase (encryption + path obfuscation always on)"
       obsidian_livesync_uri:
         type: "str"
         description: >-
@@ -29,11 +33,4 @@ argument_specs:
       obsidian_livesync_password:
         type: "str"
         description: "Password for obsidian_livesync_user"
-        required: true
-      obsidian_livesync_passphrase:
-        type: "str"
-        description: >-
-          End-to-end encryption passphrase. Always enabled by this role - the
-          remote only ever sees ciphertext, including file/folder names
-          (usePathObfuscation is also always enabled alongside it).
         required: true

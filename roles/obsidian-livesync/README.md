@@ -10,12 +10,12 @@ CouchDB connection, E2EE, and the plugin's own self-hosted-CouchDB preset (`PREF
 
 ## Role Variables
 
-- `obsidian_livesync_vaults` list of `{path, dbname}` dicts (required), one per vault, both fields required.
+- `obsidian_livesync_vaults` list of `{path, dbname, passphrase}` dicts (required), one per vault, all fields required.
+  `passphrase` is that vault's E2EE passphrase. Encryption + path obfuscation are always on; the remote only ever sees
+  ciphertext, including file/folder names.
 - `obsidian_livesync_uri` CouchDB URI, e.g. `https://notes.internal` (required). Must be HTTPS for Obsidian Mobile -
   the reverse-proxied hostname, not `couchdb_bind_address`.
 - `obsidian_livesync_user` / `obsidian_livesync_password` CouchDB credentials (required) - one `couchdb_users` entry.
-- `obsidian_livesync_passphrase` E2EE passphrase (required). Encryption + path obfuscation are always on; the remote
-  only ever sees ciphertext, including file/folder names.
 
 ## CouchDB-side requirements
 

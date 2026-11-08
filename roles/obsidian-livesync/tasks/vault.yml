@@ -30,7 +30,7 @@
       couchDB_PASSWORD: "{{ obsidian_livesync_password }}"
       couchDB_DBNAME: "{{ obsidian_livesync_vault.dbname }}"
       encrypt: true
-      passphrase: "{{ obsidian_livesync_passphrase }}"
+      passphrase: "{{ obsidian_livesync_vault.passphrase }}"
       usePathObfuscation: true
       encryptInternalMetadata: true
       # PREFERRED_SETTING_SELF_HOSTED (+ PREFERRED_BASE) from livesync-commonlib's
