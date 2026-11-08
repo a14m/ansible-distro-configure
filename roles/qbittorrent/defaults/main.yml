@@ -1,5 +1,3 @@
 ---
-qbittorrent_vpn_connection: "{{ wireguard_autostart_connection }}"
 qbittorrent_webui_port: 8080
 qbittorrent_webui_username: "admin"
-qbittorrent_trusted_proxy: "{{ hostvars[vhost_proxy_host].network_ipv4_address }}"

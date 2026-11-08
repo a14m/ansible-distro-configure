@@ -7,16 +7,17 @@ argument_specs:
         description: "FQDN for the web UI vhost on the proxy (e.g. downloads.internal). Unset skips the vhost."
       qbittorrent_vpn_connection:
         type: "str"
-        description: "WireGuard interface torrent traffic is bound to"
-        default: "{{ wireguard_autostart_connection }}"
+        description: "WireGuard interface torrent traffic is bound to (e.g. wg-vpn)"
+        required: true
       qbittorrent_webui_port:
         type: "int"
         description: "Port for the web UI to bind on network_ipv4_address"
         default: 8080
       qbittorrent_trusted_proxy:
         type: "str"
-        description: "Reverse proxy IP whose X-Forwarded-For header is trusted for the client IP (login bans)"
-        default: "{{ hostvars[vhost_proxy_host].network_ipv4_address }}"
+        description: >-
+          Reverse proxy IP whose X-Forwarded-For header is trusted for the client IP, so failed logins ban the client
+          instead of the proxy. Unset leaves reverse proxy support off.
       qbittorrent_webui_username:
         type: "str"
         description: "Web UI username"

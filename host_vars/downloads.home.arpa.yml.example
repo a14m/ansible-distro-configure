@@ -51,6 +51,8 @@ wireguard_connections:
 # yamllint disable-line rule:line-length
 qbittorrent_webui_password_pbkdf2: "NWZlZmViMWNjOWMxODA1YWYzMGZjYWFkZTk1NWE2YzA=:oU6UyhtsknUQXJHa+DEMFkjShhhGoUAELb6fr875vhJF+YSibLfSZfFc40/RhTP4A9WALXzI2a+uczBdYa6xlg=="
 qbittorrent_hostname: "downloads.internal"
+qbittorrent_vpn_connection: "wg-vpn"
+qbittorrent_trusted_proxy: "{{ hostvars['proxy.home.arpa'].network_ipv4_address }}"
 
 # Kill switch: all egress is denied except through the tunnel and to its endpoint (must match Endpoint above)
 ufw_default_outgoing_policy: "deny"

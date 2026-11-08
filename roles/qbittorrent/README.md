@@ -20,9 +20,9 @@ user, home `/var/lib/qbittorrent`), binds it to a WireGuard VPN, and sets its we
 - `qbittorrent_webui_username` web UI username (default: `admin`).
 - `qbittorrent_webui_port` web UI port on `network_ipv4_address` (default: `8080`).
 - `qbittorrent_hostname` FQDN / vhost `server_name` (e.g. `downloads.internal`). Undefined skips the proxy vhost.
-- `qbittorrent_trusted_proxy` proxy IP trusted for the client IP in `X-Forwarded-For`, so failed logins ban the
-  client instead of the proxy (default: `vhost_proxy_host`'s `network_ipv4_address`).
-- `qbittorrent_vpn_connection` WireGuard interface torrent traffic is bound to (default: `wireguard_autostart_connection`).
+- `qbittorrent_trusted_proxy` reverse proxy IP trusted for the client IP in `X-Forwarded-For`, so failed logins ban
+  the client instead of the proxy (optional; unset leaves reverse proxy support off).
+- `qbittorrent_vpn_connection` WireGuard interface torrent traffic is bound to, e.g. `wg-vpn` (required).
 
 ## Notes
 

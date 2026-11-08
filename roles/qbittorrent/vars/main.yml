@@ -1,0 +1,20 @@
+---
+qbittorrent_base_settings:
+  - { section: "LegalNotice", option: "Accepted", value: "true" }
+  - { section: "BitTorrent", option: 'Session\Interface', value: "{{ qbittorrent_vpn_connection }}" }
+  - { section: "BitTorrent", option: 'Session\InterfaceName', value: "{{ qbittorrent_vpn_connection }}" }
+  - { section: "BitTorrent", option: 'Session\LSDEnabled', value: "false" }   # Local Service Discovery on the LAN
+  - { section: "Preferences", option: 'WebUI\Address', value: "{{ network_ipv4_address }}" }
+  - { section: "Preferences", option: 'WebUI\Port', value: "{{ qbittorrent_webui_port }}" }
+  - { section: "Preferences", option: 'WebUI\Username', value: "{{ qbittorrent_webui_username }}" }
+  - section: "Preferences"
+    option: 'WebUI\Password_PBKDF2'
+    value: '"@ByteArray({{ qbittorrent_webui_password_pbkdf2 }})"'
+
+# Logins arrive from the proxy: trust its X-Forwarded-For so failed logins ban the client, not the proxy
+qbittorrent_proxy_settings:
+  - { section: "Preferences", option: 'WebUI\ReverseProxySupportEnabled', value: "true" }
+  - { section: "Preferences", option: 'WebUI\TrustedReverseProxiesList', value: "{{ qbittorrent_trusted_proxy }}" }
+
+qbittorrent_settings: >-
+  {{ qbittorrent_base_settings + (qbittorrent_proxy_settings if qbittorrent_trusted_proxy is defined else []) }}
