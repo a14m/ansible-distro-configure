@@ -41,8 +41,8 @@ wireguard_connections:
     AllowedIPs = 0.0.0.0/0
     Endpoint = 100.0.0.113:51820
 
-# PBKDF2 hash of "CHANGEME", generated with:
-# PW=CHANGEME
+# PBKDF2 hash generated with:
+# PW='CHANGEME'
 # S=$(openssl rand -hex 16)
 # K=$(openssl kdf -binary -keylen 64 -kdfopt digest:SHA512 -kdfopt pass:"$PW" \
     # -kdfopt salt:"$S" -kdfopt iter:100000 PBKDF2 | base64 | tr -d '\n')
