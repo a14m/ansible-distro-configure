@@ -9,6 +9,10 @@ argument_specs:
         type: "str"
         description: "WireGuard interface torrent traffic is bound to (e.g. wg-vpn)"
         required: true
+      qbittorrent_save_path:
+        type: "str"
+        description: "Directory torrents download to"
+        default: "/var/lib/qbittorrent/Downloads"
       qbittorrent_webui_port:
         type: "int"
         description: "Port for the web UI to bind on network_ipv4_address"

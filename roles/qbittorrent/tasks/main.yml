@@ -28,6 +28,15 @@
     - "/var/lib/qbittorrent/.config"
     - "/var/lib/qbittorrent/.config/qBittorrent"
 
+- name: "Ensure qbittorrent download directory exists"
+  become: true
+  ansible.builtin.file:
+    path: "{{ qbittorrent_save_path }}"
+    state: "directory"
+    owner: "qbittorrent"
+    group: "qbittorrent"
+    mode: "0755"
+
 # qBittorrent rewrites its config on exit, so settings are only written while it's stopped
 - name: "Check qbittorrent settings"
   become: true

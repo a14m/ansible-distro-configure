@@ -18,6 +18,7 @@ user, home `/var/lib/qbittorrent`), binds it to a WireGuard VPN, and sets its we
   ```
 
 - `qbittorrent_webui_username` web UI username (default: `admin`).
+- `qbittorrent_save_path` directory torrents download to (default: `/var/lib/qbittorrent/Downloads`).
 - `qbittorrent_webui_port` web UI port on `network_ipv4_address` (default: `8080`).
 - `qbittorrent_hostname` FQDN / vhost `server_name` (e.g. `downloads.internal`). Undefined skips the proxy vhost.
 - `qbittorrent_trusted_proxy` reverse proxy IP trusted for the client IP in `X-Forwarded-For`, so failed logins ban
@@ -30,4 +31,3 @@ user, home `/var/lib/qbittorrent`), binds it to a WireGuard VPN, and sets its we
   interfaces, and resumes when the tunnel is back.
 - Only the settings above are managed in `qBittorrent.conf`; qBittorrent rewrites the file on exit, so they're
   applied while it's stopped. Everything else stays editable in the web UI.
-- Downloads go to `/var/lib/qbittorrent/Downloads` by default.

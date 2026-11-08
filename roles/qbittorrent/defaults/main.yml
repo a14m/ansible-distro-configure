@@ -1,3 +1,4 @@
 ---
 qbittorrent_webui_port: 8080
 qbittorrent_webui_username: "admin"
+qbittorrent_save_path: "/var/lib/qbittorrent/Downloads"
