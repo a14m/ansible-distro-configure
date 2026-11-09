@@ -7,7 +7,7 @@ Ansible roles and playbooks to configure different *nix distros.
 - [mise][mise] - `mise install` then `uv sync` installs the pinned `ansible-core` / `ansible-lint` / `molecule`.
   Run via `uv run`, e.g. `uv run ansible-playbook site.yml --ask-become-pass`.
 - [`git-crypt`][git-crypt] - optional, for encrypted `host_vars/*.yml`. Not using it:
-  `rm .gitattributes && cp host_vars/laptop.local.yml.example host_vars/laptop.local.yml` (per host).
+  `rm .gitattributes && cp host_vars/laptop.lan.yml.example host_vars/laptop.lan.yml` (per host).
 
 [mise]: https://mise.jdx.dev/
 [git-crypt]: https://github.com/AGWA/git-crypt
@@ -22,7 +22,7 @@ Configure SSH login (user/key/port) for `username` in `~/.ssh/config`, then:
 
 ```bash
 tee ~/.ssh/config << EOF
-Host *.local
+Host *.lan
   User u53rnam3
   Port 1337
   ForwardAgent yes
@@ -30,11 +30,11 @@ Host *.local
 EOF
 
 git clone https://git.sr.ht/~a14m/ansible-distro-configure /opt/distro-configure
-cp /opt/distro-configure/host_vars/${HOSTNAME}.yml.example /opt/distro-configure/host_vars/${HOSTNAME}.yml
+cp /opt/distro-configure/host_vars/${HOSTNAME}.lan.yml.example /opt/distro-configure/host_vars/${HOSTNAME}.lan.yml
 
 cd /opt/distro-configure
 ansible-galaxy install -r requirements.yml
-ansible-playbook site.yml --ask-become-pass --limit ${HOSTNAME}
+ansible-playbook site.yml --ask-become-pass --limit ${HOSTNAME}.lan
 ```
 
 ## Services
@@ -42,9 +42,9 @@ ansible-playbook site.yml --ask-become-pass --limit ${HOSTNAME}
 `*.home.arpa` resolves straight to a host's own IP - direct, plain HTTP, no vhost. `*.internal` goes through the
 central Caddy on `proxy.home.arpa` - no port, self-signed TLS via Caddy's internal CA (`.internal` is IANA-reserved
 for this, RFC 9476). Override any `*.internal` name with the role's `*_hostname` var. FQDNs resolve via Pi-hole
-(`pihole_dns_hosts` in `host_vars/rpi5.local.yml`).
+(`pihole_dns_hosts` in `host_vars/rpi5.lan.yml`).
 
-### On `rpi5.local`
+### On `rpi5.lan`
 
 | Service | `*.home.arpa` | `*.internal` | Description |
 |---|---|---|---|
@@ -53,7 +53,9 @@ for this, RFC 9476). Override any `*.internal` name with the role's `*_hostname`
 | Garage S3 API | [`s3.home.arpa`](http://s3.home.arpa:3900/) | [`s3.internal`](https://s3.internal) | S3-compatible object store API |
 | Garage webui | [`s3.home.arpa`](http://s3.home.arpa:3909/) | [`web.s3.internal`](https://web.s3.internal) | Garage admin UI |
 
-### LXC containers on `pve.local`
+### LXC containers on Proxmox VE
+
+Each container runs on the node set by `pve_lxc_node` in its `host_vars`
 
 | Service | `*.home.arpa` | `*.internal` | Description |
 |---|---|---|---|
@@ -66,7 +68,7 @@ for this, RFC 9476). Override any `*.internal` name with the role's `*_hostname`
 | Loki | `logs.home.arpa` | - | Log aggregation (queried directly on port 3100) |
 | Wallos | [`subscriptions.home.arpa`](http://subscriptions.home.arpa:8282/) | [`subscriptions.internal`](https://subscriptions.internal) | Subscription/recurring-cost tracker |
 | CouchDB | `notes.home.arpa` | [`notes.internal`](https://notes.internal) | Backend for Obsidian LiveSync |
-| Proxmox VE | [`pve.local`](https://pve.local:8006/) | - | PVE hypervisor web UI (on `pve.local` itself) |
+| Proxmox VE | [`pve-01.lan`](https://pve-01.lan:8006/), [`pve-02.lan`](https://pve-02.lan:8006/) | - | PVE hypervisor web UI (on the nodes themselves) |
 
 `cgit_hostname` / `radicale_hostname` can instead be a public domain, for access outside the LAN via the
 `cloudflared` tunnel (`cgit_clone_prefix` keeps the LAN clone URL separate).
@@ -82,7 +84,7 @@ on the device (LAN or via the `tailscale.home.arpa` subnet router) and import it
 
 Every host runs `ufw` (`roles/ufw`), deny-all inbound, with explicit `ufw_rules` per host. **Every host's
 `ufw_rules` must include its own `ssh_port` allow entry** - there's no implicit default, and applying the role
-without one locks the host out over SSH (recover via `pve.local`'s console for LXCs, physical/BMC console
+without one locks the host out over SSH (recover via `pve-01.lan`'s console for LXCs, physical/BMC console
 otherwise). Copy the SSH entry from an existing `host_vars/*.yml`.
 
 Most container admin UIs only allow `proxy.home.arpa` as source. For direct browser access to a locked-down

@@ -38,7 +38,7 @@ argument_specs:
         default: 6
       backup_repo:
         type: "str"
-        description: "Restic repository URL (e.g. s3:http://machine.local:3900/backups)"
+        description: "Restic repository URL (e.g. s3:http://machine.lan:3900/backups)"
         required: true
       backup_s3_region:
         type: "str"

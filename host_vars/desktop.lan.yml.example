@@ -5,7 +5,7 @@ network_ipv4_gateway: "10.0.0.254"
 network_ipv4_dns: "10.0.0.254"
 network_ipv6_method: "disabled"
 
-# Generate with: ssh-keygen -t ed25519 -f host_key -C '' -N ''
+# ssh-keygen -t ed25519 -f host_key -C '' -N ''
 ssh_public_key: "ssh-ed25519 AAAA...fMo"
 ssh_private_key: |
   -----BEGIN OPENSSH PRIVATE KEY-----
@@ -61,7 +61,7 @@ backup_paths:
 backup_paths_exclude:
   - "/home/test_user/.config/zen/firefox-mpris"
 backup_systemd_schedule: "Sun *-*-*"
-backup_repo: "s3:http://backup-host.local:3900/backups"
+backup_repo: "s3:http://backup-host.lan:3900/backups"
 backup_s3_region: "garage"
 backup_access_key_id: "changeme"
 backup_secret_access_key: "changeme"

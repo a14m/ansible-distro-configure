@@ -3,6 +3,7 @@ network_ipv4_address: "10.0.0.103"
 network_ipv4_gateway: "10.0.0.254"
 network_ipv4_dns: "10.0.0.254"
 
+pve_lxc_node: "pve-01.lan"
 pve_lxc_id: 103
 pve_lxc_hostname: "tailscale"
 pve_lxc_template: "alpine-3.24-default_20260714_amd64.tar.xz"
@@ -18,6 +19,7 @@ pve_lxc_configs:
   - "lxc.cgroup2.devices.allow: c 10:200 rwm"
   - "lxc.mount.entry: /dev/net/tun dev/net/tun none bind,create=file"
 pve_lxc_ssh_port: 2222
+# ssh-keygen -t ed25519 -f host_key -C '' -N ''
 pve_lxc_ssh_public_key: "ssh-ed25519 AAAA...fMo"
 pve_lxc_ssh_private_key: |
   -----BEGIN OPENSSH PRIVATE KEY-----

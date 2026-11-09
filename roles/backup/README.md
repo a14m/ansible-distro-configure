@@ -20,7 +20,7 @@ Backs up a set of paths to an S3-compatible restic repository on a schedule, and
 
 ### Restic repository
 
-- `backup_repo` **Required** repo URL, e.g. `s3:http://machine.local:3900/backups`. The role appends
+- `backup_repo` **Required** repo URL, e.g. `s3:http://machine.lan:3900/backups`. The role appends
   `/{{ backup_name }}`.
 - `backup_access_key_id` / `backup_secret_access_key` **Required** S3 credentials.
 - `backup_password` **Required** restic encryption password. Losing it makes every snapshot unrecoverable - it's

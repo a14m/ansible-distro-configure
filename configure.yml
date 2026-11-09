@@ -2,9 +2,9 @@
 - name: "Development machine configure"
   gather_facts: true
   hosts:
-    - desktop.local
-    - macbook.local
-    - laptop.local
+    - desktop.lan
+    - macbook.lan
+    - laptop.lan
   roles:
     - role: "ufw"
     - role: "locales"
@@ -59,7 +59,7 @@
     - role: "openlogi"
     - role: "zsa"
     - role: "backup"
-      when: inventory_hostname == "desktop.local"
+      when: inventory_hostname == "desktop.lan"
   tasks:
     - name: "Configure distro roles"
       when: ansible_facts.distribution == role.distro
@@ -83,7 +83,7 @@
 - name: "Raspberry Pi configure"
   gather_facts: true
   hosts:
-    - rpi5.local
+    - rpi5.lan
   roles:
     - role: "ufw"
     - role: "pihole"
@@ -119,7 +119,8 @@
 - name: "Proxmox VE configure"
   gather_facts: true
   hosts:
-    - pve.local
+    - pve-01.lan
+    - pve-02.lan
   roles:
     - role: "ufw"
     - role: "pve"
@@ -168,6 +169,7 @@
       loop: "{{ groups['containers'] }}"
       loop_control:
         loop_var: "service_host"
+      when: hostvars[service_host].pve_lxc_node == inventory_hostname
 
     - name: "Configure SSH on LXC containers"
       tags: ["lxc"]
@@ -183,3 +185,4 @@
       loop: "{{ groups['containers'] }}"
       loop_control:
         loop_var: "service_host"
+      when: hostvars[service_host].pve_lxc_node == inventory_hostname

@@ -3,6 +3,7 @@ network_ipv4_address: "10.0.0.106"
 network_ipv4_gateway: "10.0.0.254"
 network_ipv4_dns: "10.0.0.254"
 
+pve_lxc_node: "pve-01.lan"
 pve_lxc_id: 106
 pve_lxc_hostname: "metrics"
 pve_lxc_template: "alpine-3.24-default_20260714_amd64.tar.xz"
@@ -14,6 +15,7 @@ pve_lxc_ip: "{{ network_ipv4_address }}/24"
 pve_lxc_gateway: "{{ network_ipv4_gateway }}"
 pve_lxc_dns: "{{ network_ipv4_dns }}"
 pve_lxc_ssh_port: 2222
+# ssh-keygen -t ed25519 -f host_key -C '' -N ''
 pve_lxc_ssh_public_key: "ssh-ed25519 AAAA...fMo"
 pve_lxc_ssh_private_key: |
   -----BEGIN OPENSSH PRIVATE KEY-----
@@ -30,17 +32,18 @@ prometheus_port: 9090
 prometheus_retention: "15d"
 prometheus_scrape_interval: "15s"
 prometheus_node_exporter_targets:
-  - "{{ hostvars['rpi5.local'].network_ipv4_address }}:9100"
-  - "{{ hostvars['desktop.local']['network_ipv4_address'] }}:9100"
-  - "{{ hostvars['laptop.local']['network_ipv4_address'] }}:9100"
-  - "{{ hostvars['macbook.local']['network_ipv4_address'] }}:9100"
-  - "{{ hostvars['pve.local']['network_ipv4_address'] }}:9100"
+  - "{{ hostvars['rpi5.lan'].network_ipv4_address }}:9100"
+  - "{{ hostvars['desktop.lan']['network_ipv4_address'] }}:9100"
+  - "{{ hostvars['laptop.lan']['network_ipv4_address'] }}:9100"
+  - "{{ hostvars['macbook.lan']['network_ipv4_address'] }}:9100"
+  - "{{ hostvars['pve-01.lan']['network_ipv4_address'] }}:9100"
+  - "{{ hostvars['pve-02.lan']['network_ipv4_address'] }}:9100"
 prometheus_extra_scrape_configs:
   - name: "garage"
     targets:
-      - "{{ hostvars['rpi5.local'].network_ipv4_address }}:{{ hostvars['rpi5.local'].garage_admin_port }}"
+      - "{{ hostvars['rpi5.lan'].network_ipv4_address }}:{{ hostvars['rpi5.lan'].garage_admin_port }}"
     metrics_path: "/metrics"
-    bearer_token: "{{ hostvars['rpi5.local'].garage_metrics_token }}"
+    bearer_token: "{{ hostvars['rpi5.lan'].garage_metrics_token }}"
   - name: "caddy"
     targets:
       - "{{ hostvars['proxy.home.arpa'].network_ipv4_address }}:{{ hostvars['proxy.home.arpa'].caddy_metrics_port }}"
@@ -55,12 +58,12 @@ prometheus_extra_scrape_configs:
     metrics_path: "/metrics"
   - name: "fritzbox"
     targets:
-      - "{{ hostvars['rpi5.local'].network_ipv4_address }}:9042"
+      - "{{ hostvars['rpi5.lan'].network_ipv4_address }}:9042"
     metrics_path: "/metrics"
     scrape_interval: "60s"
   - name: "pve"
     targets:
-      - "{{ hostvars['pve.local'].network_ipv4_address }}:9221"
+      - "{{ hostvars['pve-01.lan'].network_ipv4_address }}:9221"
     metrics_path: "/pve"
 
 ufw_rules:
