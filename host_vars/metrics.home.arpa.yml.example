@@ -64,6 +64,7 @@ prometheus_extra_scrape_configs:
   - name: "pve"
     targets:
       - "{{ hostvars['pve-01.lan'].network_ipv4_address }}:9221"
+      - "{{ hostvars['pve-02.lan'].network_ipv4_address }}:9221"
     metrics_path: "/pve"
 
 ufw_rules:

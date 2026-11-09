@@ -3,7 +3,7 @@ network_ipv4_address: "10.0.0.111"
 network_ipv4_gateway: "10.0.0.254"
 network_ipv4_dns: "10.0.0.254"
 
-pve_lxc_node: "pve-01.lan"
+pve_lxc_node: "pve-02.lan"
 pve_lxc_id: 111
 pve_lxc_hostname: "downloads"
 pve_lxc_template: "debian-13-standard_13.6-1_amd64.tar.zst"
