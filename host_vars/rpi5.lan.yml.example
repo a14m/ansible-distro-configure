@@ -1,6 +1,4 @@
 ---
-# rpi5 runs the DNS (pihole), so connect by IP to be able to fix it when DNS is down
-ansible_host: "{{ network_ipv4_address }}"
 network_interface: "eth0"
 network_ipv4_address: "10.0.0.254"
 network_ipv4_gateway: "10.0.0.1"
