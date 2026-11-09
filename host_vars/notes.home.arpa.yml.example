@@ -49,7 +49,7 @@ couchdb_databases:
 
 backup_name: "notes"
 backup_paths:
-  - "/opt/couchdb/data"
+  - "/var/lib/couchdb"
 backup_cron_schedule: "0 0 * * 0"
 backup_systemd_schedule: "Sun *-*-*"
 backup_repo: "s3:http://10.0.0.254:3900/backups"
