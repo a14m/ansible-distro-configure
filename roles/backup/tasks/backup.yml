@@ -29,7 +29,7 @@
   become: true
   community.general.capabilities:
     path: "/usr/local/bin/backup-restic"
-    capability: "cap_dac_read_search+ep"
+    capability: "cap_dac_read_search=ep"
     state: "present"
 
 - name: "Create restic cache directory"
