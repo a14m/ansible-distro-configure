@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # shellcheck source=/dev/null
-source "${CREDENTIALS_DIRECTORY}/{{ backup_name }}-backup.env"
+source "${CREDENTIALS_DIRECTORY}/backup-{{ backup_name }}.env"
 
 export RESTIC_REPOSITORY="${BACKUP_REPO}"
 export RESTIC_PASSWORD="${BACKUP_PASSWORD}"
@@ -10,7 +10,7 @@ export AWS_ACCESS_KEY_ID="${BACKUP_ACCESS_KEY_ID}"
 export AWS_SECRET_ACCESS_KEY="${BACKUP_SECRET_ACCESS_KEY}"
 export AWS_DEFAULT_REGION="${BACKUP_S3_REGION}"
 
-CACHE_DIR="/var/cache/{{ backup_name }}-backup"
+CACHE_DIR="/var/cache/backup-{{ backup_name }}"
 
 /usr/local/bin/backup-restic --cache-dir "$CACHE_DIR" snapshots &>/dev/null || /usr/local/bin/backup-restic --cache-dir "$CACHE_DIR" init
 

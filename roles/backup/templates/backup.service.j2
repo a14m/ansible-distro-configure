@@ -13,4 +13,4 @@ User={{ backup_user }}
 Group={{ backup_group }}
 StandardOutput=journal
 StandardError=journal
-LoadCredential={{ backup_name }}-backup.env:/etc/credstore/{{ backup_name }}-backup.env
+LoadCredential=backup-{{ backup_name }}.env:/etc/credstore/backup-{{ backup_name }}.env

@@ -15,7 +15,7 @@
     marker: "# {mark} ANSIBLE BACKUP {{ backup_name }} CRON"
     block: >-
       {{ backup_cron_schedule }} /usr/local/bin/backup-{{ backup_name }}
-      >> /var/log/{{ backup_name }}-backup.log 2>&1
+      >> /var/log/backup-{{ backup_name }}.log 2>&1
     create: true
     owner: "root"
     group: "root"

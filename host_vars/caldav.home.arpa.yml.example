@@ -67,8 +67,8 @@ backup_password: "changeme"
 alloy_file_scrape_targets:
   - name: "radicale"
     path: "/var/log/radicale/radicale.log"
-  - name: "caldav-backup"
-    path: "/var/log/caldav-backup.log"
+  - name: "backup-caldav"
+    path: "/var/log/backup-caldav.log"
 
 ufw_rules:
   - rule: "allow"

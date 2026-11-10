@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # shellcheck source=/dev/null
-source "/etc/credstore/{{ backup_name }}-backup.env"
+source "/etc/credstore/backup-{{ backup_name }}.env"
 
 export RESTIC_REPOSITORY="${BACKUP_REPO}"
 export RESTIC_PASSWORD="${BACKUP_PASSWORD}"
@@ -44,7 +44,7 @@ fi
 # --target /, as a guardrail against unbounded deletion, so scope it to
 # exactly the paths this job backs up.
 restic restore "{{ backup_restore_id }}" \
-  --cache-dir "/var/cache/{{ backup_name }}-restore" \
+  --cache-dir "/var/cache/restore-{{ backup_name }}" \
   --target "$TARGET" \
   --delete \
   --include {{ backup_paths | map('quote') | join(' --include ') }}

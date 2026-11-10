@@ -2,7 +2,7 @@
 - name: "Create restic restore cache directory"
   become: true
   ansible.builtin.file:
-    path: "/var/cache/{{ backup_name }}-restore"
+    path: "/var/cache/restore-{{ backup_name }}"
     state: "directory"
     owner: "root"
     group: "root"

@@ -51,8 +51,8 @@ backup_secret_access_key: "CHANGEME"
 backup_password: "CHANGEME"
 
 alloy_file_scrape_targets:
-  - name: "headscale-backup"
-    path: "/var/log/headscale-backup.log"
+  - name: "backup-headscale"
+    path: "/var/log/backup-headscale.log"
 
 ufw_rules:
   - rule: "allow"

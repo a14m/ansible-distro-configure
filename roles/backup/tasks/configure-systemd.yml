@@ -12,7 +12,7 @@
   become: true
   ansible.builtin.template:
     src: "backup.service.j2"
-    dest: "/etc/systemd/system/{{ backup_name }}-backup.service"
+    dest: "/etc/systemd/system/backup-{{ backup_name }}.service"
     owner: "root"
     group: "root"
     mode: "0644"
@@ -22,7 +22,7 @@
   become: true
   ansible.builtin.template:
     src: "backup.timer.j2"
-    dest: "/etc/systemd/system/{{ backup_name }}-backup.timer"
+    dest: "/etc/systemd/system/backup-{{ backup_name }}.timer"
     owner: "root"
     group: "root"
     mode: "0644"
@@ -31,7 +31,7 @@
 - name: "Enable and start backup timer"
   become: true
   ansible.builtin.systemd_service:
-    name: "{{ backup_name }}-backup.timer"
+    name: "backup-{{ backup_name }}.timer"
     enabled: true
     state: "started"
     daemon_reload: true

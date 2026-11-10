@@ -2,14 +2,14 @@
 set -euo pipefail
 
 # shellcheck source=/dev/null
-source "/etc/credstore/{{ backup_name }}-backup.env"
+source "/etc/credstore/backup-{{ backup_name }}.env"
 
 export RESTIC_REPOSITORY="${BACKUP_REPO}"
 export RESTIC_PASSWORD="${BACKUP_PASSWORD}"
 export AWS_ACCESS_KEY_ID="${BACKUP_ACCESS_KEY_ID}"
 export AWS_SECRET_ACCESS_KEY="${BACKUP_SECRET_ACCESS_KEY}"
 export AWS_DEFAULT_REGION="${BACKUP_S3_REGION}"
-export CACHE_DIR="/var/cache/{{ backup_name }}-backup"
+export CACHE_DIR="/var/cache/backup-{{ backup_name }}"
 
 # -p (--preserve-environment) -s (--shell): busybox su has no long-form flags
 exec su -p -s /bin/sh {{ backup_user }} <<'BACKUP_SU_EOF'

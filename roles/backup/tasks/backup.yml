@@ -35,7 +35,7 @@
 - name: "Create restic cache directory"
   become: true
   ansible.builtin.file:
-    path: "/var/cache/{{ backup_name }}-backup"
+    path: "/var/cache/backup-{{ backup_name }}"
     state: "directory"
     owner: "{{ backup_user }}"
     group: "{{ backup_group }}"
@@ -54,7 +54,7 @@
   become: true
   ansible.builtin.template:
     src: "backup.env.j2"
-    dest: "/etc/credstore/{{ backup_name }}-backup.env"
+    dest: "/etc/credstore/backup-{{ backup_name }}.env"
     owner: "root"
     group: "root"
     mode: "0600"

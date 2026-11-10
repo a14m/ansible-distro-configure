@@ -38,9 +38,9 @@ Backs up a set of paths to an S3-compatible restic repository on a schedule, and
 - Creates the `backup_user` system account (`nologin`, no home); restic never runs as root for backups.
 - Reads `backup_paths` through `/usr/local/bin/backup-restic`, a restic copy with `cap_dac_read_search` (read any
   file, nothing else), executable only by `backup_group` (`0750`).
-- Writes credentials to `/etc/credstore/{{ backup_name }}-backup.env` (root:root, `0600`), quoted, under inert
+- Writes credentials to `/etc/credstore/backup-{{ backup_name }}.env` (root:root, `0600`), quoted, under inert
   `BACKUP_*` names - not the ambient `RESTIC_*`/`AWS_*` names, so a stray `source` elsewhere can't hijack them.
-- Dedicated restic cache at `/var/cache/{{ backup_name }}-backup` (no home dir for the account).
+- Dedicated restic cache at `/var/cache/backup-{{ backup_name }}` (no home dir for the account).
 - Scheduling:
   - **systemd**: `LoadCredential=` service + timer - the secret never lands in the unit's tracked environment.
   - **OpenRC**: append-only `blockinfile` entry in `/etc/crontabs/root`; script runs as root, reads the credential
@@ -52,8 +52,8 @@ Backs up a set of paths to an S3-compatible restic repository on a schedule, and
 **systemd** - run the *service*, not the script (the script needs `$CREDENTIALS_DIRECTORY`, set only by the unit):
 
 ```bash
-sudo systemctl start {{ backup_name }}-backup.service   # blocks until done
-journalctl -u {{ backup_name }}-backup.service -n 50
+sudo systemctl start backup-{{ backup_name }}.service   # blocks until done
+journalctl -u backup-{{ backup_name }}.service -n 50
 ```
 
 **OpenRC** - the script reads the fixed credential path, so run it directly:
@@ -62,10 +62,10 @@ journalctl -u {{ backup_name }}-backup.service -n 50
 Verify a snapshot landed:
 
 ```bash
-source /etc/credstore/{{ backup_name }}-backup.env
+source /etc/credstore/backup-{{ backup_name }}.env
 export RESTIC_REPOSITORY="$BACKUP_REPO" RESTIC_PASSWORD="$BACKUP_PASSWORD" \
        AWS_ACCESS_KEY_ID="$BACKUP_ACCESS_KEY_ID" AWS_SECRET_ACCESS_KEY="$BACKUP_SECRET_ACCESS_KEY"
-restic --cache-dir "/var/cache/{{ backup_name }}-backup" snapshots
+restic --cache-dir "/var/cache/backup-{{ backup_name }}" snapshots
 ```
 
 ## Restore process
