@@ -12,15 +12,15 @@ export AWS_DEFAULT_REGION="${BACKUP_S3_REGION}"
 
 CACHE_DIR="/var/cache/{{ backup_name }}-backup"
 
-restic --cache-dir "$CACHE_DIR" snapshots &>/dev/null || restic --cache-dir "$CACHE_DIR" init
+/usr/local/bin/backup-restic --cache-dir "$CACHE_DIR" snapshots &>/dev/null || /usr/local/bin/backup-restic --cache-dir "$CACHE_DIR" init
 
-restic --cache-dir "$CACHE_DIR" backup \
+/usr/local/bin/backup-restic --cache-dir "$CACHE_DIR" backup \
 {% for path in backup_paths_exclude -%}
   --exclude {{ path | quote }} \
 {% endfor -%}
   {{ backup_paths | map('quote') | join(' ') }}
 
-restic --cache-dir "$CACHE_DIR" forget \
+/usr/local/bin/backup-restic --cache-dir "$CACHE_DIR" forget \
   --keep-daily {{ backup_retention_daily }} \
   --keep-weekly {{ backup_retention_weekly }} \
   --keep-monthly {{ backup_retention_monthly }} \

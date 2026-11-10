@@ -1,0 +1,64 @@
+---
+- name: "Create backup group"
+  become: true
+  ansible.builtin.group:
+    name: "{{ backup_group }}"
+    system: true
+
+- name: "Create backup user"
+  become: true
+  ansible.builtin.user:
+    name: "{{ backup_user }}"
+    group: "{{ backup_group }}"
+    system: true
+    shell: "/sbin/nologin"
+    create_home: false
+
+# Restic copy that can read any file (cap_dac_read_search), executable only by the backup group
+- name: "Deploy backup-only restic binary"
+  become: true
+  ansible.builtin.copy:
+    remote_src: true
+    src: "/usr/local/bin/restic"
+    dest: "/usr/local/bin/backup-restic"
+    owner: "root"
+    group: "{{ backup_group }}"
+    mode: "0750"
+
+- name: "Grant backup-only restic read access to all files"
+  become: true
+  community.general.capabilities:
+    path: "/usr/local/bin/backup-restic"
+    capability: "cap_dac_read_search+ep"
+    state: "present"
+
+- name: "Create restic cache directory"
+  become: true
+  ansible.builtin.file:
+    path: "/var/cache/{{ backup_name }}-backup"
+    state: "directory"
+    owner: "{{ backup_user }}"
+    group: "{{ backup_group }}"
+    mode: "0700"
+
+- name: "Create credential store directory"
+  become: true
+  ansible.builtin.file:
+    path: "/etc/credstore"
+    state: "directory"
+    owner: "root"
+    group: "root"
+    mode: "0700"
+
+- name: "Deploy backup credentials"
+  become: true
+  ansible.builtin.template:
+    src: "backup.env.j2"
+    dest: "/etc/credstore/{{ backup_name }}-backup.env"
+    owner: "root"
+    group: "root"
+    mode: "0600"
+  no_log: true
+
+- name: "Include service-manager-specific configuration tasks"
+  ansible.builtin.include_tasks: "configure-{{ ansible_facts.service_mgr }}.yml"

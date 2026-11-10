@@ -1,7 +1,7 @@
 ---
 dependencies:
-  - role: "acl"
   - role: "bash"
+  - role: "libcap"
   - role: "restic"
   - role: "systemd"
     when: ansible_facts.service_mgr == "systemd"
