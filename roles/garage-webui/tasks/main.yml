@@ -56,6 +56,8 @@
 
     - name: "Create garage-webui proxy vhost"
       when: garage_webui_hostname is defined
+      tags:
+        - "vhost"
       ansible.builtin.include_role:
         name: "vhost"
       vars:

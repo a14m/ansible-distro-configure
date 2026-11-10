@@ -96,6 +96,8 @@
 
 - name: "Create wg-portal proxy vhost"
   when: wg_portal_hostname is defined
+  tags:
+    - "vhost"
   ansible.builtin.include_role:
     name: "vhost"
   vars:

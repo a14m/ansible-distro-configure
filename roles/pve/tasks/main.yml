@@ -95,6 +95,8 @@
 
 - name: "Create PVE proxy vhost"
   when: pve_hostname is defined
+  tags:
+    - "vhost"
   ansible.builtin.include_role:
     name: "vhost"
   vars:

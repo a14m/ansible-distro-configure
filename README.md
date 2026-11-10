@@ -37,6 +37,9 @@ ansible-galaxy install -r requirements.yml
 ansible-playbook site.yml --ask-become-pass --limit ${HOSTNAME}.lan
 ```
 
+Note: the `vhost` role is delegated to `proxy.home.arpa` (an LXC on `pve-01.lan`); when that host is down (e.g. while
+reinstalling the Proxmox node), add `--skip-tags vhost` to skip the vhost configuration.
+
 ## Services
 
 `*.home.arpa` resolves straight to a host's own IP - direct, plain HTTP, no vhost. `*.internal` goes through the

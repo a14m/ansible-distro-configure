@@ -95,6 +95,8 @@
 
 - name: "Create radicale proxy vhost"
   when: radicale_hostname is defined
+  tags:
+    - "vhost"
   ansible.builtin.include_role:
     name: "vhost"
   vars:
