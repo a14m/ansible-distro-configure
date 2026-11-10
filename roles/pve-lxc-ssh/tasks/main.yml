@@ -6,7 +6,7 @@
       pct exec {{ pve_lxc_id }} -- sh -c '
       . /etc/os-release;
       case $ID in
-        alpine) apk info openssh ;;
+        alpine) apk info -e openssh ;;
         debian|ubuntu) dpkg -l openssh-server ;;
         *) echo "Unsupported distro: $ID" && exit 1 ;;
       esac;'
