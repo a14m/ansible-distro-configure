@@ -53,6 +53,7 @@ radicale_collections:
     members: ["bob"]
 
 backup_name: "caldav"
+backup_service: "radicale"
 backup_paths:
   - "/var/lib/radicale/collections"
 backup_cron_schedule: "0 0 * * 0"

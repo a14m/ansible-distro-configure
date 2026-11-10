@@ -10,6 +10,29 @@ export AWS_ACCESS_KEY_ID="${BACKUP_ACCESS_KEY_ID}"
 export AWS_SECRET_ACCESS_KEY="${BACKUP_SECRET_ACCESS_KEY}"
 export AWS_DEFAULT_REGION="${BACKUP_S3_REGION}"
 
+TARGET={{ restore_target | quote }}
+SERVICE={{ backup_service | quote }}
+PATHS=({{ backup_paths | map('quote') | join(' ') }})
+
+# restic restores numeric UID/GIDs, which can map to other users on a rebuilt
+# host, so record the live paths' current owners to re-apply after restore.
+declare -A OWNERS
+for path in "${PATHS[@]}"; do
+  if [ -e "$path" ]; then
+    OWNERS[$path]=$(stat -c '%U:%G' "$path")
+  fi
+done
+
+# Only an in-place restore touches the live data; a staging restore leaves the
+# service running. On failure (set -e) the service stays stopped on purpose.
+if [ "$TARGET" = "/" ] && [ -n "$SERVICE" ]; then
+{% if ansible_facts.service_mgr == "systemd" %}
+  systemctl stop "$SERVICE"
+{% else %}
+  rc-service "$SERVICE" stop
+{% endif %}
+fi
+
 # Runs as root (unlike backup, which drops to an unprivileged user): restore
 # writes into paths owned by other service accounts and needs to set their
 # original ownership/permissions, which requires root.
@@ -22,6 +45,18 @@ export AWS_DEFAULT_REGION="${BACKUP_S3_REGION}"
 # exactly the paths this job backs up.
 restic restore "{{ backup_restore_id }}" \
   --cache-dir "/var/cache/{{ backup_name }}-restore" \
-  --target "{{ restore_target }}" \
+  --target "$TARGET" \
   --delete \
   --include {{ backup_paths | map('quote') | join(' --include ') }}
+
+for path in "${!OWNERS[@]}"; do
+  chown -R "${OWNERS[$path]}" "${TARGET%/}${path}"
+done
+
+if [ "$TARGET" = "/" ] && [ -n "$SERVICE" ]; then
+{% if ansible_facts.service_mgr == "systemd" %}
+  systemctl start "$SERVICE"
+{% else %}
+  rc-service "$SERVICE" start
+{% endif %}
+fi

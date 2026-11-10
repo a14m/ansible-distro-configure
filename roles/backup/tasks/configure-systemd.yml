@@ -3,7 +3,7 @@
   become: true
   ansible.builtin.template:
     src: "backup-systemd.sh.j2"
-    dest: "/usr/local/bin/{{ backup_name }}-backup"
+    dest: "/usr/local/bin/backup-{{ backup_name }}"
     owner: "root"
     group: "root"
     mode: "0755"

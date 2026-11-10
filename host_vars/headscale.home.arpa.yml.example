@@ -39,6 +39,7 @@ headscale_policy_auto_approve_routes:
   - "10.0.0.0/24"
 
 backup_name: "headscale"
+backup_service: "headscale"
 backup_paths:
   - "/var/lib/headscale"
 backup_cron_schedule: "0 0 * * 0"

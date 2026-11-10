@@ -12,7 +12,7 @@
   become: true
   ansible.builtin.template:
     src: "restore.sh.j2"
-    dest: "/usr/local/bin/{{ backup_name }}-restore"
+    dest: "/usr/local/bin/restore-{{ backup_name }}"
     owner: "root"
     group: "root"
     mode: "0755"
@@ -20,5 +20,5 @@
 - name: "Run restore"
   become: true
   ansible.builtin.command:
-    cmd: "/usr/local/bin/{{ backup_name }}-restore"
+    cmd: "/usr/local/bin/restore-{{ backup_name }}"
   changed_when: true

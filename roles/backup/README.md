@@ -30,10 +30,14 @@ Backs up a set of paths to an S3-compatible restic repository on a schedule, and
 
 - `restore_target` **Required for restore** directory to restore into.
 - `backup_restore_id` snapshot ID or `"latest"` (default: `"latest"`).
+- `backup_service` service stopped before and started after an in-place restore (`restore_target=/`); a staging
+  restore leaves it running (default: `""`, nothing stopped).
 
 ## Backup process
 
 - Creates the `backup_user` system account (`nologin`, no home); restic never runs as root for backups.
+- Reads `backup_paths` through `/usr/local/bin/backup-restic`, a restic copy with `cap_dac_read_search` (read any
+  file, nothing else), executable only by `backup_group` (`0750`).
 - Writes credentials to `/etc/credstore/{{ backup_name }}-backup.env` (root:root, `0600`), quoted, under inert
   `BACKUP_*` names - not the ambient `RESTIC_*`/`AWS_*` names, so a stray `source` elsewhere can't hijack them.
 - Dedicated restic cache at `/var/cache/{{ backup_name }}-backup` (no home dir for the account).
@@ -53,7 +57,7 @@ journalctl -u {{ backup_name }}-backup.service -n 50
 ```
 
 **OpenRC** - the script reads the fixed credential path, so run it directly:
-`sudo /usr/local/bin/{{ backup_name }}-backup`
+`sudo /usr/local/bin/backup-{{ backup_name }}`
 
 Verify a snapshot landed:
 
@@ -67,6 +71,8 @@ restic --cache-dir "/var/cache/{{ backup_name }}-backup" snapshots
 ## Restore process
 
 Every restore task is tagged `["never", "restore"]` - a normal run doesn't even deploy the restore script.
+The host must be configured first (credentials file, `bash`) - on a rebuilt host, run the normal playbook before
+restoring.
 
 ```bash
 # latest snapshot
@@ -74,7 +80,13 @@ ansible-playbook service.yml --tags restore -e restore_target=/var/restore/git
 # specific snapshot (find IDs with the restic snapshots command above)
 ansible-playbook service.yml --tags restore \
   -e restore_target=/var/restore/git -e backup_restore_id=<snapshot-id>
+# in place (overwrites live data, stops/starts backup_service)
+ansible-playbook service.yml --limit git.home.arpa --tags restore -e restore_target=/
 ```
+
+`/usr/local/bin/restore-{{ backup_name }}` records the current owner of each live backup path, stops
+`backup_service` (in-place only), restores, `chown -R`s the restored paths back to the recorded owners, then starts
+`backup_service`.
 
 ### Caveats
 
@@ -82,6 +94,8 @@ ansible-playbook service.yml --tags restore \
   under the backed-up paths since is removed. `--delete` only prunes within the backed-up paths, not the rest of
   `restore_target`.
 - Restore runs as root (not `backup_user`) - it must write into other service accounts' paths and restore their
-  original UID/GID/permissions.
+  original permissions. Ownership is reset to the live paths' current owners, since restic restores numeric
+  UID/GIDs that can map to other users on a rebuilt host (e.g. a recreated LXC).
+- A failed restore leaves `backup_service` stopped on purpose (no service on half-restored data).
 - `restore_target` has no default - restore is destructive if misdirected, so the target is a conscious choice
   every time.

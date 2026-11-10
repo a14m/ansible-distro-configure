@@ -49,6 +49,7 @@ couchdb_databases:
     members: ["alice", "bob"]
 
 backup_name: "notes"
+backup_service: "couchdb"
 backup_paths:
   - "/var/lib/couchdb"
 backup_cron_schedule: "0 0 * * 0"

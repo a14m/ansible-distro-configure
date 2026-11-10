@@ -64,6 +64,7 @@ wallos_jobs:
     systemd_schedule: "*-*-* 03:00:00"
 
 backup_name: "subscriptions"
+backup_service: "wallos"
 backup_paths:
   - "{{ wallos_install_dir }}/db"
   - "{{ wallos_install_dir }}/images/uploads/logos"

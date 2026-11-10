@@ -76,6 +76,12 @@ argument_specs:
           AWS_DEFAULT_REGION="$BACKUP_S3_REGION", then run
           restic snapshots
         default: "latest"
+      backup_service:
+        type: "str"
+        description: >-
+          Service stopped before and started after an in-place restore
+          (restore_target "/"). Empty skips it. Only used with --tags restore
+        default: ""
       restore_target:
         type: "str"
         description: "Directory to restore snapshot contents into. Only used with --tags restore"
