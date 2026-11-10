@@ -58,7 +58,7 @@
 
       # Default sshd_config
       AuthorizedKeysFile    .ssh/authorized_keys
-      Subsystem     sftp    /usr/lib/ssh/sftp-server
+      Subsystem     sftp    internal-sftp
       Include /etc/ssh/sshd_config.d/*.conf
   notify:
     - "Reload systemd"
