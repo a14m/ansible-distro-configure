@@ -5,19 +5,9 @@ user, home `/var/lib/qbittorrent`), binds it to a WireGuard VPN, and sets its we
 
 ## Role Variables
 
-- `qbittorrent_webui_password_pbkdf2` web UI password hash (required). Generate it yourself (OpenSSL 3 + `xxd`; the
-  role never sees plaintext):
-
-  ```bash
-  read -rs -p "Password: " PW; echo
-  SALT=$(openssl rand -hex 16)
-  KEY=$(openssl kdf -keylen 64 -kdfopt digest:SHA512 -kdfopt pass:"$PW" \
-        -kdfopt hexsalt:"$SALT" -kdfopt iter:100000 PBKDF2 | tr -d ':\n')
-  echo "$(echo "$SALT" | xxd -r -p | base64):$(echo "$KEY" | xxd -r -p | base64 | tr -d '\n')"
-  unset PW
-  ```
-
-- `qbittorrent_webui_username` web UI username (default: `admin`).
+- `qbittorrent_password` web UI password (required, plaintext); the role writes it as qBittorrent's PBKDF2
+  hash.
+- `qbittorrent_username` web UI username (default: `admin`).
 - `qbittorrent_save_path` directory torrents download to (default: `/var/lib/qbittorrent/Downloads`).
 - `qbittorrent_group` / `qbittorrent_group_id` primary group (and optional GID) owning downloads; share it across
   containers that bind-mount the same folder (default: `qbittorrent`). Downloads are group-writable (`UMask=0002`).

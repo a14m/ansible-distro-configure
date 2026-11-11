@@ -8,10 +8,10 @@ qbittorrent_base_settings:
   - { section: "BitTorrent", option: 'Session\GlobalMaxRatio', value: "{{ qbittorrent_max_ratio }}" }   # then stops
   - { section: "Preferences", option: 'WebUI\Address', value: "{{ network_ipv4_address }}" }
   - { section: "Preferences", option: 'WebUI\Port', value: "{{ qbittorrent_webui_port }}" }
-  - { section: "Preferences", option: 'WebUI\Username', value: "{{ qbittorrent_webui_username }}" }
+  - { section: "Preferences", option: 'WebUI\Username', value: "{{ qbittorrent_username }}" }
   - section: "Preferences"
     option: 'WebUI\Password_PBKDF2'
-    value: '"@ByteArray({{ qbittorrent_webui_password_pbkdf2 }})"'
+    value: '"@ByteArray({{ qbittorrent_password_hash.stdout }})"'
 
 # Logins arrive from the proxy: trust its X-Forwarded-For so failed logins ban the client, not the proxy
 qbittorrent_proxy_settings:

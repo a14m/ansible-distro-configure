@@ -44,15 +44,8 @@ wireguard_connections:
     AllowedIPs = 0.0.0.0/0
     Endpoint = 100.0.0.113:51820
 
-# PBKDF2 hash generated with:
-# PW='CHANGEME'
-# S=$(openssl rand -hex 16)
-# K=$(openssl kdf -binary -keylen 64 -kdfopt digest:SHA512 -kdfopt pass:"$PW" \
-    # -kdfopt salt:"$S" -kdfopt iter:100000 PBKDF2 | base64 | tr -d '\n')
-# echo "$(printf %s "$S" | base64):$K"
-# unset PW S K
-# yamllint disable-line rule:line-length
-qbittorrent_webui_password_pbkdf2: "NWZlZmViMWNjOWMxODA1YWYzMGZjYWFkZTk1NWE2YzA=:oU6UyhtsknUQXJHa+DEMFkjShhhGoUAELb6fr875vhJF+YSibLfSZfFc40/RhTP4A9WALXzI2a+uczBdYa6xlg=="
+qbittorrent_username: "alice"
+qbittorrent_password: "CHANGEME"
 qbittorrent_hostname: "downloads.internal"
 qbittorrent_vpn_connection: "wg-vpn"
 qbittorrent_save_path: "/data/torrents"

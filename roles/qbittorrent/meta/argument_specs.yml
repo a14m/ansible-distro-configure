@@ -33,12 +33,12 @@ argument_specs:
         description: >-
           Reverse proxy IP whose X-Forwarded-For header is trusted for the client IP, so failed logins ban the client
           instead of the proxy. Unset leaves reverse proxy support off.
-      qbittorrent_webui_username:
+      qbittorrent_username:
         type: "str"
         description: "Web UI username"
         default: "admin"
-      qbittorrent_webui_password_pbkdf2:
+      qbittorrent_password:
         type: "str"
-        description: "Web UI password as qBittorrent's 'base64(salt):base64(hash)' PBKDF2-SHA512 string (see README)"
+        description: "Web UI password (plaintext); stored by qBittorrent as a PBKDF2-SHA512 hash"
         required: true
         no_log: true

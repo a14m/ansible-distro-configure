@@ -69,6 +69,26 @@
     mode: "0644"
   notify: "Restart qbittorrent"
 
+# qBittorrent's own format: base64(salt):base64(PBKDF2-SHA512, 100000 rounds, 64 bytes). The salt comes from the host
+# and password instead of being random, so the hash, and with it the config, only changes when the password does.
+- name: "Hash qbittorrent web UI password"
+  ansible.builtin.command:
+    argv:
+      - "python3"
+      - "-c"
+      - |
+        import base64, hashlib, sys
+        salt = bytes.fromhex(sys.argv[1][:32])
+        key = hashlib.pbkdf2_hmac("sha512", sys.stdin.read().encode(), salt, 100000, 64)
+        print(base64.b64encode(salt).decode() + ":" + base64.b64encode(key).decode())
+      - "{{ (inventory_hostname ~ qbittorrent_password) | hash('sha256') }}"
+    stdin: "{{ qbittorrent_password }}"
+    stdin_add_newline: false
+  register: qbittorrent_password_hash
+  changed_when: false
+  check_mode: false
+  no_log: true
+
 # qBittorrent rewrites its config on exit, so settings are only written while it's stopped
 - name: "Check qbittorrent settings"
   become: true
