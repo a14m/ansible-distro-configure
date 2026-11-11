@@ -34,6 +34,7 @@
     onboot: true
     unprivileged: true
     cmode: "shell"
+    timeout: 300   # unpacking the template takes longer than the 30s default on slow (HDD) nodes
     state: present
   tags:
     # PVE API not available in containers — requires proxmox-ve package

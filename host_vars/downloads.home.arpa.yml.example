@@ -16,6 +16,7 @@ pve_lxc_gateway: "{{ network_ipv4_gateway }}"
 pve_lxc_dns: "{{ network_ipv4_dns }}"
 pve_lxc_configs:
   - "features: nesting=1"
+  - "mp0: /srv/data,mp=/data"   # shared media volume
 # DNS comes only from the VPN (systemd-resolved); PVE should not overwrite /etc/resolv.conf in the container
 pve_lxc_ignore_resolv_conf: true
 pve_lxc_ssh_port: 2222
@@ -54,6 +55,10 @@ wireguard_connections:
 qbittorrent_webui_password_pbkdf2: "NWZlZmViMWNjOWMxODA1YWYzMGZjYWFkZTk1NWE2YzA=:oU6UyhtsknUQXJHa+DEMFkjShhhGoUAELb6fr875vhJF+YSibLfSZfFc40/RhTP4A9WALXzI2a+uczBdYa6xlg=="
 qbittorrent_hostname: "downloads.internal"
 qbittorrent_vpn_connection: "wg-vpn"
+qbittorrent_save_path: "/data/torrents"
+qbittorrent_group: "media"
+qbittorrent_group_id: 2000   # same GID in every container sharing /data (102000 on the host)
+qbittorrent_max_ratio: 1     # stop seeding at ratio 1
 qbittorrent_trusted_proxy: "{{ hostvars['proxy.home.arpa'].network_ipv4_address }}"
 
 # Kill switch: all egress is denied except through the tunnel and to its endpoint (must match Endpoint above)

@@ -13,6 +13,17 @@ argument_specs:
         type: "str"
         description: "Directory torrents download to"
         default: "/var/lib/qbittorrent/Downloads"
+      qbittorrent_group:
+        type: "str"
+        description: "Primary group of the qbittorrent user, owning downloads (e.g. a shared 'media' group)"
+        default: "qbittorrent"
+      qbittorrent_group_id:
+        type: "int"
+        description: "GID for qbittorrent_group, to match it across containers sharing a bind mount"
+      qbittorrent_max_ratio:
+        type: "float"
+        description: "Share ratio after which torrents stop seeding (-1 for no limit)"
+        default: -1
       qbittorrent_webui_port:
         type: "int"
         description: "Port for the web UI to bind on network_ipv4_address"

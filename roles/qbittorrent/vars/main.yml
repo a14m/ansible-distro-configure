@@ -5,6 +5,7 @@ qbittorrent_base_settings:
   - { section: "BitTorrent", option: 'Session\InterfaceName', value: "{{ qbittorrent_vpn_connection }}" }
   - { section: "BitTorrent", option: 'Session\LSDEnabled', value: "false" }   # Local Service Discovery on the LAN
   - { section: "BitTorrent", option: 'Session\DefaultSavePath', value: "{{ qbittorrent_save_path }}" }
+  - { section: "BitTorrent", option: 'Session\GlobalMaxRatio', value: "{{ qbittorrent_max_ratio }}" }   # then stops
   - { section: "Preferences", option: 'WebUI\Address', value: "{{ network_ipv4_address }}" }
   - { section: "Preferences", option: 'WebUI\Port', value: "{{ qbittorrent_webui_port }}" }
   - { section: "Preferences", option: 'WebUI\Username', value: "{{ qbittorrent_webui_username }}" }

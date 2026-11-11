@@ -1,0 +1,7 @@
+---
+- name: "Restart qbittorrent"
+  become: true
+  ansible.builtin.systemd_service:
+    name: "qbittorrent-nox@qbittorrent"
+    state: "restarted"
+    daemon_reload: true

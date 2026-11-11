@@ -19,6 +19,9 @@ user, home `/var/lib/qbittorrent`), binds it to a WireGuard VPN, and sets its we
 
 - `qbittorrent_webui_username` web UI username (default: `admin`).
 - `qbittorrent_save_path` directory torrents download to (default: `/var/lib/qbittorrent/Downloads`).
+- `qbittorrent_group` / `qbittorrent_group_id` primary group (and optional GID) owning downloads; share it across
+  containers that bind-mount the same folder (default: `qbittorrent`). Downloads are group-writable (`UMask=0002`).
+- `qbittorrent_max_ratio` share ratio after which torrents stop seeding (default: `-1`, no limit).
 - `qbittorrent_webui_port` web UI port on `network_ipv4_address` (default: `8080`).
 - `qbittorrent_hostname` FQDN / vhost `server_name` (e.g. `downloads.internal`). Undefined skips the proxy vhost.
 - `qbittorrent_trusted_proxy` reverse proxy IP trusted for the client IP in `X-Forwarded-For`, so failed logins ban
