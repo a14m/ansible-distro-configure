@@ -11,6 +11,9 @@ Configures the [Pi-hole](https://github.com/pi-hole/pi-hole) DNS sinkhole.
 - `pihole_dns` upstream DNS servers (default: `[9.9.9.9, 1.1.1.1, 8.8.8.8]`).
 - `pihole_dns_blocking_enabled` toggle DNS blocking (default: `true`).
 - `pihole_dhcp_enabled` toggle the Pi-hole DHCP server (default: `false`).
+- `pihole_dns_hosts` local A records, `IP HOSTNAME` (default: `[]`).
+- `pihole_dnsmasq_lines` raw dnsmasq lines, e.g. `address=/internal/<IP>` to send every `*.internal` to one IP
+  (default: `[]`).
 - `pihole_domain` domain to configure when the Pi is exposed to the internet (default: `""`).
 
 ## Router Setup

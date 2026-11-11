@@ -6,6 +6,9 @@
 # to be forced/modified by some third-party application (like infrastructure-as-code
 # providers) and should not be changed by any means.
 readOnly = false
+{% if pihole_dnsmasq_lines | length > 0 %}
+dnsmasq_lines = {{ pihole_dnsmasq_lines | to_json }}
+{% endif %}
 
 [dns]
 # Array of upstream DNS servers used by Pi-hole

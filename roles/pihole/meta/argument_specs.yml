@@ -72,3 +72,8 @@ argument_specs:
         description: "Custom DNS A records written to pihole.toml [dns] hosts (format: 'IP HOSTNAME')"
         elements: "str"
         default: []
+      pihole_dnsmasq_lines:
+        type: "list"
+        description: "Raw dnsmasq lines (pihole.toml [misc] dnsmasq_lines), e.g. 'address=/internal/IP' for a wildcard"
+        elements: "str"
+        default: []

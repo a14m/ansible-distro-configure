@@ -13,3 +13,4 @@ pihole_dhcp_hosts: []
 pihole_domain: ""
 pihole_port: "8081"
 pihole_dns_hosts: []
+pihole_dnsmasq_lines: []
