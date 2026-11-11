@@ -15,6 +15,7 @@ wireguard_connections:
 qbittorrent_vpn_connection: "wg-vpn"
 qbittorrent_trusted_proxy: "{{ hostvars['proxy.home.arpa'].network_ipv4_address }}"
 qbittorrent_hostname: "downloads.example.com"
+prowlarr_api_key: "00000000000000000000000000000000"
 # yamllint disable-line rule:line-length
 qbittorrent_webui_password_pbkdf2: "YzQwZGZjZWFkMTliNmU3OWExNjg1N2JjYjRiMWI1Nzk=:AyKXFFqGpzFti6M88Ytg09v31D50mPpM3sXElW9iS8rSVpl4Nl2yov9jNxwwjoYeIg4dThOhAyYJZNgIOAscPA=="
 

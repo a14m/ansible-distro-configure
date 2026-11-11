@@ -1,0 +1,33 @@
+---
+argument_specs:
+  main:
+    options:
+      radarr_api_key:
+        type: "str"
+        description: "API key other apps use to talk to Radarr (32 hex chars, e.g. 'openssl rand -hex 16')"
+        required: true
+        no_log: true
+      radarr_hostname:
+        type: "str"
+        description: "FQDN for the web UI vhost on the proxy (e.g. movies.internal). Unset skips the vhost."
+      radarr_allowed_hosts:
+        type: "list"
+        elements: "str"
+        description: "Hostnames/IPs Radarr accepts in the Host header (empty allows all)"
+        default: []
+      radarr_group:
+        type: "str"
+        description: "Primary group of the radarr user (e.g. a shared 'media' group owning /data)"
+        default: "radarr"
+      radarr_group_id:
+        type: "int"
+        description: "GID for radarr_group, to match it across containers sharing a bind mount"
+      radarr_root_folders:
+        type: "list"
+        elements: "str"
+        description: "Library folders to create, owned by radarr and its group (e.g. /data/media/movies)"
+        default: []
+      radarr_port:
+        type: "int"
+        description: "Port for the web UI to bind on network_ipv4_address"
+        default: 7878

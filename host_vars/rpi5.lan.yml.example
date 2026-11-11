@@ -53,6 +53,7 @@ pihole_dns_hosts:
   - "{{ hostvars['subscriptions.home.arpa'].network_ipv4_address }} subscriptions.home.arpa"
   - "{{ hostvars['notes.home.arpa'].network_ipv4_address }} notes.home.arpa"
   - "{{ hostvars['downloads.home.arpa'].network_ipv4_address }} downloads.home.arpa"
+  - "{{ hostvars['media.home.arpa'].network_ipv4_address }} media.home.arpa"
   - "{{ hostvars['headscale.home.arpa'].network_ipv4_address }} headscale.home.arpa"
   # hs.example.com is fronted by the centralized proxy (Caddy) - on-LAN, resolve
   # it directly there instead of hairpinning back out through the router.

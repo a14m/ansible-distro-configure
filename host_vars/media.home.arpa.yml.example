@@ -1,0 +1,77 @@
+---
+network_ipv4_address: "10.0.0.122"
+network_ipv4_gateway: "10.0.0.254"
+network_ipv4_dns: "10.0.0.254"
+
+pve_lxc_node: "pve-02.lan"
+pve_lxc_id: 122
+pve_lxc_hostname: "media"
+pve_lxc_template: "debian-13-standard_13.6-1_amd64.tar.zst"
+pve_lxc_disk: "local-lvm:4" # storage:sizeGB
+pve_lxc_cores: 2
+pve_lxc_memory: 2048
+pve_lxc_mac: "BC:24:11:00:00:0C"
+pve_lxc_ip: "{{ network_ipv4_address }}/24"
+pve_lxc_gateway: "{{ network_ipv4_gateway }}"
+pve_lxc_dns: "{{ network_ipv4_dns }}"
+pve_lxc_configs:
+  - "features: nesting=1"
+  - "mp0: /srv/data,mp=/data"   # shared media volume
+pve_lxc_ssh_port: 39901
+pve_lxc_ssh_public_key: "ssh-ed25519 AAAA...fMo"
+pve_lxc_ssh_private_key: |
+  -----BEGIN OPENSSH PRIVATE KEY-----
+  b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
+  QyNTUxOQAAACAQ0GydCVLVXnXpzBxM6MbmRIDHNjC8dqZoFHgx1PiSgQAAAJi7TmCqu05g
+  qgAAAAtzc2gtZWQyNTUxOQAAACAQ0GydCVLVXnXpzBxM6MbmRIDHNjC8dqZoFHgx1PiSgQ
+  AAAEBgO+cOwV2j8gNZ/EugDk+vbi0eGrK125vRcE3FOtJJMRDQbJ0JUtVedenMHEzoxuZE
+  gMc2MLx2pmgUeDHU+JKBAAAAEm1vbGVjdWxlLXRlc3Qtb25seQECAw==
+  -----END OPENSSH PRIVATE KEY-----
+
+sonarr_hostname: "shows.internal"
+sonarr_api_key: "CHANGEME"
+sonarr_allowed_hosts:
+  - "{{ sonarr_hostname }}"         # through the proxy
+  - "{{ network_ipv4_address }}"    # Prowlarr/Homarr connect directly
+sonarr_group: "media"
+sonarr_group_id: 2000   # same GID in every container sharing /data (102000 on the host)
+sonarr_root_folders:
+  - "/data/media/tv"
+
+radarr_hostname: "movies.internal"
+radarr_api_key: "CHANGEME"
+radarr_allowed_hosts:
+  - "{{ radarr_hostname }}"         # through the proxy
+  - "{{ network_ipv4_address }}"    # Prowlarr/Homarr connect directly
+radarr_group: "media"
+radarr_group_id: 2000
+radarr_root_folders:
+  - "/data/media/movies"
+
+ufw_rules:
+  - rule: "allow"
+    port: "{{ ssh_port }}"
+    protocol: "tcp"
+    direction: "in"
+    from: "10.0.0.0/24"
+  - rule: "allow"
+    port: "{{ sonarr_port }}"
+    protocol: "tcp"
+    direction: "in"
+    from: "{{ hostvars['proxy.home.arpa'].network_ipv4_address }}"
+  - rule: "allow"
+    port: "{{ radarr_port }}"
+    protocol: "tcp"
+    direction: "in"
+    from: "{{ hostvars['proxy.home.arpa'].network_ipv4_address }}"
+# Prowlarr (in downloads) pushes its indexers to Sonarr and Radarr
+  - rule: "allow"
+    port: "{{ sonarr_port }}"
+    protocol: "tcp"
+    direction: "in"
+    from: "{{ hostvars['downloads.home.arpa'].network_ipv4_address }}"
+  - rule: "allow"
+    port: "{{ radarr_port }}"
+    protocol: "tcp"
+    direction: "in"
+    from: "{{ hostvars['downloads.home.arpa'].network_ipv4_address }}"

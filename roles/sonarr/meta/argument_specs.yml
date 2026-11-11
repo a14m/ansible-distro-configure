@@ -1,0 +1,33 @@
+---
+argument_specs:
+  main:
+    options:
+      sonarr_api_key:
+        type: "str"
+        description: "API key other apps use to talk to Sonarr (32 hex chars, e.g. 'openssl rand -hex 16')"
+        required: true
+        no_log: true
+      sonarr_hostname:
+        type: "str"
+        description: "FQDN for the web UI vhost on the proxy (e.g. shows.internal). Unset skips the vhost."
+      sonarr_allowed_hosts:
+        type: "list"
+        elements: "str"
+        description: "Hostnames/IPs Sonarr accepts in the Host header (empty allows all)"
+        default: []
+      sonarr_group:
+        type: "str"
+        description: "Primary group of the sonarr user (e.g. a shared 'media' group owning /data)"
+        default: "sonarr"
+      sonarr_group_id:
+        type: "int"
+        description: "GID for sonarr_group, to match it across containers sharing a bind mount"
+      sonarr_root_folders:
+        type: "list"
+        elements: "str"
+        description: "Library folders to create, owned by sonarr and its group (e.g. /data/media/tv)"
+        default: []
+      sonarr_port:
+        type: "int"
+        description: "Port for the web UI to bind on network_ipv4_address"
+        default: 8989

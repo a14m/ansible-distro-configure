@@ -1,0 +1,108 @@
+---
+- name: "Install sonarr dependencies"
+  become: true
+  ansible.builtin.apt:
+    name:
+      - "libicu76"
+      - "libsqlite3-0"
+      - "python3-lxml"   # for community.general.xml below
+    state: "present"
+    install_recommends: false
+
+- name: "Create sonarr group"
+  become: true
+  ansible.builtin.group:
+    name: "{{ sonarr_group }}"
+    gid: "{{ sonarr_group_id | default(omit) }}"
+    system: true
+
+- name: "Create sonarr user"
+  become: true
+  ansible.builtin.user:
+    name: "sonarr"
+    group: "{{ sonarr_group }}"
+    system: true
+    shell: "/usr/sbin/nologin"
+    home: "/var/lib/sonarr"
+    create_home: true
+
+- name: "Create sonarr root folders"
+  become: true
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: "directory"
+    owner: "sonarr"
+    group: "{{ sonarr_group }}"
+    mode: "2775"   # setgid: new files keep the group
+  loop: "{{ sonarr_root_folders }}"
+
+# Installed once from the latest release; after that sonarr updates itself, so the install dir is its own
+- name: "Install sonarr"
+  become: true
+  ansible.builtin.unarchive:
+    src: "https://services.sonarr.tv/v1/download/main/latest?version=4&os=linux&arch=x64"
+    dest: "/opt"
+    remote_src: true
+    creates: "/opt/Sonarr/Sonarr"
+    owner: "sonarr"
+    group: "{{ sonarr_group }}"
+
+- name: "Create sonarr config file"
+  become: true
+  ansible.builtin.copy:
+    dest: "/var/lib/sonarr/config.xml"
+    content: "<Config></Config>\n"
+    force: false
+    owner: "sonarr"
+    group: "{{ sonarr_group }}"
+    mode: "0600"
+
+# Sonarr keeps unknown keys and adds its own, so only these are managed; everything else stays in the web UI
+- name: "Set sonarr settings"
+  become: true
+  community.general.xml:
+    path: "/var/lib/sonarr/config.xml"
+    xpath: "/Config/{{ item.key }}"
+    value: "{{ item.value | string }}"   # the xml module only takes text; the port would arrive as an int
+  loop:
+    - { key: "BindAddress", value: "{{ network_ipv4_address }}" }
+    - { key: "Port", value: "{{ sonarr_port }}" }
+    - { key: "ApiKey", value: "{{ sonarr_api_key }}" }
+    # AuthenticationMethod stays unset so the first visit asks for the login method and user
+    - { key: "AuthenticationRequired", value: "Enabled" }    # also for LAN addresses, which include the proxy
+    - { key: "AllowedHosts", value: "{{ sonarr_allowed_hosts | join(',') }}" }
+    - { key: "AnalyticsEnabled", value: "False" }
+    - { key: "LaunchBrowser", value: "False" }
+  loop_control:
+    label: "{{ item.key }}"
+  no_log: "{{ item.key == 'ApiKey' }}"
+  notify: "Restart sonarr"
+
+- name: "Install sonarr service"
+  become: true
+  ansible.builtin.template:
+    src: "sonarr.service.j2"
+    dest: "/etc/systemd/system/sonarr.service"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+  notify: "Restart sonarr"
+
+- name: "Ensure sonarr is enabled and running"
+  become: true
+  ansible.builtin.systemd_service:
+    name: "sonarr"
+    enabled: true
+    state: "started"
+    daemon_reload: true
+
+- name: "Create sonarr proxy vhost"
+  when: sonarr_hostname is defined
+  tags:
+    - "vhost"
+  ansible.builtin.include_role:
+    name: "vhost"
+  vars:
+    vhost_name: "sonarr"
+    vhost_nginx_content: "{{ lookup('template', 'sonarr.nginx.conf.j2') }}"
+    vhost_caddy_content: "{{ lookup('template', 'sonarr.caddy.j2') }}"

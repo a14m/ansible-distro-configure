@@ -121,3 +121,12 @@
     - role: "qbittorrent"
     - role: "prowlarr"
     - role: "rsync"
+
+- name: "Media configure"
+  gather_facts: true
+  hosts:
+    - media.home.arpa
+  roles:
+    - role: "ufw"
+    - role: "sonarr"
+    - role: "radarr"

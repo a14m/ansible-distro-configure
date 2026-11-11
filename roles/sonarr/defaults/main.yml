@@ -1,0 +1,5 @@
+---
+sonarr_port: 8989
+sonarr_allowed_hosts: []
+sonarr_group: "sonarr"
+sonarr_root_folders: []

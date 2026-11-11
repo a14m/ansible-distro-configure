@@ -20,4 +20,5 @@ containers:
     monitor.home.arpa: {}
     notes.home.arpa: {}
     downloads.home.arpa: {}
+    media.home.arpa: {}
     subscriptions.home.arpa: {}

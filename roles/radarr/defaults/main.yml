@@ -1,0 +1,5 @@
+---
+radarr_port: 7878
+radarr_allowed_hosts: []
+radarr_group: "radarr"
+radarr_root_folders: []
