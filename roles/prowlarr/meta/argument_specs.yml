@@ -1,0 +1,21 @@
+---
+argument_specs:
+  main:
+    options:
+      prowlarr_api_key:
+        type: "str"
+        description: "API key other apps use to talk to Prowlarr (32 hex chars, e.g. 'openssl rand -hex 16')"
+        required: true
+        no_log: true
+      prowlarr_hostname:
+        type: "str"
+        description: "FQDN for the web UI vhost on the proxy (e.g. search.internal). Unset skips the vhost."
+      prowlarr_allowed_hosts:
+        type: "list"
+        elements: "str"
+        description: "Hostnames/IPs Prowlarr accepts in the Host header (empty allows all)"
+        default: []
+      prowlarr_port:
+        type: "int"
+        description: "Port for the web UI to bind on network_ipv4_address"
+        default: 9696

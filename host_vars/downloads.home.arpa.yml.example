@@ -59,6 +59,12 @@ qbittorrent_save_path: "/data/torrents"
 qbittorrent_group: "media"
 qbittorrent_group_id: 2000   # same GID in every container sharing /data (102000 on the host)
 qbittorrent_max_ratio: 1     # stop seeding at ratio 1
+
+prowlarr_hostname: "search.internal"
+prowlarr_allowed_hosts:
+  - "{{ prowlarr_hostname }}"         # through the proxy
+  - "{{ network_ipv4_address }}"      # Sonarr/Radarr/Homarr connect directly
+prowlarr_api_key: "CHANGEME"
 qbittorrent_trusted_proxy: "{{ hostvars['proxy.home.arpa'].network_ipv4_address }}"
 
 # Kill switch: all egress is denied except through the tunnel and to its endpoint (must match Endpoint above)
@@ -80,6 +86,11 @@ ufw_rules:
     to: "100.0.0.113"
   - rule: "allow"
     port: "{{ qbittorrent_webui_port }}"
+    protocol: "tcp"
+    direction: "in"
+    from: "{{ hostvars['proxy.home.arpa'].network_ipv4_address }}"
+  - rule: "allow"
+    port: "{{ prowlarr_port }}"
     protocol: "tcp"
     direction: "in"
     from: "{{ hostvars['proxy.home.arpa'].network_ipv4_address }}"

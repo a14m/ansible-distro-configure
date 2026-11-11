@@ -119,4 +119,5 @@
     - role: "wireguard"
     - role: "ufw"
     - role: "qbittorrent"
+    - role: "prowlarr"
     - role: "rsync"

@@ -1,0 +1,3 @@
+---
+prowlarr_port: 9696
+prowlarr_allowed_hosts: []

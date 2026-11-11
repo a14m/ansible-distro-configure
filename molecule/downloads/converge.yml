@@ -21,4 +21,5 @@
   roles:
     - role: "wireguard"
     - role: "qbittorrent"
+    - role: "prowlarr"
     - role: "ufw"
