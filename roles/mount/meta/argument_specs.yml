@@ -18,3 +18,15 @@ argument_specs:
         type: "str"
         description: "Mount options for the device"
         default: "defaults,noatime"
+      mount_owner:
+        type: "str"
+        description: "Owner of the mounted directory (name or UID)"
+        default: "root"
+      mount_group:
+        type: "str"
+        description: "Group of the mounted directory (name or GID)"
+        default: "root"
+      mount_mode:
+        type: "str"
+        description: "Mode of the mounted directory"
+        default: "0755"

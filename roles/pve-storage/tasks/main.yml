@@ -9,26 +9,57 @@
     # No block devices available in containers
     - "molecule-notest"
 
-- name: "Create LVM thin pool for PVE storage"
+- name: "Create LVM volumes"
   become: true
   community.general.lvol:
     vg: "{{ pve_storage_name }}"
-    lv: "{{ pve_storage_pool }}"
-    size: "100%FREE"
-    opts: "--type thin-pool --poolmetadatasize 1G"
+    lv: "{{ item.name }}"
+    size: "{{ item.size }}"
     shrink: false
     state: present
+  loop: "{{ pve_storage_volumes }}"
+  when: item.type == "ext4"
   tags:
     # No block devices available in containers
     - "molecule-notest"
 
-- name: "Register local-lvm storage in PVE"
+- name: "Create ext4 filesystems on LVM volumes"
+  become: true
+  community.general.filesystem:
+    dev: "/dev/{{ pve_storage_name }}/{{ item.name }}"
+    fstype: "ext4"
+    opts: "-m 0"   # data volumes, no root-reserved blocks needed
+  loop: "{{ pve_storage_volumes }}"
+  when: item.type == "ext4"
+  tags:
+    # No block devices available in containers
+    - "molecule-notest"
+
+# After the ext4 volumes, so a "100%FREE" pool only takes what is left
+- name: "Create LVM thin pools"
+  become: true
+  community.general.lvol:
+    vg: "{{ pve_storage_name }}"
+    thinpool: "{{ item.name }}"
+    size: "{{ item.size }}"
+    opts: "--poolmetadatasize 1G"   # headroom for snapshots; LVM's default is ~0.1% of the pool
+    shrink: false
+    state: present
+  loop: "{{ pve_storage_volumes }}"
+  when: item.type == "lvmthin"
+  tags:
+    # No block devices available in containers
+    - "molecule-notest"
+
+- name: "Register LVM thin pool as local-lvm PVE storage"
   become: true
   ansible.builtin.command:
-    cmd: "pvesm add lvmthin local-lvm --vgname {{ pve_storage_name }} --thinpool {{ pve_storage_pool }}"
+    cmd: "pvesm add lvmthin local-lvm --vgname {{ pve_storage_name }} --thinpool {{ item.name }}"
   register: pve_pvesm_add
   changed_when: pve_pvesm_add.rc == 0
   failed_when: pve_pvesm_add.rc != 0 and 'already defined' not in pve_pvesm_add.stderr
+  loop: "{{ pve_storage_volumes }}"
+  when: item.type == "lvmthin"
   tags:
     # pvesm binary not available in containers — requires proxmox-ve package
     - "molecule-notest"

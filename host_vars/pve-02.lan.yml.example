@@ -20,6 +20,21 @@ ssh_private_key: |
 pve_admin_user: "admin"
 pve_admin_password: "changeme"
 pve_storage_device: "/dev/sda4"
+pve_storage_volumes:
+  # Shared /data for downloads, media and streaming; fixed size so a full library cannot fill the thin pool
+  - name: "media"
+    size: "300g"
+    type: "ext4"
+  - name: "data"
+    size: "100%FREE"
+    type: "lvmthin"
+
+mount_device: "/dev/vmdata/media"
+mount_point: "/srv/data"
+mount_options: "defaults,noatime,nofail"
+mount_owner: "100000"   # root inside the unprivileged containers
+mount_group: "102000"   # the containers' shared "media" group (GID 2000)
+mount_mode: "2775"      # setgid: new files keep the media group
 
 # LC_ALL=C tr -dc 'A-Za-z0-9!#%+,-./:=?@^_~' < /dev/urandom | head -c 32; echo
 prometheus_pve_exporter_password: "changeme"

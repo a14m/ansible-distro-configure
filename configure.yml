@@ -125,6 +125,8 @@
     - role: "ufw"
     - role: "pve"
     - role: "pve-storage"
+    - role: "mount"
+      when: mount_device is defined
     - role: "locales"
     - role: "timezone"
     - role: "chrony"

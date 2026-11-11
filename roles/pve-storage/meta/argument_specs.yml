@@ -10,7 +10,22 @@ argument_specs:
         type: "str"
         description: "LVM volume group name"
         default: "vmdata"
-      pve_storage_pool:
-        type: "str"
-        description: "LVM thin pool name within the volume group"
-        default: "data"
+      pve_storage_volumes:
+        type: "list"
+        description: "LVM volumes: ext4 volumes are created first, then thin pools (so '100%FREE' takes the rest)"
+        elements: "dict"
+        required: true
+        options:
+          name:
+            type: "str"
+            description: "Logical volume name"
+            required: true
+          size:
+            type: "str"
+            description: "Volume size (e.g. '300g' or '100%FREE')"
+            required: true
+          type:
+            type: "str"
+            description: "'ext4': formatted volume to mount; 'lvmthin': thin pool registered as PVE 'local-lvm'"
+            required: true
+            choices: ["ext4", "lvmthin"]

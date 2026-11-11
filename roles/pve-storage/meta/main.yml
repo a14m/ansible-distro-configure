@@ -3,7 +3,7 @@ dependencies:
   - role: "pve"
 galaxy_info:
   author: "a14m"
-  description: "Configure LVM thin pool and register local-lvm storage in Proxmox VE"
+  description: "Configure LVM volumes: thin pools as PVE storage, ext4 volumes for mounting"
   license: "MIT"
   min_ansible_version: "2.18"
   platforms:

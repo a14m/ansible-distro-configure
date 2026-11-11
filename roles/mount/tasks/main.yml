@@ -1,13 +1,5 @@
 ---
-- name: "Create mount point"
-  become: true
-  ansible.builtin.file:
-    path: "{{ mount_point }}"
-    state: "directory"
-    owner: "root"
-    group: "root"
-    mode: "0755"
-
+# Creates the mount point if missing; ownership is set after mounting so it applies to the mounted filesystem
 - name: "Mount drive"
   become: true
   ansible.posix.mount:
@@ -16,3 +8,12 @@
     fstype: "{{ mount_fstype }}"
     opts: "{{ mount_options }}"
     state: "mounted"
+
+- name: "Set mount point ownership"
+  become: true
+  ansible.builtin.file:
+    path: "{{ mount_point }}"
+    state: "directory"
+    owner: "{{ mount_owner }}"
+    group: "{{ mount_group }}"
+    mode: "{{ mount_mode }}"

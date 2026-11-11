@@ -2,3 +2,6 @@
 mount_point: "/backup"
 mount_fstype: "ext4"
 mount_options: "defaults,noatime"
+mount_owner: "root"
+mount_group: "root"
+mount_mode: "0755"

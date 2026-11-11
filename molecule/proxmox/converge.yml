@@ -56,6 +56,10 @@
     network_ipv4_gateway: "10.0.0.1"
     network_bridge_interface: "eth0"
     prometheus_pve_exporter_password: "changeme"
+    pve_storage_volumes:
+      - name: "data"
+        size: "100%FREE"
+        type: "lvmthin"
   pre_tasks:
     - name: "Override is_chroot fact for container environment"
       ansible.builtin.set_fact:

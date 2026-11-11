@@ -9,6 +9,9 @@ mount_device: "PARTLABEL=backup"        # required, no default - set in host_var
 mount_point: "/backup"
 mount_fstype: "ext4"
 mount_options: "defaults,noatime"
+mount_owner: "root"                     # owner/group/mode of the mounted directory
+mount_group: "root"
+mount_mode: "0755"
 ```
 
 ## Preparing the drive

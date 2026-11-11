@@ -20,6 +20,10 @@ ssh_private_key: |
 pve_admin_user: "admin"
 pve_admin_password: "changeme"
 pve_storage_device: "/dev/sda4"
+pve_storage_volumes:
+  - name: "data"
+    size: "100%FREE"
+    type: "lvmthin"
 
 # LC_ALL=C tr -dc 'A-Za-z0-9!#%+,-./:=?@^_~' < /dev/urandom | head -c 32; echo
 prometheus_pve_exporter_password: "changeme"
