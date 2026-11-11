@@ -10,7 +10,7 @@ app in `/opt/Sonarr`, data in `/var/lib/sonarr`), and adds its web UI vhost.
 - `sonarr_allowed_hosts` hostnames/IPs accepted in the `Host` header (default: `[]`, allows all).
 - `sonarr_group` / `sonarr_group_id` primary group (and optional GID) of the sonarr user; share it with the download
   client so imports can hardlink (default: `sonarr`). Files are group-writable (`UMask=0002`).
-- `sonarr_root_folders` library folders to create, owned by sonarr and its group (default: `[]`).
+- `sonarr_root_folders` library folders to create (owned by sonarr and its group) and add in Sonarr (default: `[]`).
 - `sonarr_port` web UI port on `network_ipv4_address` (default: `8989`).
 
 ## Notes
@@ -18,3 +18,5 @@ app in `/opt/Sonarr`, data in `/var/lib/sonarr`), and adds its web UI vhost.
 - Installed once from the latest v4 release; after that Sonarr updates itself.
 - Login is required, also on the LAN; the user is created on the first visit to the web UI.
 - Only the settings in the role are managed in `config.xml`; everything else stays editable in the web UI.
+- Root folders are added through the API only when missing, so web UI edits are kept; the download client is
+  set up in the web UI.

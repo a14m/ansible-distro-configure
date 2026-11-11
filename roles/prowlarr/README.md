@@ -9,6 +9,8 @@ Installs [Prowlarr](https://prowlarr.com/) (indexer manager for Sonarr/Radarr) a
 - `prowlarr_hostname` FQDN / vhost `server_name` (e.g. `search.internal`). Undefined skips the proxy vhost.
 - `prowlarr_allowed_hosts` hostnames/IPs accepted in the `Host` header, e.g. the vhost name and the LAN IP other apps
   use (default: `[]`, allows all).
+- `prowlarr_applications` apps to sync indexers to, `{name, implementation (Sonarr/Radarr), url, api_key}`, added
+  once if missing (default: `[]`).
 - `prowlarr_port` web UI port on `network_ipv4_address` (default: `9696`).
 
 ## Notes

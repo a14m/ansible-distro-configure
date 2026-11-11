@@ -85,6 +85,50 @@
     state: "started"
     daemon_reload: true
 
+- name: "Wait for prowlarr API"
+  ansible.builtin.uri:
+    url: "http://{{ network_ipv4_address }}:{{ prowlarr_port }}/ping"
+  register: prowlarr_ping
+  until: prowlarr_ping.status == 200
+  retries: 30
+  delay: 2
+
+# Added once if missing (by name); later edits in the web UI are kept
+- name: "Read prowlarr applications"
+  ansible.builtin.uri:
+    url: "http://{{ network_ipv4_address }}:{{ prowlarr_port }}/api/v1/applications"
+    headers:
+      X-Api-Key: "{{ prowlarr_api_key }}"
+  register: prowlarr_existing_applications
+  no_log: true
+
+# forceSave skips the connection test, so this works before the app's host is configured
+- name: "Add prowlarr applications"
+  ansible.builtin.uri:
+    url: "http://{{ network_ipv4_address }}:{{ prowlarr_port }}/api/v1/applications?forceSave=true"
+    method: "POST"
+    headers:
+      X-Api-Key: "{{ prowlarr_api_key }}"
+    body_format: "json"
+    body:
+      name: "{{ item.name }}"
+      syncLevel: "fullSync"   # adds, updates and removes the app's indexers to match Prowlarr
+      implementation: "{{ item.implementation }}"
+      configContract: "{{ item.implementation }}Settings"
+      tags: []
+      fields:
+        - { name: "prowlarrUrl", value: "http://{{ network_ipv4_address }}:{{ prowlarr_port }}" }
+        - { name: "baseUrl", value: "{{ item.url }}" }
+        - { name: "apiKey", value: "{{ item.api_key }}" }
+        - { name: "syncCategories", value: "{{ prowlarr_sync_categories[item.implementation] }}" }
+    status_code: [201]
+  loop: "{{ prowlarr_applications }}"
+  loop_control:
+    label: "{{ item.name }}"
+  when: item.name not in prowlarr_existing_applications.json | map(attribute='name')
+  changed_when: true
+  no_log: true
+
 - name: "Create prowlarr proxy vhost"
   when: prowlarr_hostname is defined
   tags:

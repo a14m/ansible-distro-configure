@@ -65,6 +65,15 @@ prowlarr_allowed_hosts:
   - "{{ prowlarr_hostname }}"         # through the proxy
   - "{{ network_ipv4_address }}"      # Sonarr/Radarr/Homarr connect directly
 prowlarr_api_key: "CHANGEME"
+prowlarr_applications:
+  - name: "Sonarr"
+    implementation: "Sonarr"
+    url: "http://{{ hostvars['media.home.arpa'].network_ipv4_address }}:8989"
+    api_key: "{{ hostvars['media.home.arpa'].sonarr_api_key }}"
+  - name: "Radarr"
+    implementation: "Radarr"
+    url: "http://{{ hostvars['media.home.arpa'].network_ipv4_address }}:7878"
+    api_key: "{{ hostvars['media.home.arpa'].radarr_api_key }}"
 qbittorrent_trusted_proxy: "{{ hostvars['proxy.home.arpa'].network_ipv4_address }}"
 
 # Kill switch: all egress is denied except through the tunnel and to its endpoint (must match Endpoint above)

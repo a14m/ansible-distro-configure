@@ -25,7 +25,7 @@ argument_specs:
       radarr_root_folders:
         type: "list"
         elements: "str"
-        description: "Library folders to create, owned by radarr and its group (e.g. /data/media/movies)"
+        description: "Library folders to create (owned by radarr and its group) and add in Radarr"
         default: []
       radarr_port:
         type: "int"

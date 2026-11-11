@@ -96,6 +96,37 @@
     state: "started"
     daemon_reload: true
 
+- name: "Wait for radarr API"
+  ansible.builtin.uri:
+    url: "http://{{ network_ipv4_address }}:{{ radarr_port }}/ping"
+  register: radarr_ping
+  until: radarr_ping.status == 200
+  retries: 30
+  delay: 2
+
+# Added once if missing (by path); later edits in the web UI are kept
+- name: "Read radarr root folders"
+  ansible.builtin.uri:
+    url: "http://{{ network_ipv4_address }}:{{ radarr_port }}/api/v3/rootfolder"
+    headers:
+      X-Api-Key: "{{ radarr_api_key }}"
+  register: radarr_existing_root_folders
+  no_log: true
+
+- name: "Add radarr root folders"
+  ansible.builtin.uri:
+    url: "http://{{ network_ipv4_address }}:{{ radarr_port }}/api/v3/rootfolder"
+    method: "POST"
+    headers:
+      X-Api-Key: "{{ radarr_api_key }}"
+    body_format: "json"
+    body:
+      path: "{{ item }}"
+    status_code: [201]
+  loop: "{{ radarr_root_folders }}"
+  when: item not in radarr_existing_root_folders.json | map(attribute='path')
+  changed_when: true
+
 - name: "Create radarr proxy vhost"
   when: radarr_hostname is defined
   tags:

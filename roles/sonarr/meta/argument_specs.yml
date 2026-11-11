@@ -25,7 +25,7 @@ argument_specs:
       sonarr_root_folders:
         type: "list"
         elements: "str"
-        description: "Library folders to create, owned by sonarr and its group (e.g. /data/media/tv)"
+        description: "Library folders to create (owned by sonarr and its group) and add in Sonarr"
         default: []
       sonarr_port:
         type: "int"
