@@ -25,8 +25,30 @@ argument_specs:
       radarr_root_folders:
         type: "list"
         elements: "str"
-        description: "Library folders to create (owned by radarr and its group) and add in Radarr"
+        description: "Library folders to create (owned by radarr and its group) and keep in Radarr"
         default: []
+      radarr_qbittorrent:
+        type: "dict"
+        description: "qBittorrent download client, the only one kept"
+        required: true
+        options:
+          host:
+            type: "str"
+            description: "qBittorrent web UI host"
+            required: true
+          port:
+            type: "int"
+            description: "qBittorrent web UI port"
+            required: true
+          username:
+            type: "str"
+            description: "qBittorrent web UI username"
+            required: true
+          password:
+            type: "str"
+            description: "qBittorrent web UI password"
+            required: true
+            no_log: true
       radarr_port:
         type: "int"
         description: "Port for the web UI to bind on network_ipv4_address"

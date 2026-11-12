@@ -37,6 +37,11 @@ sonarr_group: "media"
 sonarr_group_id: 2000   # same GID in every container sharing /data (102000 on the host)
 sonarr_root_folders:
   - "/data/media/tv"
+sonarr_qbittorrent:
+  host: "{{ hostvars['downloads.home.arpa'].network_ipv4_address }}"
+  port: 8080
+  username: "{{ hostvars['downloads.home.arpa'].qbittorrent_username }}"
+  password: "{{ hostvars['downloads.home.arpa'].qbittorrent_password }}"
 
 radarr_hostname: "movies.internal"
 radarr_api_key: "CHANGEME"
@@ -47,6 +52,11 @@ radarr_group: "media"
 radarr_group_id: 2000
 radarr_root_folders:
   - "/data/media/movies"
+radarr_qbittorrent:
+  host: "{{ hostvars['downloads.home.arpa'].network_ipv4_address }}"
+  port: 8080
+  username: "{{ hostvars['downloads.home.arpa'].qbittorrent_username }}"
+  password: "{{ hostvars['downloads.home.arpa'].qbittorrent_password }}"
 
 ufw_rules:
   - rule: "allow"

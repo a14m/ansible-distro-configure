@@ -1,0 +1,17 @@
+---
+# The qBittorrent download client in API form (fields as a mapping, see the servarr role)
+radarr_download_client:
+  name: "qBittorrent"
+  implementation: "QBittorrent"
+  protocol: "torrent"
+  enable: true
+  priority: 1
+  removeCompletedDownloads: true   # once the seed limit is reached
+  removeFailedDownloads: true
+  tags: []
+  fields:
+    host: "{{ radarr_qbittorrent.host }}"
+    port: "{{ radarr_qbittorrent.port }}"
+    username: "{{ radarr_qbittorrent.username }}"
+    password: "{{ radarr_qbittorrent.password }}"
+    movieCategory: "movies"   # downloads go to <save path>/movies

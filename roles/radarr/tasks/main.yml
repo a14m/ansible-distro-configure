@@ -104,28 +104,21 @@
   retries: 30
   delay: 2
 
-# Added once if missing (by path); later edits in the web UI are kept
-- name: "Read radarr root folders"
-  ansible.builtin.uri:
+# The role is the source of truth: listed root folders and the download client are added or updated, others removed
+# (a root folder only from Radarr, never its files)
+- name: "Manage radarr root folders"
+  servarr_resources:
     url: "http://{{ network_ipv4_address }}:{{ radarr_port }}/api/v3/rootfolder"
-    headers:
-      X-Api-Key: "{{ radarr_api_key }}"
-  register: radarr_existing_root_folders
-  no_log: true
+    api_key: "{{ radarr_api_key }}"
+    key: "path"
+    resources: "{{ radarr_root_folders | map('community.general.dict_kv', 'path') }}"
 
-- name: "Add radarr root folders"
-  ansible.builtin.uri:
-    url: "http://{{ network_ipv4_address }}:{{ radarr_port }}/api/v3/rootfolder"
-    method: "POST"
-    headers:
-      X-Api-Key: "{{ radarr_api_key }}"
-    body_format: "json"
-    body:
-      path: "{{ item }}"
-    status_code: [201]
-  loop: "{{ radarr_root_folders }}"
-  when: item not in radarr_existing_root_folders.json | map(attribute='path')
-  changed_when: true
+- name: "Manage radarr download clients"
+  servarr_resources:
+    url: "http://{{ network_ipv4_address }}:{{ radarr_port }}/api/v3/downloadclient"
+    api_key: "{{ radarr_api_key }}"
+    resources: "{{ [radarr_download_client] }}"
+  no_log: true   # the client's password
 
 - name: "Create radarr proxy vhost"
   when: radarr_hostname is defined

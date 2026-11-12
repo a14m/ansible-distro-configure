@@ -93,41 +93,18 @@
   retries: 30
   delay: 2
 
-# Added once if missing (by name); later edits in the web UI are kept
-- name: "Read prowlarr applications"
-  ansible.builtin.uri:
+# The role is the source of truth: listed applications are added or updated, others removed
+- name: "Manage prowlarr applications"
+  servarr_resources:
     url: "http://{{ network_ipv4_address }}:{{ prowlarr_port }}/api/v1/applications"
-    headers:
-      X-Api-Key: "{{ prowlarr_api_key }}"
-  register: prowlarr_existing_applications
-  no_log: true
-
-# forceSave skips the connection test, so this works before the app's host is configured
-- name: "Add prowlarr applications"
-  ansible.builtin.uri:
-    url: "http://{{ network_ipv4_address }}:{{ prowlarr_port }}/api/v1/applications?forceSave=true"
-    method: "POST"
-    headers:
-      X-Api-Key: "{{ prowlarr_api_key }}"
-    body_format: "json"
-    body:
-      name: "{{ item.name }}"
+    api_key: "{{ prowlarr_api_key }}"
+    defaults:
       syncLevel: "fullSync"   # adds, updates and removes the app's indexers to match Prowlarr
-      implementation: "{{ item.implementation }}"
-      configContract: "{{ item.implementation }}Settings"
       tags: []
       fields:
-        - { name: "prowlarrUrl", value: "http://{{ network_ipv4_address }}:{{ prowlarr_port }}" }
-        - { name: "baseUrl", value: "{{ item.url }}" }
-        - { name: "apiKey", value: "{{ item.api_key }}" }
-        - { name: "syncCategories", value: "{{ prowlarr_sync_categories[item.implementation] }}" }
-    status_code: [201]
-  loop: "{{ prowlarr_applications }}"
-  loop_control:
-    label: "{{ item.name }}"
-  when: item.name not in prowlarr_existing_applications.json | map(attribute='name')
-  changed_when: true
-  no_log: true
+        prowlarrUrl: "http://{{ network_ipv4_address }}:{{ prowlarr_port }}"
+    resources: "{{ prowlarr_applications }}"
+  no_log: true   # the apps' API keys
 
 - name: "Create prowlarr proxy vhost"
   when: prowlarr_hostname is defined

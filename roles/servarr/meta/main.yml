@@ -1,0 +1,11 @@
+---
+dependencies: []
+galaxy_info:
+  author: "a14m"
+  description: "servarr_resources module: keep Sonarr/Radarr/Prowlarr API resources in sync with a list"
+  license: "MIT"
+  min_ansible_version: "2.18"
+  platforms:
+    - name: "Debian"
+      versions:
+        - "trixie"

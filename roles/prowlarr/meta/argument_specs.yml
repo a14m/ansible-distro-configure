@@ -18,7 +18,7 @@ argument_specs:
       prowlarr_applications:
         type: "list"
         elements: "dict"
-        description: "Apps Prowlarr syncs its indexers to, added once if missing"
+        description: "Apps Prowlarr syncs its indexers to; the role adds or updates these and removes others"
         default: []
         options:
           name:
@@ -30,15 +30,10 @@ argument_specs:
             description: "App type"
             required: true
             choices: ["Sonarr", "Radarr"]
-          url:
-            type: "str"
-            description: "App URL as Prowlarr reaches it (e.g. http://192.168.0.122:8989)"
+          fields:
+            type: "dict"
+            description: "App settings: baseUrl, apiKey, syncCategories (prowlarrUrl is set by the role)"
             required: true
-          api_key:
-            type: "str"
-            description: "The app's API key"
-            required: true
-            no_log: true
       prowlarr_port:
         type: "int"
         description: "Port for the web UI to bind on network_ipv4_address"

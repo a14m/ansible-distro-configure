@@ -104,28 +104,21 @@
   retries: 30
   delay: 2
 
-# Added once if missing (by path); later edits in the web UI are kept
-- name: "Read sonarr root folders"
-  ansible.builtin.uri:
+# The role is the source of truth: listed root folders and the download client are added or updated, others removed
+# (a root folder only from Sonarr, never its files)
+- name: "Manage sonarr root folders"
+  servarr_resources:
     url: "http://{{ network_ipv4_address }}:{{ sonarr_port }}/api/v3/rootfolder"
-    headers:
-      X-Api-Key: "{{ sonarr_api_key }}"
-  register: sonarr_existing_root_folders
-  no_log: true
+    api_key: "{{ sonarr_api_key }}"
+    key: "path"
+    resources: "{{ sonarr_root_folders | map('community.general.dict_kv', 'path') }}"
 
-- name: "Add sonarr root folders"
-  ansible.builtin.uri:
-    url: "http://{{ network_ipv4_address }}:{{ sonarr_port }}/api/v3/rootfolder"
-    method: "POST"
-    headers:
-      X-Api-Key: "{{ sonarr_api_key }}"
-    body_format: "json"
-    body:
-      path: "{{ item }}"
-    status_code: [201]
-  loop: "{{ sonarr_root_folders }}"
-  when: item not in sonarr_existing_root_folders.json | map(attribute='path')
-  changed_when: true
+- name: "Manage sonarr download clients"
+  servarr_resources:
+    url: "http://{{ network_ipv4_address }}:{{ sonarr_port }}/api/v3/downloadclient"
+    api_key: "{{ sonarr_api_key }}"
+    resources: "{{ [sonarr_download_client] }}"
+  no_log: true   # the client's password
 
 - name: "Create sonarr proxy vhost"
   when: sonarr_hostname is defined

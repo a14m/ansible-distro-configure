@@ -61,12 +61,18 @@ prowlarr_api_key: "CHANGEME"
 prowlarr_applications:
   - name: "Sonarr"
     implementation: "Sonarr"
-    url: "http://{{ hostvars['media.home.arpa'].network_ipv4_address }}:8989"
-    api_key: "{{ hostvars['media.home.arpa'].sonarr_api_key }}"
+    fields:
+      baseUrl: "http://{{ hostvars['media.home.arpa'].network_ipv4_address }}:8989"
+      apiKey: "{{ hostvars['media.home.arpa'].sonarr_api_key }}"
+      # Newznab TV categories (Prowlarr's defaults) plus 5080 TV/Documentary
+      syncCategories: [5000, 5010, 5020, 5030, 5040, 5045, 5050, 5080, 5090]
   - name: "Radarr"
     implementation: "Radarr"
-    url: "http://{{ hostvars['media.home.arpa'].network_ipv4_address }}:7878"
-    api_key: "{{ hostvars['media.home.arpa'].radarr_api_key }}"
+    fields:
+      baseUrl: "http://{{ hostvars['media.home.arpa'].network_ipv4_address }}:7878"
+      apiKey: "{{ hostvars['media.home.arpa'].radarr_api_key }}"
+      # Newznab movie categories (Prowlarr's defaults)
+      syncCategories: [2000, 2010, 2020, 2030, 2040, 2045, 2050, 2060, 2070, 2080, 2090]
 qbittorrent_trusted_proxy: "{{ hostvars['proxy.home.arpa'].network_ipv4_address }}"
 
 # Kill switch: all egress is denied except through the tunnel and to its endpoint (must match Endpoint above)
