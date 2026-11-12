@@ -1,0 +1,43 @@
+---
+argument_specs:
+  app:
+    short_description: "Install one Servarr app (Sonarr, Radarr, Prowlarr)"
+    options:
+      servarr_app:
+        type: "str"
+        description: "App name, lowercase: user, service, /var/lib/<app>; capitalized for /opt/<App>/<App>"
+        required: true
+        choices: ["sonarr", "radarr", "prowlarr"]
+      servarr_download_url:
+        type: "str"
+        description: "Latest-release tarball URL, used once"
+        required: true
+      servarr_port:
+        type: "int"
+        description: "Port to bind on network_ipv4_address"
+        required: true
+      servarr_api_key:
+        type: "str"
+        description: "API key"
+        required: true
+        no_log: true
+      servarr_group:
+        type: "str"
+        description: "Primary group of the app user (e.g. a shared 'media' group)"
+        required: true
+      servarr_group_id:
+        type: "int"
+        description: "GID for servarr_group, matching across containers sharing a bind mount"
+      servarr_allowed_hosts:
+        type: "list"
+        elements: "str"
+        description: "Hostnames/IPs accepted in the Host header (empty allows all)"
+        default: []
+      servarr_root_folders:
+        type: "list"
+        elements: "str"
+        description: "Library folders to create, owned by the app and its group"
+        default: []
+      servarr_hostname:
+        type: "str"
+        description: "FQDN for the proxy vhost; unset skips it"

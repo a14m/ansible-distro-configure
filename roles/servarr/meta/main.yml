@@ -2,7 +2,7 @@
 dependencies: []
 galaxy_info:
   author: "a14m"
-  description: "servarr_resources module: keep Sonarr/Radarr/Prowlarr API resources in sync with a list"
+  description: "Shared install tasks and the servarr_resources module for Sonarr, Radarr and Prowlarr"
   license: "MIT"
   min_ansible_version: "2.18"
   platforms:

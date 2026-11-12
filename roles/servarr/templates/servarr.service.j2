@@ -1,0 +1,19 @@
+[Unit]
+Description={{ servarr_app | capitalize }}
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User={{ servarr_app }}
+Group={{ servarr_group }}
+# Group-writable files, for other apps in the group
+UMask=0002
+Type=simple
+ExecStart=/opt/{{ servarr_app | capitalize }}/{{ servarr_app | capitalize }} -nobrowser -data=/var/lib/{{ servarr_app }}
+TimeoutStopSec=20
+# Lets the app's updater outlive it (Servarr's recommendation)
+KillMode=process
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

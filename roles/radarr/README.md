@@ -1,24 +1,17 @@
 # Ansible Role: radarr
 
-Installs [Radarr](https://radarr.video/) (movie manager) as the `radarr` systemd service (its own `radarr` user,
-app in `/opt/Radarr`, data in `/var/lib/radarr`), and adds its web UI vhost.
+Installs [Radarr](https://radarr.video/) (movies) through the shared `servarr` app tasks (own user and service,
+self-updating, login created on the first visit), and manages its root folders and qBittorrent download client
+through the API.
 
 ## Role Variables
 
-- `radarr_api_key` API key for other apps (required), e.g. `openssl rand -hex 16`.
-- `radarr_hostname` FQDN / vhost `server_name` (e.g. `movies.internal`). Undefined skips the proxy vhost.
+- `radarr_api_key` API key (required), e.g. `openssl rand -hex 16`.
+- `radarr_qbittorrent` qBittorrent download client `{host, port, username, password}` (required); category `movies`.
+- `radarr_root_folders` library folders, created and kept as root folders (default: `[]`), e.g. `/data/media/movies`.
+- `radarr_hostname` proxy vhost (e.g. `movies.internal`); unset skips it.
 - `radarr_allowed_hosts` hostnames/IPs accepted in the `Host` header (default: `[]`, allows all).
-- `radarr_group` / `radarr_group_id` primary group (and optional GID) of the radarr user; share it with the download
-  client so imports can hardlink (default: `radarr`). Files are group-writable (`UMask=0002`).
-- `radarr_root_folders` library folders to create (owned by radarr and its group) and add in Radarr (default: `[]`).
-- `radarr_qbittorrent` qBittorrent download client `{host, port, username, password}`; the only download
-  client kept (required).
-- `radarr_port` web UI port on `network_ipv4_address` (default: `7878`).
+- `radarr_group` / `radarr_group_id` primary group and optional GID, e.g. a shared `media` group (default: `radarr`).
+- `radarr_port` web UI port (default: `7878`).
 
-## Notes
-
-- Installed once from the latest release; after that Radarr updates itself.
-- Login is required, also on the LAN; the user is created on the first visit to the web UI.
-- Only the settings in the role are managed in `config.xml`; everything else stays editable in the web UI.
-- The role is the source of truth for root folders and download clients: listed ones are added or updated through
-  the API, others are removed (root folders only from the app, never their files).
+Root folders and download clients not listed are removed from Radarr (root folders never from disk).

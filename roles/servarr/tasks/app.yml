@@ -1,0 +1,119 @@
+---
+# Installs one Servarr app (Sonarr, Radarr, Prowlarr) as its own user and service; see the README
+- name: "Install dependencies for {{ servarr_app }}"
+  become: true
+  ansible.builtin.apt:
+    name:
+      - "libicu76"
+      - "libsqlite3-0"
+      - "python3-lxml"   # for community.general.xml
+    state: "present"
+    install_recommends: false
+
+- name: "Create group for {{ servarr_app }}"
+  become: true
+  ansible.builtin.group:
+    name: "{{ servarr_group }}"
+    gid: "{{ servarr_group_id | default(omit) }}"
+    system: true
+
+- name: "Create user {{ servarr_app }}"
+  become: true
+  ansible.builtin.user:
+    name: "{{ servarr_app }}"
+    group: "{{ servarr_group }}"
+    system: true
+    shell: "/usr/sbin/nologin"
+    home: "/var/lib/{{ servarr_app }}"
+    create_home: true
+
+- name: "Create root folders for {{ servarr_app }}"
+  become: true
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: "directory"
+    owner: "{{ servarr_app }}"
+    group: "{{ servarr_group }}"
+    mode: "2775"   # setgid: files keep the group
+  loop: "{{ servarr_root_folders }}"
+
+# Once; the app updates itself afterwards, so it owns its install dir
+- name: "Install {{ servarr_app }}"
+  become: true
+  ansible.builtin.unarchive:
+    src: "{{ servarr_download_url }}"
+    dest: "/opt"
+    remote_src: true
+    creates: "/opt/{{ servarr_app | capitalize }}/{{ servarr_app | capitalize }}"
+    owner: "{{ servarr_app }}"
+    group: "{{ servarr_group }}"
+
+# Seeded before the first start, so it never binds to all interfaces
+- name: "Create config file for {{ servarr_app }}"
+  become: true
+  ansible.builtin.copy:
+    dest: "/var/lib/{{ servarr_app }}/config.xml"
+    content: "<Config></Config>\n"
+    force: false
+    owner: "{{ servarr_app }}"
+    group: "{{ servarr_group }}"
+    mode: "0600"
+
+# Only these keys; the rest stays in the web UI
+- name: "Set settings for {{ servarr_app }}"
+  become: true
+  community.general.xml:
+    path: "/var/lib/{{ servarr_app }}/config.xml"
+    xpath: "/Config/{{ item.key }}"
+    value: "{{ item.value | string }}"   # xml only takes text
+  loop:
+    - { key: "BindAddress", value: "{{ network_ipv4_address }}" }
+    - { key: "Port", value: "{{ servarr_port }}" }
+    - { key: "ApiKey", value: "{{ servarr_api_key }}" }
+    # AuthenticationMethod unset: the first visit creates the login
+    - { key: "AuthenticationRequired", value: "Enabled" }   # also for the proxy's LAN address
+    - { key: "AllowedHosts", value: "{{ servarr_allowed_hosts | join(',') }}" }
+    - { key: "AnalyticsEnabled", value: "False" }
+    - { key: "LaunchBrowser", value: "False" }
+  loop_control:
+    label: "{{ item.key }}"
+  no_log: "{{ item.key == 'ApiKey' }}"
+  register: servarr_settings
+
+- name: "Install service for {{ servarr_app }}"
+  become: true
+  ansible.builtin.template:
+    src: "servarr.service.j2"
+    dest: "/etc/systemd/system/{{ servarr_app }}.service"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+  register: servarr_service
+
+# Not a handler: the same tasks run for several apps in one play
+- name: "Run {{ servarr_app }}"
+  become: true
+  ansible.builtin.systemd_service:
+    name: "{{ servarr_app }}"
+    enabled: true
+    state: "{{ 'restarted' if servarr_settings is changed or servarr_service is changed else 'started' }}"
+    daemon_reload: true
+
+- name: "Wait for API of {{ servarr_app }}"
+  ansible.builtin.uri:
+    url: "http://{{ network_ipv4_address }}:{{ servarr_port }}/ping"
+  register: servarr_ping
+  until: servarr_ping.status == 200
+  retries: 30
+  delay: 2
+
+- name: "Create proxy vhost for {{ servarr_app }}"
+  when: servarr_hostname is not none
+  tags:
+    - "vhost"
+  ansible.builtin.include_role:
+    name: "vhost"
+  vars:
+    vhost_name: "{{ servarr_app }}"
+    vhost_nginx_content: "{{ lookup('template', 'servarr.nginx.conf.j2') }}"
+    vhost_caddy_content: "{{ lookup('template', 'servarr.caddy.j2') }}"

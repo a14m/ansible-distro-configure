@@ -1,12 +1,12 @@
 ---
-# The qBittorrent download client in API form (fields as a mapping, see the servarr role)
+# qBittorrent download client in API form (see the servarr README)
 sonarr_download_client:
   name: "qBittorrent"
   implementation: "QBittorrent"
   protocol: "torrent"
   enable: true
   priority: 1
-  removeCompletedDownloads: true   # once the seed limit is reached
+  removeCompletedDownloads: true   # after the seed limit
   removeFailedDownloads: true
   tags: []
   fields:
