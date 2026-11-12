@@ -4,3 +4,9 @@
   ansible.builtin.systemd_service:
     name: "pveproxy"
     state: "restarted"
+
+- name: "Apply backlight"
+  become: true
+  ansible.builtin.command:
+    cmd: "systemd-tmpfiles --create /etc/tmpfiles.d/backlight.conf"
+  changed_when: true

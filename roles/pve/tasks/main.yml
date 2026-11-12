@@ -93,6 +93,18 @@
     # PVE services not available in containers — proxmox-ve package was skipped
     - "molecule-notest"
 
+# Headless laptop nodes: dim the screen at every boot
+- name: "Set PVE node screen backlight"
+  become: true
+  ansible.builtin.copy:
+    dest: "/etc/tmpfiles.d/backlight.conf"
+    content: "w /sys/class/backlight/{{ pve_backlight.device }}/brightness - - - - {{ pve_backlight.brightness }}\n"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+  when: pve_backlight is defined
+  notify: "Apply backlight"
+
 - name: "Create PVE proxy vhost"
   when: pve_hostname is defined
   tags:

@@ -22,3 +22,15 @@ argument_specs:
         description: >-
           FQDN for the PVE vhost (e.g. 'vm.internal').
           Leave undefined to skip vhost creation entirely.
+      pve_backlight:
+        type: "dict"
+        description: "Screen backlight set at every boot on laptop nodes (unset leaves it alone)"
+        options:
+          device:
+            type: "str"
+            description: "Device under /sys/class/backlight (e.g. acpi_video0, intel_backlight)"
+            required: true
+          brightness:
+            type: "int"
+            description: "Value to write, 0 up to the device's max_brightness"
+            required: true

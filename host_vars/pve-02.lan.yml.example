@@ -19,6 +19,9 @@ ssh_private_key: |
 
 pve_admin_user: "admin"
 pve_admin_password: "changeme"
+pve_backlight:   # MacBook Pro 8,1 screen, 0-15
+  device: "acpi_video0"
+  brightness: 1
 pve_storage_device: "/dev/sda4"
 pve_storage_volumes:
   # Shared /data for downloads, media and streaming; fixed size so a full library cannot fill the thin pool
