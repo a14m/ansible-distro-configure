@@ -20,6 +20,7 @@ user, home `/var/lib/qbittorrent`), binds it to a WireGuard VPN, and sets its we
 
 ## Notes
 
+- New torrents use automatic torrent management, so a torrent with a category is saved in `<save path>/<category>`.
 - Torrent traffic only uses the VPN interface: with the tunnel down it stalls instead of falling back to other
   interfaces, and resumes when the tunnel is back.
 - Only the settings above are managed in `qBittorrent.conf`; qBittorrent rewrites the file on exit, so they're
