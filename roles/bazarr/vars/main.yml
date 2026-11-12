@@ -1,0 +1,45 @@
+---
+# Keys the role manages in config.yaml (merged into what Bazarr wrote; everything else stays in the web UI)
+bazarr_base_settings:
+  general:
+    ip: "{{ network_ipv4_address }}"
+    port: "{{ bazarr_port }}"
+    use_sonarr: true
+    use_radarr: true
+    enabled_providers: "{{ bazarr_providers.keys() | list }}"
+    serie_default_enabled: true    # new series and movies get the languages profile below (id 1)
+    serie_default_profile: 1
+    movie_default_enabled: true
+    movie_default_profile: 1
+  auth:
+    apikey: "{{ bazarr_api_key }}"
+    type: "form"   # login page; Bazarr has no login by default
+    username: "{{ bazarr_username }}"
+    password: "{{ bazarr_password | hash('md5') }}"   # Bazarr's own format
+  analytics:
+    enabled: false
+  sonarr:
+    ip: "{{ bazarr_sonarr.ip }}"
+    port: "{{ bazarr_sonarr.port }}"
+    apikey: "{{ bazarr_sonarr.api_key }}"
+  radarr:
+    ip: "{{ bazarr_radarr.ip }}"
+    port: "{{ bazarr_radarr.port }}"
+    apikey: "{{ bazarr_radarr.api_key }}"
+
+# Providers' own settings (e.g. opensubtitlescom.username) are top-level sections in config.yaml
+bazarr_settings: "{{ bazarr_base_settings | combine(bazarr_providers, recursive=True) }}"
+
+# The one languages profile (stored in Bazarr's database, set through its API), from bazarr_languages in order
+bazarr_languages_profile:
+  profileId: 1
+  name: "Default"
+  cutoff: null
+  items: "{{ bazarr_languages_profile_items | from_json }}"
+  mustContain: []
+  mustNotContain: []
+  originalFormat: false
+# One profile item per language, as JSON text (a {% for %} template stays text, hence from_json above)
+bazarr_languages_profile_items: >-
+  [{% for language in bazarr_languages %}{"id": {{ loop.index }}, "language": "{{ language }}", "hi": "False",
+  "forced": "False", "audio_exclude": "False", "audio_only_include": "False"}{{ "," if not loop.last }}{% endfor %}]

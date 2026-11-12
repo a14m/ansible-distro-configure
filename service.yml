@@ -130,3 +130,4 @@
     - role: "ufw"
     - role: "sonarr"
     - role: "radarr"
+    - role: "bazarr"

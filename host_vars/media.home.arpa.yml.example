@@ -58,6 +58,28 @@ radarr_qbittorrent:
   username: "{{ hostvars['downloads.home.arpa'].qbittorrent_username }}"
   password: "{{ hostvars['downloads.home.arpa'].qbittorrent_password }}"
 
+bazarr_hostname: "subtitles.internal"
+bazarr_api_key: "CHANGEME"
+bazarr_username: "alice"
+bazarr_password: "CHANGEME"
+bazarr_group: "media"
+bazarr_languages: ["en", "de"]
+bazarr_providers:
+  opensubtitlescom:   # free account on opensubtitles.com
+    username: "alice"
+    password: "CHANGEME"
+  yifysubtitles: {}
+  tvsubtitles: {}
+bazarr_group_id: 2000
+bazarr_sonarr:
+  ip: "{{ network_ipv4_address }}"
+  port: 8989
+  api_key: "{{ sonarr_api_key }}"
+bazarr_radarr:
+  ip: "{{ network_ipv4_address }}"
+  port: 7878
+  api_key: "{{ radarr_api_key }}"
+
 ufw_rules:
   - rule: "allow"
     port: "{{ ssh_port }}"
@@ -85,3 +107,8 @@ ufw_rules:
     protocol: "tcp"
     direction: "in"
     from: "{{ hostvars['downloads.home.arpa'].network_ipv4_address }}"
+  - rule: "allow"
+    port: "{{ bazarr_port }}"
+    protocol: "tcp"
+    direction: "in"
+    from: "{{ hostvars['proxy.home.arpa'].network_ipv4_address }}"

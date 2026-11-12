@@ -1,0 +1,77 @@
+---
+argument_specs:
+  main:
+    options:
+      bazarr_api_key:
+        type: "str"
+        description: "API key other apps use to talk to Bazarr (32 hex chars, e.g. 'openssl rand -hex 16')"
+        required: true
+        no_log: true
+      bazarr_username:
+        type: "str"
+        description: "Web UI login user"
+        required: true
+      bazarr_password:
+        type: "str"
+        description: "Web UI login password (plaintext; Bazarr stores its MD5 hash)"
+        required: true
+        no_log: true
+      bazarr_sonarr:
+        type: "dict"
+        description: "Sonarr connection"
+        required: true
+        options:
+          ip:
+            type: "str"
+            description: "Sonarr address"
+            required: true
+          port:
+            type: "int"
+            description: "Sonarr port"
+            required: true
+          api_key:
+            type: "str"
+            description: "Sonarr API key"
+            required: true
+            no_log: true
+      bazarr_radarr:
+        type: "dict"
+        description: "Radarr connection"
+        required: true
+        options:
+          ip:
+            type: "str"
+            description: "Radarr address"
+            required: true
+          port:
+            type: "int"
+            description: "Radarr port"
+            required: true
+          api_key:
+            type: "str"
+            description: "Radarr API key"
+            required: true
+            no_log: true
+      bazarr_languages:
+        type: "list"
+        elements: "str"
+        description: "Subtitle languages (ISO 639-1, e.g. en, de) in preference order, for the default profile"
+        required: true
+      bazarr_providers:
+        type: "dict"
+        description: "Providers to use, each with its settings section (e.g. opensubtitlescom: {username, password})"
+        required: true
+      bazarr_hostname:
+        type: "str"
+        description: "FQDN for the web UI vhost on the proxy (e.g. subtitles.internal). Unset skips the vhost."
+      bazarr_group:
+        type: "str"
+        description: "Primary group of the bazarr user (e.g. a shared 'media' group owning /data)"
+        default: "bazarr"
+      bazarr_group_id:
+        type: "int"
+        description: "GID for bazarr_group, to match it across containers sharing a bind mount"
+      bazarr_port:
+        type: "int"
+        description: "Port for the web UI to bind on network_ipv4_address"
+        default: 6767

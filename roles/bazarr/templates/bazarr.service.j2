@@ -1,0 +1,19 @@
+[Unit]
+Description=Bazarr
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=bazarr
+Group={{ bazarr_group }}
+# Group-writable subtitles, so other services in the group can manage them
+UMask=0002
+Type=simple
+ExecStart=/opt/bazarr/venv/bin/python3 /opt/bazarr/bazarr.py --config /var/lib/bazarr
+# Bazarr runs its app as a child process, so stop the whole service (default KillMode), not just the launcher
+KillSignal=SIGINT
+TimeoutStopSec=20
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
