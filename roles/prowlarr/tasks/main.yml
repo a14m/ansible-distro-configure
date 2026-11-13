@@ -11,16 +11,3 @@
     servarr_group: "prowlarr"
     servarr_allowed_hosts: "{{ prowlarr_allowed_hosts }}"
     servarr_hostname: "{{ prowlarr_hostname | default(none) }}"
-
-# Listed apps added or updated, others removed
-- name: "Manage prowlarr applications"
-  servarr_resources:
-    url: "http://{{ network_ipv4_address }}:{{ prowlarr_port }}/api/v1/applications"
-    api_key: "{{ prowlarr_api_key }}"
-    defaults:
-      syncLevel: "fullSync"   # keeps the apps' indexers in line with Prowlarr
-      tags: []
-      fields:
-        prowlarrUrl: "http://{{ network_ipv4_address }}:{{ prowlarr_port }}"
-    resources: "{{ prowlarr_applications }}"
-  no_log: true   # API keys

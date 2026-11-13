@@ -15,3 +15,15 @@ sonarr_download_client:
     username: "{{ sonarr_qbittorrent.username }}"
     password: "{{ sonarr_qbittorrent.password }}"
     tvCategory: "tv"   # downloads go to <save path>/tv
+
+# This app as an application in Prowlarr, which then syncs its indexers here
+sonarr_prowlarr_application:
+  name: "Sonarr"
+  implementation: "Sonarr"
+  syncLevel: "fullSync"   # adds, updates and removes indexers to match Prowlarr
+  tags: []
+  fields:
+    prowlarrUrl: "{{ sonarr_prowlarr.url }}"
+    baseUrl: "http://{{ network_ipv4_address }}:{{ sonarr_port }}"
+    apiKey: "{{ sonarr_api_key }}"
+    syncCategories: "{{ sonarr_prowlarr.sync_categories }}"

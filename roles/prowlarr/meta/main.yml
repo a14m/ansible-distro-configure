@@ -1,6 +1,5 @@
 ---
-dependencies:
-  - role: "servarr"   # servarr_resources module
+dependencies: []
 galaxy_info:
   author: "a14m"
   description: "Install Prowlarr (indexer manager, self-updating) with its web UI behind the proxy"

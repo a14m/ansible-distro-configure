@@ -15,3 +15,15 @@ radarr_download_client:
     username: "{{ radarr_qbittorrent.username }}"
     password: "{{ radarr_qbittorrent.password }}"
     movieCategory: "movies"   # downloads go to <save path>/movies
+
+# This app as an application in Prowlarr, which then syncs its indexers here
+radarr_prowlarr_application:
+  name: "Radarr"
+  implementation: "Radarr"
+  syncLevel: "fullSync"   # adds, updates and removes indexers to match Prowlarr
+  tags: []
+  fields:
+    prowlarrUrl: "{{ radarr_prowlarr.url }}"
+    baseUrl: "http://{{ network_ipv4_address }}:{{ radarr_port }}"
+    apiKey: "{{ radarr_api_key }}"
+    syncCategories: "{{ radarr_prowlarr.sync_categories }}"

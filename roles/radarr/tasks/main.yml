@@ -21,10 +21,22 @@
     api_key: "{{ radarr_api_key }}"
     key: "path"
     resources: "{{ radarr_root_folders | map('community.general.dict_kv', 'path') }}"
+    prune: true
 
 - name: "Manage radarr download clients"
   servarr_resources:
     url: "http://{{ network_ipv4_address }}:{{ radarr_port }}/api/v3/downloadclient"
     api_key: "{{ radarr_api_key }}"
     resources: "{{ [radarr_download_client] }}"
+    prune: true
   no_log: true   # password
+
+# Registered from here, once Radarr is up: Prowlarr tests an app's connection when adding it
+- name: "Register radarr in prowlarr"
+  servarr_resources:
+    url: "{{ radarr_prowlarr.url }}/api/v1/applications"
+    api_key: "{{ radarr_prowlarr.api_key }}"
+    resources: "{{ [radarr_prowlarr_application] }}"
+    prune: false   # only this app's entry
+  when: radarr_prowlarr is defined
+  no_log: true   # API keys

@@ -37,6 +37,10 @@ sonarr_group: "media"
 sonarr_group_id: 2000   # same GID in every container sharing /data (102000 on the host)
 sonarr_root_folders:
   - "/data/media/tv"
+sonarr_prowlarr:
+  url: "http://{{ hostvars['downloads.home.arpa'].network_ipv4_address }}:9696"
+  api_key: "{{ hostvars['downloads.home.arpa'].prowlarr_api_key }}"
+  sync_categories: [5000, 5010, 5020, 5030, 5040, 5045, 5050, 5080, 5090]   # Prowlarr's TV defaults + 5080 TV/Documentary
 sonarr_qbittorrent:
   host: "{{ hostvars['downloads.home.arpa'].network_ipv4_address }}"
   port: 8080
@@ -52,6 +56,10 @@ radarr_group: "media"
 radarr_group_id: 2000
 radarr_root_folders:
   - "/data/media/movies"
+radarr_prowlarr:
+  url: "http://{{ hostvars['downloads.home.arpa'].network_ipv4_address }}:9696"
+  api_key: "{{ hostvars['downloads.home.arpa'].prowlarr_api_key }}"
+  sync_categories: [2000, 2010, 2020, 2030, 2040, 2045, 2050, 2060, 2070, 2080, 2090]   # Prowlarr's movie defaults
 radarr_qbittorrent:
   host: "{{ hostvars['downloads.home.arpa'].network_ipv4_address }}"
   port: 8080

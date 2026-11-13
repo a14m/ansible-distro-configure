@@ -15,25 +15,6 @@ argument_specs:
         elements: "str"
         description: "Hostnames/IPs Prowlarr accepts in the Host header (empty allows all)"
         default: []
-      prowlarr_applications:
-        type: "list"
-        elements: "dict"
-        description: "Apps Prowlarr syncs its indexers to; the role adds or updates these and removes others"
-        default: []
-        options:
-          name:
-            type: "str"
-            description: "Name shown in Prowlarr"
-            required: true
-          implementation:
-            type: "str"
-            description: "App type"
-            required: true
-            choices: ["Sonarr", "Radarr"]
-          fields:
-            type: "dict"
-            description: "App settings: baseUrl, apiKey, syncCategories (prowlarrUrl is set by the role)"
-            required: true
       prowlarr_port:
         type: "int"
         description: "Port for the web UI to bind on network_ipv4_address"

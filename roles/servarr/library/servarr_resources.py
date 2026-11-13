@@ -10,7 +10,8 @@ DOCUMENTATION = r"""
 module: servarr_resources
 short_description: Make a Servarr API collection (root folders, download clients, applications, ...) match a list
 description:
-  - Reads the collection at O(url), adds missing resources, updates changed ones and deletes unlisted ones.
+  - Reads the collection at O(url), adds missing resources, updates changed ones and, with O(prune), deletes unlisted
+    ones.
   - Resources are matched by O(key). O(fields) may be given as a mapping; it is sent as the API's name/value list.
   - Secrets come back from the API masked (C(********)), so they are not compared, but they are re-sent with every
     update of a resource that has them.
@@ -25,7 +26,7 @@ options:
     required: true
     no_log: true
   resources:
-    description: Desired resources. Unlisted ones are deleted.
+    description: Desired resources.
     type: list
     elements: dict
     required: true
@@ -37,6 +38,11 @@ options:
     description: Merged into every resource (O(fields) merged too).
     type: dict
     default: {}
+  prune:
+    description: Delete resources not in O(resources). False manages only the listed ones (e.g. an app registering
+      itself in a shared collection).
+    type: bool
+    required: true
 """
 
 MASKED = "********"
@@ -88,6 +94,7 @@ def main():
             "resources": {"type": "list", "elements": "dict", "required": True},
             "key": {"type": "str", "default": "name"},
             "defaults": {"type": "dict", "default": {}},
+            "prune": {"type": "bool", "required": True},
         },
         supports_check_mode=True,
     )
@@ -110,7 +117,7 @@ def main():
         if (changed or has_secret) and not module.check_mode:
             request(module, "PUT", f"{url}/{current['id']}?forceSave=true", {**resource, "id": current["id"]})
 
-    for name, current in existing.items():
+    for name, current in existing.items() if module.params["prune"] else []:
         result["removed"].append(name)
         if not module.check_mode:
             request(module, "DELETE", f"{url}/{current['id']}")

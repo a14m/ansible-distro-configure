@@ -14,9 +14,11 @@ Installs one app as its own user and systemd service (`/opt/<App>`, data in `/va
 
 ## servarr_resources module
 
-Makes an API collection (root folders, download clients, applications, ...) match a list: adds missing resources,
-updates changed ones and deletes unlisted ones, matched by `key` (default `name`). `fields` can be a mapping,
-`defaults` is merged into every resource, and `configContract` defaults to `<implementation>Settings`.
+Makes an API collection (root folders, download clients, applications, ...) match a list: adds missing resources and
+updates changed ones, matched by `key` (default `name`). `prune` (required) says whether unlisted ones are deleted:
+`true` when the list is the whole collection, `false` when sharing it (e.g. an app registering itself in Prowlarr).
+`fields` can be a mapping, `defaults` is merged into every resource, and `configContract` defaults to
+`<implementation>Settings`.
 
 ```yaml
 - servarr_resources:
@@ -26,6 +28,7 @@ updates changed ones and deletes unlisted ones, matched by `key` (default `name`
       - name: "qBittorrent"
         implementation: "QBittorrent"
         fields: { host: "192.168.0.121", port: 8080 }
+    prune: true
 ```
 
 Secrets come back masked (`********`), so they aren't compared, but are re-sent with every update.
