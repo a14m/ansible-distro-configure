@@ -33,6 +33,16 @@ jellyfin_local_networks:
   - "10.0.0.0/24"   # the LAN; Tailscale clients arrive from the subnet router's LAN IP
 jellyfin_known_proxies:
   - "{{ hostvars['proxy.home.arpa'].network_ipv4_address }}"
+jellyfin_server_name: "Jellyfin"
+jellyfin_users:   # initial passwords, change them in the web UI
+  - { name: "alice", password: "CHANGEME", admin: true }   # first admin: the setup admin
+  - { name: "bob", password: "CHANGEME", admin: true }
+  - { name: "kids", password: "CHANGEME" }
+jellyfin_metadata_language: "en"
+jellyfin_metadata_country: "DE"
+jellyfin_libraries:
+  - { name: "Movies", type: "movies", path: "/data/media/movies" }
+  - { name: "Shows", type: "tvshows", path: "/data/media/tv" }
 
 ufw_rules:
   - rule: "allow"

@@ -28,13 +28,24 @@
     enabled: true
     state: "started"
 
-# Written by Jellyfin on its first start
-- name: "Wait for jellyfin network config"
+# Jellyfin only writes it once network settings are saved; missing keys keep their defaults. The empty lists are
+# there because set_children below only fills existing elements (Jellyfin's own file always has them)
+- name: "Create jellyfin network config"
   become: true
-  ansible.builtin.wait_for:
-    path: "/etc/jellyfin/network.xml"
-    search_regex: "EnableRemoteAccess"
-    timeout: 120
+  ansible.builtin.copy:
+    dest: "/etc/jellyfin/network.xml"
+    content: |
+      <?xml version="1.0" encoding="utf-8"?>
+      <NetworkConfiguration>
+        <LocalNetworkAddresses />
+        <LocalNetworkSubnets />
+        <KnownProxies />
+      </NetworkConfiguration>
+    force: false
+    owner: "jellyfin"
+    group: "jellyfin"
+    mode: "0644"
+  notify: "Restart jellyfin"
 
 # Only these keys; the rest stays in the web UI
 - name: "Set jellyfin network settings"
@@ -72,12 +83,115 @@
 
 - name: "Wait for jellyfin"
   ansible.builtin.uri:
-    url: "http://{{ network_ipv4_address }}:{{ jellyfin_port }}/health"
+    url: "{{ jellyfin_api }}/health"
     return_content: true
   register: jellyfin_health
   until: jellyfin_health.status == 200 and jellyfin_health.content == "Healthy"
   retries: 30
   delay: 2
+
+- name: "Read jellyfin setup state"
+  ansible.builtin.uri:
+    url: "{{ jellyfin_api }}/System/Info/Public"
+  register: jellyfin_public_info
+
+# First-time setup only (the wizard, through its API); afterwards users and libraries live in the web UI
+- name: "Run jellyfin first-time setup"
+  when: not jellyfin_public_info.json.StartupWizardCompleted
+  block:
+    - name: "Set jellyfin server name and languages"
+      ansible.builtin.uri:
+        url: "{{ jellyfin_api }}/Startup/Configuration"
+        method: "POST"
+        body_format: "json"
+        body:
+          ServerName: "{{ jellyfin_server_name }}"
+          UICulture: "{{ jellyfin_ui_culture }}"
+          PreferredMetadataLanguage: "{{ jellyfin_metadata_language }}"
+          MetadataCountryCode: "{{ jellyfin_metadata_country }}"
+        status_code: [204]
+
+    # Jellyfin creates the first user only when asked for it, as its wizard does
+    - name: "Initialize jellyfin first user"
+      ansible.builtin.uri:
+        url: "{{ jellyfin_api }}/Startup/User"
+
+    - name: "Make the first admin the jellyfin setup user"
+      ansible.builtin.uri:
+        url: "{{ jellyfin_api }}/Startup/User"
+        method: "POST"
+        body_format: "json"
+        body:
+          Name: "{{ jellyfin_setup_admin.name }}"
+          Password: "{{ jellyfin_setup_admin.password }}"
+        status_code: [204]
+      no_log: true
+
+    # Allowed without a login until setup is completed
+    - name: "Add jellyfin libraries"
+      ansible.builtin.uri:
+        # yamllint disable-line rule:line-length
+        url: "{{ jellyfin_api }}/Library/VirtualFolders?name={{ item.name | urlencode }}&collectionType={{ item.type }}&paths={{ item.path | urlencode }}&refreshLibrary=true"
+        method: "POST"
+        body_format: "json"
+        body:
+          LibraryOptions: "{{ jellyfin_library_options | combine({'PathInfos': [{'Path': item.path}]}) }}"
+        status_code: [204]
+      loop: "{{ jellyfin_libraries }}"
+      loop_control:
+        label: "{{ item.name }}"
+
+    # Creating users needs a login, even during setup
+    - name: "Log in as the first jellyfin admin"
+      ansible.builtin.uri:
+        url: "{{ jellyfin_api }}/Users/AuthenticateByName"
+        method: "POST"
+        headers:
+          Authorization: "{{ jellyfin_client }}"
+        body_format: "json"
+        body:
+          Username: "{{ jellyfin_setup_admin.name }}"
+          Pw: "{{ jellyfin_setup_admin.password }}"
+      register: jellyfin_login
+      no_log: true
+
+    - name: "Create the other jellyfin users"
+      ansible.builtin.uri:
+        url: "{{ jellyfin_api }}/Users/New"
+        method: "POST"
+        headers:
+          Authorization: '{{ jellyfin_client }}, Token="{{ jellyfin_login.json.AccessToken }}"'
+        body_format: "json"
+        body:
+          Name: "{{ item.name }}"
+          Password: "{{ item.password }}"
+      loop: "{{ jellyfin_users | rejectattr('name', 'equalto', jellyfin_setup_admin.name) }}"
+      loop_control:
+        label: "{{ item.name }}"
+      register: jellyfin_created_users
+      no_log: true
+
+    # New users are normal users; their full policy is sent back with IsAdministrator on
+    - name: "Make the listed jellyfin users admins"
+      ansible.builtin.uri:
+        url: "{{ jellyfin_api }}/Users/{{ item.json.Id }}/Policy"
+        method: "POST"
+        headers:
+          Authorization: '{{ jellyfin_client }}, Token="{{ jellyfin_login.json.AccessToken }}"'
+        body_format: "json"
+        body: "{{ item.json.Policy | combine({'IsAdministrator': true}) }}"
+        status_code: [204]
+      loop: "{{ jellyfin_created_users.results | selectattr('item.admin', 'defined') | selectattr('item.admin') }}"
+      loop_control:
+        label: "{{ item.item.name }}"
+      no_log: true
+
+    - name: "Complete jellyfin setup"
+      ansible.builtin.uri:
+        url: "{{ jellyfin_api }}/Startup/Complete"
+        method: "POST"
+        status_code: [204]
+      changed_when: true
 
 - name: "Create jellyfin proxy vhost"
   when: jellyfin_hostname is defined

@@ -1,3 +1,8 @@
 ---
 jellyfin_port: 8096
 jellyfin_known_proxies: []
+jellyfin_server_name: "{{ ansible_facts.hostname }}"
+jellyfin_ui_culture: "en-US"
+jellyfin_metadata_language: "en"
+jellyfin_metadata_country: "US"
+jellyfin_libraries: []

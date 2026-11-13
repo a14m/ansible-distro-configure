@@ -12,6 +12,60 @@ argument_specs:
         elements: "str"
         description: "Reverse proxy IPs whose X-Forwarded-For is trusted for the client IP"
         default: []
+      jellyfin_users:
+        type: "list"
+        elements: "dict"
+        description: "Users created at first-time setup; the first with admin is the setup admin"
+        required: true
+        options:
+          name:
+            type: "str"
+            description: "User name"
+            required: true
+          password:
+            type: "str"
+            description: "Initial password (change it in the web UI afterwards)"
+            required: true
+            no_log: true
+          admin:
+            type: "bool"
+            description: "Can manage the server"
+            default: false
+      jellyfin_libraries:
+        type: "list"
+        elements: "dict"
+        description: "Libraries created at first-time setup"
+        default: []
+        options:
+          name:
+            type: "str"
+            description: "Library name"
+            required: true
+          type:
+            type: "str"
+            description: "Content type"
+            required: true
+            choices: ["movies", "tvshows"]
+          path:
+            type: "str"
+            description: "Folder (e.g. /data/media/movies)"
+            required: true
+      jellyfin_server_name:
+        type: "str"
+        description: "Server name shown in apps (first-time setup)"
+        default: "{{ ansible_facts.hostname }}"
+      jellyfin_ui_culture:
+        type: "str"
+        description: "Web UI language (first-time setup)"
+        default: "en-US"
+      jellyfin_metadata_language:
+        type: "str"
+        description: "Preferred metadata language (ISO 639-1)"
+        default: "en"
+      jellyfin_metadata_country:
+        type: "str"
+        description: "Metadata country (ISO 3166-1 alpha-2)"
+        default: "US"
       jellyfin_hostname:
         type: "str"
         description: "FQDN for the web UI vhost on the proxy (e.g. streaming.internal). Unset skips the vhost."

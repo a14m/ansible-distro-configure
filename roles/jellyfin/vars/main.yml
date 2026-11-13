@@ -1,0 +1,19 @@
+---
+jellyfin_api: "http://{{ network_ipv4_address }}:{{ jellyfin_port }}"
+# Identifies the role to the API (Jellyfin requires it on logins)
+jellyfin_client: 'MediaBrowser Client="Ansible", Device="Ansible", DeviceId="ansible", Version="1.0"'
+# Created by the setup wizard, and used to log in: the first user marked admin
+jellyfin_setup_admin: "{{ jellyfin_users | selectattr('admin', 'defined') | selectattr('admin') | first }}"
+
+# Options for libraries the role creates. /data is mounted read-only: nothing is saved next to the media
+jellyfin_library_options:
+  EnableRealtimeMonitor: true   # new imports show up right away
+  SaveLocalMetadata: false   # artwork stays in Jellyfin's own folder
+  MetadataSavers: []   # no .nfo files
+  SaveSubtitlesWithMedia: false   # Bazarr handles subtitles
+  EnableTrickplayImageExtraction: false   # scrub previews: ffmpeg over every video, too heavy here
+  ExtractTrickplayImagesDuringLibraryScan: false
+  EnableChapterImageExtraction: false
+  ExtractChapterImagesDuringLibraryScan: false
+  PreferredMetadataLanguage: "{{ jellyfin_metadata_language }}"
+  MetadataCountryCode: "{{ jellyfin_metadata_country }}"
