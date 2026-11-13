@@ -87,6 +87,7 @@
   roles:
     - role: "ufw"
     - role: "pihole"
+      tags: ["dns"]
     - role: "locales"
     - role: "timezone"
     - role: "bash"
