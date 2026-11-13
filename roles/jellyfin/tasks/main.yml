@@ -1,0 +1,91 @@
+---
+- name: "Add jellyfin repository"
+  become: true
+  ansible.builtin.deb822_repository:
+    name: "jellyfin"
+    types: "deb"
+    uris: "https://repo.jellyfin.org/debian"
+    suites: "{{ ansible_facts.distribution_release }}"
+    components: "main"
+    signed_by: "https://repo.jellyfin.org/jellyfin_team.gpg.key"
+    state: "present"
+    install_python_debian: true
+
+- name: "Install jellyfin"
+  become: true
+  ansible.builtin.apt:
+    name:
+      - "jellyfin"
+      - "python3-lxml"   # for community.general.xml below
+    state: "present"
+    update_cache: true
+    install_recommends: false
+
+- name: "Ensure jellyfin is enabled and running"
+  become: true
+  ansible.builtin.systemd_service:
+    name: "jellyfin"
+    enabled: true
+    state: "started"
+
+# Written by Jellyfin on its first start
+- name: "Wait for jellyfin network config"
+  become: true
+  ansible.builtin.wait_for:
+    path: "/etc/jellyfin/network.xml"
+    search_regex: "EnableRemoteAccess"
+    timeout: 120
+
+# Only these keys; the rest stays in the web UI
+- name: "Set jellyfin network settings"
+  become: true
+  community.general.xml:
+    path: "/etc/jellyfin/network.xml"
+    xpath: "/NetworkConfiguration/{{ item.key }}"
+    value: "{{ item.value | string }}"   # xml only takes text
+  loop:
+    - { key: "InternalHttpPort", value: "{{ jellyfin_port }}" }
+    - { key: "EnableRemoteAccess", value: "false" }   # only clients from jellyfin_local_networks
+    - { key: "EnableIPv6", value: "false" }
+    - { key: "AutoDiscovery", value: "false" }   # no LAN broadcast answers; clients use the URL
+    - { key: "EnableUPnP", value: "false" }
+  loop_control:
+    label: "{{ item.key }}"
+  notify: "Restart jellyfin"
+
+- name: "Set jellyfin network lists"
+  become: true
+  community.general.xml:
+    path: "/etc/jellyfin/network.xml"
+    xpath: "/NetworkConfiguration/{{ item.key }}"
+    set_children: "{{ item.value | map('community.general.dict_kv', 'string') }}"
+  loop:
+    - { key: "LocalNetworkAddresses", value: ["{{ network_ipv4_address }}"] }   # bind to the LAN IP only
+    - { key: "LocalNetworkSubnets", value: "{{ jellyfin_local_networks }}" }
+    - { key: "KnownProxies", value: "{{ jellyfin_known_proxies }}" }
+  loop_control:
+    label: "{{ item.key }}"
+  notify: "Restart jellyfin"
+
+- name: "Apply pending jellyfin restarts"
+  ansible.builtin.meta: flush_handlers
+
+- name: "Wait for jellyfin"
+  ansible.builtin.uri:
+    url: "http://{{ network_ipv4_address }}:{{ jellyfin_port }}/health"
+    return_content: true
+  register: jellyfin_health
+  until: jellyfin_health.status == 200 and jellyfin_health.content == "Healthy"
+  retries: 30
+  delay: 2
+
+- name: "Create jellyfin proxy vhost"
+  when: jellyfin_hostname is defined
+  tags:
+    - "vhost"
+  ansible.builtin.include_role:
+    name: "vhost"
+  vars:
+    vhost_name: "jellyfin"
+    vhost_nginx_content: "{{ lookup('template', 'jellyfin.nginx.conf.j2') }}"
+    vhost_caddy_content: "{{ lookup('template', 'jellyfin.caddy.j2') }}"

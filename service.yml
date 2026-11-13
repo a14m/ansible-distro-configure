@@ -131,3 +131,11 @@
     - role: "sonarr"
     - role: "radarr"
     - role: "bazarr"
+
+- name: "Streaming configure"
+  gather_facts: true
+  hosts:
+    - streaming.home.arpa
+  roles:
+    - role: "ufw"
+    - role: "jellyfin"
