@@ -17,6 +17,9 @@ pve_lxc_dns: "{{ network_ipv4_dns }}"
 pve_lxc_configs:
   - "features: nesting=1"
   - "mp0: /srv/data,mp=/data"   # shared media volume
+  # The VPN routes ::/0 without an IPv6 address, so IPv6 is dropped silently and programs trying it first hang
+  - "lxc.sysctl.net.ipv6.conf.all.disable_ipv6 = 1"
+  - "lxc.sysctl.net.ipv6.conf.default.disable_ipv6 = 1"
 # DNS comes only from the VPN (systemd-resolved); PVE should not overwrite /etc/resolv.conf in the container
 pve_lxc_ignore_resolv_conf: true
 pve_lxc_ssh_port: 2222
