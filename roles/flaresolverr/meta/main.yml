@@ -1,0 +1,11 @@
+---
+dependencies: []
+galaxy_info:
+  author: "a14m"
+  description: "Install FlareSolverr (Cloudflare challenge solver for Prowlarr) on localhost"
+  license: "MIT"
+  min_ansible_version: "2.18"
+  platforms:
+    - name: "Debian"
+      versions:
+        - "trixie"

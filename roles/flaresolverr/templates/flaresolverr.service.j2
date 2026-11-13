@@ -1,0 +1,19 @@
+[Unit]
+Description=FlareSolverr
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=flaresolverr
+Group=flaresolverr
+Type=simple
+Environment=HOST=127.0.0.1
+Environment=PORT={{ flaresolverr_port }}
+Environment=LOG_LEVEL=info
+WorkingDirectory=/opt/flaresolverr
+ExecStart=/opt/flaresolverr/flaresolverr
+TimeoutStopSec=20
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

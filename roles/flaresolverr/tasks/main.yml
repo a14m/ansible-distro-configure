@@ -1,0 +1,124 @@
+---
+# The release bundles Python and Chrome; Chrome needs Xvfb and these libraries
+- name: "Install flaresolverr dependencies"
+  become: true
+  ansible.builtin.apt:
+    name:
+      - "xvfb"
+      - "libnss3"
+      - "libatk1.0-0t64"
+      - "libatk-bridge2.0-0t64"
+      - "libcups2t64"
+      - "libxkbcommon0"
+      - "libxcomposite1"
+      - "libxdamage1"
+      - "libxrandr2"
+      - "libgbm1"
+      - "libpango-1.0-0"
+      - "libcairo2"
+      - "libasound2t64"
+      - "libxfixes3"
+      - "libdrm2"
+      - "libxshmfence1"
+      - "libgtk-3-0t64"
+      - "fonts-liberation"
+    state: "present"
+    install_recommends: false
+
+- name: "Create flaresolverr group"
+  become: true
+  ansible.builtin.group:
+    name: "flaresolverr"
+    system: true
+
+- name: "Create flaresolverr user"
+  become: true
+  ansible.builtin.user:
+    name: "flaresolverr"
+    group: "flaresolverr"
+    system: true
+    shell: "/usr/sbin/nologin"
+    home: "/var/lib/flaresolverr"
+    create_home: true
+
+# It doesn't update itself, and an outdated one stops solving challenges
+- name: "Find the latest flaresolverr release"
+  ansible.builtin.uri:
+    url: "https://api.github.com/repos/FlareSolverr/FlareSolverr/releases/latest"
+  register: flaresolverr_latest_release
+  when: flaresolverr_version == 'latest'
+  check_mode: false
+
+- name: "Create the flaresolverr release directory"
+  become: true
+  ansible.builtin.file:
+    path: "{{ flaresolverr_dir }}"
+    state: "directory"
+    owner: "root"
+    group: "root"
+    mode: "0755"
+
+- name: "Install flaresolverr {{ flaresolverr_release }}"
+  become: true
+  ansible.builtin.unarchive:
+    # yamllint disable-line rule:line-length
+    src: "https://github.com/FlareSolverr/FlareSolverr/releases/download/{{ flaresolverr_release }}/flaresolverr_linux_x64.tar.gz"
+    dest: "{{ flaresolverr_dir }}"
+    remote_src: true
+    extra_opts: ["--strip-components=1"]
+    creates: "{{ flaresolverr_dir }}/flaresolverr"
+
+- name: "Point flaresolverr at {{ flaresolverr_release }}"
+  become: true
+  ansible.builtin.file:
+    src: "{{ flaresolverr_dir }}"
+    dest: "/opt/flaresolverr"
+    state: "link"
+  notify: "Restart flaresolverr"
+
+- name: "Find older flaresolverr releases"
+  ansible.builtin.find:
+    paths: "/opt"
+    patterns: "flaresolverr-*"
+    file_type: "directory"
+    excludes: "{{ flaresolverr_dir | basename }}"
+  register: flaresolverr_old_releases
+
+- name: "Remove older flaresolverr releases"
+  become: true
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    state: "absent"
+  loop: "{{ flaresolverr_old_releases.files }}"
+  loop_control:
+    label: "{{ item.path }}"
+
+- name: "Install flaresolverr service"
+  become: true
+  ansible.builtin.template:
+    src: "flaresolverr.service.j2"
+    dest: "/etc/systemd/system/flaresolverr.service"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+  notify: "Restart flaresolverr"
+
+- name: "Ensure flaresolverr is enabled and running"
+  become: true
+  ansible.builtin.systemd_service:
+    name: "flaresolverr"
+    enabled: true
+    state: "started"
+    daemon_reload: true
+
+- name: "Apply pending flaresolverr restarts"
+  ansible.builtin.meta: flush_handlers
+
+# Ready once its startup browser test passes
+- name: "Wait for flaresolverr"
+  ansible.builtin.uri:
+    url: "http://127.0.0.1:{{ flaresolverr_port }}/"
+  register: flaresolverr_ready
+  until: flaresolverr_ready.status == 200
+  retries: 30
+  delay: 2

@@ -1,0 +1,12 @@
+---
+argument_specs:
+  main:
+    options:
+      flaresolverr_version:
+        type: "str"
+        description: "Release tag (e.g. v3.5.2) to hold or roll back; 'latest' upgrades whenever a new one is out"
+        default: "latest"
+      flaresolverr_port:
+        type: "int"
+        description: "Port to listen on (127.0.0.1 only)"
+        default: 8191

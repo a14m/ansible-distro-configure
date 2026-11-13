@@ -1,0 +1,4 @@
+---
+flaresolverr_release: >-
+  {{ flaresolverr_latest_release.json.tag_name if flaresolverr_version == 'latest' else flaresolverr_version }}
+flaresolverr_dir: "/opt/flaresolverr-{{ flaresolverr_release }}"
