@@ -36,6 +36,7 @@
     cmode: "shell"
     timeout: 300   # unpacking the template takes longer than the 30s default on slow (HDD) nodes
     state: present
+  register: pve_lxc_provision_result
   tags:
     # PVE API not available in containers — requires proxmox-ve package
     - "molecule-notest"
@@ -85,7 +86,8 @@
     vmid: "{{ pve_lxc_id }}"
     hostname: "{{ pve_lxc_hostname }}"
     state: restarted
-  when: pve_lxc_configs_result is changed
+  # A container created in this run already started with its raw config, and its first boot may not stop in time
+  when: pve_lxc_configs_result is changed and pve_lxc_provision_result is not changed
   tags:
     # PVE API not available in containers — requires proxmox-ve package
     - "molecule-notest"
