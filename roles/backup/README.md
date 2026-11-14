@@ -14,6 +14,7 @@ Backs up a set of paths to an S3-compatible restic repository on a schedule, and
 ### What / when / retention
 
 - `backup_paths` **Required** list of paths to back up.
+- `backup_paths_exclude` paths/patterns left out (default: `[]`).
 - `backup_systemd_schedule` `OnCalendar` value on systemd hosts (default: `"daily"`).
 - `backup_cron_schedule` cron value on OpenRC hosts (default: `"0 0 * * *"`).
 - `backup_retention_daily` / `_weekly` / `_monthly` snapshots to keep (default: `7` / `4` / `6`).

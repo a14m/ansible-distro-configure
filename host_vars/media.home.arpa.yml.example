@@ -40,7 +40,7 @@ sonarr_root_folders:
 sonarr_prowlarr:
   url: "http://{{ hostvars['downloads.home.arpa'].network_ipv4_address }}:9696"
   api_key: "{{ hostvars['downloads.home.arpa'].prowlarr_api_key }}"
-  sync_categories: [5000, 5010, 5020, 5030, 5040, 5045, 5050, 5080, 5090]   # Prowlarr's TV defaults + 5080 TV/Documentary
+  sync_categories: [5000, 5010, 5020, 5030, 5040, 5045, 5050, 5080, 5090]   # Prowlarr's defaults + 5080 TV/Documentary
 sonarr_qbittorrent:
   host: "{{ hostvars['downloads.home.arpa'].network_ipv4_address }}"
   port: 8080
@@ -87,6 +87,26 @@ bazarr_radarr:
   ip: "{{ network_ipv4_address }}"
   port: 7878
   api_key: "{{ radarr_api_key }}"
+
+backup_name: "media"
+backup_paths:   # databases and settings; their own nightly zips in Backups/ are consistent copies
+  - "/var/lib/sonarr"
+  - "/var/lib/radarr"
+  - "/var/lib/bazarr"
+backup_paths_exclude:   # posters are re-downloaded, logs and caches aren't needed
+  - "/var/lib/sonarr/MediaCover"
+  - "/var/lib/radarr/MediaCover"
+  - "/var/lib/sonarr/logs"
+  - "/var/lib/radarr/logs"
+  - "/var/lib/bazarr/log"
+  - "/var/lib/bazarr/cache"
+backup_cron_schedule: "0 4 * * 0"
+backup_systemd_schedule: "Sun *-*-* 04:00"
+backup_repo: "s3:http://10.0.0.254:3900/backups"
+backup_s3_region: "garage"
+backup_access_key_id: "GK_CHANGEME"
+backup_secret_access_key: "CHANGEME"
+backup_password: "changeme"
 
 ufw_rules:
   - rule: "allow"

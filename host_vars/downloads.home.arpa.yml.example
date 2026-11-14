@@ -63,6 +63,21 @@ prowlarr_allowed_hosts:
 prowlarr_api_key: "CHANGEME"
 qbittorrent_trusted_proxy: "{{ hostvars['proxy.home.arpa'].network_ipv4_address }}"
 
+backup_name: "downloads"
+backup_paths:
+  - "/var/lib/qbittorrent"   # settings and the torrent list
+  - "/var/lib/prowlarr"      # indexers, apps, history
+backup_paths_exclude:
+  - "/var/lib/qbittorrent/.local/share/qBittorrent/logs"
+  - "/var/lib/prowlarr/logs"
+backup_cron_schedule: "0 4 * * 0"
+backup_systemd_schedule: "Sun *-*-* 04:00"
+backup_repo: "s3:http://10.0.0.254:3900/backups"
+backup_s3_region: "garage"
+backup_access_key_id: "GK_CHANGEME"
+backup_secret_access_key: "CHANGEME"
+backup_password: "changeme"
+
 # Kill switch: all egress is denied except through the tunnel and to its endpoint (must match Endpoint above)
 ufw_default_outgoing_policy: "deny"
 ufw_rules:
@@ -111,3 +126,9 @@ ufw_rules:
     protocol: "tcp"
     direction: "out"
     to: "{{ hostvars['media.home.arpa'].network_ipv4_address }}"
+# Backups go to Garage on rpi5, on the LAN
+  - rule: "allow"
+    port: 3900
+    protocol: "tcp"
+    direction: "out"
+    to: "10.0.0.254"

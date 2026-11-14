@@ -44,6 +44,21 @@ jellyfin_libraries:
   - { name: "Movies", type: "movies", path: "/data/media/movies" }
   - { name: "Shows", type: "tvshows", path: "/data/media/tv" }
 
+backup_name: "streaming"
+backup_service: "jellyfin"   # stopped during an in-place restore
+backup_paths:
+  - "/etc/jellyfin"
+  - "/var/lib/jellyfin"
+backup_paths_exclude:
+  - "/var/lib/jellyfin/metadata"   # artwork, re-fetched on a library scan
+backup_cron_schedule: "0 4 * * 0"
+backup_systemd_schedule: "Sun *-*-* 04:00"
+backup_repo: "s3:http://10.0.0.254:3900/backups"
+backup_s3_region: "garage"
+backup_access_key_id: "GK_CHANGEME"
+backup_secret_access_key: "CHANGEME"
+backup_password: "changeme"
+
 ufw_rules:
   - rule: "allow"
     port: "{{ ssh_port }}"

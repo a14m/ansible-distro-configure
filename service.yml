@@ -121,6 +121,7 @@
     - role: "qbittorrent"
     - role: "prowlarr"
     - role: "rsync"
+    - role: "backup"
 
 - name: "Media configure"
   gather_facts: true
@@ -131,6 +132,7 @@
     - role: "sonarr"
     - role: "radarr"
     - role: "bazarr"
+    - role: "backup"
 
 - name: "Streaming configure"
   gather_facts: true
@@ -139,3 +141,4 @@
   roles:
     - role: "ufw"
     - role: "jellyfin"
+    - role: "backup"
