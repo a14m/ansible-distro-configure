@@ -33,6 +33,8 @@ pve_lxc_ssh_private_key: |
 
 wireguard_autostart_connection: "wg-vpn"
 wireguard_connections:
+  # Must remove ipv6 ::/0
+  # Must allow endpoint in firewall
   wg-vpn: |
     [Interface]
     PrivateKey = your_private_key_here
