@@ -163,3 +163,14 @@
     - role: "backup"
     - role: "prometheus-node-exporter"
     - role: "alloy"
+
+- name: "Requests configure"
+  gather_facts: true
+  hosts:
+    - requests.home.arpa
+  roles:
+    - role: "ufw"
+    - role: "seerr"
+    - role: "backup"
+    - role: "prometheus-node-exporter"
+    - role: "alloy"

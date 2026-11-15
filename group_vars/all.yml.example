@@ -25,3 +25,4 @@ ssh_known_hosts:
   - "[downloads.home.arpa]:2222 ssh-ed25519 AAAA...fMx"
   - "[media.home.arpa]:2222 ssh-ed25519 AAAA...fMx"
   - "[streaming.home.arpa]:2222 ssh-ed25519 AAAA...fMx"
+  - "[requests.home.arpa]:2222 ssh-ed25519 AAAA...fMx"

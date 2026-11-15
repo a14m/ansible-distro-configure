@@ -1,0 +1,5 @@
+---
+seerr_install_dir: "/opt/seerr"   # source and build, owned by root (read-only for the service)
+seerr_config_dir: "/var/lib/seerr"   # settings, database, logs
+seerr_mise_dir: "/opt/mise"   # node via the nodejs role, outside root's home so the service user can run it
+seerr_api: "http://{{ network_ipv4_address }}:{{ seerr_port }}/api/v1"

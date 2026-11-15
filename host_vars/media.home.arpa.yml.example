@@ -140,6 +140,17 @@ ufw_rules:
     protocol: "tcp"
     direction: "in"
     from: "{{ hostvars['proxy.home.arpa'].network_ipv4_address }}"
+# Seerr (in requests) adds requests to Sonarr and Radarr
+  - rule: "allow"
+    port: "{{ sonarr_port }}"
+    protocol: "tcp"
+    direction: "in"
+    from: "{{ hostvars['requests.home.arpa'].network_ipv4_address }}"
+  - rule: "allow"
+    port: "{{ radarr_port }}"
+    protocol: "tcp"
+    direction: "in"
+    from: "{{ hostvars['requests.home.arpa'].network_ipv4_address }}"
   - rule: "allow"
     port: 9100   # node-exporter, scraped by Prometheus
     protocol: "tcp"

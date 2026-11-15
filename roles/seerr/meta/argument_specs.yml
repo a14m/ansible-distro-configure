@@ -1,0 +1,76 @@
+---
+argument_specs:
+  main:
+    options:
+      seerr_jellyfin:
+        type: "dict"
+        description: "Jellyfin for first-time setup; its admin signs in and becomes Seerr's admin"
+        required: true
+        options:
+          host:
+            type: "str"
+            description: "Jellyfin IP or name (plain HTTP)"
+            required: true
+          port:
+            type: "int"
+            description: "Jellyfin port"
+            default: 8096
+          username:
+            type: "str"
+            description: "A Jellyfin admin"
+            required: true
+          password:
+            type: "str"
+            description: "Its password"
+            required: true
+            no_log: true
+      seerr_servarr:
+        type: "list"
+        elements: "dict"
+        description: "Sonarr/Radarr added as default servers at first-time setup"
+        required: true
+        options:
+          type:
+            type: "str"
+            description: "App"
+            required: true
+            choices: ["sonarr", "radarr"]
+          host:
+            type: "str"
+            description: "IP or name (plain HTTP)"
+            required: true
+          port:
+            type: "int"
+            description: "Port"
+            required: true
+          api_key:
+            type: "str"
+            description: "API key"
+            required: true
+            no_log: true
+          quality_profile:
+            type: "str"
+            description: "Quality profile name for requests"
+            required: true
+          root_folder:
+            type: "str"
+            description: "Root folder for requests (e.g. /data/media/tv)"
+            required: true
+          external_url:
+            type: "str"
+            description: "Web UI URL, for links from Seerr (e.g. https://shows.internal)"
+      seerr_hostname:
+        type: "str"
+        description: "FQDN for the web UI vhost on the proxy (e.g. requests.internal). Unset skips the vhost."
+      seerr_version:
+        type: "str"
+        description: "Git tag to build; changing it rebuilds"
+        default: "v3.5.2"
+      seerr_node_version:
+        type: "str"
+        description: "Node version (via the nodejs role)"
+        default: "22"
+      seerr_port:
+        type: "int"
+        description: "HTTP port (on network_ipv4_address)"
+        default: 5055

@@ -22,4 +22,5 @@ containers:
     downloads.home.arpa: {}
     media.home.arpa: {}
     streaming.home.arpa: {}
+    requests.home.arpa: {}
     subscriptions.home.arpa: {}

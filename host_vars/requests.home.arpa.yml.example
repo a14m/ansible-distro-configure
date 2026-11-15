@@ -1,0 +1,88 @@
+---
+network_ipv4_address: "10.0.0.124"
+network_ipv4_gateway: "10.0.0.254"
+network_ipv4_dns: "10.0.0.254"
+
+pve_lxc_node: "pve-02.lan"
+pve_lxc_id: 124
+pve_lxc_hostname: "requests"
+pve_lxc_template: "debian-13-standard_13.6-1_amd64.tar.zst"
+pve_lxc_disk: "local-lvm:8" # storage:sizeGB (the build needs a few GB)
+pve_lxc_cores: 2
+pve_lxc_memory: 2048   # for the build; Seerr itself needs ~300 MB
+pve_lxc_mac: "BC:24:11:00:00:0E"
+pve_lxc_ip: "{{ network_ipv4_address }}/24"
+pve_lxc_gateway: "{{ network_ipv4_gateway }}"
+pve_lxc_dns: "{{ network_ipv4_dns }}"
+pve_lxc_configs:
+  - "features: nesting=1"
+pve_lxc_ssh_port: 39901
+pve_lxc_ssh_public_key: "ssh-ed25519 AAAA...fMo"
+pve_lxc_ssh_private_key: |
+  -----BEGIN OPENSSH PRIVATE KEY-----
+  b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
+  QyNTUxOQAAACAQ0GydCVLVXnXpzBxM6MbmRIDHNjC8dqZoFHgx1PiSgQAAAJi7TmCqu05g
+  qgAAAAtzc2gtZWQyNTUxOQAAACAQ0GydCVLVXnXpzBxM6MbmRIDHNjC8dqZoFHgx1PiSgQ
+  AAAEBgO+cOwV2j8gNZ/EugDk+vbi0eGrK125vRcE3FOtJJMRDQbJ0JUtVedenMHEzoxuZE
+  gMc2MLx2pmgUeDHU+JKBAAAAEm1vbGVjdWxlLXRlc3Qtb25seQECAw==
+  -----END OPENSSH PRIVATE KEY-----
+
+seerr_hostname: "requests.internal"
+seerr_jellyfin:   # the first Jellyfin admin (its current password, if changed in the web UI)
+  host: "{{ hostvars['streaming.home.arpa'].network_ipv4_address }}"
+  port: 8096
+  username: "{{ (hostvars['streaming.home.arpa'].jellyfin_users | first).name }}"
+  password: "{{ (hostvars['streaming.home.arpa'].jellyfin_users | first).password }}"
+seerr_servarr:
+  - type: "sonarr"
+    host: "{{ hostvars['media.home.arpa'].network_ipv4_address }}"
+    port: 8989
+    api_key: "{{ hostvars['media.home.arpa'].sonarr_api_key }}"
+    quality_profile: "HD - 720p/1080p"
+    root_folder: "/data/media/tv"
+    external_url: "https://{{ hostvars['media.home.arpa'].sonarr_hostname }}"
+  - type: "radarr"
+    host: "{{ hostvars['media.home.arpa'].network_ipv4_address }}"
+    port: 7878
+    api_key: "{{ hostvars['media.home.arpa'].radarr_api_key }}"
+    quality_profile: "HD - 720p/1080p"
+    root_folder: "/data/media/movies"
+    external_url: "https://{{ hostvars['media.home.arpa'].radarr_hostname }}"
+
+backup_name: "requests"
+backup_service: "seerr"   # stopped during an in-place restore
+backup_paths:
+  - "/var/lib/seerr"
+backup_paths_exclude:
+  - "/var/lib/seerr/logs"
+  - "/var/lib/seerr/cache"
+backup_cron_schedule: "0 4 * * 0"
+backup_systemd_schedule: "Sun *-*-* 04:00"
+backup_repo: "s3:http://10.0.0.254:3900/backups"
+backup_s3_region: "garage"
+backup_access_key_id: "GK_CHANGEME"
+backup_secret_access_key: "CHANGEME"
+backup_password: "changeme"
+
+ufw_rules:
+  - rule: "allow"
+    port: "{{ ssh_port }}"
+    protocol: "tcp"
+    direction: "in"
+    from: "10.0.0.0/24"
+  - rule: "allow"
+    port: "{{ seerr_port }}"
+    protocol: "tcp"
+    direction: "in"
+    from: "{{ hostvars['proxy.home.arpa'].network_ipv4_address }}"
+# Jellyfin's Moonbase plugin (in streaming) talks to Seerr for the Moonfin apps
+  - rule: "allow"
+    port: "{{ seerr_port }}"
+    protocol: "tcp"
+    direction: "in"
+    from: "{{ hostvars['streaming.home.arpa'].network_ipv4_address }}"
+  - rule: "allow"
+    port: 9100   # node-exporter, scraped by Prometheus
+    protocol: "tcp"
+    direction: "in"
+    from: "{{ hostvars['metrics.home.arpa'].network_ipv4_address }}"

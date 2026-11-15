@@ -1,0 +1,230 @@
+---
+- name: "Install git"
+  become: true
+  ansible.builtin.apt:
+    name: "git"
+    state: "present"
+
+# mise's data moved out of root's home (0700), so the seerr user can run node
+- name: "Install node"
+  ansible.builtin.include_role:
+    name: "nodejs"
+    apply:
+      environment:
+        MISE_DATA_DIR: "{{ seerr_mise_dir }}"
+  vars:
+    nodejs_versions: ["{{ seerr_node_version }}"]
+
+- name: "Find node"
+  ansible.builtin.command:
+    cmd: "mise where node@{{ seerr_node_version }}"
+  environment:
+    MISE_DATA_DIR: "{{ seerr_mise_dir }}"
+  register: seerr_node
+  changed_when: false
+
+- name: "Create seerr user"
+  become: true
+  ansible.builtin.user:
+    name: "seerr"
+    system: true
+    shell: "/usr/sbin/nologin"
+    home: "{{ seerr_config_dir }}"
+    create_home: true
+
+- name: "Clone seerr"
+  become: true
+  ansible.builtin.git:
+    repo: "https://github.com/seerr-team/seerr.git"
+    dest: "{{ seerr_install_dir }}"
+    version: "{{ seerr_version }}"
+    depth: 1
+    force: true
+
+# Once per version (the marker is written last, so an interrupted build is redone). pnpm comes through corepack,
+# enabled as a shim next to node since Seerr's scripts call it by name; afterwards only runtime dependencies are
+# kept, as in the official image
+- name: "Build seerr"
+  become: true
+  ansible.builtin.shell:
+    cmd: >-
+      corepack enable pnpm
+      && pnpm install --frozen-lockfile
+      && pnpm build
+      && pnpm prune --prod --ignore-scripts
+      && rm -rf .next/cache
+      && echo '{"commitTag": "{{ seerr_version }}"}' > committag.json
+      && touch dist/.built-{{ seerr_version }}
+    chdir: "{{ seerr_install_dir }}"
+    creates: "{{ seerr_install_dir }}/dist/.built-{{ seerr_version }}"
+  environment:
+    PATH: "{{ seerr_node.stdout }}/bin:{{ ansible_facts.env.PATH }}"
+    CI: "true"
+    COREPACK_ENABLE_DOWNLOAD_PROMPT: "0"
+    CYPRESS_INSTALL_BINARY: "0"
+    NEXT_TELEMETRY_DISABLED: "1"
+    COMMIT_TAG: "{{ seerr_version }}"   # built into the web UI; must match committag.json or it keeps asking to reload
+  notify: "Restart seerr"
+
+# Next.js caches resized images here at runtime
+- name: "Create seerr image cache folder"
+  become: true
+  ansible.builtin.file:
+    path: "{{ seerr_install_dir }}/.next/cache"
+    state: "directory"
+    owner: "seerr"
+    group: "seerr"
+    mode: "0755"
+
+- name: "Install seerr service"
+  become: true
+  ansible.builtin.template:
+    src: "seerr.service.j2"
+    dest: "/etc/systemd/system/seerr.service"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+  notify: "Restart seerr"
+
+- name: "Ensure seerr is enabled and running"
+  become: true
+  ansible.builtin.systemd_service:
+    name: "seerr"
+    enabled: true
+    state: "started"
+    daemon_reload: true
+
+- name: "Apply pending seerr restarts"
+  ansible.builtin.meta: flush_handlers
+
+- name: "Wait for seerr"
+  ansible.builtin.uri:
+    url: "{{ seerr_api }}/settings/public"
+  register: seerr_public
+  until: seerr_public.status == 200
+  retries: 30
+  delay: 2
+
+# First-time setup only (the wizard, through its API); afterwards everything lives in the web UI.
+# If it stops halfway, empty /var/lib/seerr and run again
+- name: "Run seerr first-time setup"
+  when: not seerr_public.json.initialized
+  block:
+    # The first Jellyfin admin to sign in becomes Seerr's admin; Seerr keeps a Jellyfin API key from it
+    - name: "Sign in to seerr as the jellyfin admin"
+      ansible.builtin.uri:
+        url: "{{ seerr_api }}/auth/jellyfin"
+        method: "POST"
+        body_format: "json"
+        body:
+          username: "{{ seerr_jellyfin.username }}"
+          password: "{{ seerr_jellyfin.password }}"
+          email: "{{ seerr_jellyfin.username }}"
+          hostname: "{{ seerr_jellyfin.host }}"
+          port: "{{ seerr_jellyfin.port }}"
+          useSsl: false
+          urlBase: ""
+          serverType: 2   # Jellyfin
+      register: seerr_login
+      no_log: true
+
+    - name: "Sync seerr libraries"
+      ansible.builtin.uri:
+        url: "{{ seerr_api }}/settings/jellyfin/library/sync"
+        method: "POST"
+        headers:
+          Cookie: "{{ seerr_login.cookies_string }}"
+      register: seerr_libraries
+
+    - name: "Enable seerr libraries"
+      ansible.builtin.uri:
+        url: "{{ seerr_api }}/settings/jellyfin/library/{{ item.id }}"
+        method: "PUT"
+        headers:
+          Cookie: "{{ seerr_login.cookies_string }}"
+        body_format: "json"
+        body:
+          enabled: true
+      loop: "{{ seerr_libraries.json }}"
+      loop_control:
+        label: "{{ item.name }}"
+
+    # The web UI's connection test, which also lists the quality profiles
+    - name: "Read quality profiles for seerr"
+      ansible.builtin.uri:
+        url: "{{ seerr_api }}/settings/{{ item.type }}/test"
+        method: "POST"
+        headers:
+          Cookie: "{{ seerr_login.cookies_string }}"
+        body_format: "json"
+        body:
+          hostname: "{{ item.host }}"
+          port: "{{ item.port }}"
+          apiKey: "{{ item.api_key }}"
+          useSsl: false
+          baseUrl: ""
+      loop: "{{ seerr_servarr }}"
+      loop_control:
+        label: "{{ item.type }}"
+      register: seerr_servarr_test
+      no_log: true
+
+    # Sonarr- and Radarr-only keys go to both; each ignores the other's
+    - name: "Add servarr servers to seerr"
+      ansible.builtin.uri:
+        url: "{{ seerr_api }}/settings/{{ app.type }}"
+        method: "POST"
+        headers:
+          Cookie: "{{ seerr_login.cookies_string }}"
+        body_format: "json"
+        body:
+          name: "{{ app.type | capitalize }}"
+          hostname: "{{ app.host }}"
+          port: "{{ app.port }}"
+          apiKey: "{{ app.api_key }}"
+          useSsl: false
+          baseUrl: ""
+          activeProfileId: "{{ profile.id }}"
+          activeProfileName: "{{ profile.name }}"
+          activeDirectory: "{{ app.root_folder }}"
+          externalUrl: "{{ app.external_url | default('') }}"
+          is4k: false
+          isDefault: true
+          syncEnabled: true   # request status follows the app (downloading, available)
+          preventSearch: false
+          tagRequests: false
+          tags: []
+          overrideRule: []
+          minimumAvailability: "released"
+          seriesType: "standard"
+          animeSeriesType: "anime"
+          animeTags: []
+          enableSeasonFolders: true
+          monitorNewItems: "all"
+        status_code: [201]
+      vars:
+        app: "{{ item.item }}"
+        profile: "{{ item.json.profiles | selectattr('name', 'equalto', app.quality_profile) | first }}"
+      loop: "{{ seerr_servarr_test.results }}"
+      loop_control:
+        label: "{{ item.item.type }}"
+      no_log: true
+
+    - name: "Complete seerr setup"
+      ansible.builtin.uri:
+        url: "{{ seerr_api }}/settings/initialize"
+        method: "POST"
+        headers:
+          Cookie: "{{ seerr_login.cookies_string }}"
+      changed_when: true
+
+- name: "Create seerr proxy vhost"
+  when: seerr_hostname is defined
+  tags:
+    - "vhost"
+  ansible.builtin.include_role:
+    name: "vhost"
+  vars:
+    vhost_name: "seerr"
+    vhost_nginx_content: "{{ lookup('template', 'seerr.nginx.conf.j2') }}"
+    vhost_caddy_content: "{{ lookup('template', 'seerr.caddy.j2') }}"

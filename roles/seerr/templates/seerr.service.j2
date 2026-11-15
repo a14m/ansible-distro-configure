@@ -1,0 +1,18 @@
+[Unit]
+Description=Seerr
+# networking.service too: network-online.target doesn't wait for ifupdown, and Seerr binds to one address
+After=network-online.target networking.service
+Wants=network-online.target networking.service
+
+[Service]
+User=seerr
+Group=seerr
+Type=exec
+WorkingDirectory={{ seerr_install_dir }}
+Environment=NODE_ENV=production CONFIG_DIRECTORY={{ seerr_config_dir }}
+Environment=HOST={{ network_ipv4_address }} PORT={{ seerr_port }}
+ExecStart={{ seerr_node.stdout }}/bin/node dist/index.js
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

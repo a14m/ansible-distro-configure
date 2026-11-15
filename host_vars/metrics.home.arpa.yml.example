@@ -41,6 +41,7 @@ prometheus_node_exporter_targets:
   - "{{ hostvars['downloads.home.arpa'].network_ipv4_address }}:9100"
   - "{{ hostvars['media.home.arpa'].network_ipv4_address }}:9100"
   - "{{ hostvars['streaming.home.arpa'].network_ipv4_address }}:9100"
+  - "{{ hostvars['requests.home.arpa'].network_ipv4_address }}:9100"
 prometheus_extra_scrape_configs:
   - name: "garage"
     targets:
