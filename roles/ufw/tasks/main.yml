@@ -17,6 +17,15 @@
 - name: "Configure and enable ufw"
   when: ufw_enabled
   block:
+    # Its boot-time "flush ruleset" can hit ufw mid-load, leaving ufw failed without its INPUT/OUTPUT hooks.
+    # Masking works whether it's installed or not. Not stopped: that flushes all rules; it's gone after the next boot.
+    - name: "Mask the nftables service"
+      become: true
+      ansible.builtin.systemd_service:
+        name: "nftables"
+        masked: true
+      when: ansible_facts.service_mgr == "systemd"
+
     - name: "Set default policies"
       # noqa: args[module] values are validated by meta/argument_specs.yml
       become: true
