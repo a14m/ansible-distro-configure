@@ -137,6 +137,8 @@
     - role: "prowlarr"
     - role: "rsync"
     - role: "backup"
+    - role: "prometheus-node-exporter"
+    - role: "alloy"
 
 - name: "Media configure"
   gather_facts: true
@@ -148,6 +150,8 @@
     - role: "radarr"
     - role: "bazarr"
     - role: "backup"
+    - role: "prometheus-node-exporter"
+    - role: "alloy"
 
 - name: "Streaming configure"
   gather_facts: true
@@ -157,3 +161,5 @@
     - role: "ufw"
     - role: "jellyfin"
     - role: "backup"
+    - role: "prometheus-node-exporter"
+    - role: "alloy"

@@ -38,6 +38,9 @@ prometheus_node_exporter_targets:
   - "{{ hostvars['macbook.lan']['network_ipv4_address'] }}:9100"
   - "{{ hostvars['pve-01.lan']['network_ipv4_address'] }}:9100"
   - "{{ hostvars['pve-02.lan']['network_ipv4_address'] }}:9100"
+  - "{{ hostvars['downloads.home.arpa'].network_ipv4_address }}:9100"
+  - "{{ hostvars['media.home.arpa'].network_ipv4_address }}:9100"
+  - "{{ hostvars['streaming.home.arpa'].network_ipv4_address }}:9100"
 prometheus_extra_scrape_configs:
   - name: "garage"
     targets:

@@ -137,3 +137,14 @@ ufw_rules:
     protocol: "tcp"
     direction: "out"
     to: "10.0.0.254"
+  - rule: "allow"
+    port: 9100   # node-exporter, scraped by Prometheus
+    protocol: "tcp"
+    direction: "in"
+    from: "{{ hostvars['metrics.home.arpa'].network_ipv4_address }}"
+# Journal to Loki on the LAN (alloy)
+  - rule: "allow"
+    port: "{{ hostvars['logs.home.arpa'].loki_port }}"
+    protocol: "tcp"
+    direction: "out"
+    to: "{{ hostvars['logs.home.arpa'].network_ipv4_address }}"

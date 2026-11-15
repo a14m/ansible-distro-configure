@@ -70,3 +70,8 @@ ufw_rules:
     protocol: "tcp"
     direction: "in"
     from: "{{ hostvars['proxy.home.arpa'].network_ipv4_address }}"
+  - rule: "allow"
+    port: 9100   # node-exporter, scraped by Prometheus
+    protocol: "tcp"
+    direction: "in"
+    from: "{{ hostvars['metrics.home.arpa'].network_ipv4_address }}"
