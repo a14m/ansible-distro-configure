@@ -69,6 +69,20 @@
     mode: "0644"
   notify: "Restart qbittorrent"
 
+# The web UI binds to one address and doesn't retry; network-online.target doesn't wait for ifupdown's networking
+- name: "Start qbittorrent after the network is configured"
+  become: true
+  ansible.builtin.copy:
+    dest: "/etc/systemd/system/qbittorrent-nox@qbittorrent.service.d/network.conf"
+    content: |
+      [Unit]
+      After=networking.service
+      Wants=networking.service
+    owner: "root"
+    group: "root"
+    mode: "0644"
+  notify: "Restart qbittorrent"
+
 # qBittorrent's own format: base64(salt):base64(PBKDF2-SHA512, 100000 rounds, 64 bytes). The salt comes from the host
 # and password instead of being random, so the hash, and with it the config, only changes when the password does.
 - name: "Hash qbittorrent web UI password"

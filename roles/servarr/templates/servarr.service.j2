@@ -1,7 +1,8 @@
 [Unit]
 Description={{ servarr_app | capitalize }}
-After=network-online.target
-Wants=network-online.target
+# networking.service too: network-online.target doesn't wait for ifupdown, and the app binds to one address
+After=network-online.target networking.service
+Wants=network-online.target networking.service
 
 [Service]
 User={{ servarr_app }}
