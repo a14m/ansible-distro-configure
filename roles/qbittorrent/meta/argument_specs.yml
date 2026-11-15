@@ -33,6 +33,9 @@ argument_specs:
         description: >-
           Reverse proxy IP whose X-Forwarded-For header is trusted for the client IP, so failed logins ban the client
           instead of the proxy. Unset leaves reverse proxy support off.
+      qbittorrent_natpmp_gateway:
+        type: "str"
+        description: "VPN gateway answering NAT-PMP (e.g. 10.2.0.1); forwards a port to the listen port. Unset: off"
       qbittorrent_username:
         type: "str"
         description: "Web UI username"

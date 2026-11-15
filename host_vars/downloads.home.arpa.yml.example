@@ -54,6 +54,7 @@ qbittorrent_save_path: "/data/torrents"
 qbittorrent_group: "media"
 qbittorrent_group_id: 2000   # same GID in every container sharing /data (102000 on the host)
 qbittorrent_max_ratio: 1     # stop seeding at ratio 1
+qbittorrent_natpmp_gateway: "10.2.0.1"   # port forwarding; the VPN config needs NAT-PMP on
 
 prowlarr_hostname: "search.internal"
 prowlarr_allowed_hosts:
@@ -94,6 +95,11 @@ ufw_rules:
     protocol: "udp"
     direction: "out"
     to: "100.0.0.113"
+# Peers on the forwarded port (qbittorrent_natpmp_gateway); the VPN only forwards that one port
+  - rule: "allow"
+    protocol: "any"
+    direction: "in"
+    interface: "wg-vpn"
   - rule: "allow"
     port: "{{ qbittorrent_webui_port }}"
     protocol: "tcp"

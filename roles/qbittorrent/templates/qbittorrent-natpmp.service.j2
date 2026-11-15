@@ -1,0 +1,15 @@
+[Unit]
+Description=NAT-PMP port forwarding for qBittorrent
+# Runs only while the VPN does: the mapping lives at its gateway
+BindsTo=wg-quick@{{ qbittorrent_vpn_connection }}.service
+After=wg-quick@{{ qbittorrent_vpn_connection }}.service
+
+[Service]
+EnvironmentFile=/etc/qbittorrent-natpmp.env
+ExecStart=/usr/local/bin/qbittorrent-natpmp
+DynamicUser=yes
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=wg-quick@{{ qbittorrent_vpn_connection }}.service

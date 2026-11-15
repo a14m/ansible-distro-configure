@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+# Renews a NAT-PMP mapping at the VPN gateway (it expires after 60 s) and sets its port as qBittorrent's listen port.
+# The gateway picks the public port; peers connect to it, so qBittorrent must listen on that number.
+set -u
+
+current=""
+while true; do
+  if natpmpc -g "$NATPMP_GATEWAY" -a 1 0 udp 60 >/dev/null && out=$(natpmpc -g "$NATPMP_GATEWAY" -a 1 0 tcp 60); then
+    port=$(sed -n 's/^Mapped public port \([0-9]*\) protocol TCP.*/\1/p' <<<"$out")
+    if [ -n "$port" ] && [ "$port" != "$current" ]; then
+      jar=$(mktemp)
+      if curl -fsS -c "$jar" --referer "$QBITTORRENT_URL" \
+          --data-urlencode "username=$QBITTORRENT_USERNAME" --data-urlencode "password=$QBITTORRENT_PASSWORD" \
+          "$QBITTORRENT_URL/api/v2/auth/login" | grep -q '^Ok' &&
+        curl -fsS -b "$jar" --referer "$QBITTORRENT_URL" \
+          --data-urlencode "json={\"listen_port\": $port}" \
+          "$QBITTORRENT_URL/api/v2/app/setPreferences"; then
+        echo "qBittorrent listen port set to $port"
+        current=$port
+      else
+        echo "Couldn't set qBittorrent's listen port to $port, retrying" >&2
+      fi
+      rm -f "$jar"
+    fi
+  else
+    echo "NAT-PMP mapping at $NATPMP_GATEWAY failed, retrying" >&2
+  fi
+  sleep 45
+done

@@ -17,11 +17,17 @@ user, home `/var/lib/qbittorrent`), binds it to a WireGuard VPN, and sets its we
 - `qbittorrent_trusted_proxy` reverse proxy IP trusted for the client IP in `X-Forwarded-For`, so failed logins ban
   the client instead of the proxy (optional; unset leaves reverse proxy support off).
 - `qbittorrent_vpn_connection` WireGuard interface torrent traffic is bound to, e.g. `wg-vpn` (required).
+- `qbittorrent_natpmp_gateway` VPN gateway answering NAT-PMP, e.g. `10.2.0.1` for Proton VPN with NAT-PMP on
+  (optional; unset leaves port forwarding off).
 
 ## Notes
 
 - New torrents use automatic torrent management, so a torrent with a category is saved in `<save path>/<category>`.
 - Torrent traffic only uses the VPN interface: with the tunnel down it stalls instead of falling back to other
   interfaces, and resumes when the tunnel is back.
+- With `qbittorrent_natpmp_gateway`, the `qbittorrent-natpmp` service (running only while the VPN does) renews the
+  mapping every 45 s and sets the gateway's port as the listen port; qBittorrent's own UPnP/NAT-PMP is off. The
+  firewall must let peers in on the VPN interface (e.g. ufw `allow in on wg-vpn`). Unsetting it removes the service
+  and its files and turns UPnP/NAT-PMP back on; remove the firewall rule with it.
 - Only the settings above are managed in `qBittorrent.conf`; qBittorrent rewrites the file on exit, so they're
   applied while it's stopped. Everything else stays editable in the web UI.

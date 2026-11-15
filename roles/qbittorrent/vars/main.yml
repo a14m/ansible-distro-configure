@@ -20,5 +20,13 @@ qbittorrent_proxy_settings:
   - { section: "Preferences", option: 'WebUI\ReverseProxySupportEnabled', value: "true" }
   - { section: "Preferences", option: 'WebUI\TrustedReverseProxiesList', value: "{{ qbittorrent_trusted_proxy }}" }
 
+# Its own UPnP/NAT-PMP finds no router on the tunnel: off while the qbittorrent-natpmp service sets the port
+qbittorrent_natpmp_settings:
+  - section: "Network"
+    option: "PortForwardingEnabled"
+    value: "{{ 'false' if qbittorrent_natpmp_gateway is defined else 'true' }}"
+
 qbittorrent_settings: >-
-  {{ qbittorrent_base_settings + (qbittorrent_proxy_settings if qbittorrent_trusted_proxy is defined else []) }}
+  {{ qbittorrent_base_settings
+     + (qbittorrent_proxy_settings if qbittorrent_trusted_proxy is defined else [])
+     + qbittorrent_natpmp_settings }}

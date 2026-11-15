@@ -1,0 +1,79 @@
+---
+- name: "Set up qbittorrent port forwarding"
+  when: qbittorrent_natpmp_gateway is defined
+  block:
+    - name: "Install natpmpc and curl"
+      become: true
+      ansible.builtin.apt:
+        name:
+          - "natpmpc"
+          - "curl"
+        state: "present"
+        install_recommends: false
+
+    - name: "Install the qbittorrent port forwarding script"
+      become: true
+      ansible.builtin.template:
+        src: "qbittorrent-natpmp.sh.j2"
+        dest: "/usr/local/bin/qbittorrent-natpmp"
+        owner: "root"
+        group: "root"
+        mode: "0755"
+      notify: "Restart qbittorrent-natpmp"
+
+    - name: "Write the qbittorrent port forwarding settings"
+      become: true
+      ansible.builtin.template:
+        src: "qbittorrent-natpmp.env.j2"
+        dest: "/etc/qbittorrent-natpmp.env"
+        owner: "root"
+        group: "root"
+        mode: "0600"
+      no_log: true
+      notify: "Restart qbittorrent-natpmp"
+
+    - name: "Install the qbittorrent port forwarding service"
+      become: true
+      ansible.builtin.template:
+        src: "qbittorrent-natpmp.service.j2"
+        dest: "/etc/systemd/system/qbittorrent-natpmp.service"
+        owner: "root"
+        group: "root"
+        mode: "0644"
+      notify: "Restart qbittorrent-natpmp"
+
+    - name: "Enable and start qbittorrent port forwarding"
+      become: true
+      ansible.builtin.systemd_service:
+        name: "qbittorrent-natpmp"
+        enabled: true
+        state: "started"
+        daemon_reload: true
+
+# Unset again: nothing left behind (the settings file holds the web UI password)
+- name: "Remove qbittorrent port forwarding"
+  when: qbittorrent_natpmp_gateway is not defined
+  block:
+    - name: "Check for the qbittorrent port forwarding service"
+      ansible.builtin.stat:
+        path: "/etc/systemd/system/qbittorrent-natpmp.service"
+      register: qbittorrent_natpmp_unit
+
+    - name: "Stop and disable qbittorrent port forwarding"
+      become: true
+      ansible.builtin.systemd_service:
+        name: "qbittorrent-natpmp"
+        state: "stopped"
+        enabled: false
+      when: qbittorrent_natpmp_unit.stat.exists
+
+    - name: "Remove qbittorrent port forwarding files"
+      become: true
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: "absent"
+      loop:
+        - "/etc/systemd/system/qbittorrent-natpmp.service"
+        - "/usr/local/bin/qbittorrent-natpmp"
+        - "/etc/qbittorrent-natpmp.env"
+      notify: "Reload systemd"

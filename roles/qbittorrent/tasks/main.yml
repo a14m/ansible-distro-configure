@@ -153,6 +153,9 @@
     enabled: true
     state: "started"
 
+- name: "Forward a port through the VPN"
+  ansible.builtin.include_tasks: "natpmp.yml"
+
 - name: "Create qbittorrent proxy vhost"
   when: qbittorrent_hostname is defined
   tags:
