@@ -17,6 +17,7 @@
     name:
       - "jellyfin"
       - "python3-lxml"   # for community.general.xml below
+      - "unzip"   # for plugin releases
     state: "present"
     update_cache: true
     install_recommends: false
@@ -76,6 +77,80 @@
     - { key: "KnownProxies", value: "{{ jellyfin_known_proxies }}" }
   loop_control:
     label: "{{ item.key }}"
+  notify: "Restart jellyfin"
+
+# Plugins from their release zips, without the catalog (no login needed). Unpacked only after a download (a new
+# URL): Jellyfin rewrites meta.json, so unpacking every run would always differ. To reinstall, delete the zip
+- name: "Create jellyfin plugin download folder"
+  become: true
+  ansible.builtin.file:
+    path: "/var/cache/jellyfin-plugins"
+    state: "directory"
+    mode: "0755"
+
+- name: "Download jellyfin plugins"
+  become: true
+  ansible.builtin.get_url:
+    url: "{{ item.url }}"
+    dest: "/var/cache/jellyfin-plugins/{{ item.url | basename }}"
+    mode: "0644"
+  loop: "{{ jellyfin_plugins }}"
+  loop_control:
+    label: "{{ item.name }}"
+  register: jellyfin_plugin_downloads
+
+- name: "Create jellyfin plugin folders"
+  become: true
+  ansible.builtin.file:
+    path: "/var/lib/jellyfin/plugins/{{ item.name }}"
+    state: "directory"
+    owner: "jellyfin"
+    group: "jellyfin"
+    mode: "0755"
+  loop: "{{ jellyfin_plugins }}"
+  loop_control:
+    label: "{{ item.name }}"
+
+- name: "Install jellyfin plugins"   # noqa: no-handler (per plugin, from the download results)
+  become: true
+  ansible.builtin.unarchive:
+    src: "{{ item.dest }}"
+    dest: "/var/lib/jellyfin/plugins/{{ item.item.name }}"
+    remote_src: true
+    owner: "jellyfin"
+    group: "jellyfin"
+  loop: "{{ jellyfin_plugin_downloads.results }}"
+  loop_control:
+    label: "{{ item.item.name }}"
+  when: item is changed
+  notify: "Restart jellyfin"
+
+# Created if missing (Jellyfin writes it in full on a save); listed keys are kept, the rest stays in the web UI
+- name: "Create jellyfin plugin configs"
+  become: true
+  ansible.builtin.copy:
+    dest: "/var/lib/jellyfin/plugins/configurations/{{ item.config }}.xml"
+    content: |
+      <?xml version="1.0" encoding="utf-8"?>
+      <PluginConfiguration />
+    force: false
+    owner: "jellyfin"
+    group: "jellyfin"
+    mode: "0644"
+  loop: "{{ jellyfin_plugins }}"
+  loop_control:
+    label: "{{ item.name }}"
+  notify: "Restart jellyfin"
+
+- name: "Set jellyfin plugin settings"
+  become: true
+  community.general.xml:
+    path: "/var/lib/jellyfin/plugins/configurations/{{ item.0.config }}.xml"
+    xpath: "/PluginConfiguration/{{ item.1.key }}"
+    value: "{{ item.1.value }}"
+  loop: "{{ jellyfin_plugins | subelements('settings') }}"
+  loop_control:
+    label: "{{ item.0.name }}: {{ item.1.key }}"
   notify: "Restart jellyfin"
 
 - name: "Apply pending jellyfin restarts"

@@ -44,6 +44,14 @@ jellyfin_libraries:
   - { name: "Movies", type: "movies", path: "/data/media/movies" }
   - { name: "Shows", type: "tvshows", path: "/data/media/tv" }
 
+jellyfin_plugins:
+  - name: "Moonbase"   # Moonfin apps' server plugin: settings sync, Seerr in the TV app
+    url: "https://github.com/Moonfin-Client/Plugin/releases/download/3.1.0/Moonfin.Server-3.1.0.0.zip"
+    config: "Moonfin.Server"
+    settings:
+      - { key: "SeerrEnabled", value: "true" }
+      - { key: "SeerrUrl", value: "http://{{ hostvars['requests.home.arpa'].network_ipv4_address }}:5055" }
+
 backup_name: "streaming"
 backup_service: "jellyfin"   # stopped during an in-place restore
 backup_paths:

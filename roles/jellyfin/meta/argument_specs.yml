@@ -50,6 +50,29 @@ argument_specs:
             type: "str"
             description: "Folder (e.g. /data/media/movies)"
             required: true
+      jellyfin_plugins:
+        type: "list"
+        elements: "dict"
+        description: "Plugins installed from their release zips"
+        default: []
+        options:
+          name:
+            type: "str"
+            description: "Folder name under plugins/"
+            required: true
+          url:
+            type: "str"
+            description: "Release zip URL; a new one is downloaded and unpacked"
+            required: true
+          config:
+            type: "str"
+            description: "Config file name: the main assembly without .dll (e.g. Moonfin.Server)"
+            required: true
+          settings:
+            type: "list"
+            elements: "dict"
+            description: "Config keys kept at these values ({key, value}, strings, e.g. 'true')"
+            required: true
       jellyfin_server_name:
         type: "str"
         description: "Server name shown in apps (first-time setup)"

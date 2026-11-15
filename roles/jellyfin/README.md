@@ -11,6 +11,9 @@ and adds its web UI vhost.
 - `jellyfin_users` `{name, password, admin}` created at first-time setup (required); the first with `admin: true`
   is the setup admin the role logs in as, so the list needs at least one admin.
 - `jellyfin_libraries` `{name, type (movies/tvshows), path}` created at first-time setup (default: `[]`).
+- `jellyfin_plugins` `{name, url, config, settings}` plugins from their release zips (default: `[]`): unpacked
+  into `plugins/<name>`, with `settings` (`{key, value}`, strings) kept in `plugins/configurations/<config>.xml`.
+  Upgrade by changing `url`; to reinstall, delete its zip in `/var/cache/jellyfin-plugins`.
 - `jellyfin_server_name`, `jellyfin_ui_culture`, `jellyfin_metadata_language`, `jellyfin_metadata_country` first-time
   setup defaults (default: hostname, `en-US`, `en`, `US`).
 - `jellyfin_hostname` proxy vhost (e.g. `streaming.internal`); unset skips it.
