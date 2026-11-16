@@ -39,15 +39,7 @@ select_theme() {
   killall -SIGUSR1 kitty >/dev/null 2>&1 || true
   killall -SIGUSR2 ghostty >/dev/null 2>&1 || true
 
-  if [[ -f ~/.config/hyprtheme/current/light.mode ]]; then
-    gsettings set org.gnome.desktop.interface color-scheme "prefer-light"
-    gsettings set org.gnome.desktop.interface gtk-theme "Adwaita"
-    gsettings set org.gnome.desktop.interface font-name "Noto Sans"
-  else
-    gsettings set org.gnome.desktop.interface color-scheme "prefer-dark"
-    gsettings set org.gnome.desktop.interface gtk-theme "Adwaita-dark"
-    gsettings set org.gnome.desktop.interface font-name "Noto Sans"
-  fi
+  gsettings set org.gnome.desktop.interface font-name "Noto Sans"
 }
 
 if [[ -z "$1" ]]; then

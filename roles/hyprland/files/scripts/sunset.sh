@@ -29,14 +29,18 @@ step_temp() {
     set_temp "$temp"
 }
 
+# Night shift state is the GTK color-scheme: active means prefer-dark.
 toggle_nightshift() {
-    read -r temp <<< "$(get_temp)"
-    if [[ -n "$temp" && "$temp" -lt "$TEMP_OFF" ]]; then
+    if [[ "$(gsettings get org.gnome.desktop.interface color-scheme)" == "'prefer-dark'" ]]; then
+        gsettings set org.gnome.desktop.interface color-scheme "prefer-light"
+        gsettings set org.gnome.desktop.interface gtk-theme "Adwaita"
         set_temp $TEMP_OFF
         temp=$TEMP_OFF
         class="off"
         icon=""
     else
+        gsettings set org.gnome.desktop.interface color-scheme "prefer-dark"
+        gsettings set org.gnome.desktop.interface gtk-theme "Adwaita-dark"
         set_temp $TEMP_ON
         temp=$TEMP_ON
         class="on"

@@ -9,10 +9,18 @@ import Quickshell.Io
 Singleton {
   id: root
 
-  // Same threshold as sunset.sh: below 6000K night shift is on.
-  readonly property int offTemperature: 6000
   property int temperature: 0
-  readonly property bool on: temperature > 0 && temperature < offTemperature
+  // Night shift is on while the GTK color-scheme is prefer-dark, whatever the temperature.
+  property bool on: false
+
+  Process {
+    running: true
+    command: ["sh", "-c", "gsettings get org.gnome.desktop.interface color-scheme;"
+      + " exec gsettings monitor org.gnome.desktop.interface color-scheme"]
+    stdout: SplitParser {
+      onRead: line => root.on = line.includes("prefer-dark")
+    }
+  }
 
   function refresh() {
     query.running = true;
