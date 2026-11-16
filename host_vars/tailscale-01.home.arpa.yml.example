@@ -9,7 +9,7 @@ pve_lxc_hostname: "tailscale-01"
 pve_lxc_template: "alpine-3.24-default_20261105_amd64.tar.xz"
 pve_lxc_disk: "local-lvm:2" # storage:sizeGB
 pve_lxc_cores: 1
-pve_lxc_memory: 256   # tailscale + alloy peak near 128
+pve_lxc_memory: 512   # alloy thrashes its page cache at 256
 pve_lxc_mac: "BC:24:11:00:00:03"
 pve_lxc_ip: "{{ network_ipv4_address }}/24"
 pve_lxc_gateway: "{{ network_ipv4_gateway }}"
