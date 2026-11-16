@@ -8,7 +8,7 @@ dependency:
 driver:
   name: podman
 platforms:
-  - name: tailscale.home.arpa
+  - name: tailscale-01.home.arpa
     image: tailscale
     dockerfile: Dockerfile.j2
     pre_build_image: false

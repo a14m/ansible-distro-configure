@@ -66,7 +66,7 @@ Each container runs on the node set by `pve_lxc_node` in its `host_vars`
 | Prometheus | [`metrics.home.arpa`](http://metrics.home.arpa:9090/) | [`metrics.internal`](https://metrics.internal) | Metrics collection |
 | cgit | [`git.home.arpa`](http://git.home.arpa:3000/) | - | Git browsing and SSH push/clone |
 | Radicale | [`caldav.home.arpa`](http://caldav.home.arpa:5232/.web/) | - | CalDAV/CardDAV server |
-| Tailscale | `tailscale.home.arpa` | - | Tailscale subnet router (no HTTP vhost) |
+| Tailscale | `tailscale-01.home.arpa`, `tailscale-02.home.arpa` | - | Tailscale subnet routers and exit nodes, one per PVE node (failover; no HTTP vhost) |
 | Headscale | `headscale.home.arpa` | - | Self-hosted Tailscale control server (public over IPv6, LAN-only on IPv4) |
 | Loki | `logs.home.arpa` | - | Log aggregation (queried directly on port 3100) |
 | Wallos | [`subscriptions.home.arpa`](http://subscriptions.home.arpa:8282/) | [`subscriptions.internal`](https://subscriptions.internal) | Subscription/recurring-cost tracker |
@@ -80,7 +80,7 @@ Each container runs on the node set by `pve_lxc_node` in its `host_vars`
 
 `*.internal` certs come from Caddy's local CA, so devices warn until they trust it once. The `caddy` role serves
 it at `http://proxy.home.arpa/certificate` (plain HTTP - it has to work before anything is trusted). Open that URL
-on the device (LAN or via the `tailscale.home.arpa` subnet router) and import it; on macOS an explicit
+on the device (LAN or via the Tailscale subnet routers) and import it; on macOS an explicit
 "Always Trust" is required. Full per-platform steps in `roles/caddy/README.md`.
 
 ## Firewall

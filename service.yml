@@ -58,7 +58,8 @@
 - name: "Tailscale configure"
   gather_facts: true
   hosts:
-    - tailscale.home.arpa
+    - tailscale-01.home.arpa
+    - tailscale-02.home.arpa
   roles:
     - role: "tailscale"
     - role: "alloy"

@@ -29,7 +29,8 @@ CouchDB connection, E2EE, and the plugin's own self-hosted-CouchDB preset (`PREF
 - The `couchdb` server has no public domain and serves plain HTTP; LAN, Tailscale, and the HTTPS mobile needs all
   come from the Caddy `vhost` with a self-signed cert:
   - **On the LAN**: any device on `10.0.0.0/24` reaches the proxy directly.
-  - **Over Tailscale**: `tailscale.home.arpa` advertises `10.0.0.0/24` to the tailnet - same LAN address works.
+  - **Over Tailscale**: `tailscale-01.home.arpa` and `tailscale-02.home.arpa` advertise `10.0.0.0/24` to the
+    tailnet - same LAN address works.
   - Every syncing device must trust the self-signed cert on first connect.
 - No `become` - manages files under a user's vault, not a system service.
 - The role doesn't enable the plugin or disable Restricted Mode (Obsidian settings UI only): Settings → Community

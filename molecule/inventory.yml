@@ -13,7 +13,8 @@ containers:
     git.home.arpa: {}
     proxy.home.arpa: {}
     headscale.home.arpa: {}
-    tailscale.home.arpa: {}
+    tailscale-01.home.arpa: {}
+    tailscale-02.home.arpa: {}
     caldav.home.arpa: {}
     logs.home.arpa: {}
     metrics.home.arpa: {}
