@@ -50,8 +50,9 @@ MASKED = "********"
 
 def request(module, method, url, body=None):
     data = json.dumps(body) if body is not None else None
+    # Saving a Prowlarr application syncs every indexer to it (tens of seconds), so the 10s default is too short
     resp, info = fetch_url(
-        module, url, data=data, method=method,
+        module, url, data=data, method=method, timeout=120,
         headers={"X-Api-Key": module.params["api_key"], "Content-Type": "application/json"},
     )
     if info["status"] >= 400 or info["status"] < 0:
