@@ -21,5 +21,5 @@ Installs [Bazarr](https://www.bazarr.media/) (subtitles for Sonarr/Radarr) as th
 
 - Installed once from the latest release; after that Bazarr updates itself. Each run re-applies `requirements.txt`.
 - The keys in `vars/main.yml` (bind address, port, login, API key, Sonarr/Radarr, providers, default profile,
-  analytics off) are set in `config.yaml`; languages and the profile through the API. Everything else stays
-  editable in the web UI.
+  embedded subtitles ignored, analytics off) are set in `config.yaml`; languages and the profile through the API.
+  Everything else stays editable in the web UI.

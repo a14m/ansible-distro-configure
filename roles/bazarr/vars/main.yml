@@ -11,6 +11,7 @@ bazarr_base_settings:
     serie_default_profile: 1
     movie_default_enabled: true
     movie_default_profile: 1
+    use_embedded_subs: false   # embedded tracks don't count, so each profile language gets its own .srt
   auth:
     apikey: "{{ bazarr_api_key }}"
     type: "form"   # login page; Bazarr has no login by default
