@@ -2,3 +2,18 @@
 ansible_user: root
 alloy_loki_host: "{{ hostvars['logs.home.arpa'].network_ipv4_address }}:{{ hostvars['logs.home.arpa'].loki_port }}"
 vhost_proxy_host: "proxy.home.arpa"
+# These read host-wide /proc and /sys inside LXC; use pve-exporter for container CPU/IO
+node_exporter_disabled_collectors:
+  - "cpu"
+  - "cpufreq"
+  - "loadavg"
+  - "pressure"
+  - "schedstat"
+  - "vmstat"
+  - "diskstats"
+  - "zfs"
+  - "hwmon"
+  - "thermal_zone"
+  - "powersupplyclass"
+  - "watchdog"
+  - "softnet"

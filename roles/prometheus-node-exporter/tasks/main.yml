@@ -30,9 +30,12 @@
   become: true
   ansible.builtin.copy:
     content: |
-      NODE_EXPORTER_ARGS="
+      {{ node_exporter_env_var }}="
         --web.listen-address={{ node_exporter_host }}:{{ node_exporter_port }}
         --collector.systemd
+      {% for collector in node_exporter_disabled_collectors %}
+        --no-collector.{{ collector }}
+      {% endfor %}
       "
     dest: "{{ node_exporter_env_file }}"
     mode: "0644"
