@@ -22,8 +22,6 @@
     - role: "acme-sh"
     - role: "cloudflared"
     - role: "cloudflare-ddns"
-    - role: "alloy"
-    - role: "ufw"
 
 - name: "Headscale configure"
   gather_facts: true
@@ -32,8 +30,6 @@
   roles:
     - role: "headscale"
     - role: "backup"
-    - role: "alloy"
-    - role: "ufw"
 
 - name: "Git configure"
   gather_facts: true
@@ -42,8 +38,6 @@
   roles:
     - role: "cgit"
     - role: "backup"
-    - role: "alloy"
-    - role: "ufw"
 
 - name: "Caldav configure"
   gather_facts: true
@@ -52,8 +46,6 @@
   roles:
     - role: "radicale"
     - role: "backup"
-    - role: "alloy"
-    - role: "ufw"
 
 - name: "Tailscale configure"
   gather_facts: true
@@ -62,8 +54,6 @@
     - tailscale-02.home.arpa
   roles:
     - role: "tailscale"
-    - role: "alloy"
-    - role: "ufw"
 
 - name: "Logs configure"
   gather_facts: true
@@ -71,8 +61,6 @@
     - logs.home.arpa
   roles:
     - role: "loki"
-    - role: "alloy"
-    - role: "ufw"
 
 - name: "Metrics configure"
   gather_facts: true
@@ -80,8 +68,6 @@
     - metrics.home.arpa
   roles:
     - role: "prometheus"
-    - role: "alloy"
-    - role: "ufw"
 
 - name: "Monitor configure"
   gather_facts: true
@@ -89,8 +75,6 @@
     - monitor.home.arpa
   roles:
     - role: "grafana"
-    - role: "alloy"
-    - role: "ufw"
 
 - name: "Subscriptions configure"
   gather_facts: true
@@ -99,8 +83,6 @@
   roles:
     - role: "wallos"
     - role: "backup"
-    - role: "alloy"
-    - role: "ufw"
 
 - name: "Notes configure"
   gather_facts: true
@@ -109,8 +91,6 @@
   roles:
     - role: "couchdb"
     - role: "backup"
-    - role: "alloy"
-    - role: "ufw"
 
 - name: "Downloads configure"
   gather_facts: true
@@ -133,45 +113,47 @@
         - "net.ipv6.conf.default.disable_ipv6"
   roles:
     - role: "wireguard"
-    - role: "ufw"
     - role: "qbittorrent"
     - role: "prowlarr"
     - role: "rsync"
     - role: "backup"
     - role: "prometheus-node-exporter"
-    - role: "alloy"
 
 - name: "Media configure"
   gather_facts: true
   hosts:
     - media.home.arpa
   roles:
-    - role: "ufw"
     - role: "sonarr"
     - role: "radarr"
     - role: "bazarr"
     - role: "backup"
     - role: "prometheus-node-exporter"
-    - role: "alloy"
 
 - name: "Streaming configure"
   gather_facts: true
   hosts:
     - streaming.home.arpa
   roles:
-    - role: "ufw"
     - role: "jellyfin"
     - role: "backup"
     - role: "prometheus-node-exporter"
-    - role: "alloy"
 
 - name: "Requests configure"
   gather_facts: true
   hosts:
     - requests.home.arpa
   roles:
-    - role: "ufw"
     - role: "seerr"
     - role: "backup"
     - role: "prometheus-node-exporter"
+
+# Runs last: the downloads kill switch blocks egress until wg-vpn is up,
+# and alloy sets ACLs on service log dirs, which fails if the service role hasn't created them yet
+- name: "Containers configure"
+  gather_facts: true
+  hosts:
+    - containers
+  roles:
+    - role: "ufw"
     - role: "alloy"
