@@ -42,6 +42,23 @@
         mode: "0644"
       notify: "Sync boot entries"
 
+    - name: "Check for kernel-install cmdline"
+      ansible.builtin.stat:
+        path: "/etc/kernel/cmdline"
+      register: kernel_install_cmdline
+
+    - name: "Keep fbcon off VT 63"
+      # nvidia-sleep.sh switches to VT 63 before suspend; on an fbcon-bound VT that makes fbcon apply delayed hotplugs
+      # and modeset outputs behind the compositor (stuck black screens after resume). VT 63 gets the dummy console.
+      when: kernel_install_cmdline.stat.exists
+      become: true
+      ansible.builtin.lineinfile:
+        path: "/etc/kernel/cmdline"
+        backrefs: true
+        regexp: '^(?!.*\bfbcon=vc:)(.*?)\s*$'
+        line: '\1 fbcon=vc:1-62'
+      notify: "Sync boot entries"
+
     - name: "Mask mkinitcpio pacman hooks"
       # They only build/remove /boot/*-linux images that systemd-boot never reads; kernel-install builds the ESP initrd.
       become: true
