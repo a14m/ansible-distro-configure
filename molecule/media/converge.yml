@@ -23,7 +23,8 @@
   roles:
     - role: "caddy"
 
-# No VPN can come up in CI (its default route would also cut the container off): no autostart, no port forwarding
+# No VPN can come up in CI (its default route would also cut the container off): no autostart, no port forwarding.
+# No backup either: get_url re-checks restic's mise download every run, which the kill switch blocks without the VPN
 - name: "Downloads configure"
   gather_facts: true
   hosts:
@@ -49,7 +50,6 @@
     - role: "qbittorrent"
     - role: "prowlarr"
     - role: "rsync"
-    - role: "backup"
     - role: "prometheus-node-exporter"
 
 - name: "Media configure"
