@@ -1,6 +1,6 @@
 ---
 - name: "Set up qbittorrent port forwarding"
-  when: qbittorrent_natpmp_gateway is defined
+  when: qbittorrent_natpmp_gateway | default("") | length > 0
   block:
     - name: "Install natpmpc and curl"
       become: true
@@ -52,7 +52,7 @@
 
 # Unset again: nothing left behind (the settings file holds the web UI password)
 - name: "Remove qbittorrent port forwarding"
-  when: qbittorrent_natpmp_gateway is not defined
+  when: qbittorrent_natpmp_gateway | default("") | length == 0
   block:
     - name: "Check for the qbittorrent port forwarding service"
       ansible.builtin.stat:

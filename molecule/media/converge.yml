@@ -1,0 +1,111 @@
+---
+# Mirrors service.yml for the media stack. Every container sits on the scenario's podman network, so each one binds
+# and is reached on its own address, and the cross-container setup (Prowlarr apps, Seerr's first run) really runs.
+
+# A fact, not play vars: other hosts read it through hostvars (e.g. Sonarr's Prowlarr URL, the ufw rules)
+- name: "Use the container addresses"
+  gather_facts: true
+  hosts:
+    - proxy.home.arpa
+    - downloads.home.arpa
+    - media.home.arpa
+    - streaming.home.arpa
+    - requests.home.arpa
+  tasks:
+    - name: "Set network_ipv4_address"
+      ansible.builtin.set_fact:
+        network_ipv4_address: "{{ ansible_facts.default_ipv4.address }}"
+
+- name: "Proxy configure"
+  gather_facts: true
+  hosts:
+    - proxy.home.arpa
+  roles:
+    - role: "caddy"
+
+# No VPN can come up in CI (its default route would also cut the container off): no autostart, no port forwarding
+- name: "Downloads configure"
+  gather_facts: true
+  hosts:
+    - downloads.home.arpa
+  vars:
+    wireguard_autostart_connection: ""
+    qbittorrent_natpmp_gateway: ""
+  pre_tasks:
+    - name: "Disable IPv6"
+      become: true
+      ansible.posix.sysctl:
+        name: "{{ item }}"
+        value: "1"
+        sysctl_file: "/etc/sysctl.d/99-disable-ipv6.conf"
+        sysctl_set: true
+        state: "present"
+        reload: true
+      loop:
+        - "net.ipv6.conf.all.disable_ipv6"
+        - "net.ipv6.conf.default.disable_ipv6"
+  roles:
+    - role: "wireguard"
+    - role: "qbittorrent"
+    - role: "prowlarr"
+    - role: "rsync"
+    - role: "backup"
+    - role: "prometheus-node-exporter"
+
+- name: "Media configure"
+  gather_facts: true
+  hosts:
+    - media.home.arpa
+  roles:
+    - role: "sonarr"
+    - role: "radarr"
+    - role: "bazarr"
+    - role: "backup"
+    - role: "prometheus-node-exporter"
+
+- name: "Streaming configure"
+  gather_facts: true
+  hosts:
+    - streaming.home.arpa
+  pre_tasks:
+    # Stands in for the shared /data volume: Jellyfin only adds libraries whose folders exist
+    - name: "Create library folders"
+      become: true
+      ansible.builtin.file:
+        path: "{{ item.path }}"
+        state: "directory"
+        mode: "0755"
+      loop: "{{ jellyfin_libraries }}"
+      loop_control:
+        label: "{{ item.path }}"
+  roles:
+    - role: "jellyfin"
+    - role: "backup"
+    - role: "prometheus-node-exporter"
+
+- name: "Requests configure"
+  gather_facts: true
+  hosts:
+    - requests.home.arpa
+  roles:
+    - role: "seerr"
+    - role: "backup"
+    - role: "prometheus-node-exporter"
+
+# Runs last, as in service.yml. Downloads skips alloy: its kill switch blocks the Grafana repository without the VPN
+- name: "Containers configure"
+  gather_facts: true
+  hosts:
+    - downloads.home.arpa
+    - media.home.arpa
+    - streaming.home.arpa
+    - requests.home.arpa
+  tasks:
+    - name: "Configure ufw"
+      ansible.builtin.include_role:
+        name: "ufw"
+
+    - name: "Configure alloy"
+      ansible.builtin.include_role:
+        name: "alloy"
+      when: inventory_hostname != "downloads.home.arpa"

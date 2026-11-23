@@ -64,4 +64,4 @@
     name: "wg-quick@{{ wireguard_autostart_connection }}"
     enabled: true
     state: "started"
-  when: wireguard_autostart_connection is defined
+  when: wireguard_autostart_connection | default("") | length > 0

@@ -7,7 +7,8 @@ Deploys WireGuard configs. Needs the WireGuard kernel module and systemd.
 - `wireguard_connections` dict of `name: config` (raw `wg-quick` file contents) (default: `{}`). `name` is used as is
   for `/etc/wireguard/<name>.conf` and the interface (max 15 characters, must start with `wg`: the `gateway` role
   only handles `wg*` interfaces).
-- `wireguard_autostart_connection` name of the connection to enable at boot and start (default: unset, starts none).
+- `wireguard_autostart_connection` name of the connection to enable at boot and start (default: unset; unset or
+  empty starts none).
 
 ## Example
 

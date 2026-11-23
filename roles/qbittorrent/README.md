@@ -18,7 +18,7 @@ user, home `/var/lib/qbittorrent`), binds it to a WireGuard VPN, and sets its we
   the client instead of the proxy (optional; unset leaves reverse proxy support off).
 - `qbittorrent_vpn_connection` WireGuard interface torrent traffic is bound to, e.g. `wg-vpn` (required).
 - `qbittorrent_natpmp_gateway` VPN gateway answering NAT-PMP, e.g. `10.2.0.1` for Proton VPN with NAT-PMP on
-  (optional; unset leaves port forwarding off).
+  (optional; unset or empty leaves port forwarding off).
 
 ## Notes
 

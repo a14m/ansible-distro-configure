@@ -7,12 +7,47 @@ dependency:
     ignore-errors: true
 driver:
   name: podman
+# One network, so the containers reach each other on bindable addresses (pasta gives each the host's IP)
 platforms:
   - name: downloads.home.arpa
     image: downloads
     dockerfile: Dockerfile.debian.j2
     pre_build_image: false
     privileged: true
+    network: "media"
+    command: ${MOLECULE_COMMAND:-"/lib/systemd/systemd"}
+    extra_opts:
+      - "--cgroupns=host"
+      - "--tmpfs=/tmp:rw"
+      - "--tmpfs=/run:rw,exec"
+  - name: media.home.arpa
+    image: media
+    dockerfile: Dockerfile.debian.j2
+    pre_build_image: false
+    privileged: true
+    network: "media"
+    command: ${MOLECULE_COMMAND:-"/lib/systemd/systemd"}
+    extra_opts:
+      - "--cgroupns=host"
+      - "--tmpfs=/tmp:rw"
+      - "--tmpfs=/run:rw,exec"
+  - name: streaming.home.arpa
+    image: streaming
+    dockerfile: Dockerfile.debian.j2
+    pre_build_image: false
+    privileged: true
+    network: "media"
+    command: ${MOLECULE_COMMAND:-"/lib/systemd/systemd"}
+    extra_opts:
+      - "--cgroupns=host"
+      - "--tmpfs=/tmp:rw"
+      - "--tmpfs=/run:rw,exec"
+  - name: requests.home.arpa
+    image: requests
+    dockerfile: Dockerfile.debian.j2
+    pre_build_image: false
+    privileged: true
+    network: "media"
     command: ${MOLECULE_COMMAND:-"/lib/systemd/systemd"}
     extra_opts:
       - "--cgroupns=host"
@@ -23,6 +58,7 @@ platforms:
     dockerfile: Dockerfile.alpine.j2
     pre_build_image: false
     privileged: true
+    network: "media"
     command: ${MOLECULE_COMMAND:-"/sbin/init"}
     extra_opts:
       - "--cgroupns=host"

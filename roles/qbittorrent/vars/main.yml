@@ -24,7 +24,7 @@ qbittorrent_proxy_settings:
 qbittorrent_natpmp_settings:
   - section: "Network"
     option: "PortForwardingEnabled"
-    value: "{{ 'false' if qbittorrent_natpmp_gateway is defined else 'true' }}"
+    value: "{{ 'false' if qbittorrent_natpmp_gateway | default('') | length > 0 else 'true' }}"
 
 qbittorrent_settings: >-
   {{ qbittorrent_base_settings

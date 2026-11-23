@@ -35,7 +35,7 @@ argument_specs:
           instead of the proxy. Unset leaves reverse proxy support off.
       qbittorrent_natpmp_gateway:
         type: "str"
-        description: "VPN gateway answering NAT-PMP (e.g. 10.2.0.1); forwards a port to the listen port. Unset: off"
+        description: "VPN gateway answering NAT-PMP (e.g. 10.2.0.1); forwards a port to the listen port. Empty: off"
       qbittorrent_username:
         type: "str"
         description: "Web UI username"
