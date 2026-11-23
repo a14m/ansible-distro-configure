@@ -27,6 +27,7 @@ pve_lxc_ssh_private_key: |
   gMc2MLx2pmgUeDHU+JKBAAAAEm1vbGVjdWxlLXRlc3Qtb25seQECAw==
   -----END OPENSSH PRIVATE KEY-----
 
+seerr_port: 5055
 seerr_hostname: "requests.internal"
 seerr_jellyfin:   # the first Jellyfin admin (its current password, if changed in the web UI)
   host: "{{ hostvars['streaming.home.arpa'].network_ipv4_address }}"

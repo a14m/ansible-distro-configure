@@ -31,6 +31,7 @@ pve_lxc_ssh_private_key: |
   gMc2MLx2pmgUeDHU+JKBAAAAEm1vbGVjdWxlLXRlc3Qtb25seQECAw==
   -----END OPENSSH PRIVATE KEY-----
 
+wallos_port: 8282
 wallos_hostname: "subscriptions.internal"
 wallos_main_currency: "EUR"
 wallos_language: "en"

@@ -67,6 +67,10 @@
   gather_facts: true
   hosts:
     - streaming.home.arpa
+  vars:
+    # The scenario's network, not the examples' LAN: Jellyfin rejects clients outside it (remote access is off)
+    jellyfin_local_networks:
+      - "{{ ansible_facts.default_ipv4.network }}/{{ ansible_facts.default_ipv4.prefix }}"
   pre_tasks:
     # Stands in for the shared /data volume: Jellyfin only adds libraries whose folders exist
     - name: "Create library folders"

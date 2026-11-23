@@ -28,6 +28,7 @@ pve_lxc_ssh_private_key: |
   gMc2MLx2pmgUeDHU+JKBAAAAEm1vbGVjdWxlLXRlc3Qtb25seQECAw==
   -----END OPENSSH PRIVATE KEY-----
 
+jellyfin_port: 8096
 jellyfin_hostname: "streaming.internal"
 jellyfin_local_networks:
   - "10.0.0.0/24"   # the LAN; Tailscale clients arrive from the subnet router's LAN IP

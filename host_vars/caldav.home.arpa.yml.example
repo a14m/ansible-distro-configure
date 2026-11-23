@@ -26,6 +26,7 @@ pve_lxc_ssh_private_key: |
   gMc2MLx2pmgUeDHU+JKBAAAAEm1vbGVjdWxlLXRlc3Qtb25seQECAw==
   -----END OPENSSH PRIVATE KEY-----
 
+radicale_port: 5232
 radicale_hostname: "caldav.example.com"
 radicale_rights_rules:
   - name: "root"

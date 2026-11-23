@@ -28,6 +28,7 @@ pve_lxc_ssh_private_key: |
   gMc2MLx2pmgUeDHU+JKBAAAAEm1vbGVjdWxlLXRlc3Qtb25seQECAw==
   -----END OPENSSH PRIVATE KEY-----
 
+couchdb_port: 5984
 couchdb_hostname: "notes.internal"
 # Generate with: openssl rand -hex 16
 couchdb_cookie: "CHANGEME"

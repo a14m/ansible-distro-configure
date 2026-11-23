@@ -28,6 +28,7 @@ pve_lxc_ssh_private_key: |
   gMc2MLx2pmgUeDHU+JKBAAAAEm1vbGVjdWxlLXRlc3Qtb25seQECAw==
   -----END OPENSSH PRIVATE KEY-----
 
+sonarr_port: 8989
 sonarr_hostname: "shows.internal"
 sonarr_api_key: "CHANGEME"
 sonarr_allowed_hosts:
@@ -47,6 +48,7 @@ sonarr_qbittorrent:
   username: "{{ hostvars['downloads.home.arpa'].qbittorrent_username }}"
   password: "{{ hostvars['downloads.home.arpa'].qbittorrent_password }}"
 
+radarr_port: 7878
 radarr_hostname: "movies.internal"
 radarr_api_key: "CHANGEME"
 radarr_allowed_hosts:
@@ -66,6 +68,7 @@ radarr_qbittorrent:
   username: "{{ hostvars['downloads.home.arpa'].qbittorrent_username }}"
   password: "{{ hostvars['downloads.home.arpa'].qbittorrent_password }}"
 
+bazarr_port: 6767
 bazarr_hostname: "subtitles.internal"
 bazarr_api_key: "CHANGEME"
 bazarr_username: "alice"

@@ -46,6 +46,7 @@ wireguard_connections:
     AllowedIPs = 0.0.0.0/0
     Endpoint = 100.0.0.113:51820
 
+qbittorrent_webui_port: 8080
 qbittorrent_username: "alice"
 qbittorrent_password: "CHANGEME"
 qbittorrent_hostname: "downloads.internal"
@@ -56,6 +57,7 @@ qbittorrent_group_id: 2000   # same GID in every container sharing /data (102000
 qbittorrent_max_ratio: 1     # stop seeding at ratio 1
 qbittorrent_natpmp_gateway: "10.2.0.1"   # port forwarding; the VPN config needs NAT-PMP on
 
+prowlarr_port: 9696
 prowlarr_hostname: "search.internal"
 prowlarr_allowed_hosts:
   - "{{ prowlarr_hostname }}"         # through the proxy
